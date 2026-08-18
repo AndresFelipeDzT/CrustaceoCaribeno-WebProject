@@ -5,20 +5,141 @@
    ========================================================================== */
 
 @import url("general.css");
+/*cambio colo nav*/
+
+/* =========================================
+   HEADER / NAVBAR
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Dai Banna SIL", serif;
+     font-style: italic;
+}
+
+.header-crustaceo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-crustaceo {
+    width: 100%;
+    height: 80px;
+    background-color: #0b1d5c;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-contenido {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+/* Logo + nombre */
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand img {
+    display: block;
+}
+
+.navbar-brand span {
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+}
+
+/* Botones de la derecha */
+
+.nav-botones {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.nav-botones a{
+   font-family: "Dai Banna SIL", serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+}
+.btn-cc-login,
+.btn-cc-signup {
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 25px;
+}
+
+/* Login */
+
+.btn-cc-login {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    background-color: transparent;
+}
+
+.btn-cc-login:hover {
+    background-color: #ffffff;
+    color: #0b1d5c;
+}
+
+/* Registro */
+
+.btn-cc-signup {
+    color: white;
+    background-color: #a45b24;
+    border: 1px solid #a45b24;
+}
+
+.btn-cc-signup:hover {
+    background-color: #c27636;
+}
 
 /* 1. SECCIÓN HERO BANNER */
 .hero-section {
   position: relative;
-  background: linear-gradient(rgba(9, 26, 51, 0.78), rgba(9, 26, 51, 0.88)),
-              url("../images/hero_seafood.jpg") center/cover no-repeat;
-  min-height: 480px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: var(--cc-white);
-  padding: 5rem 1.5rem;
-  border-bottom: 4px solid var(--cc-gold);
+    background:
+        linear-gradient(
+            rgba(9, 26, 51, 0.25),
+            rgba(9, 26, 51, 0.30)
+        ),
+        url("../images/hero_seafood.jpg") center/cover no-repeat;
+
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--cc-white);
+    padding: 5rem 1.5rem;
+    border-bottom: 4px solid var(--cc-gold);
 }
 
 .hero-content {
@@ -26,14 +147,22 @@
   margin: 0 auto;
 }
 
+header span {
+    color: white;
+    font-size: 20px;
+    font-family: "Dai Banna SIL", serif;
+    font-style: italic;
+}
+
 .hero-title {
-  font-family: var(--font-serif);
-  font-size: 3.2rem;
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  margin-bottom: 1.25rem;
-  letter-spacing: 1px;
+font-family: "Dai Banna SIL", serif;
+    font-weight: 1000000000;
+    font-style: italic;
+    color:#e2ebf8;
+    font-size: 4rem;
+    
+    
+  
 }
 
 .hero-divider {
@@ -238,7 +367,7 @@
 /* 5. ADAPTACIÓN RESPONSIVA */
 @media (max-width: 991.98px) {
   .hero-title {
-    font-size: 2.4rem;
+    font-size: 10rem;
   }
   .hero-subtitle {
     font-size: 1.05rem;
@@ -271,4 +400,288 @@
   .divider-line {
     display: none;
   }
+}
+ 
+
+
+
+
+
+/* =========================
+   PÁGINA COMPLETA
+========================= */
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+    background: white;
+}
+
+
+/* =========================
+   SECCIONES
+========================= */
+
+.intro,
+.contenido {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 60px;
+    padding: 60px 8%;
+}
+
+.intro {
+    min-height: 500px;
+}
+
+
+/* =========================
+   IMÁGENES
+========================= */
+
+.imagen {
+    width: 45%;
+}
+
+.imagen img {
+    display: block;
+    width: 100%;
+    height: 400px;
+
+    object-fit: cover;
+
+    border: 1px solid #193cff;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.texto {
+    width: 50%;
+    text-align: center;
+}
+
+.texto h1 {
+    font-size: 32px;
+    color: #573400;
+    margin-bottom: 25px;
+}
+
+.texto h2 {
+    font-size: 28px;
+    color: #573400;
+    margin-bottom: 25px;
+}
+
+.texto p {
+    font-size: 22px;
+    line-height: 1.6;
+    color: #333;
+}
+
+
+/* =========================
+   BOTÓN
+========================= */
+
+.boton {
+    display: inline-block;
+
+    margin-top: 20px;
+    padding: 6px 22px;
+
+    border: 1px solid #193cff;
+    border-radius: 20px;
+
+    color: #222;
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   SECCIONES
+========================= */
+
+.seccion {
+    width: 100%;
+    padding: 30px 0;
+}
+
+.seccion:nth-of-type(even) .contenido {
+    flex-direction: row-reverse;
+}
+
+
+/* =========================
+   ITEMS
+========================= */
+
+.item {
+    width: 50%;
+    text-align: center;
+}
+
+.item h3,h4 {
+    font-size: 20px;
+    color: #573400;
+    margin-bottom: 3px;
+}
+
+
+
+.item p {
+  font-size: 22px;
+    line-height: 1.6;
+    color: #333;
+}
+
+
+/* =========================
+   SEPARADORES
+========================= */
+
+.separador {
+    width: 84%;
+    max-width: 1100px;
+
+    margin: 20px auto;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.separador::before,
+.separador::after {
+    content: "";
+
+    height: 1px;
+    background: #d5d5d5;
+
+    flex: 1;
+}
+
+.separador span {
+    font-size: 11px;
+    font-style: italic;
+    color: #333;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media (max-width: 700px) {
+
+    .intro,
+    .contenido {
+        flex-direction: column;
+        padding: 40px 25px;
+        gap: 30px;
+    }
+
+    .seccion:nth-of-type(even) .contenido {
+        flex-direction: column;
+    }
+
+    .imagen,
+    .texto {
+        width: 100%;
+    }
+
+    .imagen img {
+        height: 300px;
+    }
+
+    .texto h1 {
+        font-size: 26px;
+    }
+
+    .texto h2 {
+        font-size: 23px;
+    }
+}
+/* ==========================================
+   FOOTER CRUSTÁCEO CARIBEÑO
+   ========================================== */
+.footer-crustaceo {
+  background-color: var(--cc-blue-dark, #0B1A53);
+  color: var(--cc-white, #FFFFFF);
+  padding: 3rem 1rem 2rem 1rem;
+  border-top: 3px solid var(--cc-blue-primary, #193AB9);
+  text-align: center;
+}
+
+.footer-heading {
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cc-white, #FFFFFF);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.footer-social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.footer-social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--cc-white, #FFFFFF);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+}
+
+.footer-social-btn.instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.footer-social-btn.twitter {
+  background-color: #1DA1F2;
+}
+
+.footer-social-btn.facebook {
+  background-color: #1877F2;
+}
+
+.footer-social-btn.linkedin {
+  background-color: #0A66C2;
+}
+
+.footer-social-btn:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  color: var(--cc-white, #FFFFFF);
+}
+
+.footer-copyright {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+  font-weight: 400;
+  margin-top: 1rem;
 }

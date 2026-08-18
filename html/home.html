@@ -26,336 +26,219 @@
   <!-- ==========================================
        HEADER & NAVBAR DE NAVEGACIÓN
        ========================================== -->
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-crustaceo" aria-label="Navegación principal">
-      <div class="container">
-        <!-- Logo y Nombre de Marca -->
-        <a class="navbar-brand" href="home.html">
-          <img src="../images/logo.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
-          <span>Crustáceo Caribeño</span>
-        </a>
+  <header class="header-crustaceo">
+    <nav class="navbar-crustaceo">
+        <div class="nav-contenido">
 
-        <!-- Botón Toggler para dispositivos móviles -->
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal" aria-controls="navbarPrincipal" aria-expanded="false" aria-label="Alternar navegación">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Logo y nombre -->
+            <a class="navbar-brand" href="home.html">
+                <img src="../images/logo2.png"
+                     alt="Logo de Crustáceo Caribeño"
+                     width="48"
+                     height="48">
 
-        <!-- Enlaces y Acciones de Navegación -->
-        <div class="collapse navbar-collapse" id="navbarPrincipal">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2 text-center">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="home.html">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="menu.html">Menú</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#por-que-nosotros">¿Por Qué Nosotros?</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#quienes-somos">¿Quiénes Somos?</a>
-            </li>
-          </ul>
+                <span>Crustáceo Caribeño</span>
+            </a>
 
-          <!-- Acciones de Usuario: Carrito, Login, Registro -->
-          <div class="d-flex align-items-center justify-content-center gap-2 mt-3 mt-lg-0 flex-wrap">
-            <button class="btn-cart-nav" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito" aria-controls="offcanvasCarrito" aria-label="Abrir carrito de compras">
-              <i class="bi bi-cart3"></i>
-              <span>Carrito</span>
-              <span class="badge-cart" id="contador-carrito-nav">0</span>
-            </button>
-            <a href="login.html" class="btn btn-cc-login">Login</a>
-            <a href="registro.html" class="btn btn-cc-signup">Registro</a>
-          </div>
+            <!-- Login y Registro -->
+            <div class="nav-botones">
+  <a href="login.html" class="boton-login">Login</a>
+  <a href="registro.html" class="boton-registro">Signup</a>
+</div>
         </div>
-      </div>
     </nav>
-  </header>
+</header>
 
   <!-- ==========================================
        CONTENIDO PRINCIPAL
        ========================================== -->
-  <main>
-    
-    <!-- 1. SECCIÓN HERO BANNER -->
+  <main class="pagina">
+      <!-- 1. SECCIÓN HERO BANNER -->
     <section class="hero-section" aria-label="Bienvenida al restaurante">
       <div class="hero-content">
-        <h1 class="hero-title">Bienvenido Al Crustáceo Caribeño</h1>
-        <div class="hero-divider" aria-hidden="true">
-          <span class="line"></span>
-          <i class="bi bi-water icon"></i>
-          <span class="line"></span>
-        </div>
-        <p class="hero-subtitle">
-          Sumérgete en la experiencia gastronómica más fresca y auténtica del Caribe. Pescados selectos, mariscos frescos y recetas tradicionales elaboradas con pasión.
-        </p>
-        <div class="hero-buttons">
-          <a href="menu.html" class="btn btn-caribbean-gold">
-            <i class="bi bi-compass"></i> Explorar Menú
-          </a>
-          <a href="#lo-mejor-del-mar" class="btn btn-caribbean-outline text-white border-white">
-            <i class="bi bi-arrow-down-circle"></i> Conocer Más
-          </a>
-        </div>
-      </div>
+        <img src="../images/decoracion-arriba.png" class="diseño">
+        <h1 class="hero-title">Bienvenido Al <br>Crustáceo Caribeño</h1>
+        <img src="../images/decoracion-abajo.png" class="diseño">
+        
     </section>
 
-    <!-- 2. SECCIÓN: LO MEJOR DEL MAR CARIBE -->
-    <section class="landing-section" id="lo-mejor-del-mar" aria-label="Lo mejor del mar Caribe">
-      <div class="container">
-        <div class="section-card-frame">
-          <div class="row align-items-center g-4">
-            <!-- Imagen del Restaurante / Ambiente -->
-            <div class="col-lg-6">
-              <div class="section-image-wrapper">
-                <img src="../images/restaurant_interior.jpg" alt="Interior acogedor y elegante de Crustáceo Caribeño" loading="lazy">
-              </div>
+
+        <!-- =========================
+             SECCIÓN 1
+        ========================== -->
+
+        <section class="intro">
+
+            <div class="imagen">
+                <img src="../images/imagen1.png" alt="">
             </div>
-            <!-- Texto y CTA -->
-            <div class="col-lg-6">
-              <div class="section-text-content">
-                <span class="section-badge">Tradición y Frescura Marina</span>
-                <h2 class="section-title">Lo Mejor Del Mar Caribe</h2>
-                <p class="section-description">
-                  En Crustáceo Caribeño seleccionamos a diario los mariscos y pescados más frescos de nuestras costas. Cada plato combina la calidez de nuestras tradiciones culinarias con toques de innovación gourmet para brindarte momentos inolvidables frente al paladar.
+
+            <div class="texto">
+                <h1>Lo Mejor Del Mar Caribe</h1>
+
+                <p>
+                  En El Crustáceo Caribeño te traemos el verdadero sabor del mar. Regístrate en nuestra plataforma para realizar tus pedidos de forma rápida y explora nuestro menú completo para descubrir ceviches frescos, especialidades a las brasas y promociones exclusivas.
                 </p>
-                <div>
-                  <a href="menu.html" class="btn btn-caribbean">
-                    <i class="bi bi-journal-richtext"></i> Ver Menú Completo
-                  </a>
-                </div>
-              </div>
+
+                <a href="#" class="boton">Menu</a>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- DIVISOR ORNAMENTAL: ¿POR QUÉ NOSOTROS? -->
-    <div class="section-divider-banner" aria-hidden="true">
-      <div class="container">
-        <div class="divider-badge-wrapper">
-          <div class="divider-line"></div>
-          <h3 class="divider-title">
-            <i class="bi bi-stars"></i> ¿Por Qué Nosotros?
-          </h3>
-          <div class="divider-line right"></div>
-        </div>
-      </div>
-    </div>
+        </section>
 
-    <!-- 3. SECCIÓN: ¿POR QUÉ ELEGIR EL CRUSTÁCEO CARIBEÑO? -->
-    <section class="landing-section pt-2" id="por-que-nosotros" aria-label="Por qué elegirnos">
-      <div class="container">
-        <div class="section-card-frame">
-          <div class="row align-items-center g-4">
-            <!-- Lista de Características (01, 02, 03) -->
-            <div class="col-lg-6">
-              <div class="section-text-content">
-                <span class="section-badge">Nuestros Diferenciadores</span>
-                <h2 class="section-title">¿Por Qué Elegir El Crustáceo Caribeño?</h2>
-                
-                <div class="feature-list">
-                  <!-- Característica 01 -->
-                  <div class="feature-item">
-                    <div class="feature-number">01</div>
-                    <div class="feature-body">
-                      <h4>Fusión Única</h4>
-                      <p>Una armoniosa combinación entre recetas típicas del Caribe colombiano e influencias de alta cocina costera internacional.</p>
+
+        <!-- =========================
+             SEPARADOR
+        ========================== -->
+
+        <div class="separador">
+            <span>¿Por Qué Nosotros?</span>
+        </div>
+
+
+        <!-- =========================
+             SECCIÓN 2
+        ========================== -->
+
+        <section class="seccion">
+
+            <div class="contenido">
+
+                <div class="texto">
+                    <h2>¿Por Qué Elegir El Crustáceo Caribeño?</h2>
+
+                    <div class="item">
+                        <h3>01</h3>
+                        <h4>Fusión Única</h4>
+                        <p>
+                            Combinar lo mejor de la comida Caribeña y acuática en un solo platillo.
+Desde cazuelas hasta paellas.
+                        </p>
                     </div>
-                  </div>
 
-                  <!-- Característica 02 -->
-                  <div class="feature-item">
-                    <div class="feature-number">02</div>
-                    <div class="feature-body">
-                      <h4>Precios Accesibles</h4>
-                      <p>Platos de mariscos premium y porciones generosas con la mejor relación calidad-precio para compartir en familia.</p>
+                    <div class="item">
+                        <h3>02</h3>
+                        <h4>Precios Accesibles</h4>
+                        <p>
+                            Disfruta de platillos desde $20.000 paquetes especiales por tan solo $50.000, con extras como jugos y frutas.
+                        </p>
                     </div>
-                  </div>
 
-                  <!-- Característica 03 -->
-                  <div class="feature-item">
-                    <div class="feature-number">03</div>
-                    <div class="feature-body">
-                      <h4>Horario Ideal</h4>
-                      <p>Atención continua de lunes a domingo de 11:30 a.m. a 10:30 p.m., tanto en comedor como con servicio a domicilio seguro.</p>
+                    <div class="item">
+                        <h3>03</h3>
+                        <h4>Horario Ideal</h4>
+                        <p>
+                            abierto todos los días de 9:00 am a 5:00 pm. perfecto para almuerzos y cenas.
+                        </p>
                     </div>
-                  </div>
                 </div>
 
-                <div>
-                  <a href="menu.html" class="btn btn-caribbean-accent">
-                    <i class="bi bi-cart-plus"></i> Descubrir Especialidades
-                  </a>
+                <div class="imagen">
+                    <img src="../images/imagen2.png" alt="">
                 </div>
-              </div>
+
             </div>
 
-            <!-- Imagen del Equipo de Cocina / Chefs -->
-            <div class="col-lg-6">
-              <div class="section-image-wrapper">
-                <img src="../images/chefs_team.jpg" alt="Equipo de chefs expertos de Crustáceo Caribeño" loading="lazy">
-              </div>
-            </div>
-          </div>
+        </section>
+
+
+        <!-- =========================
+             SEPARADOR
+        ========================== -->
+
+        <div class="separador">
+            <span>¿Quiénes Somos?</span>
         </div>
-      </div>
-    </section>
 
-    <!-- DIVISOR ORNAMENTAL: ¿QUIÉNES SOMOS? -->
-    <div class="section-divider-banner" aria-hidden="true">
-      <div class="container">
-        <div class="divider-badge-wrapper">
-          <div class="divider-line"></div>
-          <h3 class="divider-title">
-            <i class="bi bi-compass"></i> ¿Quiénes Somos?
-          </h3>
-          <div class="divider-line right"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- 4. SECCIÓN: ¿QUIÉNES SOMOS? / NUESTRA HISTORIA -->
-    <section class="landing-section pt-2" id="quienes-somos" aria-label="Quiénes somos">
-      <div class="container">
-        <div class="section-card-frame">
-          <div class="row align-items-center g-4">
-            <!-- Imagen del Chef Emplatando -->
-            <div class="col-lg-6">
-              <div class="section-image-wrapper">
-                <img src="../images/chef_plating.jpg" alt="Chef emplatando mariscos gourmet con delicadeza" loading="lazy">
-              </div>
-            </div>
-            <!-- Narrativa de Historia y Filosofía -->
-            <div class="col-lg-6">
-              <div class="section-text-content">
-                <span class="section-badge">Nuestra Pasión</span>
-                <h2 class="section-title">El Arte de la Cocina del Mar</h2>
-                <p class="section-description">
-                  Crustáceo Caribeño nació del amor por las olas, la brisa marina y la inigualable sazón de las costas del Caribe. Nos enorgullece trabajar en estrecha alianza con pescadores locales artesanales, garantizando frescura insuperable y prácticas de pesca responsable.
-                </p>
-                <p class="section-description mb-4">
-                  Cada cazuela, aguachile, ceviche o pescado a la brasa que llega a tu mesa es un homenaje al mar, elaborado con ingredientes 100% frescos y el compromiso de brindarte un servicio memorable.
-                </p>
-                <div>
-                  <a href="menu.html" class="btn btn-caribbean">
-                    <i class="bi bi-bag-heart"></i> Haz tu Pedido Hoy
-                  </a>
+        <!-- =========================
+             SECCIÓN 3
+        ========================== -->
+
+        <section class="seccion">
+
+            <div class="contenido">
+
+                <div class="imagen">
+                    <img src="../images/imagen3.png" alt="">
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-  </main>
+                <div class="texto">
+                    <h2>¿Quiénes Somos?</h2>
+
+                    <p>
+                        En El Crustáceo Caribeño queremos
+                        llevar la autenticidad y frescura
+                        del mar directo a tu mesa.
+
+                        Hacemos de la cocina un espacio
+                        donde nuestros clientes puedan
+                        disfrutar de una experiencia única.
+                    </p>
+
+                    <p>
+                        Contamos con recetas tradicionales
+                        y productos frescos para garantizar
+                        el mejor sabor.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AQUÍ PUEDES AGREGAR MÁS
+             SECCIONES
+        ========================== -->
+
+    </main>
+
 
   <!-- ==========================================
-       CARRITO DE COMPRAS OFFCANVAS (BOOTSTRAP 5)
-       ========================================== -->
-  <div class="offcanvas offcanvas-end offcanvas-cart" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasCarritoLabel">
-        <i class="bi bi-bag-heart-fill text-warning"></i> Tu Carrito
-      </h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-    </div>
-    
-    <div class="offcanvas-body">
-      <!-- Contenedor dinámico donde se listan los productos del carrito -->
-      <div id="carrito-items-lista">
-        <!-- Renderizado por js/carrito.js -->
-      </div>
-    </div>
-
-    <!-- Resumen y Acciones del Carrito -->
-    <div class="cart-footer-summary d-none" id="carrito-footer-resumen">
-      <div class="cart-total-row">
-        <span>Total:</span>
-        <span class="total-amount" id="carrito-total-pagar">$0</span>
-      </div>
-      <div class="d-grid gap-2">
-        <button type="button" class="btn btn-caribbean-gold py-2" id="btnFinalizarPedido">
-          <i class="bi bi-check2-circle"></i> Proceder al Pago / Domicilio
-        </button>
-        <button type="button" class="btn btn-outline-danger btn-sm" id="btnVaciarCarrito">
-          <i class="bi bi-trash3"></i> Vaciar Carrito
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       FOOTER INFERIOR
+       FOOTER
        ========================================== -->
   <footer class="footer-crustaceo">
     <div class="container">
-      <div class="row g-4 justify-content-between">
-        
-        <!-- Columna Marca -->
-        <div class="col-lg-4 col-md-6 footer-brand">
-          <h4>Crustáceo Caribeño</h4>
-          <p>La máxima experiencia gastronómica del mar Caribe. Pescados y mariscos frescos, tradición culinaria y servicio de primera categoría.</p>
-          <div class="footer-social-icons mt-3">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Instagram">
-              <i class="bi bi-instagram"></i>
-            </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Facebook">
-              <i class="bi bi-facebook"></i>
-            </a>
-            <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="WhatsApp">
-              <i class="bi bi-whatsapp"></i>
-            </a>
-          </div>
-        </div>
+      <h4 class="footer-heading">Contáctanos</h4>
 
-        <!-- Columna Enlaces Rápidos -->
-        <div class="col-lg-2 col-md-6">
-          <h5 class="footer-heading">Navegación</h5>
-          <ul class="footer-links">
-            <li><a href="home.html"><i class="bi bi-chevron-right"></i> Inicio</a></li>
-            <li><a href="menu.html"><i class="bi bi-chevron-right"></i> Menú</a></li>
-            <li><a href="#por-que-nosotros"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
-            <li><a href="#quienes-somos"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
-          </ul>
-        </div>
+      <!-- Navegación de Redes Sociales -->
+      <nav class="footer-social-icons" aria-label="Redes sociales">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn instagram"
+          aria-label="Instagram">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn twitter"
+          aria-label="Twitter">
+          <i class="bi bi-twitter-x"></i>
+        </a>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn facebook"
+          aria-label="Facebook">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-btn linkedin"
+          aria-label="LinkedIn">
+          <i class="bi bi-linkedin"></i>
+        </a>
+      </nav>
 
-        <!-- Columna Cuenta y Servicios -->
-        <div class="col-lg-2 col-md-6">
-          <h5 class="footer-heading">Cuenta</h5>
-          <ul class="footer-links">
-            <li><a href="login.html"><i class="bi bi-chevron-right"></i> Iniciar Sesión</a></li>
-            <li><a href="registro.html"><i class="bi bi-chevron-right"></i> Registrarse</a></li>
-            <li><a href="menu.html"><i class="bi bi-chevron-right"></i> Domicilios</a></li>
-          </ul>
-        </div>
-
-        <!-- Columna Horarios y Contacto -->
-        <div class="col-lg-3 col-md-6">
-          <h5 class="footer-heading">Contacto & Horarios</h5>
-          <ul class="footer-links">
-            <li><i class="bi bi-geo-alt text-warning"></i> Av. Playa Marina #12-45, Caribe</li>
-            <li><i class="bi bi-telephone text-warning"></i> +57 (605) 300-1234</li>
-            <li><i class="bi bi-clock text-warning"></i> Lun - Dom: 11:30 AM - 10:30 PM</li>
-            <li><i class="bi bi-envelope text-warning"></i> contacto@crustaceocaribeno.com</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- Barra de Copyright -->
-      <div class="footer-bottom">
-        <p class="mb-0">&copy; 2026 Crustáceo Caribeño. Todos los derechos reservados. Desarrollado para Desarrollo Web - PUJ.</p>
-      </div>
+      <!-- Copyright -->
+      <small class="footer-copyright d-block">
+        &copy; 2026 El Crustáceo Caribeño. Todos Los Derechos Reservados.
+      </small>
     </div>
   </footer>
 
-  <!-- Scripts: Bootstrap 5 JS Bundle y Módulos Propios -->
+  <!-- Scripts: Bootstrap 5 JS Bundle y Módulos Propios 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="../js/general.js"></script>
   <script src="../js/carrito.js"></script>
-  <script src="../js/home.js"></script>
+  <script src="../js/home.js"></script> -->
 </body>
 </html>
+
+
+
+
+
+ 

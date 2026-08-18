@@ -1,9 +1,3 @@
-/**
- * CRUSTÁCEO CARIBEÑO - JAVASCRIPT ESPECÍFICO DEL HOME (home.js)
- * Interactividad de la Landing Page, animaciones y redirecciones.
- * Estándares: ES6+, sin 'var', comparación estricta (===), funciones const.
- */
-
 // Inicialización de comportamientos de la página principal
 const inicializarHome = () => {
   // Manejo de scroll suave para enlaces internos
