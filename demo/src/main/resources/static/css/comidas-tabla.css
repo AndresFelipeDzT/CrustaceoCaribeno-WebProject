@@ -1,0 +1,269 @@
+@import url("general.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Dai Banna SIL", serif;
+     font-style: italic;
+    background-color: #ffffff;
+}
+
+/* NAVBAR */
+.header-crustaceo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-crustaceo {
+    width: 100%;
+    height: 80px;
+    background-color: #0b1d5c;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-contenido {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.navbar-brand span {
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+}
+
+.nav-botones {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link-item {
+    font-family: "Dai Banna SIL", serif;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+}
+
+.nav-link-item:hover {
+    color: #cfa138;
+}
+
+/* HERO BANNER */
+.hero-section {
+    position: relative;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.45)
+    ),
+    url("../images/lo-mejor.png") center/cover no-repeat;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4rem 10%;
+    text-align: left;
+}
+
+.hero-content {
+    max-width: 520px;
+    color: #ffffff;
+}
+
+.hero-title {
+    text-align: center;
+    font-family: "Dai Banna SIL", serif;
+    font-style: italic;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero-subtitle {
+    font-family: "Dai Banna SIL", serif;
+     font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.boton-menu,
+.boton-domicilio {
+    display: inline-block;
+    padding: 8px 38px;
+    border: 2px solid #193cff;
+    border-radius: 25px;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: "Dai Banna SIL", serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.boton-menu:hover,
+.boton-domicilio:hover {
+    background-color: #193cff;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(25, 60, 255, 0.4);
+}
+
+/* SECCIÓN TABLA */
+.separador-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+.linea-decorativa {
+    flex: 1;
+    height: 2px;
+    background-color: #6b4403;
+}
+
+.titulo-menu {
+    font-family: "Playfair Display", serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #6b4403;
+    margin: 0;
+}
+
+.tabla-platillos {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #4a3828;
+}
+
+.tabla-platillos th {
+    background-color: #5c3500;
+    color: #ffffff;
+    font-family: "Playfair Display", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 12px 15px;
+    border: 1px solid #4a3828;
+}
+
+.tabla-platillos td {
+    border: 1px solid #4a3828;
+    padding: 20px;
+    vertical-align: middle;
+    background-color: #ffffff;
+}
+
+.col-nombre {
+    font-family: "Playfair Display", serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #4a2711;
+    text-align: center;
+    width: 20%;
+    line-height: 1.3;
+}
+
+.col-imagen {
+    text-align: center;
+    width: 20%;
+}
+
+.img-platillo {
+    width: 100%;
+    max-width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid #ccc;
+}
+
+.col-descripcion {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    color: #222222;
+    text-align: center;
+    line-height: 1.5;
+    width: 38%;
+}
+
+.col-precio {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222222;
+    text-align: center;
+    width: 12%;
+}
+
+.col-accion {
+    text-align: center;
+    width: 10%;
+}
+
+.btn-ver-mas {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1px solid #6b4403;
+    border-radius: 20px;
+    color: #222222;
+    font-family: "Poppins", sans-serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-ver-mas:hover {
+    background-color: #6b4403;
+    color: #ffffff;
+}
