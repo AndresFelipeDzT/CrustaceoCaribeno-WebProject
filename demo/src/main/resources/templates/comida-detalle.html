@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${comida.nombre} + ' | Crustáceo Caribeño'">Detalle del plato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/comida-detalle.css">
+</head>
+<body>
+  <header class="barra-superior">
+    <a class="marca" th:href="@{/home}">Crustáceo Caribeño</a>
+  </header>
+  <main class="pagina-detalle">
+    <h1 class="categoria">Entrada</h1>
+    <section class="tarjeta-plato" aria-label="Detalle del plato">
+      <img class="imagen-plato" th:src="@{${comida.imagenURL}}" th:alt="${comida.nombre}">
+      <div class="informacion-plato">
+        <h2 th:text="${comida.nombre}">Nombre del plato</h2>
+        <p th:text="${comida.descripcion}">Descripción del plato.</p>
+      </div>
+      <p class="precio" th:text="'$' + ${#numbers.formatDecimal(comida.precio, 0, 'POINT', 0, 'COMMA')}">$0</p>
+    </section>
+    <section class="acompanamientos" aria-labelledby="titulo-acompanamientos">
+      <h2 id="titulo-acompanamientos">Acompañamientos</h2>
+      <p class="instruccion">¿Puede agregar algún acompañamiento a este producto?</p>
+      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="arroz-mariscos"><span>Arroz de Mariscos</span><strong>$1.000</strong></label>
+      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="ensalada"><span>Ensalada Mixta Tostada</span><strong>$2.000</strong></label>
+      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="papas"><span>Papas de Aguacate Frito</span><strong>$3.000</strong></label>
+    </section>
+    <a class="boton-volver" th:href="@{/comidas/tabla}">Volver</a>
+  </main>
+</body>
+</html>

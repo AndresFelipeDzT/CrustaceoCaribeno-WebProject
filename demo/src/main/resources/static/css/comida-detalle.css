@@ -1,0 +1,22 @@
+:root { --azul: #062c86; --dorado: #9c6415; --texto: #24201c; --borde: #bdb7ae; --fondo: #f7f5f0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #202020; color: var(--texto); font-family: "Poppins", sans-serif; }
+.barra-superior { width: min(100%, 720px); min-height: 38px; display: flex; align-items: center; margin: 0 auto; padding: 0 24px; background: var(--azul); }
+.marca { color: #fff; font-family: "Playfair Display", serif; font-size: .78rem; font-style: italic; text-decoration: none; }
+.pagina-detalle { width: min(100%, 720px); min-height: calc(100vh - 38px); margin: 0 auto; padding: 46px clamp(18px, 7vw, 82px) 42px; background: var(--fondo); }
+.categoria, .acompanamientos h2 { margin: 0; color: var(--dorado); font-family: "Playfair Display", serif; font-size: clamp(1.15rem, 3vw, 1.5rem); text-align: center; }
+.categoria { margin-bottom: 28px; }
+.tarjeta-plato { display: grid; grid-template-columns: 150px 1fr; column-gap: 24px; position: relative; padding: 25px 25px 40px; border: 1px solid var(--borde); border-radius: 15px; background: #fffefa; }
+.imagen-plato { width: 150px; height: 132px; border-radius: 8px; object-fit: cover; }
+.informacion-plato h2 { margin: 4px 0 14px; color: #75470d; font-family: "Playfair Display", serif; font-size: clamp(1rem, 2.5vw, 1.25rem); }
+.informacion-plato p { margin: 0; font-size: .76rem; line-height: 1.65; }
+.precio { position: absolute; right: 25px; bottom: 13px; margin: 0; font-family: "Playfair Display", serif; font-size: .9rem; font-weight: 700; }
+.acompanamientos { margin-top: 28px; }
+.acompanamientos h2 { margin-bottom: 13px; }
+.instruccion { margin: 0 0 14px; font-family: "Playfair Display", serif; font-size: .78rem; font-style: italic; }
+.opcion-acompanamiento { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 9px; min-height: 30px; border-bottom: 1px dashed #d2ccc3; font-size: .74rem; cursor: pointer; }
+.opcion-acompanamiento input { accent-color: var(--azul); }
+.opcion-acompanamiento strong { font-weight: 500; }
+.boton-volver { display: block; width: max-content; margin: 29px 0 0 auto; padding: 7px 23px; border: 1px solid var(--dorado); border-radius: 999px; color: var(--texto); font-family: "Playfair Display", serif; font-size: .84rem; text-decoration: none; }
+.boton-volver:hover { background: #f0e5cf; }
+@media (max-width: 500px) { .pagina-detalle { padding-top: 32px; } .tarjeta-plato { grid-template-columns: 1fr; row-gap: 15px; } .imagen-plato { width: 100%; height: 190px; } }

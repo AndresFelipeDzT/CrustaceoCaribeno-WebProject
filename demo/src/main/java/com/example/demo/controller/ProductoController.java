@@ -25,10 +25,6 @@ public class ProductoController {
     @Autowired
     ProductoService productoService;
 
-    public ProductoController(ProductoService productoService) {
-        this.productoService = productoService;
-    }
-
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
      */
