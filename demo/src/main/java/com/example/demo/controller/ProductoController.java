@@ -25,10 +25,6 @@ public class ProductoController {
     @Autowired
     ProductoService productoService;
 
-    public ProductoController(ProductoService productoService) {
-        this.productoService = productoService;
-    }
-
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
      */
@@ -41,15 +37,31 @@ public class ProductoController {
     }
 
     /**
-     * Muestra todas las comidas en formato de tarjetas (/comidas/tarjetas).
+     * Muestra todas las comidas en formato de tarjetas agrupadas por categoría (/comidas/tarjetas).
      */
     // localhost:8080/comidas/tarjetas
     @GetMapping("/tarjetas")
     public String listarComidasTarjetas(Model model) {
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
+
+        // Agrupación limpia para las secciones del diseño
+        List<Producto> entradas = lista.stream()
+            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
+            .toList();
+        List<Producto> platosFuertes = lista.stream()
+            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
+            .toList();
+        List<Producto> especialidades = lista.stream()
+            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
+            .toList();
+
+        model.addAttribute("entradas", entradas);
+        model.addAttribute("platosFuertes", platosFuertes);
+        model.addAttribute("especialidades", especialidades);
         return "comidas-tarjetas";
     }
+
 
     /**
      * Muestra la información de una sola comida por ID (/comidas/detalle/{id}).

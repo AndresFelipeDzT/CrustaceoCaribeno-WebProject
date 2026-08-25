@@ -83,7 +83,7 @@
                   En El Crustáceo Caribeño te traemos el verdadero sabor del mar. Regístrate en nuestra plataforma para realizar tus pedidos de forma rápida y explora nuestro menú completo para descubrir ceviches frescos, especialidades a las brasas y promociones exclusivas.
                 </p>
 
-                <a href="#" class="boton">Menu</a>
+                <a th:href="@{/comidas/tarjetas}" class="boton">Menu</a>
             </div>
 
         </section>
@@ -226,8 +226,8 @@ Desde cazuelas hasta paellas.
         <div class="col-lg-2 col-md-6">
           <h5 class="footer-heading">Navegación</h5>
           <ul class="footer-links">
-            <li><a href="home.html"><i class="bi bi-chevron-right"></i> Inicio</a></li>
-            <li><a href="menu.html"><i class="bi bi-chevron-right"></i> Menú</a></li>
+            <li><a th:href="@{/home}"><i class="bi bi-chevron-right"></i> Inicio</a></li>
+            <li><a th:href="@{/comidas/tarjetas}"><i class="bi bi-chevron-right"></i> Menú</a></li>
             <li><a href="#por-que-nosotros"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
             <li><a href="#quienes-somos"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
           </ul>
