@@ -10,8 +10,24 @@
   <link rel="stylesheet" href="/css/comida-detalle.css">
 </head>
 <body>
-  <header class="barra-superior">
-    <a class="marca" th:href="@{/home}">Crustáceo Caribeño</a>
+  <header class="header-crustaceo">
+    <nav class="navbar-crustaceo">
+        <div class="nav-contenido">
+
+            <!-- Logo y nombre -->
+            <a class="navbar-brand" th:href="@{/home}">
+                <img src="/images/logo2.png"
+                     alt="Logo de Crustáceo Caribeño"
+                     width="48"
+                     height="48">
+
+                <span>Crustáceo Caribeño</span>
+            </a>
+
+            <!-- No mostrar botones de autenticación en la página de detalle -->
+            <div class="nav-botones"></div>
+        </div>
+    </nav>
   </header>
   <main class="pagina-detalle">
     <h1 class="categoria">Entrada</h1>

@@ -16,10 +16,6 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Autowired
     ProductoFakeRepository productoRepository;
-    
-    public ProductoServiceImpl(ProductoFakeRepository productoRepository) {
-        this.productoRepository = productoRepository;
-    }
 
     @Override
     public List<Producto> obtenerTodosLosProductos() {
