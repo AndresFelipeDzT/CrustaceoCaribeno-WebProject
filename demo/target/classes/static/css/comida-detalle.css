@@ -1,9 +1,73 @@
 :root { --azul: #062c86; --dorado: #9c6415; --texto: #24201c; --borde: #bdb7ae; --fondo: #f7f5f0; }
+
+/* Reglas de navbar tomadas de home.css para que esta página pueda usar solo comida-detalle.css */
+.header-crustaceo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-crustaceo {
+    width: 100%;
+    height: 80px;
+    background-color: #0b1d5c;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-contenido {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+/* Logo + nombre */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand img {
+    display: block;
+}
+
+.navbar-brand span {
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+}
+
+/* Botones de la derecha (vacío en detalle) */
+.nav-botones {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-botones a{
+   font-family: "Dai Banna SIL", serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: white;
+}
+
 * { box-sizing: border-box; }
-body { margin: 0; background: #202020; color: var(--texto); font-family: "Poppins", sans-serif; }
-.barra-superior { width: min(100%, 720px); min-height: 38px; display: flex; align-items: center; margin: 0 auto; padding: 0 24px; background: var(--azul); }
+body { margin: 0; background: #202020; color: var(--texto); font-family: "Poppins", sans-serif; min-height: 100vh; }
+html { height: 100%; }
+.barra-superior { width: 100%; min-height: 38px; display: flex; align-items: center; margin: 0; padding: 0 24px; background: var(--azul); }
 .marca { color: #fff; font-family: "Playfair Display", serif; font-size: .78rem; font-style: italic; text-decoration: none; }
-.pagina-detalle { width: min(100%, 720px); min-height: calc(100vh - 38px); margin: 0 auto; padding: 46px clamp(18px, 7vw, 82px) 42px; background: var(--fondo); }
+.pagina-detalle { width: 100%; min-height: calc(100vh - 38px); margin: 0; padding: 46px clamp(18px, 7vw, 82px) 42px; background: var(--fondo); }
 .categoria, .acompanamientos h2 { margin: 0; color: var(--dorado); font-family: "Playfair Display", serif; font-size: clamp(1.15rem, 3vw, 1.5rem); text-align: center; }
 .categoria { margin-bottom: 28px; }
 .tarjeta-plato { display: grid; grid-template-columns: 150px 1fr; column-gap: 24px; position: relative; padding: 25px 25px 40px; border: 1px solid var(--borde); border-radius: 15px; background: #fffefa; }
