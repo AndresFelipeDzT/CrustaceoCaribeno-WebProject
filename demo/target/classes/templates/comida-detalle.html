@@ -30,7 +30,7 @@
     </nav>
   </header>
   <main class="pagina-detalle">
-    <h1 class="categoria">Entrada</h1>
+    <h1 class="categoria" th:text="${comida.categoria.nombreCategoria}">Categoria del plato</h1>
     <section class="tarjeta-plato" aria-label="Detalle del plato">
       <img class="imagen-plato" th:src="@{${comida.imagenURL}}" th:alt="${comida.nombre}">
       <div class="informacion-plato">

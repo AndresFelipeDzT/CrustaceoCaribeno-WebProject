@@ -30,24 +30,5 @@ public class Producto {
     private String imagenURL;
 
     /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
-    private String categoria;
-
-    /**
-     * Constructor de 5 parámetros para mantener retrocompatibilidad total.
-     * Asigna automáticamente la categoría correspondiente según el ID del plato.
-     */
-    public Producto(int idProducto, String nombre, double precio, String descripcion, String imagenURL) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.imagenURL = imagenURL;
-        if (idProducto <= 3) {
-            this.categoria = "Entrada";
-        } else if (idProducto <= 9) {
-            this.categoria = "Plato Fuerte";
-        } else {
-            this.categoria = "Especialidades De La Casa";
-        }
-    }
-}
+    private Categoria categoria;
+}

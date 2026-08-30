@@ -47,13 +47,13 @@ public class ProductoController {
 
         // Agrupación limpia para las secciones del diseño
         List<Producto> entradas = lista.stream()
-            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
+            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
             .toList();
         List<Producto> platosFuertes = lista.stream()
-            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
+            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
             .toList();
         List<Producto> especialidades = lista.stream()
-            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
+            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
             .toList();
 
         model.addAttribute("entradas", entradas);
@@ -66,7 +66,7 @@ public class ProductoController {
     /**
      * Muestra la información de una sola comida por ID (/comidas/detalle/{id}).
      */
-    // localhost:8080/comidas//detalle/1
+    // localhost:8080/comidas/detalle/1
     @GetMapping("/detalle/{id}")
     public String verDetalleComida(@PathVariable("id") int id, Model model) {
         Producto comida = productoService.obtenerProductoPorId(id);
