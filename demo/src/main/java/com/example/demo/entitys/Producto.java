@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Producto {
 
     /** Identificador único del producto */
-    private int idProducto;
+    private Integer idProducto;
 
     /** Nombre comercial del plato */
     private String nombre;

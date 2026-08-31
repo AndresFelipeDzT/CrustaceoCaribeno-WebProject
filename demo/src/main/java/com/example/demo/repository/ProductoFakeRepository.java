@@ -170,7 +170,7 @@ public class ProductoFakeRepository {
 
     public Producto save(Producto producto) {
         // Si no viene con un id válido, se le asigna uno nuevo
-        if (producto.getIdProducto() <= 0) {
+        if (producto.getIdProducto() == null) {
             secuenciaId++;
             producto.setIdProducto(secuenciaId);
         } else if (producto.getIdProducto() > secuenciaId) {

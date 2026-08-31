@@ -1,14 +1,23 @@
 package com.example.demo.controller;
+import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
+import com.example.demo.repository.CategoriaFakeRepository;
+import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 /**
  * Controlador Spring MVC encargado de gestionar las peticiones web relacionadas con los platos.
@@ -24,6 +33,8 @@ public class ProductoController {
 
     @Autowired
     ProductoService productoService;
+    @Autowired
+    CategoriaService categoriaService;
 
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
@@ -76,4 +87,42 @@ public class ProductoController {
         model.addAttribute("comida", comida);
         return "comida-detalle";
     }
+
+    // localhost:8080/comidas/tabla/add
+    @GetMapping("/tabla/add")
+    public String mostrarFormularioAgregar(Model model) {
+        Producto producto = new Producto(null, "", 0, "", "", null);
+        model.addAttribute("plato",producto);
+        model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias());
+        return "comida-agregar";
+    }
+
+    @PostMapping("tabla/add")
+    public String agregarProducto(@ModelAttribute("plato") Producto producto, @RequestParam("nombreCategoria") String nombreCategoria) {
+    
+        Categoria categoria = categoriaService.obtenerCategoriaPorNombre(nombreCategoria);
+        producto.setCategoria(categoria);
+        productoService.guardarProducto(producto);
+        return "redirect:/comidas/tabla";
+    }
+    
+
+    // localhost:8080/comidas/tabla/delete/{id}
+    @GetMapping("/tabla/delete/{id}")
+    public String eliminarProducto(@PathVariable Integer id) {
+        productoService.eliminarProducto(id);
+        return "redirect:/comidas/tabla";
+    }
+
+    // localhost:8080/comidas/tabla/update/{id}
+    @GetMapping("tabla/update/{id}")
+    public String actualizarProducto(@PathVariable Integer id, Model model) {
+
+        Producto producto = productoService.obtenerProductoPorId(id);
+        model.addAttribute("plato",producto);
+        model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias());
+        return "comida-agregar";
+    }
+    
+    
 }
