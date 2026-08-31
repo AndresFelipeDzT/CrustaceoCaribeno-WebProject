@@ -49,4 +49,18 @@ public class CategoriaFakeRepository {
     public Categoria findById(int idCategoria) {
         return tablaCategorias.get(idCategoria);
     }
+    
+    //Busca una categoría por su nombre exacto (ignorando mayúsculas y minúsculas)
+    
+    public Categoria findByName(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            return null;
+        }
+        
+        return tablaCategorias.values().stream()
+                .filter(cat -> cat.getNombreCategoria() != null && cat.getNombreCategoria().equalsIgnoreCase(nombre.trim()))
+                .findFirst()
+                .orElse(null); // Retorna null si no encuentra ninguna coincidencia
+    }
+
 }
