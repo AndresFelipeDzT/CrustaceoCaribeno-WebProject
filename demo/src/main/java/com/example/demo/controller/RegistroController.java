@@ -1,23 +1,29 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.demo.entitys.Cliente;
+import com.example.demo.service.ClienteService;
 
 import jakarta.servlet.http.HttpSession;
 
 /**
  * Controlador para la funcionalidad de Registro (Signup) de clientes.
- * Permite capturar los datos del nuevo usuario para el Sprint actual.
+ * Guarda al nuevo cliente en el repositorio de clientes.
  */
 @Controller
 public class RegistroController {
 
+    @Autowired
+    private ClienteService clienteService;
+
     /**
-     * Muestra la pantalla de registro (/registro o /signup).
+     * Muestra la pantalla de registro (/registro).
      */
     @GetMapping("/registro")
     public String mostrarRegistro() {
@@ -25,7 +31,7 @@ public class RegistroController {
     }
 
     /**
-     * Procesa el formulario de registro.
+     * Procesa el formulario de registro y almacena el nuevo cliente.
      */
     @PostMapping("/registro")
     public String procesarRegistro(
@@ -34,7 +40,6 @@ public class RegistroController {
             @RequestParam("telefono") String telefono,
             @RequestParam("password") String password,
             HttpSession session,
-            RedirectAttributes redirectAttributes,
             Model model) {
 
         // Validación básica de campos obligatorios
@@ -46,11 +51,21 @@ public class RegistroController {
             return "registro";
         }
 
-        // Guardamos el usuario en sesión y redirigimos al menú (o al login con mensaje)
-        session.setAttribute("usuarioLogueado", nombreCompleto.trim());
-        session.setAttribute("correoLogueado", correo.trim());
+        // Crear y guardar el cliente en el servicio
+        Cliente nuevoCliente = new Cliente(
+            null,
+            nombreCompleto.trim(),
+            correo.trim(),
+            telefono != null ? telefono.trim() : "",
+            password.trim()
+        );
 
-        // Redirige al menú principal tras el registro exitoso
+        Cliente clienteGuardado = clienteService.guardarCliente(nuevoCliente);
+
+        // Guardamos el usuario en sesión y redirigimos al menú
+        session.setAttribute("usuarioLogueado", clienteGuardado.getNombreCompleto());
+        session.setAttribute("clienteActivo", clienteGuardado);
+
         return "redirect:/comidas/tarjetas";
     }
 }

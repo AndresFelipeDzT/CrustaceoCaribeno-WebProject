@@ -1,19 +1,26 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entitys.Cliente;
+import com.example.demo.service.ClienteService;
+
 import jakarta.servlet.http.HttpSession;
 
 /**
  * Controlador para la funcionalidad de Login de clientes.
- * Sprint actual: Identificación y visualización simple basada en Figma.
+ * Valida contra el repositorio de clientes.
  */
 @Controller
 public class LoginController {
+
+    @Autowired
+    private ClienteService clienteService;
 
     /**
      * Muestra la pantalla de inicio de sesión (/login).
@@ -24,7 +31,7 @@ public class LoginController {
     }
 
     /**
-     * Procesa las credenciales ingresadas en el formulario.
+     * Procesa las credenciales ingresadas en el formulario autenticando con ClienteService.
      */
     @PostMapping("/login")
     public String procesarLogin(
@@ -38,8 +45,17 @@ public class LoginController {
             return "login";
         }
 
+        // Autenticar contra el repositorio falso de clientes
+        Cliente cliente = clienteService.autenticar(nombre, password);
+
+        if (cliente == null) {
+            model.addAttribute("error", "Usuario o contraseña incorrectos.");
+            return "login";
+        }
+
         // Guarda el usuario en la sesión HTTP para identificarlo en la navegación
-        session.setAttribute("usuarioLogueado", nombre.trim());
+        session.setAttribute("usuarioLogueado", cliente.getNombreCompleto());
+        session.setAttribute("clienteActivo", cliente);
 
         // Redirige al menú del restaurante
         return "redirect:/comidas/tarjetas";
