@@ -249,7 +249,7 @@ body {
     width: 10%;
 }
 
-.btn-accion {
+.btn-ver-mas {
     display: inline-block;
     padding: 6px 18px;
     border: 1px solid #6b4403;
@@ -261,10 +261,9 @@ body {
     text-decoration: none;
     transition: all 0.2s ease;
     white-space: nowrap;
-    margin-bottom: 10px;
 }
 
-.btn-accion:hover {
+.btn-ver-mas:hover {
     background-color: #6b4403;
     color: #ffffff;
 }

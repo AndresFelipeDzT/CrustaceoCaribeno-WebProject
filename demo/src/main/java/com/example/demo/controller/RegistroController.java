@@ -38,6 +38,7 @@ public class RegistroController {
             @RequestParam("nombreCompleto") String nombreCompleto,
             @RequestParam("correo") String correo,
             @RequestParam("telefono") String telefono,
+            @RequestParam("direccion") String direccion,
             @RequestParam("password") String password,
             HttpSession session,
             Model model) {
@@ -45,6 +46,7 @@ public class RegistroController {
         // Validación básica de campos obligatorios
         if (nombreCompleto == null || nombreCompleto.trim().isEmpty() ||
             correo == null || correo.trim().isEmpty() ||
+            direccion == null || direccion.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
             
             model.addAttribute("error", "Por favor completa todos los campos obligatorios.");
@@ -57,6 +59,7 @@ public class RegistroController {
             nombreCompleto.trim(),
             correo.trim(),
             telefono != null ? telefono.trim() : "",
+            direccion.trim(),
             password.trim()
         );
 

@@ -24,6 +24,9 @@ public class Cliente {
     /** Número telefónico de contacto */
     private String telefono;
 
+    /** Dirección de entrega o contacto del cliente */
+    private String direccion;
+
     /** Contraseña del cliente */
     private String password;
 }

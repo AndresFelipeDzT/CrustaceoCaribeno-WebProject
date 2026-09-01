@@ -42,8 +42,8 @@
 
             <!-- Login y Registro -->
             <div class="nav-botones">
-  <a href="login.html" class="boton-login">Login</a>
-  <a href="registro.html" class="boton-registro">Signup</a>
+  <a th:href="@{/login}" href="/login" class="boton-login">Login</a>
+  <a th:href="@{/registro}" href="/registro" class="boton-registro">Signup</a>
 </div>
         </div>
     </nav>
@@ -233,8 +233,8 @@ Desde cazuelas hasta paellas.
 
       <div class="footer-columna">
         <h4>Ingresa</h4>
-        <a href="login.html">› Iniciar Sesión</a>
-        <a href="registro.html">› Registrarse</a>
+        <a th:href="@{/login}" href="/login">› Iniciar Sesión</a>
+        <a th:href="@{/registro}" href="/registro">› Registrarse</a>
       </div>
     </div>
 

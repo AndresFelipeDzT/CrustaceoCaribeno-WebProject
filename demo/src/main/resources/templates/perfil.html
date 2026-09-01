@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi perfil | Crustáceo Caribeño</title>
+  <link rel="icon" type="image/png" th:href="@{/images/logo2.png}">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Tailwind se utiliza con clases utilitarias. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/perfil.css}">
+</head>
+<body class="min-h-screen bg-slate-950 font-['Poppins'] text-slate-900">
+  <header class="perfil-header">
+    <a class="perfil-brand" th:href="@{/comidas/tarjetas}"><img th:src="@{/images/logo2.png}" alt="Logo de Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+    <nav class="flex items-center gap-2 text-sm font-medium sm:gap-5" aria-label="Navegación principal">
+      <a th:href="@{/comidas/tarjetas}" class="perfil-nav-link"><i class="bi bi-grid"></i><span>Menú</span></a>
+      <a th:href="@{/perfil}" class="perfil-nav-link perfil-nav-active"><i class="bi bi-person-circle"></i><span>Perfil</span></a>
+    </nav>
+  </header>
+  <main class="perfil-page">
+    <section class="perfil-card" aria-labelledby="perfil-titulo">
+      <div class="perfil-acento" aria-hidden="true"></div>
+      <div class="perfil-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></div>
+      <p class="perfil-eyebrow">Mi cuenta</p>
+      <h1 id="perfil-titulo" class="perfil-nombre" th:text="${cliente.nombreCompleto}">Edgar Antonio Rodríguez Gutiérrez</h1>
+      <p class="perfil-descripcion">Consulta y administra la información de tu cuenta.</p>
+      <p th:if="${mensaje}" class="perfil-alert perfil-alert-success" th:text="${mensaje}"></p>
+      <form th:action="@{/perfil/editar}" method="post" class="perfil-form">
+        <div class="perfil-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" th:value="${cliente.correo}" th:readonly="${!modoEdicion}" autocomplete="email" required></div>
+        <div class="perfil-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" th:value="${cliente.telefono}" th:readonly="${!modoEdicion}" autocomplete="tel" required></div>
+        <div class="perfil-field"><label for="direccion">Dirección</label><input id="direccion" name="direccion" type="text" th:value="${cliente.direccion}" th:readonly="${!modoEdicion}" autocomplete="street-address" required></div>
+        <div class="perfil-field"><label for="password">Contraseña</label><input id="password" name="password" type="password" th:value="${modoEdicion ? cliente.password : '••••••••'}" th:readonly="${!modoEdicion}" autocomplete="current-password" required></div>
+        <div class="perfil-actions" th:if="${!modoEdicion}">
+          <a th:href="@{/perfil/editar}" class="perfil-btn perfil-btn-edit"><i class="bi bi-pencil-square"></i> Editar perfil</a>
+          <button type="submit" form="formEliminarCuenta" class="perfil-btn perfil-btn-delete"><i class="bi bi-trash3"></i> Borrar cuenta</button>
+        </div>
+        <div class="perfil-actions" th:if="${modoEdicion}">
+          <a th:href="@{/perfil}" class="perfil-btn perfil-btn-cancel"><i class="bi bi-x-lg"></i> Cancelar</a>
+          <button type="submit" class="perfil-btn perfil-btn-save"><i class="bi bi-check-lg"></i> Guardar cambios</button>
+        </div>
+      </form>
+      <form id="formEliminarCuenta" th:action="@{/perfil/eliminar}" method="post" onsubmit="return confirm('¿Seguro que deseas borrar tu cuenta? Esta acción no se puede deshacer.');"></form>
+    </section>
+  </main>
+  <footer class="perfil-footer"><span>© 2026 Crustáceo Caribeño</span><a th:href="@{/logout}">Cerrar sesión <i class="bi bi-box-arrow-right"></i></a></footer>
+</body>
+</html>

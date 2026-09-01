@@ -25,9 +25,9 @@ public class ClienteFakeRepository {
     }
 
     private void cargarDatosQuemados() {
-        save(new Cliente(null, "Felipe", "felipe@correo.com", "3001234567", "1234"));
-        save(new Cliente(null, "Maria Gomez", "maria@correo.com", "3109876543", "abcd"));
-        save(new Cliente(null, "Carlos Perez", "carlos@correo.com", "3201122334", "pass123"));
+        save(new Cliente(null, "Felipe", "felipe@correo.com", "3001234567", "Calle 10 # 20-30", "1234"));
+        save(new Cliente(null, "Maria Gomez", "maria@correo.com", "3109876543", "Carrera 15 # 45-12", "abcd"));
+        save(new Cliente(null, "Carlos Perez", "carlos@correo.com", "3201122334", "Avenida 30 # 18-50", "pass123"));
     }
 
     public List<Cliente> findAll() {
