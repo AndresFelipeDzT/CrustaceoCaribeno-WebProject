@@ -34,8 +34,17 @@ public class ClienteFakeRepository {
         return new ArrayList<>(tablaClientes.values());
     }
 
-    public Optional<Cliente> findById(int id) {
+    public Optional<Cliente> findById(Integer id) {
+        if (id == null) return Optional.empty();
         return Optional.ofNullable(tablaClientes.get(id));
+    }
+
+    public Optional<Cliente> findByCorreo(String correo) {
+        if (correo == null) return Optional.empty();
+        String correoLower = correo.trim().toLowerCase();
+        return tablaClientes.values().stream()
+            .filter(c -> c.getCorreo() != null && c.getCorreo().trim().toLowerCase().equals(correoLower))
+            .findFirst();
     }
 
     public Optional<Cliente> findByNombreOrCorreo(String criterio) {
@@ -59,7 +68,8 @@ public class ClienteFakeRepository {
         return cliente;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(Integer id) {
+        if (id == null) return false;
         return tablaClientes.remove(id) != null;
     }
 }

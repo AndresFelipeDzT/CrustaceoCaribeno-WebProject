@@ -17,14 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 /**
  * Controlador Spring MVC encargado de gestionar las peticiones web relacionadas con los platos.
- * Cumple los requerimientos del Sprint 2:
- * 1. Mostrar comidas en formato de tabla.
- * 2. Mostrar comidas en formato de tarjetas.
- * 3. Mostrar el detalle de una sola comida.
+ * Maneja tanto la vista general (menú) como el detalle individual de cada plato.
+ * Se comunica con la capa de servicio (ProductoService) y mapea los datos a las vistas Thymeleaf.
  */
 @Controller
 // localhost:8080/comidas
@@ -45,6 +41,7 @@ public class ProductoController {
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
         return "comidas-tabla";
+        
     }
 
     /**

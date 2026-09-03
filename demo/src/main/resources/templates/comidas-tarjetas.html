@@ -67,17 +67,6 @@
     <!-- CONTENEDOR DEL MENÚ POR CATEGORÍAS -->
     <div id="menu-tarjetas" class="menu-tarjetas-container">
 
-      <!-- Barra de alternancia de vista (Tarjetas / Tabla) -->
-      <div class="vista-toggle-bar">
-        <span class="text-muted small me-2"><i class="bi bi-grid-fill"></i> Vista:</span>
-        <a th:href="@{/comidas/tarjetas}" class="btn-toggle-vista activo">
-          <i class="bi bi-card-text"></i> Tarjetas
-        </a>
-        <a th:href="@{/comidas/tabla}" class="btn-toggle-vista">
-          <i class="bi bi-table"></i> Tabla
-        </a>
-      </div>
-
       <!-- SECCIÓN 1: ENTRADAS -->
       <section class="categoria-seccion" th:if="${entradas != null and !entradas.empty}">
         <h2 class="titulo-categoria">Entrada</h2>

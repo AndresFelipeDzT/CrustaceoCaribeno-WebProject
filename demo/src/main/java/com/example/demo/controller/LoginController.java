@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controlador para la funcionalidad de Login de clientes.
- * Valida contra el repositorio de clientes.
  */
 @Controller
 public class LoginController {
@@ -22,22 +23,16 @@ public class LoginController {
     @Autowired
     private ClienteService clienteService;
 
-    /**
-     * Muestra la pantalla de inicio de sesión (/login).
-     */
     @GetMapping("/login")
     public String mostrarLogin() {
         return "login";
     }
 
-    /**
-     * Procesa las credenciales ingresadas en el formulario autenticando con ClienteService.
-     */
     @PostMapping("/login")
     public String procesarLogin(
             @RequestParam("nombre") String nombre,
             @RequestParam("password") String password,
-            HttpSession session,
+            HttpServletResponse response,
             Model model) {
 
         if (nombre == null || nombre.trim().isEmpty() || password == null || password.trim().isEmpty()) {
@@ -45,7 +40,7 @@ public class LoginController {
             return "login";
         }
 
-        // Autenticar contra el repositorio falso de clientes
+        // Autenticar contra el servicio
         Cliente cliente = clienteService.autenticar(nombre, password);
 
         if (cliente == null) {
@@ -53,20 +48,27 @@ public class LoginController {
             return "login";
         }
 
-        // Guarda el usuario en la sesión HTTP para identificarlo en la navegación
-        session.setAttribute("usuarioLogueado", cliente.getNombreCompleto());
-        session.setAttribute("clienteActivo", cliente);
+        // Guardar clienteId en Cookie
+        Cookie cookie = new Cookie("clienteId", cliente.getIdCliente().toString());
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-        // Redirige al menú del restaurante
         return "redirect:/comidas/tarjetas";
     }
 
-    /**
-     * Cierra la sesión activa.
-     */
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals("clienteId")) {
+                    c.setValue("");
+                    c.setPath("/");
+                    c.setMaxAge(0);
+                    response.addCookie(c);
+                }
+            }
+        }
         return "redirect:/home";
     }
 }

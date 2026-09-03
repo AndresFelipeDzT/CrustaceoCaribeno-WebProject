@@ -12,11 +12,13 @@ public interface ClienteService {
 
     List<Cliente> obtenerTodosLosClientes();
 
-    Cliente obtenerClientePorId(int id);
+    Cliente obtenerClientePorId(Integer id);
+
+    Cliente buscarPorCorreo(String correo);
 
     Cliente guardarCliente(Cliente cliente);
 
-    boolean eliminarCliente(int id);
+    boolean eliminarCliente(Integer id);
 
     /**
      * Valida las credenciales de un cliente por su nombre o correo.

@@ -24,8 +24,19 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente obtenerClientePorId(int id) {
+    public Cliente obtenerClientePorId(Integer id) {
+        if (id == null) {
+            return null;
+        }
         return clienteRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Cliente buscarPorCorreo(String correo) {
+        if (correo == null) {
+            return null;
+        }
+        return clienteRepository.findByCorreo(correo).orElse(null);
     }
 
     @Override
@@ -34,7 +45,10 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public boolean eliminarCliente(int id) {
+    public boolean eliminarCliente(Integer id) {
+        if (id == null) {
+            return false;
+        }
         return clienteRepository.deleteById(id);
     }
 
