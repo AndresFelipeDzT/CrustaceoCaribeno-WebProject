@@ -41,20 +41,25 @@ public class ClienteFakeRepository {
 
     public Optional<Cliente> findByCorreo(String correo) {
         if (correo == null) return Optional.empty();
-        String correoLower = correo.trim().toLowerCase();
-        return tablaClientes.values().stream()
-            .filter(c -> c.getCorreo() != null && c.getCorreo().trim().toLowerCase().equals(correoLower))
-            .findFirst();
+        String correoBuscado = correo.trim();
+        for (Cliente c : tablaClientes.values()) {
+            if (c.getCorreo() != null && c.getCorreo().equalsIgnoreCase(correoBuscado)) {
+                return Optional.of(c);
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<Cliente> findByNombreOrCorreo(String criterio) {
         if (criterio == null) return Optional.empty();
-        String criterioLower = criterio.trim().toLowerCase();
-        
-        return tablaClientes.values().stream()
-            .filter(c -> (c.getNombreCompleto() != null && c.getNombreCompleto().toLowerCase().equals(criterioLower)) ||
-                         (c.getCorreo() != null && c.getCorreo().toLowerCase().equals(criterioLower)))
-            .findFirst();
+        String criterioBuscado = criterio.trim();
+        for (Cliente c : tablaClientes.values()) {
+            if ((c.getNombreCompleto() != null && c.getNombreCompleto().equalsIgnoreCase(criterioBuscado)) ||
+                (c.getCorreo() != null && c.getCorreo().equalsIgnoreCase(criterioBuscado))) {
+                return Optional.of(c);
+            }
+        }
+        return Optional.empty();
     }
 
     public Cliente save(Cliente cliente) {

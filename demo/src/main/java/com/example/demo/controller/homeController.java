@@ -14,8 +14,8 @@ public class homeController {
         return "home";
     }
 
-    // localhost:8080
-    @GetMapping({"", "/"})
+    // localhost:8080/
+    @GetMapping("/")
     public String redirigirHomeDesdeRaiz() {
         return "redirect:/home";
     }
