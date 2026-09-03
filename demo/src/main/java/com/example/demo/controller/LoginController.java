@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
 /**
- * Controlador para la funcionalidad de Login de clientes sin uso de HttpSession.
+ * Controlador para la funcionalidad de Login de clientes.
  */
 @Controller
 public class LoginController {
@@ -24,11 +25,18 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String cerrarSesion(HttpSession session) {
+        session.invalidate();
+        return "redirect:/home";
+    }
+
     @PostMapping("/login")
     public String procesarLogin(
             @RequestParam("nombre") String nombre,
             @RequestParam("password") String password,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         if (nombre == null || nombre.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             model.addAttribute("error", "Por favor ingresa tu nombre y contraseña.");
@@ -43,6 +51,7 @@ public class LoginController {
             return "login";
         }
 
+        session.setAttribute("clienteId", cliente.getIdCliente());
         return "redirect:/comidas/tarjetas?id=" + cliente.getIdCliente();
     }
 }
