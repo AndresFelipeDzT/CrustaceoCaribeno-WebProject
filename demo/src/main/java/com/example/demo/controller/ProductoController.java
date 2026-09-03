@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -45,9 +46,22 @@ public class ProductoController {
      */
     // localhost:8080/comidas/tabla
     @GetMapping("/tabla")
-    public String listarComidasTabla(Model model) {
+    public String listarComidasTabla(@RequestParam(value = "id", required = false) Integer id, Model model,
+            HttpSession session) {
+        if (id == null) {
+            id = (Integer) session.getAttribute("clienteId");
+        }
+        if (id == null) {
+            return "redirect:/login";
+        }
+
+        Cliente cliente = clienteService.obtenerClientePorId(id);
+        if (cliente == null) {
+            return "redirect:/login";
+        }
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
+        model.addAttribute("cliente", cliente);
         return "comidas-tabla";
         
     }
@@ -57,8 +71,19 @@ public class ProductoController {
      */
     // localhost:8080/comidas/tarjetas
     @GetMapping("/tarjetas")
-    public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Integer id, Model model,
+            HttpSession session) {
+        if (id == null) {
+            id = (Integer) session.getAttribute("clienteId");
+        }
+        if (id == null) {
+            return "redirect:/login";
+        }
+
         Cliente cliente = clienteService.obtenerClientePorId(id);
+        if (cliente == null) {
+            return "redirect:/login";
+        }
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
         model.addAttribute("cliente", cliente);
