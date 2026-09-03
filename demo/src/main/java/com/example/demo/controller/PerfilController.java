@@ -2,63 +2,73 @@ package com.example.demo.controller;
 
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 public class PerfilController {
-    @Autowired private ClienteService clienteService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping("/perfil")
-    public String perfil(HttpSession session, Model model) {
-        Cliente cliente = cliente(session);
+    public String perfil(@RequestParam("id") Integer id, Model model) {
+        Cliente cliente = clienteService.obtenerClientePorId(id);
         if (cliente == null) return "redirect:/login";
+
         model.addAttribute("cliente", cliente);
         model.addAttribute("modoEdicion", false);
-        if (session.getAttribute("perfilActualizado") != null) {
-            model.addAttribute("mensaje", "Tus datos se actualizaron correctamente.");
-            session.removeAttribute("perfilActualizado");
-        }
         return "perfil";
     }
 
     @GetMapping("/perfil/editar")
-    public String editar(HttpSession session, Model model) {
-        Cliente cliente = cliente(session);
+    public String editar(@RequestParam("id") Integer id, Model model) {
+        Cliente cliente = clienteService.obtenerClientePorId(id);
         if (cliente == null) return "redirect:/login";
+
         model.addAttribute("cliente", cliente);
         model.addAttribute("modoEdicion", true);
         return "perfil";
     }
 
+    // Recibe todo el objeto Cliente mediante @ModelAttribute
     @PostMapping("/perfil/editar")
-    public String guardar(@RequestParam String correo, @RequestParam String telefono, @RequestParam String direccion,
-            @RequestParam String password, HttpSession session) {
-        Cliente cliente = cliente(session);
-        if (cliente == null) return "redirect:/login";
-        if (correo.isBlank() || telefono.isBlank() || direccion.isBlank() || password.isBlank()) return "redirect:/perfil/editar";
-        cliente.setCorreo(correo.trim());
-        cliente.setTelefono(telefono.trim());
-        cliente.setDireccion(direccion.trim());
-        cliente.setPassword(password.trim());
-        clienteService.guardarCliente(cliente);
-        session.setAttribute("clienteActivo", cliente);
-        session.setAttribute("perfilActualizado", true);
-        return "redirect:/perfil";
+    public String guardar(@ModelAttribute("cliente") Cliente clienteForm, RedirectAttributes redirectAttributes) {
+
+        if (clienteForm.getIdCliente() == null) {
+            return "redirect:/login";
+        }
+
+        Cliente clienteExistente = clienteService.obtenerClientePorId(clienteForm.getIdCliente());
+        if (clienteExistente == null) {
+            return "redirect:/login";
+        }
+
+        // Actualizar datos del cliente persistido
+        Cliente clienteBD = clienteExistente;
+        clienteBD.setNombreCompleto(clienteForm.getNombreCompleto().trim());
+        clienteBD.setCorreo(clienteForm.getCorreo().trim());
+        clienteBD.setTelefono(clienteForm.getTelefono() != null ? clienteForm.getTelefono().trim() : "");
+        clienteBD.setDireccion(clienteForm.getDireccion().trim());
+        clienteBD.setPassword(clienteForm.getPassword().trim());
+
+        clienteService.guardarCliente(clienteBD);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Tus datos se actualizaron correctamente.");
+        return "redirect:/perfil?id=" + clienteBD.getIdCliente();
     }
 
     @PostMapping("/perfil/eliminar")
-    public String eliminar(HttpSession session) {
-        Cliente cliente = cliente(session);
-        if (cliente != null && cliente.getIdCliente() != null) clienteService.eliminarCliente(cliente.getIdCliente());
-        session.invalidate();
+    public String eliminar(@RequestParam("id") Integer id) {
+        clienteService.eliminarCliente(id);
         return "redirect:/home";
     }
-
-    private Cliente cliente(HttpSession session) { return (Cliente) session.getAttribute("clienteActivo"); }
 }

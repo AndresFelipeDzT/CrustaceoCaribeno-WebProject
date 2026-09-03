@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 import com.example.demo.entitys.Categoria;
+import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.service.CategoriaService;
+import com.example.demo.service.ClienteService;
 import com.example.demo.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,8 @@ public class ProductoController {
     ProductoService productoService;
     @Autowired
     CategoriaService categoriaService;
+    @Autowired
+    ClienteService clienteService;
 
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
@@ -45,6 +49,7 @@ public class ProductoController {
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
         return "comidas-tabla";
+        
     }
 
     /**
@@ -52,9 +57,11 @@ public class ProductoController {
      */
     // localhost:8080/comidas/tarjetas
     @GetMapping("/tarjetas")
-    public String listarComidasTarjetas(Model model) {
+    public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        Cliente cliente = clienteService.obtenerClientePorId(id);
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
+        model.addAttribute("cliente", cliente);
 
         // Agrupación limpia para las secciones del diseño
         List<Producto> entradas = lista.stream()

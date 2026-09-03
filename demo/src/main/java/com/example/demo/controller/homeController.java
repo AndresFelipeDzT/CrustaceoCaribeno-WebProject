@@ -13,5 +13,11 @@ public class homeController {
     public String mostrarHome() {
         return "home";
     }
+
+    // localhost:8080
+    @GetMapping("")
+    public String mostrarHomeDesdeRaiz() {
+        return "home";
+    }
     
 }
