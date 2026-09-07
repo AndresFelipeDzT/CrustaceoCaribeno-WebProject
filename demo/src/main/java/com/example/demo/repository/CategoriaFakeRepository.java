@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entitys.Categoria;
@@ -17,50 +18,6 @@ import com.example.demo.entitys.Producto;
  * para permitir accesos directos por id.
  */
 @Repository
-public class CategoriaFakeRepository {
-    
-    /* Mapa Hash -> Llave = idCategoria */
-    private Map<Integer, Categoria> tablaCategorias = new HashMap<>();
-
-    /**
-     * Constructor que inicializa los datos de prueba quemados.
-     */
-    public CategoriaFakeRepository() {
-
-        tablaCategorias.put(1, new Categoria(
-            1,
-            "Entrada"
-        ));
-        tablaCategorias.put(2, new Categoria(
-            2,
-            "Plato Fuerte"
-
-        ));
-        tablaCategorias.put(3, new Categoria(
-            3,
-            "Especialidades De La Casa"
-        ));
-    }
-
-    public List<Categoria> findAll() {
-        return new ArrayList<>(tablaCategorias.values());
-    }
-
-    public Categoria findById(int idCategoria) {
-        return tablaCategorias.get(idCategoria);
-    }
-    
-    //Busca una categoría por su nombre exacto (ignorando mayúsculas y minúsculas)
-    
-    public Categoria findByName(String nombre) {
-        if (nombre == null || nombre.isBlank()) {
-            return null;
-        }
-        
-        return tablaCategorias.values().stream()
-                .filter(cat -> cat.getNombreCategoria() != null && cat.getNombreCategoria().equalsIgnoreCase(nombre.trim()))
-                .findFirst()
-                .orElse(null); // Retorna null si no encuentra ninguna coincidencia
-    }
-
+public interface CategoriaFakeRepository extends JpaRepository<Categoria, Long> {
+    Categoria findByName(String nombre);
 }

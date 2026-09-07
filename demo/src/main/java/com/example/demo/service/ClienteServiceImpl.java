@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Cliente;
+import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
 
 /**
@@ -15,12 +16,8 @@ import com.example.demo.repository.ClienteFakeRepository;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-    private final ClienteFakeRepository clienteRepository;
-
     @Autowired
-    public ClienteServiceImpl(ClienteFakeRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+    ClienteFakeRepository clienteRepository;
 
     @Override
     public List<Cliente> obtenerTodosLosClientes() {
@@ -28,8 +25,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente obtenerClientePorId(int id) {
-        return clienteRepository.findById(id).orElse(null);
+    public Cliente obtenerClientePorId(Long id) {
+        return clienteRepository.findById(id).get();
     }
 
     @Override
@@ -38,25 +35,29 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public boolean eliminarCliente(int id) {
-        return clienteRepository.deleteById(id);
+    public void eliminarCliente(Long id) {
+        clienteRepository.deleteById(id);
     }
 
     @Override
     public Cliente autenticar(String nombreOCorreo, String password) {
-        if (nombreOCorreo == null || password == null) {
-            return null;
-        }
-
-        Optional<Cliente> clienteOpt = clienteRepository.findByNombreOrCorreo(nombreOCorreo);
-        if (clienteOpt.isPresent()) {
-            Cliente cliente = clienteOpt.get();
-            if (password.equals(cliente.getPassword())) {
-                return cliente;
-            }
-        }
+    if (nombreOCorreo == null || password == null) {
         return null;
     }
+
+    Optional<Cliente> clienteOpt = clienteRepository.findByNombre(nombreOCorreo);
+    if (clienteOpt.isEmpty()) {
+        clienteOpt = clienteRepository.findByCorreo(nombreOCorreo);
+    }
+
+    if (clienteOpt.isPresent()) {
+        Cliente cliente = clienteOpt.get();
+        if (password.equals(cliente.getPassword())) {
+            return cliente;
+        }
+    }
+    return null;
+}
 
     @Override
     public boolean existeCorreo(String correo) {

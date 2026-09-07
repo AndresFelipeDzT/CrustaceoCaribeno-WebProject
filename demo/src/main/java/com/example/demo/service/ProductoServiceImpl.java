@@ -23,8 +23,8 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public Producto obtenerProductoPorId(int idProducto) {
-        return productoRepository.findById(idProducto);
+    public Producto obtenerProductoPorId(Long idProducto) {
+        return productoRepository.findById(idProducto).get();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public boolean eliminarProducto(int idProducto) {
-        return productoRepository.deleteById(idProducto);
+    public void eliminarProducto(Long idProducto) {
+        productoRepository.deleteById(idProducto);
     }
 }

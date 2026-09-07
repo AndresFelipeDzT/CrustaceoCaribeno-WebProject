@@ -47,7 +47,7 @@ public class ProductoController {
      */
     // localhost:8080/comidas/tabla
     @GetMapping("/tabla")
-    public String listarComidasTabla(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String listarComidasTabla(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id != null) {
             Cliente cliente = clienteService.obtenerClientePorId(id);
             model.addAttribute("cliente", cliente);
@@ -62,7 +62,7 @@ public class ProductoController {
      */
     // localhost:8080/comidas/tarjetas
     @GetMapping("/tarjetas")
-    public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id != null) {
             Cliente cliente = clienteService.obtenerClientePorId(id);
             model.addAttribute("cliente", cliente);
@@ -72,13 +72,13 @@ public class ProductoController {
 
         // Agrupación limpia para las secciones del diseño
         List<Producto> entradas = lista.stream()
-            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
+            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
             .toList();
         List<Producto> platosFuertes = lista.stream()
-            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
+            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
             .toList();
         List<Producto> especialidades = lista.stream()
-            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria().getNombreCategoria()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
+            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
             .toList();
 
         model.addAttribute("entradas", entradas);
@@ -93,8 +93,8 @@ public class ProductoController {
      */
     // localhost:8080/comidas/detalle/1
     @GetMapping("/detalle/{id}")
-    public String verDetalleComida(@PathVariable("id") int id,
-            @RequestParam(value = "clienteId", required = false) Integer clienteId,
+    public String verDetalleComida(@PathVariable("id") Long id,
+            @RequestParam(value = "clienteId", required = false) Long clienteId,
             Model model) {
         Producto comida = productoService.obtenerProductoPorId(id);
         if (comida == null) {
@@ -121,7 +121,7 @@ public class ProductoController {
     public String agregarProducto(@ModelAttribute("plato") Producto producto, @RequestParam("nombreCategoria") String nombreCategoria) {
     
         Categoria categoria = categoriaService.obtenerCategoriaPorNombre(nombreCategoria);
-        producto.setCategoria(categoria);
+        producto.setIdCategoria(categoria.getIdCategoria());
         productoService.guardarProducto(producto);
         return "redirect:/comidas/tabla";
     }
@@ -129,14 +129,14 @@ public class ProductoController {
 
     // localhost:8080/comidas/tabla/delete/{id}
     @GetMapping("/tabla/delete/{id}")
-    public String eliminarProducto(@PathVariable Integer id) {
+    public String eliminarProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
         return "redirect:/comidas/tabla";
     }
 
     // localhost:8080/comidas/tabla/update/{id}
     @GetMapping("tabla/update/{id}")
-    public String actualizarProducto(@PathVariable Integer id, Model model) {
+    public String actualizarProducto(@PathVariable Long id, Model model) {
 
         Producto producto = productoService.obtenerProductoPorId(id);
         model.addAttribute("plato",producto);

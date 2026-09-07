@@ -30,7 +30,7 @@ public class RegistroController {
     public String procesarRegistro(@ModelAttribute("cliente") Cliente cliente, Model model) {
 
         // Validar campos vacíos
-        if (cliente.getNombreCompleto() == null || cliente.getNombreCompleto().isBlank() ||
+        if (cliente.getNombre() == null || cliente.getNombre().isBlank() ||
             cliente.getCorreo() == null || cliente.getCorreo().isBlank() ||
             cliente.getDireccion() == null || cliente.getDireccion().isBlank() ||
             cliente.getPassword() == null || cliente.getPassword().isBlank()) {

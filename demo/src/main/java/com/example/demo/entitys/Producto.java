@@ -1,5 +1,10 @@
 package com.example.demo.entitys;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +17,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity 
 public class Producto {
 
     /** Identificador único del producto */
-    private Integer idProducto;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idProducto;
 
     /** Nombre comercial del plato */
+    @Column (nullable = false)
     private String nombre;
 
     /** Precio en pesos colombianos (COP) */
+    @Column (nullable = false)
     private double precio;
 
     /** Descripción detallada de los ingredientes y preparación del plato */
@@ -30,5 +40,14 @@ public class Producto {
     private String imagenURL;
 
     /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
-    private Categoria categoria;
+    @Column (nullable = false)
+    private Long idCategoria;
+
+    public Producto(String nombre, double precio, String descripcion, String imagenURL, Long idCategoria) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.imagenURL = imagenURL;
+        this.idCategoria = idCategoria;
+    }
 }
