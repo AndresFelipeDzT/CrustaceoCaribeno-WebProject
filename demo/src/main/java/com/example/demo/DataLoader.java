@@ -46,7 +46,7 @@ public class DataLoader implements CommandLineRunner {
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Bebida"));
 
         // ==========================================
-        // AGREGAR 50 PRODUCTOS
+        // AGREGAR 40 PRODUCTOS
         // ==========================================   
         // ==========================================
         // ENTRADAS
@@ -75,21 +75,21 @@ public class DataLoader implements CommandLineRunner {
             "Ceviche Mixto",
             35000.0,
             "Combinación de pescado blanco, camarones, calamares y pulpo marinados en limón con cebolla morada y cilantro.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ceviche_de_pescado.JPG"
+            "https://buenazo.cronosmedia.glr.pe/original/2020/09/09/5f58f8c082c2f615f804ffdb.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Ceviche De Camarón",
             32000.0,
             "Camarones frescos marinados en limón con cebolla morada, cilantro, tomate y un toque de ají.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ceviche_from_Ecuador.jpeg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN3fqe-rQJ2Xg4wQaDGmzOyouRs8WYSJ8OP9RmdnAoe0ZEiFZKX4V7GBO3&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Tostadas De Ceviche",
             29000.0,
             "Crujientes tostadas de maíz cubiertas con ceviche fresco, aguacate, cebolla morada y cilantro.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ceviche_from_Ecuador.jpeg"
+            "https://familiakitchen.com/wp-content/uploads/2023/05/Tostadas-de-Shrimp-Ceviche-v3.jpg"
         ));
 
         productoRepository.save(new Producto(
@@ -103,42 +103,35 @@ public class DataLoader implements CommandLineRunner {
             "Cóctel De Mariscos",
             32000.0,
             "Camarones y frutos del mar servidos en salsa especial con aguacate, limón, cebolla y cilantro fresco.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_Korean_restaurant.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5zRcwlCuulf_hAjq_Z3S4n3CDKHzXRcbRMj-caXjReRGiMwlXVjHEHdg&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Empanadas De Camarón",
             26000.0,
             "Empanadas artesanales rellenas de camarones, queso costeño, cebolla y especias de la casa.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_a_restaurant_in_Jersey_City.JPG"
+            "https://cdn7.kiwilimon.com/recetaimagen/33877/960x640/39381.jpg.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Ceviche De Pulpo",
             34000.0,
             "Pulpo fresco marinado en limón con cebolla morada, cilantro, ají y especias tropicales.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ceviche_de_pescado.JPG"
+            "https://gourmet.iprospect.cl/wp-content/uploads/2017/11/cevpul2.jpg-editada.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Tartar De Pescado",
             33000.0,
             "Pescado fresco cortado en cubos acompañado de aguacate, cebolla morada, limón y salsa cítrica.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ceviche_de_pescado.JPG"
-        ));
-
-        productoRepository.save(new Producto(
-            "Camarones Al Ajillo De Entrada",
-            30000.0,
-            "Camarones salteados con ajo, mantequilla, perejil y un toque de limón, servidos como entrada.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_Korean_restaurant.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlFS4yQzuTxp1_5PWFwpV5XJK2jKhTq3wWIcejpUHgZ8JhzI3DWAwCp-IC&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Mariscos A La Vinagreta",
             31000.0,
             "Selección de mariscos frescos acompañados de vinagreta cítrica, cebolla morada, cilantro y limón.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_a_restaurant_in_Jersey_City.JPG"
+            "https://selectumgastroplaceres.es/cdn/shop/files/DSCF8083.jpg?v=1764138232&width=1445"
         ));
 
 
@@ -193,14 +186,14 @@ public class DataLoader implements CommandLineRunner {
             "Mojarra Frita",
             40000.0,
             "Mojarra fresca frita hasta quedar dorada y crocante, acompañada de arroz con coco, ensalada y patacones.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Fish_dish_from_set_of_dinner_on_Osteria_Ristorante_Italiano.jpg"
+            "https://www.cocinadelirante.com/800x600/filters:format(webp):quality(75)/sites/default/files/images/2023/03/mojarra-frita-la-mantequilla.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Salmón A La Plancha",
             52000.0,
             "Filete de salmón fresco preparado a la plancha con mantequilla de hierbas, limón y vegetales salteados.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Salmon_dish.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBAE7NVx7VUAATf42Sr7hCyjQ9ogEg35WipqcYfmqDwSk2Bh1BXU2GFxK_&s=10"
         ));
 
         productoRepository.save(new Producto(
@@ -214,7 +207,7 @@ public class DataLoader implements CommandLineRunner {
             "Pescado A La Parrilla",
             44000.0,
             "Filete de pescado blanco cocinado a la parrilla con limón, ajo, perejil y vegetales frescos.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Fish_dish_from_set_of_dinner_on_Osteria_Ristorante_Italiano.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KRt2Jb2cxw0rRBn0YmO466gbPNghubA01qMrzurZ5tRiWHZTlyVHHZw&s=10"
         ));
 
         productoRepository.save(new Producto(
@@ -225,31 +218,24 @@ public class DataLoader implements CommandLineRunner {
         ));
 
         productoRepository.save(new Producto(
-            "Camarones Al Ajillo",
-            42000.0,
-            "Camarones salteados con abundante ajo, mantequilla, vino blanco, limón y perejil fresco.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_Korean_restaurant.jpg"
-        ));
-
-        productoRepository.save(new Producto(
             "Camarones A La Parrilla",
             45000.0,
             "Camarones frescos marinados en ajo, limón y hierbas, preparados a la parrilla.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_a_restaurant_in_Jersey_City.JPG"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ8Yw8IKr1bkFQ41XOqdA49ELmHYshkl0bVCwDGkYayzd1pFBc9a7A5_xj&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Calamares A La Parrilla",
             43000.0,
             "Calamares frescos preparados a la parrilla con ajo, aceite de oliva, limón y hierbas aromáticas.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/A_calamari.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEkSJPObVWx-Mod5P4xkim75ZjU5GqyVn30s5Q_q4MdV1wRLLmy9_tM_U3&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Pulpo A La Parrilla",
             57000.0,
             "Tentáculos de pulpo preparados a la parrilla con aceite de oliva, limón, ajo y hierbas frescas.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/A_calamari.jpg"
+            "https://www.giallozafferano.es/images/195-19599/pulpo-a-la-parrilla_1200x800.jpg"
         ));
 
         productoRepository.save(new Producto(
@@ -275,7 +261,7 @@ public class DataLoader implements CommandLineRunner {
             "Paella Especial De La Casa",
             58000.0,
             "Paella preparada con arroz, camarones, calamares, mejillones y una selección especial de mariscos frescos.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Seafoods_paella.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfpTgHA50f_RRNhTM46NV8rEiNL9jSSBqchh0prnkMUt-_8ZDPYz4Sm-A&s=10"
 
         ));
 
@@ -283,42 +269,35 @@ public class DataLoader implements CommandLineRunner {
             "Arroz Marinero",
             44000.0,
             "Arroz preparado con camarones, calamares y otros frutos del mar, acompañado de un sofrito especial.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Seafoods_paella.jpg"
+            "https://cdn.colombia.com/gastronomia/2012/07/12/arroz-marinero-2905.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Risotto De Mariscos",
             50000.0,
             "Risotto cremoso preparado lentamente con caldo de mariscos, camarones, calamares y queso parmesano.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Seafood_Risotto.jpg"
-        ));
-
-        productoRepository.save(new Producto(
-            "Pasta Frutti Di Mare",
-            47000.0,
-            "Pasta artesanal acompañada de camarones, calamares y otros frutos del mar en salsa de tomate y hierbas.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Seafood_pasta.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQimG6cMnzrkySp4HOEvMw8H-Oh0oIVf53YGMD6DrbXZZSRO2ZUOCPrmX8&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Fideuá De Mariscos",
             49000.0,
             "Fideos tostados cocinados en concentrado de mariscos con camarones, calamares y mejillones.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Seafood_pasta.jpg"
+            "https://imag.bonviveur.com/fideua-de-pescado-y-marisco.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Parrillada Del Mar",
             65000.0,
             "Selección de pescado, camarones, calamares y otros frutos del mar preparados a la parrilla.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_Korean_restaurant.jpg"
+            "https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/9c0c13b0dde59cf295062dc40f559b9e.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Festival De Mariscos",
             62000.0,
             "Combinación especial de camarones, pescado, calamares y otros frutos del mar seleccionados por la casa.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shrimp_dish_at_a_restaurant_in_Jersey_City.JPG"
+            "https://cloudfront-us-east-1.images.arcpublishing.com/prisaradioco/NK7BO5OKCRD3NB4LYZJBLYB67Q.jpeg"
         ));
         productoRepository.save(new Producto(
             "Arroz Meloso Con Mariscos",
@@ -357,28 +336,14 @@ public class DataLoader implements CommandLineRunner {
             "Tarta De Maracuyá",
             20000.0,
             "Deliciosa tarta cremosa de maracuyá con base crujiente y un intenso sabor tropical.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Tarta_de_maracuy%C3%A1.jpg"
+            "https://www.laylita.com/recetas/wp-content/uploads/2012/12/Tarta-cremosa-de-maracuya-o-chinola-1024x683.jpg"
         ));
 
         productoRepository.save(new Producto(
             "Cheesecake De Maracuyá",
             22000.0,
             "Cheesecake cremoso con cobertura de maracuyá, acompañado de una base crocante de galleta.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Calca_Peru-_Maracuya_Cheesecake.jpg"
-        ));
-
-        productoRepository.save(new Producto(
-            "Torta De Maracuyá",
-            19000.0,
-            "Suave torta de maracuyá con crema tropical y delicada cobertura de fruta fresca.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Passion_Fruit_Cake_%28Tarta_de_Maracuy%C3%A1%29.jpg"
-        ));
-
-        productoRepository.save(new Producto(
-            "Tarta Tropical De Maracuyá",
-            21000.0,
-            "Tarta artesanal de maracuyá con textura cremosa y un equilibrado contraste entre dulce y ácido.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Passion_Fruit_Cake_of_Argentina_%28Tarta_de_Maracuy%C3%A1%29.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxPF3adzUoadO-G_cbYbp6K7okLLU7nT-faUQIkGsv3-CmcOT-2JNB9tkH&s=10"
         ));
 
 
@@ -390,35 +355,20 @@ public class DataLoader implements CommandLineRunner {
             "Limonada Natural",
             10000.0,
             "Refrescante limonada preparada con jugo de limón natural, agua y un toque de azúcar.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Lemonade.png"
+            "https://www.sortirambnens.com/wp-content/uploads/2019/02/llimonada-natural-per-a-nens.jpg"
         ));
-
-        productoRepository.save(new Producto(
-            "Limonada Clásica",
-            12000.0,
-            "Limonada fresca preparada al momento con limones naturales y hielo.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Classic_Lemonade.jpg"
-        ));
-
-        productoRepository.save(new Producto(
-            "Limonada De La Casa",
-            13000.0,
-            "Limonada artesanal preparada con limón natural, hielo y el toque especial de la casa.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Homemade_Lemonade.jpg"
-        ));
-
         productoRepository.save(new Producto(
             "Limonada De Flor De Jamaica",
             14000.0,
             "Refrescante bebida de limón y flor de jamaica con un delicado equilibrio entre dulce y ácido.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hibiscus_Lemonade_Drink.jpg"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsVF92Vejl1lvKfYzKoIH2n9SLCSpPJmA_8MZq0XmcfPw-zRt-40FZ-jvY&s=10"
         ));
 
         productoRepository.save(new Producto(
             "Agua De Coco",
             12000.0,
             "Refrescante agua de coco natural, ideal para acompañar los sabores tropicales del restaurante.",
-            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Coconut_water_from_above.jpg"
+            "https://www.eldiario.net/portal/wp-content/uploads/2026/04/NOTA-5-FOTO.webp"
         ));
 
 
@@ -460,18 +410,11 @@ public class DataLoader implements CommandLineRunner {
         productoRepository.findById(35L).get().setCategoria(categoriaRepository.findById(3L).get());
         productoRepository.findById(36L).get().setCategoria(categoriaRepository.findById(3L).get());
         productoRepository.findById(37L).get().setCategoria(categoriaRepository.findById(3L).get());
-        productoRepository.findById(38L).get().setCategoria(categoriaRepository.findById(3L).get());
-        productoRepository.findById(39L).get().setCategoria(categoriaRepository.findById(3L).get());
-        productoRepository.findById(40L).get().setCategoria(categoriaRepository.findById(3L).get());
-        productoRepository.findById(41L).get().setCategoria(categoriaRepository.findById(4L).get());
-        productoRepository.findById(42L).get().setCategoria(categoriaRepository.findById(4L).get());
-        productoRepository.findById(43L).get().setCategoria(categoriaRepository.findById(4L).get());
-        productoRepository.findById(44L).get().setCategoria(categoriaRepository.findById(4L).get());
-        productoRepository.findById(45L).get().setCategoria(categoriaRepository.findById(4L).get());
-        productoRepository.findById(46L).get().setCategoria(categoriaRepository.findById(5L).get());
-        productoRepository.findById(47L).get().setCategoria(categoriaRepository.findById(5L).get());
-        productoRepository.findById(48L).get().setCategoria(categoriaRepository.findById(5L).get());
-        productoRepository.findById(49L).get().setCategoria(categoriaRepository.findById(5L).get());
-        productoRepository.findById(50L).get().setCategoria(categoriaRepository.findById(5L).get());
+        productoRepository.findById(38L).get().setCategoria(categoriaRepository.findById(4L).get());
+        productoRepository.findById(39L).get().setCategoria(categoriaRepository.findById(4L).get());
+        productoRepository.findById(40L).get().setCategoria(categoriaRepository.findById(4L).get());
+        productoRepository.findById(41L).get().setCategoria(categoriaRepository.findById(5L).get());
+        productoRepository.findById(42L).get().setCategoria(categoriaRepository.findById(5L).get());
+        productoRepository.findById(43L).get().setCategoria(categoriaRepository.findById(5L).get());
     }   
 }

@@ -24,25 +24,27 @@ public class Cliente {
     private Long idCliente;
 
     /** Nombre del cliente */
-    @Column (nullable = false)
+    @Column (nullable = false, length = 50)
     private String nombre;
 
     /** Apellido del cliente */
-    @Column (nullable = false)
+    @Column (nullable = false, length = 50)
     private String apellido;
 
     /** Correo electrónico */
-    @Column (nullable = false, unique = true)
+    @Column (nullable = false, unique = true, length = 70)
     private String correo;
 
     /** Número telefónico de contacto */
+    @Column (length = 15)
     private String telefono;
 
     /** Dirección de entrega o contacto del cliente */
+    @Column (length = 100)
     private String direccion;
 
     /** Contraseña del cliente */
-    @Column (nullable = false)
+    @Column (nullable = false, length = 50)
     private String password;
 
     public Cliente(String nombre, String apellido, String correo, String telefono, String direccion, String password) {

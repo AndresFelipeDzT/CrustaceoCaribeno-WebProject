@@ -27,14 +27,15 @@ public class Producto {
     private Long idProducto;
 
     /** Nombre comercial del plato */
-    @Column (nullable = false)
+    @Column (nullable = false, length = 50)
     private String nombre;
 
     /** Precio en pesos colombianos (COP) */
-    @Column (nullable = false)
+    @Column (nullable = false, length = 20)
     private double precio;
 
     /** Descripción detallada de los ingredientes y preparación del plato */
+    @Column (length = 200)
     private String descripcion;
 
     /** URL de la imagen representativa del plato (manejada como String) */

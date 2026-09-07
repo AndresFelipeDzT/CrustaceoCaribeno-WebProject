@@ -19,5 +19,5 @@ import com.example.demo.entitys.Producto;
  */
 @Repository
 public interface CategoriaFakeRepository extends JpaRepository<Categoria, Long> {
-    Categoria findByName(String nombre);
+    Categoria findByNombre(String nombre);
 }

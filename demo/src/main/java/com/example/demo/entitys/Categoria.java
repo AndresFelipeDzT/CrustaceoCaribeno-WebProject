@@ -25,7 +25,7 @@ public class Categoria {
     private long idCategoria;
     
    /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
-    @Column (nullable = false, unique = true)
+    @Column (nullable = false, unique = true, length = 50)
     private String nombre;
     
     @OneToMany (mappedBy = "categoria")
