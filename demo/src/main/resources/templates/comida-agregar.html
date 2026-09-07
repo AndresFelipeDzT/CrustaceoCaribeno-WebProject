@@ -60,9 +60,9 @@
               <select id="categoria" name="nombreCategoria">
                 <option value="">Selecciona una opción</option>
                 <option th:each="cat : ${categorias}"
-                th:value="${cat.nombreCategoria}"
-                th:text="${cat.nombreCategoria}"
-                th:selected="${plato.categoria != null and plato.categoria.nombreCategoria == cat.nombreCategoria}">
+                th:value="${cat.nombre}"
+                th:text="${cat.nombre}"
+                th:selected="${plato.categoria != null and plato.categoria.nombre == cat.nombre}">
                 </option>
               </select>
         </div>

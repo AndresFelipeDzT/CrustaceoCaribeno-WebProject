@@ -35,8 +35,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente guardarCliente(Cliente cliente) {
-        // Usamos el método existeCorreo que ya tienes implementado
-        if (existeCorreo(cliente.getCorreo())) {
+        Optional<Cliente> existente = clienteRepository.findByCorreo(cliente.getCorreo());
+        if (existente.isPresent() && (cliente.getIdCliente() == null || !existente.get().getIdCliente().equals(cliente.getIdCliente()))) {
             throw new ClienteAlreadyExistsException(cliente.getCorreo());
         }
         
