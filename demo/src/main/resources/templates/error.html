@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - El Crustáceo Caribeño</title>
+</head>
+<body>
+
+    <h1 th:text="${titulo}">Ocurrió un error en El Crustáceo Caribeño</h1>
+    <p th:text="${mensaje}">Ha ocurrido un problema inesperado.</p>
+
+    <div>
+        <a th:href="@{/comidas/tarjetas}">Volver al inicio de El Crustáceo Caribeño</a>
+    </div>
+
+</body>
+</html>

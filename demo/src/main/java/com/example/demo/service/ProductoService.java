@@ -17,7 +17,8 @@ public interface ProductoService {
     /**
      * Busca un plato por su identificador.
      * @param idProducto ID del producto.
-     * @return El producto encontrado o null si no existe.
+     * @return El producto encontrado.
+     * @throws com.example.demo.errors.ProductoNotFoundException si no existe.
      */
     Producto obtenerProductoPorId(int idProducto);
 
