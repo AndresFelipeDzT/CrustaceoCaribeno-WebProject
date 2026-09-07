@@ -5,7 +5,7 @@ package com.example.demo.errors;
  */
 public class ClienteNotFoundException extends RuntimeException {
 
-    public ClienteNotFoundException(int idCliente) {
+    public ClienteNotFoundException(Long idCliente) {
         super("El cliente con ID " + idCliente + " no fue encontrado en El Crustáceo Caribeño.");
     }
 }
