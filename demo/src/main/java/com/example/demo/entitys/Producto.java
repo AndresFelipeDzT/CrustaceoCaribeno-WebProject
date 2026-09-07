@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,14 +41,13 @@ public class Producto {
     private String imagenURL;
 
     /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
-    @Column (nullable = false)
-    private Long idCategoria;
+    @ManyToOne 
+    private Categoria categoria;
 
-    public Producto(String nombre, double precio, String descripcion, String imagenURL, Long idCategoria) {
+    public Producto(String nombre, double precio, String descripcion, String imagenURL) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
         this.imagenURL = imagenURL;
-        this.idCategoria = idCategoria;
     }
 }

@@ -120,7 +120,7 @@ public class ProductoController {
     public String agregarProducto(@ModelAttribute("plato") Producto producto, @RequestParam("nombreCategoria") String nombreCategoria) {
     
         Categoria categoria = categoriaService.obtenerCategoriaPorNombre(nombreCategoria);
-        producto.setIdCategoria(categoria.getIdCategoria());
+        producto.setCategoria(categoria);
         productoService.guardarProducto(producto);
         return "redirect:/comidas/tabla";
     }
