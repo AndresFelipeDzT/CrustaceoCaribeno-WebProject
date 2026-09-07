@@ -164,8 +164,8 @@ public class ProductoFakeRepository {
         return new ArrayList<>(tablaComidas.values());
     }
 
-    public Producto findById(int idProducto) {
-        return tablaComidas.get(idProducto);
+    public Optional<Producto> findById(int idProducto) {
+        return Optional.ofNullable(tablaComidas.get(idProducto));
     }
 
     public Producto save(Producto producto) {
