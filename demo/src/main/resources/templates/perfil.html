@@ -28,6 +28,7 @@
       <p class="perfil-descripcion">Consulta y administra la información de tu cuenta.</p>
       <p th:if="${mensaje}" class="perfil-alert perfil-alert-success" th:text="${mensaje}"></p>
       <form th:action="@{/perfil/editar(id=${cliente.idCliente})}" method="post" class="perfil-form">
+        <input type="hidden" name="idCliente" th:value="${cliente.idCliente}">
         <input type="hidden" name="nombreCompleto" th:value="${cliente.nombreCompleto}">
         <div class="perfil-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" th:value="${cliente.correo}" th:readonly="${!modoEdicion}" autocomplete="email" required></div>
         <div class="perfil-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" th:value="${cliente.telefono}" th:readonly="${!modoEdicion}" autocomplete="tel" required></div>

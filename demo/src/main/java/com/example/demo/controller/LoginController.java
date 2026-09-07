@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpSession;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
@@ -17,8 +16,12 @@ import com.example.demo.service.ClienteService;
 @Controller
 public class LoginController {
 
+    private final ClienteService clienteService;
+
     @Autowired
-    private ClienteService clienteService;
+    public LoginController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("/login")
     public String mostrarLogin() {
@@ -26,8 +29,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String cerrarSesion(HttpSession session) {
-        session.invalidate();
+    public String cerrarSesion() {
         return "redirect:/home";
     }
 
@@ -35,8 +37,7 @@ public class LoginController {
     public String procesarLogin(
             @RequestParam("nombre") String nombre,
             @RequestParam("password") String password,
-            Model model,
-            HttpSession session) {
+            Model model) {
 
         if (nombre == null || nombre.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             model.addAttribute("error", "Por favor ingresa tu nombre y contraseña.");
@@ -51,7 +52,6 @@ public class LoginController {
             return "login";
         }
 
-        session.setAttribute("clienteId", cliente.getIdCliente());
         return "redirect:/comidas/tarjetas?id=" + cliente.getIdCliente();
     }
 }

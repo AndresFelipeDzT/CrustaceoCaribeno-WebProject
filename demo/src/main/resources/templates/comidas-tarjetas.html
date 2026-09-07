@@ -39,7 +39,8 @@
         <!-- Botones derecha: Carrito y Perfil -->
         <div class="nav-botones">
           <a href="#" class="nav-link-item"><i class="bi bi-cart3"></i> Carrito</a>
-          <a th:href="@{/perfil(id=${cliente.idCliente})}" class="nav-link-item"><i class="bi bi-person-circle"></i> Perfil</a>
+          <a th:if="${cliente != null}" th:href="@{/perfil(id=${cliente.idCliente})}" class="nav-link-item"><i class="bi bi-person-circle"></i> Perfil</a>
+          <a th:if="${cliente == null}" th:href="@{/login}" class="nav-link-item"><i class="bi bi-person-circle"></i> Iniciar Sesión</a>
         </div>
       </div>
     </nav>
@@ -86,7 +87,7 @@
               <div class="tarjeta-footer-row">
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
-                <a th:href="@{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
               </div>
             </div>
           </article>
@@ -113,7 +114,7 @@
               <div class="tarjeta-footer-row">
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
-                <a th:href="@{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
               </div>
             </div>
           </article>
@@ -140,7 +141,7 @@
               <div class="tarjeta-footer-row">
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
-                <a th:href="@{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
               </div>
             </div>
           </article>
@@ -181,8 +182,8 @@
           <h5 class="footer-heading">Navegación</h5>
           <ul class="footer-links">
             <li><a th:href="@{/home}"><i class="bi bi-chevron-right"></i> Inicio</a></li>
-            <li><a th:href="@{/comidas/tarjetas(id=${cliente.idCliente})}"><i class="bi bi-chevron-right"></i> Menú (Tarjetas)</a></li>
-            <li><a th:href="@{/comidas/tabla(id=${cliente.idCliente})}"><i class="bi bi-chevron-right"></i> Menú (Tabla)</a></li>
+            <li><a th:href="${cliente != null} ? @{/comidas/tarjetas(id=${cliente.idCliente})} : @{/comidas/tarjetas}"><i class="bi bi-chevron-right"></i> Menú (Tarjetas)</a></li>
+            <li><a th:href="${cliente != null} ? @{/comidas/tabla(id=${cliente.idCliente})} : @{/comidas/tabla}"><i class="bi bi-chevron-right"></i> Menú (Tabla)</a></li>
             <li><a th:href="@{/home#por-que-nosotros}"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
             <li><a th:href="@{/home#quienes-somos}"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
           </ul>

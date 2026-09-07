@@ -15,8 +15,12 @@ import com.example.demo.repository.ClienteFakeRepository;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
+    private final ClienteFakeRepository clienteRepository;
+
     @Autowired
-    private ClienteFakeRepository clienteRepository;
+    public ClienteServiceImpl(ClienteFakeRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     public List<Cliente> obtenerTodosLosClientes() {
@@ -52,5 +56,21 @@ public class ClienteServiceImpl implements ClienteService {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean existeCorreo(String correo) {
+        if (correo == null || correo.trim().isEmpty()) {
+            return false;
+        }
+        return clienteRepository.findByCorreo(correo).isPresent();
+    }
+
+    @Override
+    public Optional<Cliente> buscarPorCorreo(String correo) {
+        if (correo == null || correo.trim().isEmpty()) {
+            return Optional.empty();
+        }
+        return clienteRepository.findByCorreo(correo);
     }
 }

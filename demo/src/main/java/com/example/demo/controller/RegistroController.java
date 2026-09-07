@@ -13,8 +13,12 @@ import com.example.demo.service.ClienteService;
 @Controller
 public class RegistroController {
 
+    private final ClienteService clienteService;
+
     @Autowired
-    private ClienteService clienteService;
+    public RegistroController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("/registro")
     public String mostrarRegistro(Model model) {
@@ -32,6 +36,12 @@ public class RegistroController {
             cliente.getPassword() == null || cliente.getPassword().isBlank()) {
             
             model.addAttribute("error", "Por favor completa todos los campos obligatorios.");
+            return "registro";
+        }
+
+        // Validar si el correo ya existe en el sistema (regla de negocio en el Service)
+        if (clienteService.existeCorreo(cliente.getCorreo())) {
+            model.addAttribute("error", "El correo electrónico ya se encuentra registrado.");
             return "registro";
         }
 
