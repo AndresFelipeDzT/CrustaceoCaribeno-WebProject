@@ -1,23 +1,22 @@
 package com.example.demo.controller;
-import com.example.demo.entitys.Categoria;
-import com.example.demo.entitys.Cliente;
-import com.example.demo.entitys.Producto;
-import com.example.demo.repository.CategoriaFakeRepository;
-import com.example.demo.service.CategoriaService;
-import com.example.demo.service.ClienteService;
-import com.example.demo.service.ProductoService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.entitys.Categoria;
+import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Producto;
+import com.example.demo.service.CategoriaService;
+import com.example.demo.service.ClienteService;
+import com.example.demo.service.ProductoService;
 
 /**
  * Controlador Spring MVC encargado de gestionar las peticiones web relacionadas con los platos.
@@ -96,10 +95,10 @@ public class ProductoController {
     public String verDetalleComida(@PathVariable("id") Long id,
             @RequestParam(value = "clienteId", required = false) Long clienteId,
             Model model) {
+        
+        // Si el producto no existe, obtenerProductoPorId() lanza la excepción automáticamente
         Producto comida = productoService.obtenerProductoPorId(id);
-        if (comida == null) {
-            return "redirect:/comidas/tarjetas";
-        }
+
         if (clienteId != null) {
             Cliente cliente = clienteService.obtenerClientePorId(clienteId);
             model.addAttribute("cliente", cliente);

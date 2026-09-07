@@ -39,13 +39,7 @@ public class RegistroController {
             return "registro";
         }
 
-        // Validar si el correo ya existe en el sistema (regla de negocio en el Service)
-        if (clienteService.existeCorreo(cliente.getCorreo())) {
-            model.addAttribute("error", "El correo electrónico ya se encuentra registrado.");
-            return "registro";
-        }
-
-        // Guardar cliente
+        // Si el correo ya existe, ClienteAlreadyExistsException se manejara en GlobalExceptionHandler y se mostrará la vista error.html.
         Cliente clienteGuardado = clienteService.guardarCliente(cliente);
         return "redirect:/comidas/tarjetas?id=" + clienteGuardado.getIdCliente();
     }

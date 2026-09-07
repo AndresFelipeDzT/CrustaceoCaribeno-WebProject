@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Cliente;
 import com.example.demo.repository.CategoriaFakeRepository;
+import com.example.demo.errors.ClienteAlreadyExistsException;
+import com.example.demo.errors.ClienteNotFoundException;
 import com.example.demo.repository.ClienteFakeRepository;
+
 
 /**
  * Implementación de la lógica de negocio para Clientes.
@@ -25,12 +28,18 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente obtenerClientePorId(Long id) {
-        return clienteRepository.findById(id).get();
+    public Cliente obtenerClientePorId(Long idCliente) {
+        return clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new ClienteNotFoundException(idCliente));
     }
 
     @Override
     public Cliente guardarCliente(Cliente cliente) {
+        // Usamos el método existeCorreo que ya tienes implementado
+        if (existeCorreo(cliente.getCorreo())) {
+            throw new ClienteAlreadyExistsException(cliente.getCorreo());
+        }
+        
         return clienteRepository.save(cliente);
     }
 

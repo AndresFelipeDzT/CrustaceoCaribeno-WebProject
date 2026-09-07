@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Producto;
+import com.example.demo.errors.ProductoNotFoundException;
 import com.example.demo.repository.ProductoFakeRepository;
 
 import java.util.List;
@@ -24,7 +25,8 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto obtenerProductoPorId(Long idProducto) {
-        return productoRepository.findById(idProducto).get();
+        return productoRepository.findById(idProducto)
+                .orElseThrow(() -> new ProductoNotFoundException(idProducto));
     }
 
     @Override
