@@ -22,7 +22,7 @@ public class PerfilController {
     }
 
     @GetMapping("/perfil")
-    public String perfil(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String perfil(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id == null) {
             return "redirect:/login";
         }
@@ -37,7 +37,7 @@ public class PerfilController {
     }
 
     @GetMapping("/perfil/editar")
-    public String editar(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String editar(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id == null) {
             return "redirect:/login";
         }
@@ -53,7 +53,7 @@ public class PerfilController {
 
     // Recibe todo el objeto Cliente mediante @ModelAttribute y lo guarda completo
     @PostMapping("/perfil/editar")
-    public String guardar(@RequestParam(value = "id", required = false) Integer id,
+    public String guardar(@RequestParam(value = "id", required = false) Long id,
             @ModelAttribute("cliente") Cliente clienteForm, RedirectAttributes redirectAttributes) {
 
         if (clienteForm.getIdCliente() == null && id != null) {
@@ -69,8 +69,8 @@ public class PerfilController {
             return "redirect:/login";
         }
 
-        if (clienteForm.getNombreCompleto() == null || clienteForm.getNombreCompleto().isBlank()) {
-            clienteForm.setNombreCompleto(clienteExistente.getNombreCompleto());
+        if (clienteForm.getNombre() == null || clienteForm.getNombre().isBlank()) {
+            clienteForm.setNombre(clienteExistente.getNombre());
         }
 
         // Se pasa el objeto completo al servicio sin mutar atributo por atributo
@@ -81,7 +81,7 @@ public class PerfilController {
     }
 
     @PostMapping("/perfil/eliminar")
-    public String eliminar(@RequestParam(value = "id", required = false) Integer id) {
+    public String eliminar(@RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
             return "redirect:/login";
         }

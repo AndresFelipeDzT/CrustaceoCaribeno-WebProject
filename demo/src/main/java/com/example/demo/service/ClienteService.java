@@ -12,11 +12,11 @@ public interface ClienteService {
 
     List<Cliente> obtenerTodosLosClientes();
 
-    Cliente obtenerClientePorId(int id);
+    Cliente obtenerClientePorId(Long id);
 
     Cliente guardarCliente(Cliente cliente);
 
-    boolean eliminarCliente(int id);
+    void eliminarCliente(Long id);
 
     /**
      * Valida las credenciales de un cliente por su nombre o correo.

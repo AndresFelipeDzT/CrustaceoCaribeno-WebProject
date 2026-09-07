@@ -20,7 +20,7 @@ public interface ProductoService {
      * @return El producto encontrado.
      * @throws com.example.demo.errors.ProductoNotFoundException si no existe.
      */
-    Producto obtenerProductoPorId(int idProducto);
+    Producto obtenerProductoPorId(Long idProducto);
 
     /**
      * Registra o actualiza un producto.
@@ -34,5 +34,5 @@ public interface ProductoService {
      * @param idProducto ID del producto.
      * @return true si se eliminó, false en caso contrario.
      */
-    boolean eliminarProducto(int idProducto);
+    void eliminarProducto(Long idProducto);
 }
