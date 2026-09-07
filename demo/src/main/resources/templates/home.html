@@ -31,7 +31,7 @@
         <div class="nav-contenido">
 
             <!-- Logo y nombre -->
-            <a class="navbar-brand" href="home.html">
+            <a class="navbar-brand" th:href="@{/home}">
                 <img src="../images/logo2.png"
                      alt="Logo de Crustáceo Caribeño"
                      width="48"
@@ -217,10 +217,10 @@ Desde cazuelas hasta paellas.
 
       <div class="footer-columna">
         <h4>Navegación</h4>
-        <a href="home.html">› Inicio</a>
-        <a href="menu.html">› Menú</a>
-        <a href="#perfil">› Perfil</a>
-        <a href="#carrito">› Carrito</a>
+        <a th:href="@{/home}">› Inicio</a>
+        <a th:href="@{/comidas/tarjetas}">› Menú</a>
+        <a th:href="@{/login}">› Perfil</a>
+        <a href="#">› Carrito</a>
       </div>
 
       <div class="footer-columna">

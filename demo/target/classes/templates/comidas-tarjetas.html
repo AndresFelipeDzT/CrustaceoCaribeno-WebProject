@@ -67,17 +67,6 @@
     <!-- CONTENEDOR DEL MENÚ POR CATEGORÍAS -->
     <div id="menu-tarjetas" class="menu-tarjetas-container">
 
-      <!-- Barra de alternancia de vista (Tarjetas / Tabla) -->
-      <div class="vista-toggle-bar">
-        <span class="text-muted small me-2"><i class="bi bi-grid-fill"></i> Vista:</span>
-        <a th:href="@{/comidas/tarjetas}" class="btn-toggle-vista activo">
-          <i class="bi bi-card-text"></i> Tarjetas
-        </a>
-        <a th:href="@{/comidas/tabla}" class="btn-toggle-vista">
-          <i class="bi bi-table"></i> Tabla
-        </a>
-      </div>
-
       <!-- SECCIÓN 1: ENTRADAS -->
       <section class="categoria-seccion" th:if="${entradas != null and !entradas.empty}">
         <h2 class="titulo-categoria">Entrada</h2>
@@ -192,8 +181,8 @@
           <h5 class="footer-heading">Navegación</h5>
           <ul class="footer-links">
             <li><a th:href="@{/home}"><i class="bi bi-chevron-right"></i> Inicio</a></li>
-            <li><a th:href="@{/comidas/tarjetas}"><i class="bi bi-chevron-right"></i> Menú (Tarjetas)</a></li>
-            <li><a th:href="@{/comidas/tabla}"><i class="bi bi-chevron-right"></i> Menú (Tabla)</a></li>
+            <li><a th:href="@{/comidas/tarjetas(id=${cliente.idCliente})}"><i class="bi bi-chevron-right"></i> Menú (Tarjetas)</a></li>
+            <li><a th:href="@{/comidas/tabla(id=${cliente.idCliente})}"><i class="bi bi-chevron-right"></i> Menú (Tabla)</a></li>
             <li><a th:href="@{/home#por-que-nosotros}"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
             <li><a th:href="@{/home#quienes-somos}"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
           </ul>

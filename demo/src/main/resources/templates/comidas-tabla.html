@@ -37,7 +37,8 @@
         <!-- Botones derecha: Carrito y Perfil -->
         <div class="nav-botones">
           <a href="#" class="nav-link-item"><i class="bi bi-cart3"></i> Carrito</a>
-          <a th:href="@{/perfil}" class="nav-link-item"><i class="bi bi-person-circle"></i> Perfil</a>
+          <a th:if="${cliente != null}" th:href="@{/perfil(id=${cliente.idCliente})}" class="nav-link-item"><i class="bi bi-person-circle"></i> Perfil</a>
+          <a th:if="${cliente == null}" th:href="@{/login}" class="nav-link-item"><i class="bi bi-person-circle"></i> Iniciar Sesión</a>
         </div>
       </div>
     </nav>
@@ -55,7 +56,7 @@
         </p>
         <div class="hero-buttons">
           <a href="#menu-tabla" class="boton-menu">Menu</a>
-          <a th:href="@{/domicilio.html}" class="boton-domicilio">Domicilio</a>
+          <a href="#" class="boton-domicilio">Domicilio</a>
         </div>
       </div>
     </section>
@@ -63,17 +64,6 @@
     <!-- SECCIÓN TABLA DEL MENÚ -->
     <section id="menu-tabla" class="menu-section container my-5">
       
-      <!-- Barra de alternancia de vista (Tarjetas / Tabla) -->
-      <div class="d-flex justify-content-end align-items-center gap-2 mb-4">
-        <span class="text-muted small me-2"><i class="bi bi-grid-fill"></i> Vista:</span>
-        <a th:href="@{/comidas/tarjetas}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-          <i class="bi bi-card-text"></i> Tarjetas
-        </a>
-        <a th:href="@{/comidas/tabla}" class="btn btn-sm btn-primary rounded-pill px-3">
-          <i class="bi bi-table"></i> Tabla
-        </a>
-      </div>
-
       <!-- Separador de Menú -->
       <div class="separador-menu mb-5">
         <div class="linea-decorativa"></div>
@@ -141,10 +131,10 @@
         <div class="col-lg-2 col-md-6">
           <h5 class="footer-heading">Navegación</h5>
           <ul class="footer-links">
-            <li><a th:href="@{/home.html}"><i class="bi bi-chevron-right"></i> Inicio</a></li>
-            <li><a th:href="@{/menu.html}"><i class="bi bi-chevron-right"></i> Menú</a></li>
-            <li><a th:href="@{/home.html#por-que-nosotros}"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
-            <li><a th:href="@{/home.html#quienes-somos}"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
+            <li><a th:href="@{/home}"><i class="bi bi-chevron-right"></i> Inicio</a></li>
+            <li><a th:href="@{/comidas/tabla}"><i class="bi bi-chevron-right"></i> Menú</a></li>
+            <li><a th:href="@{/home#por-que-nosotros}"><i class="bi bi-chevron-right"></i> ¿Por Qué Nosotros?</a></li>
+            <li><a th:href="@{/home#quienes-somos}"><i class="bi bi-chevron-right"></i> ¿Quiénes Somos?</a></li>
           </ul>
         </div>
 
@@ -154,7 +144,7 @@
           <ul class="footer-links">
             <li><a th:href="@{/login}"><i class="bi bi-chevron-right"></i> Iniciar Sesión</a></li>
             <li><a th:href="@{/registro}"><i class="bi bi-chevron-right"></i> Registrarse</a></li>
-            <li><a th:href="@{/menu.html}"><i class="bi bi-chevron-right"></i> Domicilios</a></li>
+            <li><a th:href="@{/comidas/tabla}"><i class="bi bi-chevron-right"></i> Domicilios</a></li>
           </ul>
         </div>
 

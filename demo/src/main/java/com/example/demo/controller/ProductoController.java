@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 /**
  * Controlador Spring MVC encargado de gestionar las peticiones web relacionadas con los platos.
  * Cumple los requerimientos del Sprint 2:
@@ -33,23 +31,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/comidas")
 public class ProductoController {
 
+    private final ProductoService productoService;
+    private final CategoriaService categoriaService;
+    private final ClienteService clienteService;
+
     @Autowired
-    ProductoService productoService;
-    @Autowired
-    CategoriaService categoriaService;
-    @Autowired
-    ClienteService clienteService;
+    public ProductoController(ProductoService productoService, CategoriaService categoriaService, ClienteService clienteService) {
+        this.productoService = productoService;
+        this.categoriaService = categoriaService;
+        this.clienteService = clienteService;
+    }
 
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
      */
     // localhost:8080/comidas/tabla
     @GetMapping("/tabla")
-    public String listarComidasTabla(Model model) {
+    public String listarComidasTabla(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        if (id != null) {
+            Cliente cliente = clienteService.obtenerClientePorId(id);
+            model.addAttribute("cliente", cliente);
+        }
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
         return "comidas-tabla";
-        
     }
 
     /**
@@ -58,10 +63,12 @@ public class ProductoController {
     // localhost:8080/comidas/tarjetas
     @GetMapping("/tarjetas")
     public String listarComidasTarjetas(@RequestParam(value = "id", required = false) Integer id, Model model) {
-        Cliente cliente = clienteService.obtenerClientePorId(id);
+        if (id != null) {
+            Cliente cliente = clienteService.obtenerClientePorId(id);
+            model.addAttribute("cliente", cliente);
+        }
         List<Producto> lista = productoService.obtenerTodosLosProductos();
         model.addAttribute("comidas", lista);
-        model.addAttribute("cliente", cliente);
 
         // Agrupación limpia para las secciones del diseño
         List<Producto> entradas = lista.stream()
@@ -86,10 +93,16 @@ public class ProductoController {
      */
     // localhost:8080/comidas/detalle/1
     @GetMapping("/detalle/{id}")
-    public String verDetalleComida(@PathVariable("id") int id, Model model) {
+    public String verDetalleComida(@PathVariable("id") int id,
+            @RequestParam(value = "clienteId", required = false) Integer clienteId,
+            Model model) {
         Producto comida = productoService.obtenerProductoPorId(id);
         if (comida == null) {
             return "redirect:/comidas/tarjetas";
+        }
+        if (clienteId != null) {
+            Cliente cliente = clienteService.obtenerClientePorId(clienteId);
+            model.addAttribute("cliente", cliente);
         }
         model.addAttribute("comida", comida);
         return "comida-detalle";

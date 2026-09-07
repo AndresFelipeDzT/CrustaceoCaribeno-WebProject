@@ -25,4 +25,18 @@ public interface ClienteService {
      * @return El cliente si las credenciales son válidas, o null si no coinciden.
      */
     Cliente autenticar(String nombreOCorreo, String password);
+
+    /**
+     * Verifica si un correo ya se encuentra registrado en el sistema.
+     * @param correo Correo electrónico a validar.
+     * @return true si el correo ya existe, false en caso contrario.
+     */
+    boolean existeCorreo(String correo);
+
+    /**
+     * Busca un cliente por su correo electrónico.
+     * @param correo Correo electrónico del cliente.
+     * @return Optional con el cliente si existe.
+     */
+    Optional<Cliente> buscarPorCorreo(String correo);
 }

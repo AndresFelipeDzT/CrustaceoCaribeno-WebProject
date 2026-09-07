@@ -11,17 +11,26 @@ import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
 /**
- * Controlador para la funcionalidad de Login de clientes sin uso de HttpSession.
+ * Controlador para la funcionalidad de Login de clientes.
  */
 @Controller
 public class LoginController {
 
+    private final ClienteService clienteService;
+
     @Autowired
-    private ClienteService clienteService;
+    public LoginController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("/login")
     public String mostrarLogin() {
         return "login";
+    }
+
+    @GetMapping("/logout")
+    public String cerrarSesion() {
+        return "redirect:/home";
     }
 
     @PostMapping("/login")
