@@ -13,11 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!formRegistro) return;
 
   const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
+    return /^[^\s@]+@[^\s@]+$/.test(String(email).trim());
   };
 
   formRegistro.addEventListener("submit", (e) => {
@@ -39,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!validateEmail(correo)) {
       e.preventDefault();
-      mostrarAlerta("Por favor ingresa un correo electrónico válido.");
+      mostrarAlerta("El correo no es un correo válido.");
       txtCorreo.focus();
       return;
     }

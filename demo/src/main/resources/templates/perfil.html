@@ -27,7 +27,8 @@
       <h1 id="perfil-titulo" class="perfil-nombre" th:text="${cliente.nombreCompleto}">Edgar Antonio Rodríguez Gutiérrez</h1>
       <p class="perfil-descripcion">Consulta y administra la información de tu cuenta.</p>
       <p th:if="${mensaje}" class="perfil-alert perfil-alert-success" th:text="${mensaje}"></p>
-      <form th:action="@{/perfil/editar(id=${cliente.idCliente})}" method="post" class="perfil-form">
+      <p th:if="${error}" class="perfil-alert perfil-alert-error text-red-500 font-semibold mb-3" th:text="${error}"></p>
+      <form th:action="@{/perfil/editar(id=${cliente.idCliente})}" method="post" class="perfil-form" novalidate>
         <input type="hidden" name="idCliente" th:value="${cliente.idCliente}">
         <input type="hidden" name="nombreCompleto" th:value="${cliente.nombreCompleto}">
         <div class="perfil-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" th:value="${cliente.correo}" th:readonly="${!modoEdicion}" autocomplete="email" required></div>

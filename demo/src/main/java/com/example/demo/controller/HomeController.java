@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class homeController {
+public class HomeController {
     
     // localhost:8080/home y localhost:8080/home.html
     @GetMapping({"/home", "/home.html"})

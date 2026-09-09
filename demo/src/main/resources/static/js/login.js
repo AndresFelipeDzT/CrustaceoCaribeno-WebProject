@@ -3,7 +3,7 @@
  */
 document.addEventListener("DOMContentLoaded", () => {
   const formLogin = document.getElementById("formLogin");
-  const txtNombre = document.getElementById("txtNombre");
+  const txtCorreo = document.getElementById("txtCorreo") || document.getElementById("txtNombre");
   const txtPassword = document.getElementById("txtPassword");
   const alertaJs = document.getElementById("alertaJs");
 
@@ -13,13 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     alertaJs.classList.add("d-none");
     alertaJs.textContent = "";
 
-    const nombre = txtNombre.value.trim();
+    const correo = txtCorreo ? txtCorreo.value.trim() : "";
     const password = txtPassword.value.trim();
 
-    if (nombre === "") {
+    if (correo === "") {
       e.preventDefault();
-      mostrarAlerta("Por favor ingresa tu nombre de usuario.");
-      txtNombre.focus();
+      mostrarAlerta("Por favor ingresa tu correo electrónico.");
+      if (txtCorreo) txtCorreo.focus();
       return;
     }
 

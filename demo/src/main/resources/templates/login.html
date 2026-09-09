@@ -31,15 +31,15 @@
       <div id="alertaJs" class="login-alert d-none" role="alert"></div>
       <div th:if="${error}" class="login-alert" th:text="${error}" role="alert"></div>
 
-      <form id="formLogin" th:action="@{/login}" method="post">
+      <form id="formLogin" th:action="@{/login}" method="post" novalidate>
         <div class="campo-grupo">
-          <label for="txtNombre" class="login-label">Nombre</label>
+          <label for="txtCorreo" class="login-label">Correo</label>
           <input
-            type="text"
-            id="txtNombre"
-            name="nombre"
+            type="email"
+            id="txtCorreo"
+            name="correo"
             class="login-input"
-            autocomplete="username"
+            autocomplete="email"
             required
           />
         </div>

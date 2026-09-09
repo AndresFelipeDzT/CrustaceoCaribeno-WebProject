@@ -28,19 +28,14 @@ public class RegistroController {
 
     @PostMapping("/registro")
     public String procesarRegistro(@ModelAttribute("cliente") Cliente cliente, Model model) {
-
-        // Validar campos vacíos
-        if (cliente.getNombre() == null || cliente.getNombre().isBlank() ||
-            cliente.getCorreo() == null || cliente.getCorreo().isBlank() ||
-            cliente.getDireccion() == null || cliente.getDireccion().isBlank() ||
-            cliente.getPassword() == null || cliente.getPassword().isBlank()) {
-            
-            model.addAttribute("error", "Por favor completa todos los campos obligatorios.");
+        try {
+            // Las validaciones de campos, formato de correo y mínimo de teléfono se realizan en el servicio
+            Cliente clienteGuardado = clienteService.guardarCliente(cliente);
+            return "redirect:/comidas/tarjetas?id=" + clienteGuardado.getIdCliente();
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            model.addAttribute("cliente", cliente);
             return "registro";
         }
-
-        // Si el correo ya existe, ClienteAlreadyExistsException se manejara en GlobalExceptionHandler y se mostrará la vista error.html.
-        Cliente clienteGuardado = clienteService.guardarCliente(cliente);
-        return "redirect:/comidas/tarjetas?id=" + clienteGuardado.getIdCliente();
     }
 }

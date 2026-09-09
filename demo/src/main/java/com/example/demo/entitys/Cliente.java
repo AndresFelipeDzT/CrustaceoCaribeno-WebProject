@@ -55,4 +55,30 @@ public class Cliente {
         this.direccion = direccion;
         this.password = password;
     }
+
+    public String getNombreCompleto() {
+        if (nombre == null && apellido == null) {
+            return "";
+        }
+        if (apellido == null || apellido.isBlank()) {
+            return nombre != null ? nombre : "";
+        }
+        if (nombre == null || nombre.isBlank()) {
+            return apellido;
+        }
+        return nombre + " " + apellido;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        if (nombreCompleto == null || nombreCompleto.isBlank()) {
+            return;
+        }
+        String[] partes = nombreCompleto.trim().split("\\s+", 2);
+        this.nombre = partes[0];
+        if (partes.length > 1) {
+            this.apellido = partes[1];
+        } else if (this.apellido == null) {
+            this.apellido = "";
+        }
+    }
 }

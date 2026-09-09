@@ -35,12 +35,61 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente guardarCliente(Cliente cliente) {
-        Optional<Cliente> existente = clienteRepository.findByCorreo(cliente.getCorreo());
+        validarCliente(cliente);
+
+        Optional<Cliente> existente = clienteRepository.findByCorreo(cliente.getCorreo().trim());
         if (existente.isPresent() && (cliente.getIdCliente() == null || !existente.get().getIdCliente().equals(cliente.getIdCliente()))) {
-            throw new ClienteAlreadyExistsException(cliente.getCorreo());
+            throw new ClienteAlreadyExistsException(cliente.getCorreo().trim());
         }
         
+        // Formatear campos limpios
+        cliente.setCorreo(cliente.getCorreo().trim());
+        if (cliente.getNombre() != null) {
+            cliente.setNombre(cliente.getNombre().trim());
+        }
+        if (cliente.getTelefono() != null) {
+            cliente.setTelefono(cliente.getTelefono().trim());
+        }
+        if (cliente.getDireccion() != null) {
+            cliente.setDireccion(cliente.getDireccion().trim());
+        }
+
         return clienteRepository.save(cliente);
+    }
+
+    private void validarCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Los datos del cliente no pueden ser nulos.");
+        }
+
+        // Validación de nombre (mismo criterio que JS: nombre.length < 2)
+        if (cliente.getNombre() == null || cliente.getNombre().trim().length() < 2) {
+            throw new IllegalArgumentException("Por favor ingresa tu nombre completo (mínimo 2 caracteres).");
+        }
+
+        // Validación de correo y formato (mismo criterio que JS: regex email)
+        if (cliente.getCorreo() == null || cliente.getCorreo().trim().isEmpty()) {
+            throw new IllegalArgumentException("El correo electrónico es obligatorio.");
+        }
+        String regexCorreo = "^[^\\s@]+@[^\\s@]+$";
+        if (!cliente.getCorreo().trim().matches(regexCorreo)) {
+            throw new IllegalArgumentException("El correo no es un correo válido.");
+        }
+
+        // Validación de teléfono (mismo criterio que JS: telefono.length < 7)
+        if (cliente.getTelefono() == null || cliente.getTelefono().trim().length() < 7) {
+            throw new IllegalArgumentException("Por favor ingresa un número de teléfono válido (mínimo 7 dígitos).");
+        }
+
+        // Validación de dirección (mismo criterio que JS: direccion.length < 5)
+        if (cliente.getDireccion() == null || cliente.getDireccion().trim().length() < 5) {
+            throw new IllegalArgumentException("Por favor ingresa una dirección válida (mínimo 5 caracteres).");
+        }
+
+        // Validación de contraseña (mismo criterio que JS: password.length < 4)
+        if (cliente.getPassword() == null || cliente.getPassword().trim().length() < 4) {
+            throw new IllegalArgumentException("La contraseña debe tener al menos 4 caracteres.");
+        }
     }
 
     @Override
@@ -49,24 +98,45 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente autenticar(String nombreOCorreo, String password) {
-    if (nombreOCorreo == null || password == null) {
+    public Cliente login(String correo, String password) {
+        // Validaciones del lado del servidor equivalentes al JavaScript de login
+        if (correo == null || correo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu correo electrónico.");
+        }
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
+        }
+        if (password.trim().length() < 3) {
+            throw new IllegalArgumentException("La contraseña debe tener al menos 3 caracteres.");
+        }
+
+        Cliente cliente = autenticar(correo, password);
+        if (cliente == null) {
+            throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
+        }
+        return cliente;
+    }
+
+    @Override
+    public Cliente autenticar(String correoONombre, String password) {
+        if (correoONombre == null || password == null) {
+            return null;
+        }
+
+        String identificador = correoONombre.trim();
+        Optional<Cliente> clienteOpt = clienteRepository.findByCorreo(identificador);
+        if (clienteOpt.isEmpty()) {
+            clienteOpt = clienteRepository.findByNombre(identificador);
+        }
+
+        if (clienteOpt.isPresent()) {
+            Cliente cliente = clienteOpt.get();
+            if (password.equals(cliente.getPassword())) {
+                return cliente;
+            }
+        }
         return null;
     }
-
-    Optional<Cliente> clienteOpt = clienteRepository.findByNombre(nombreOCorreo);
-    if (clienteOpt.isEmpty()) {
-        clienteOpt = clienteRepository.findByCorreo(nombreOCorreo);
-    }
-
-    if (clienteOpt.isPresent()) {
-        Cliente cliente = clienteOpt.get();
-        if (password.equals(cliente.getPassword())) {
-            return cliente;
-        }
-    }
-    return null;
-}
 
     @Override
     public boolean existeCorreo(String correo) {

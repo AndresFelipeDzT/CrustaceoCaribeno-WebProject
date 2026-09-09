@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/perfil")
 public class PerfilController {
 
     private final ClienteService clienteService;
@@ -21,7 +23,7 @@ public class PerfilController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping("/perfil")
+    @GetMapping({"", "/"})
     public String perfil(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id == null) {
             return "redirect:/login";
@@ -36,7 +38,7 @@ public class PerfilController {
         return "perfil";
     }
 
-    @GetMapping("/perfil/editar")
+    @GetMapping("/editar")
     public String editar(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id == null) {
             return "redirect:/login";
@@ -52,7 +54,7 @@ public class PerfilController {
     }
 
     // Recibe todo el objeto Cliente mediante @ModelAttribute y lo guarda completo
-    @PostMapping("/perfil/editar")
+    @PostMapping("/editar")
     public String guardar(@RequestParam(value = "id", required = false) Long id,
             @ModelAttribute("cliente") Cliente clienteForm, RedirectAttributes redirectAttributes) {
 
@@ -72,15 +74,31 @@ public class PerfilController {
         if (clienteForm.getNombre() == null || clienteForm.getNombre().isBlank()) {
             clienteForm.setNombre(clienteExistente.getNombre());
         }
+        if (clienteForm.getApellido() == null || clienteForm.getApellido().isBlank()) {
+            clienteForm.setApellido(clienteExistente.getApellido());
+        }
+        if (clienteForm.getPassword() == null || clienteForm.getPassword().isBlank()) {
+            clienteForm.setPassword(clienteExistente.getPassword());
+        }
+        if (clienteForm.getTelefono() == null || clienteForm.getTelefono().isBlank()) {
+            clienteForm.setTelefono(clienteExistente.getTelefono());
+        }
+        if (clienteForm.getDireccion() == null || clienteForm.getDireccion().isBlank()) {
+            clienteForm.setDireccion(clienteExistente.getDireccion());
+        }
 
-        // Se pasa el objeto completo al servicio sin mutar atributo por atributo
-        clienteService.guardarCliente(clienteForm);
-
-        redirectAttributes.addFlashAttribute("mensaje", "Tus datos se actualizaron correctamente.");
-        return "redirect:/perfil?id=" + clienteForm.getIdCliente();
+        try {
+            // Se pasa el objeto completo al servicio validando formato de correo y teléfono
+            clienteService.guardarCliente(clienteForm);
+            redirectAttributes.addFlashAttribute("mensaje", "Tus datos se actualizaron correctamente.");
+            return "redirect:/perfil?id=" + clienteForm.getIdCliente();
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/perfil/editar?id=" + clienteForm.getIdCliente();
+        }
     }
 
-    @PostMapping("/perfil/eliminar")
+    @PostMapping("/eliminar")
     public String eliminar(@RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
             return "redirect:/login";

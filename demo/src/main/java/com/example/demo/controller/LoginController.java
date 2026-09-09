@@ -35,23 +35,18 @@ public class LoginController {
 
     @PostMapping("/login")
     public String procesarLogin(
-            @RequestParam("nombre") String nombre,
+            @RequestParam("correo") String correo,
             @RequestParam("password") String password,
             Model model) {
 
-        if (nombre == null || nombre.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            model.addAttribute("error", "Por favor ingresa tu nombre y contraseña.");
+        try {
+            // Toda la lógica de autenticación y validación de negocio reside en el servicio
+            Cliente cliente = clienteService.login(correo, password);
+            return "redirect:/comidas/tarjetas?id=" + cliente.getIdCliente();
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            model.addAttribute("correo", correo);
             return "login";
         }
-
-        // Autenticar contra el servicio
-        Cliente cliente = clienteService.autenticar(nombre, password);
-
-        if (cliente == null) {
-            model.addAttribute("error", "Usuario o contraseña incorrectos.");
-            return "login";
-        }
-
-        return "redirect:/comidas/tarjetas?id=" + cliente.getIdCliente();
     }
 }

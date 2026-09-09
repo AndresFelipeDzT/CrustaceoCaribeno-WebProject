@@ -27,6 +27,15 @@ public interface ClienteService {
     Cliente autenticar(String nombreOCorreo, String password);
 
     /**
+     * Realiza el proceso de login completo, validando entradas y credenciales.
+     * Lanza IllegalArgumentException si las credenciales son inválidas o faltan datos.
+     * @param correo Correo o usuario del cliente.
+     * @param password Contraseña del cliente.
+     * @return El cliente autenticado exitosamente.
+     */
+    Cliente login(String correo, String password);
+
+    /**
      * Verifica si un correo ya se encuentra registrado en el sistema.
      * @param correo Correo electrónico a validar.
      * @return true si el correo ya existe, false en caso contrario.
