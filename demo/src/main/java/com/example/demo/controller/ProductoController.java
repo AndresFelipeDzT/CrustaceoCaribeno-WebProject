@@ -30,17 +30,13 @@ import com.example.demo.service.ProductoService;
 @RequestMapping("/comidas")
 public class ProductoController {
 
-    private final ProductoService productoService;
-    private final CategoriaService categoriaService;
-    private final ClienteService clienteService;
-
     @Autowired
-    public ProductoController(ProductoService productoService, CategoriaService categoriaService, ClienteService clienteService) {
-        this.productoService = productoService;
-        this.categoriaService = categoriaService;
-        this.clienteService = clienteService;
-    }
-
+    ProductoService productoService;
+    @Autowired 
+    CategoriaService categoriaService;
+    @Autowired 
+    ClienteService clienteService;
+    
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
      */

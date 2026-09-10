@@ -27,20 +27,19 @@
     <div class="login-card">
       <h2 class="login-title">Login</h2>
 
-      <!-- Alertas de error (Cliente JS o Spring Boot) -->
-      <div id="alertaJs" class="login-alert d-none" role="alert"></div>
+      <!-- Alerta de error enviada por el servidor -->
       <div th:if="${error}" class="login-alert" th:text="${error}" role="alert"></div>
 
-      <form id="formLogin" th:action="@{/login}" method="post" novalidate>
+      <form id="formLogin" th:action="@{/login}" method="post">
         <div class="campo-grupo">
           <label for="txtCorreo" class="login-label">Correo</label>
           <input
-            type="email"
+            type="text"
             id="txtCorreo"
             name="correo"
+            th:value="${correo}"
             class="login-input"
             autocomplete="email"
-            required
           />
         </div>
 
@@ -52,7 +51,6 @@
             name="password"
             class="login-input"
             autocomplete="current-password"
-            required
           />
         </div>
 
@@ -64,6 +62,5 @@
     </div>
   </main>
 
-  <script th:src="@{/js/login.js}"></script>
 </body>
 </html>

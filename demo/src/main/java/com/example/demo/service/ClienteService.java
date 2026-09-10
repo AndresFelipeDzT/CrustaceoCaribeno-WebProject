@@ -18,6 +18,8 @@ public interface ClienteService {
 
     void eliminarCliente(Long id);
 
+    Cliente prepararClienteEdicion(Cliente clienteFormulario, Long idCliente);
+
     /**
      * Valida las credenciales de un cliente por su nombre o correo.
      * @param nombreOCorreo Nombre de usuario o correo.
@@ -27,25 +29,10 @@ public interface ClienteService {
     Cliente autenticar(String nombreOCorreo, String password);
 
     /**
-     * Realiza el proceso de login completo, validando entradas y credenciales.
-     * Lanza IllegalArgumentException si las credenciales son inválidas o faltan datos.
+     * Realiza el proceso de login completo.
      * @param correo Correo o usuario del cliente.
      * @param password Contraseña del cliente.
      * @return El cliente autenticado exitosamente.
      */
     Cliente login(String correo, String password);
-
-    /**
-     * Verifica si un correo ya se encuentra registrado en el sistema.
-     * @param correo Correo electrónico a validar.
-     * @return true si el correo ya existe, false en caso contrario.
-     */
-    boolean existeCorreo(String correo);
-
-    /**
-     * Busca un cliente por su correo electrónico.
-     * @param correo Correo electrónico del cliente.
-     * @return Optional con el cliente si existe.
-     */
-    Optional<Cliente> buscarPorCorreo(String correo);
 }

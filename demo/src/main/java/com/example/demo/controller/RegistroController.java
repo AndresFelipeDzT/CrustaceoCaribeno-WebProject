@@ -13,12 +13,8 @@ import com.example.demo.service.ClienteService;
 @Controller
 public class RegistroController {
 
-    private final ClienteService clienteService;
-
     @Autowired
-    public RegistroController(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
+    ClienteService clienteService;
 
     @GetMapping("/registro")
     public String mostrarRegistro(Model model) {
@@ -29,7 +25,6 @@ public class RegistroController {
     @PostMapping("/registro")
     public String procesarRegistro(@ModelAttribute("cliente") Cliente cliente, Model model) {
         try {
-            // Las validaciones de campos, formato de correo y mínimo de teléfono se realizan en el servicio
             Cliente clienteGuardado = clienteService.guardarCliente(cliente);
             return "redirect:/comidas/tarjetas?id=" + clienteGuardado.getIdCliente();
         } catch (IllegalArgumentException ex) {
