@@ -16,12 +16,8 @@ import com.example.demo.service.ClienteService;
 @Controller
 public class LoginController {
 
-    private final ClienteService clienteService;
-
     @Autowired
-    public LoginController(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
+    ClienteService clienteService;
 
     @GetMapping("/login")
     public String mostrarLogin() {
@@ -35,12 +31,11 @@ public class LoginController {
 
     @PostMapping("/login")
     public String procesarLogin(
-            @RequestParam("correo") String correo,
-            @RequestParam("password") String password,
+            @RequestParam(value = "correo", required = false) String correo,
+            @RequestParam(value = "password", required = false) String password,
             Model model) {
 
         try {
-            // Toda la lógica de autenticación y validación de negocio reside en el servicio
             Cliente cliente = clienteService.login(correo, password);
             return "redirect:/comidas/tarjetas?id=" + cliente.getIdCliente();
         } catch (IllegalArgumentException ex) {

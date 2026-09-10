@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Cliente;
-import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.errors.ClienteAlreadyExistsException;
 import com.example.demo.errors.ClienteNotFoundException;
 import com.example.demo.repository.ClienteFakeRepository;
@@ -61,34 +60,27 @@ public class ClienteServiceImpl implements ClienteService {
         if (cliente == null) {
             throw new IllegalArgumentException("Los datos del cliente no pueden ser nulos.");
         }
-
-        // Validación de nombre (mismo criterio que JS: nombre.length < 2)
-        if (cliente.getNombre() == null || cliente.getNombre().trim().length() < 2) {
-            throw new IllegalArgumentException("Por favor ingresa tu nombre completo (mínimo 2 caracteres).");
+        if (!nombreValido(cliente.getNombre())) {
+            throw new IllegalArgumentException(
+                    "Por favor ingresa tu nombre completo (mínimo 2 caracteres).");
         }
-
-        // Validación de correo y formato (mismo criterio que JS: regex email)
         if (cliente.getCorreo() == null || cliente.getCorreo().trim().isEmpty()) {
             throw new IllegalArgumentException("El correo electrónico es obligatorio.");
         }
-        String regexCorreo = "^[^\\s@]+@[^\\s@]+$";
-        if (!cliente.getCorreo().trim().matches(regexCorreo)) {
+        if (!correoValido(cliente.getCorreo())) {
             throw new IllegalArgumentException("El correo no es un correo válido.");
         }
-
-        // Validación de teléfono (mismo criterio que JS: telefono.length < 7)
-        if (cliente.getTelefono() == null || cliente.getTelefono().trim().length() < 7) {
-            throw new IllegalArgumentException("Por favor ingresa un número de teléfono válido (mínimo 7 dígitos).");
+        if (!telefonoValido(cliente.getTelefono())) {
+            throw new IllegalArgumentException(
+                    "Por favor ingresa un número de teléfono válido (solo números, mínimo 7 dígitos).");
         }
-
-        // Validación de dirección (mismo criterio que JS: direccion.length < 5)
-        if (cliente.getDireccion() == null || cliente.getDireccion().trim().length() < 5) {
-            throw new IllegalArgumentException("Por favor ingresa una dirección válida (mínimo 5 caracteres).");
+        if (!direccionValida(cliente.getDireccion())) {
+            throw new IllegalArgumentException(
+                    "Por favor ingresa una dirección válida (mínimo 5 caracteres).");
         }
-
-        // Validación de contraseña (mismo criterio que JS: password.length < 4)
-        if (cliente.getPassword() == null || cliente.getPassword().trim().length() < 4) {
-            throw new IllegalArgumentException("La contraseña debe tener al menos 4 caracteres.");
+        if (!passwordValida(cliente.getPassword())) {
+            throw new IllegalArgumentException(
+                    "La contraseña debe tener al menos 4 caracteres.");
         }
     }
 
@@ -97,9 +89,57 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deleteById(id);
     }
 
+    private boolean nombreValido(String nombre) {
+        return nombre != null && nombre.trim().length() >= 2;
+    }
+
+    private boolean correoValido(String correo) {
+        return correo != null
+                && correo.trim().matches("^[^\\s@]+@[^\\s@]+$");
+    }
+
+    private boolean telefonoValido(String telefono) {
+        return telefono != null && telefono.trim().matches("[0-9]{7,}");
+    }
+
+    private boolean direccionValida(String direccion) {
+        return direccion != null && direccion.trim().length() >= 5;
+    }
+
+    private boolean passwordValida(String password) {
+        return password != null && password.trim().length() >= 4;
+    }
+
+    @Override
+    public Cliente prepararClienteEdicion(Cliente clienteFormulario, Long idCliente) {
+        if (clienteFormulario == null || idCliente == null) {
+            return null;
+        }
+
+        Cliente clienteExistente = obtenerClientePorId(idCliente);
+        clienteFormulario.setIdCliente(idCliente);
+
+        if (clienteFormulario.getNombre() == null || clienteFormulario.getNombre().isBlank()) {
+            clienteFormulario.setNombre(clienteExistente.getNombre());
+        }
+        if (clienteFormulario.getApellido() == null || clienteFormulario.getApellido().isBlank()) {
+            clienteFormulario.setApellido(clienteExistente.getApellido());
+        }
+        if (clienteFormulario.getPassword() == null || clienteFormulario.getPassword().isBlank()) {
+            clienteFormulario.setPassword(clienteExistente.getPassword());
+        }
+        if (clienteFormulario.getTelefono() == null || clienteFormulario.getTelefono().isBlank()) {
+            clienteFormulario.setTelefono(clienteExistente.getTelefono());
+        }
+        if (clienteFormulario.getDireccion() == null || clienteFormulario.getDireccion().isBlank()) {
+            clienteFormulario.setDireccion(clienteExistente.getDireccion());
+        }
+
+        return clienteFormulario;
+    }
+
     @Override
     public Cliente login(String correo, String password) {
-        // Validaciones del lado del servidor equivalentes al JavaScript de login
         if (correo == null || correo.trim().isEmpty()) {
             throw new IllegalArgumentException("Por favor ingresa tu correo electrónico.");
         }
@@ -107,7 +147,8 @@ public class ClienteServiceImpl implements ClienteService {
             throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
         }
         if (password.trim().length() < 3) {
-            throw new IllegalArgumentException("La contraseña debe tener al menos 3 caracteres.");
+            throw new IllegalArgumentException(
+                    "La contraseña debe tener al menos 3 caracteres.");
         }
 
         Cliente cliente = autenticar(correo, password);
@@ -136,21 +177,5 @@ public class ClienteServiceImpl implements ClienteService {
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean existeCorreo(String correo) {
-        if (correo == null || correo.trim().isEmpty()) {
-            return false;
-        }
-        return clienteRepository.findByCorreo(correo).isPresent();
-    }
-
-    @Override
-    public Optional<Cliente> buscarPorCorreo(String correo) {
-        if (correo == null || correo.trim().isEmpty()) {
-            return Optional.empty();
-        }
-        return clienteRepository.findByCorreo(correo);
     }
 }
