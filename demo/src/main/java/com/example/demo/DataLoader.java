@@ -41,7 +41,7 @@ public class DataLoader implements CommandLineRunner {
         //Agregar 5 categorias
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Entrada"));
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Plato Fuerte"));
-        categoriaRepository.save(new com.example.demo.entitys.Categoria("Especialidad de la Casa"));
+        categoriaRepository.save(new com.example.demo.entitys.Categoria("Especialidades De La Casa"));
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Postre"));
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Bebida"));
 

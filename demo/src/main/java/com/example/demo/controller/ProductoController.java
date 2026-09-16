@@ -67,18 +67,29 @@ public class ProductoController {
 
         // Agrupación limpia para las secciones del diseño
         List<Producto> entradas = lista.stream()
-            .filter(p -> "Entrada".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 1 && p.getIdProducto() <= 3))
+            .filter(p -> p.getCategoria() != null && "Entrada".equalsIgnoreCase(p.getCategoria().getNombre()))
             .toList();
         List<Producto> platosFuertes = lista.stream()
-            .filter(p -> "Plato Fuerte".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 4 && p.getIdProducto() <= 9))
+            .filter(p -> p.getCategoria() != null && "Plato Fuerte".equalsIgnoreCase(p.getCategoria().getNombre()))
             .toList();
         List<Producto> especialidades = lista.stream()
-            .filter(p -> "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria().getNombre()) || (p.getIdProducto() >= 10 && p.getIdProducto() <= 12))
+            .filter(p -> p.getCategoria() != null && (
+                "Especialidades De La Casa".equalsIgnoreCase(p.getCategoria().getNombre()) ||
+                "Especialidad de la Casa".equalsIgnoreCase(p.getCategoria().getNombre())
+            ))
+            .toList();
+        List<Producto> postres = lista.stream()
+            .filter(p -> p.getCategoria() != null && "Postre".equalsIgnoreCase(p.getCategoria().getNombre()))
+            .toList();
+        List<Producto> bebidas = lista.stream()
+            .filter(p -> p.getCategoria() != null && "Bebida".equalsIgnoreCase(p.getCategoria().getNombre()))
             .toList();
 
         model.addAttribute("entradas", entradas);
         model.addAttribute("platosFuertes", platosFuertes);
         model.addAttribute("especialidades", especialidades);
+        model.addAttribute("postres", postres);
+        model.addAttribute("bebidas", bebidas);
         return "comidas-tarjetas";
     }
 
@@ -113,10 +124,13 @@ public class ProductoController {
     }
 
     @PostMapping("tabla/add")
-    public String agregarProducto(@ModelAttribute("plato") Producto producto, @RequestParam("nombreCategoria") String nombreCategoria) {
+    public String agregarProducto(@ModelAttribute("plato") Producto producto, 
+            @RequestParam(value = "nombreCategoria", required = false) String nombreCategoria) {
     
-        Categoria categoria = categoriaService.obtenerCategoriaPorNombre(nombreCategoria);
-        producto.setCategoria(categoria);
+        if (nombreCategoria != null && !nombreCategoria.isBlank()) {
+            Categoria categoria = categoriaService.obtenerCategoriaPorNombre(nombreCategoria);
+            producto.setCategoria(categoria);
+        }
         productoService.guardarProducto(producto);
         return "redirect:/comidas/tabla";
     }

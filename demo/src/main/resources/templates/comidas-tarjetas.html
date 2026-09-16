@@ -149,6 +149,60 @@
         </div>
       </section>
 
+      <!-- SECCIÓN 4: POSTRES -->
+      <section class="categoria-seccion" th:if="${postres != null and !postres.empty}">
+        <h2 class="titulo-categoria">Postre</h2>
+        <div class="tarjetas-lista">
+          
+          <article class="tarjeta-platillo" th:each="producto : ${postres}">
+            <div class="tarjeta-img-box">
+              <img th:src="@{${producto.imagenURL}}" th:alt="${producto.nombre}" class="tarjeta-img" loading="lazy">
+            </div>
+            
+            <div class="tarjeta-info">
+              <div class="tarjeta-header">
+                <h3 class="tarjeta-nombre" th:text="${producto.nombre}">Nombre del Platillo</h3>
+                <p class="tarjeta-descripcion" th:text="${producto.descripcion}">Descripción del platillo con ingredientes frescos y preparación de autor.</p>
+              </div>
+              
+              <div class="tarjeta-footer-row">
+                <div class="linea-puntos" aria-hidden="true"></div>
+                <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
+                <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- SECCIÓN 5: BEBIDAS -->
+      <section class="categoria-seccion" th:if="${bebidas != null and !bebidas.empty}">
+        <h2 class="titulo-categoria">Bebida</h2>
+        <div class="tarjetas-lista">
+          
+          <article class="tarjeta-platillo" th:each="producto : ${bebidas}">
+            <div class="tarjeta-img-box">
+              <img th:src="@{${producto.imagenURL}}" th:alt="${producto.nombre}" class="tarjeta-img" loading="lazy">
+            </div>
+            
+            <div class="tarjeta-info">
+              <div class="tarjeta-header">
+                <h3 class="tarjeta-nombre" th:text="${producto.nombre}">Nombre del Platillo</h3>
+                <p class="tarjeta-descripcion" th:text="${producto.descripcion}">Descripción del platillo con ingredientes frescos y preparación de autor.</p>
+              </div>
+              
+              <div class="tarjeta-footer-row">
+                <div class="linea-puntos" aria-hidden="true"></div>
+                <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
+                <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
     </div>
 
   </main>
