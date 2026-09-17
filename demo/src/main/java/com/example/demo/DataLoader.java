@@ -1,13 +1,21 @@
 package com.example.demo;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Domiciliario;
+import com.example.demo.entitys.ItemPedido;
+import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
+import com.example.demo.repository.DomiciliarioRepository;
+import com.example.demo.repository.ItemPedidoRepository;
+import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,6 +30,12 @@ public class DataLoader implements CommandLineRunner {
     CategoriaFakeRepository categoriaRepository;
     @Autowired 
     ProductoFakeRepository productoRepository;
+    @Autowired
+    DomiciliarioRepository domiciliarioRepository;
+    @Autowired
+    PedidoRepository pedidoRepository;
+    @Autowired
+    ItemPedidoRepository itemPedidoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -416,5 +430,109 @@ public class DataLoader implements CommandLineRunner {
         productoRepository.findById(41L).get().setCategoria(categoriaRepository.findById(5L).get());
         productoRepository.findById(42L).get().setCategoria(categoriaRepository.findById(5L).get());
         productoRepository.findById(43L).get().setCategoria(categoriaRepository.findById(5L).get());
+
+        // ==========================================
+        // AGREGAR DOMICILIARIOS
+        // ==========================================
+        domiciliarioRepository.save(Domiciliario.builder()
+            .nombre("Carlos Mendoza")
+            .celular("3001234567")
+            .cedula("1098765432")
+            .disponible(true)
+            .build());
+
+        domiciliarioRepository.save(Domiciliario.builder()
+            .nombre("Brayan Martínez")
+            .celular("3119876543")
+            .cedula("1087654321")
+            .disponible(true)
+            .build());
+
+        domiciliarioRepository.save(Domiciliario.builder()
+            .nombre("Laura Gómez")
+            .celular("3205551234")
+            .cedula("1076543210")
+            .disponible(false)
+            .build());
+
+        // ==========================================
+        // AGREGAR PEDIDOS
+        // ==========================================
+        Cliente cliente1 = clienteRepository.findById(1L).orElse(null);
+        Cliente cliente2 = clienteRepository.findById(2L).orElse(null);
+        Cliente cliente3 = clienteRepository.findById(3L).orElse(null);
+
+        Domiciliario dom1 = domiciliarioRepository.findById(1L).orElse(null);
+        Domiciliario dom2 = domiciliarioRepository.findById(2L).orElse(null);
+
+        Pedido pedido1 = pedidoRepository.save(Pedido.builder()
+            .fechaCreacion(LocalDate.now().minusDays(1))
+            .fechaEntrega(LocalDate.now().minusDays(1))
+            .estado("Entregado")
+            .cliente(cliente1)
+            .domiciliario(dom1)
+            .build());
+
+        Pedido pedido2 = pedidoRepository.save(Pedido.builder()
+            .fechaCreacion(LocalDate.now())
+            .fechaEntrega(null)
+            .estado("En camino")
+            .cliente(cliente2)
+            .domiciliario(dom2)
+            .build());
+
+        Pedido pedido3 = pedidoRepository.save(Pedido.builder()
+            .fechaCreacion(LocalDate.now())
+            .fechaEntrega(null)
+            .estado("En preparación")
+            .cliente(cliente3)
+            .domiciliario(null)
+            .build());
+
+        // ==========================================
+        // AGREGAR ITEMS DE PEDIDO (TABLA PUENTE)
+        // ==========================================
+        Producto prod1 = productoRepository.findById(1L).orElse(null);  // Aguachile Negro De Camarón
+        Producto prod14 = productoRepository.findById(14L).orElse(null); // Pulpo A Las Brasas
+        Producto prod25 = productoRepository.findById(25L).orElse(null); // Paella De Mariscos
+        Producto prod38 = productoRepository.findById(38L).orElse(null); // Limonada Natural
+
+        // Items para Pedido 1
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido1)
+            .producto(prod14)
+            .cantidad(2)
+            .precioUnitario(prod14 != null ? prod14.getPrecio() : 58000.0)
+            .build());
+
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido1)
+            .producto(prod38)
+            .cantidad(2)
+            .precioUnitario(prod38 != null ? prod38.getPrecio() : 10000.0)
+            .build());
+
+        // Items para Pedido 2
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido2)
+            .producto(prod25)
+            .cantidad(1)
+            .precioUnitario(prod25 != null ? prod25.getPrecio() : 52000.0)
+            .build());
+
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido2)
+            .producto(prod1)
+            .cantidad(1)
+            .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
+            .build());
+
+        // Items para Pedido 3
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido3)
+            .producto(prod1)
+            .cantidad(3)
+            .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
+            .build());
     }   
 }
