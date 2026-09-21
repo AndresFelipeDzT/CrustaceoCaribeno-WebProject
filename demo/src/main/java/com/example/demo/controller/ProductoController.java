@@ -126,7 +126,7 @@ public class ProductoController {
     // localhost:8080/comidas/tabla/add
     @GetMapping("/tabla/add")
     public String mostrarFormularioAgregar(Model model) {
-        Producto producto = new Producto(null, "", 0, "", "", null);
+        Producto producto = new Producto("", 0, "", "");
         model.addAttribute("plato",producto);
         model.addAttribute("categorias", categoriaService.obtenerTodasLasCategorias());
         return "comida-agregar";

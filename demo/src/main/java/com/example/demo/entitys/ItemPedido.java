@@ -6,11 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad intermedia (tabla puente) que relaciona un Pedido con un Producto,
@@ -39,6 +43,12 @@ public class ItemPedido {
 
     @ManyToOne
     private Producto producto;
+
+    @OneToMany(mappedBy = "itemPedido")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    private List<ItemPedidoAdicional> adicionales = new ArrayList<>();
 
     public ItemPedido(int cantidad, double precioUnitario, Pedido pedido, Producto producto) {
         this.cantidad = cantidad;

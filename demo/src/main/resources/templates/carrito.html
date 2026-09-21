@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head><meta charset="UTF-8"><title>Carrito</title></head>
+<body>
+  <h1>Mi carrito</h1>
+  <p th:if="${mensaje}" th:text="${mensaje}"></p><p th:if="${error}" th:text="${error}"></p>
+  <ul>
+    <li th:each="item : ${carrito.items}">
+      <span th:text="${item.cantidad + ' x ' + item.producto.nombre}">1 x Producto</span>
+      <ul th:if="${!item.adicionales.empty}">
+        <li th:each="relacion : ${item.adicionales}"
+            th:text="${'+ ' + relacion.adicional.nombre + ' — $' + #numbers.formatDecimal(relacion.adicional.precio, 0, 'POINT', 0, 'COMMA')}">+ Acompañamiento — $0</li>
+      </ul>
+    </li>
+  </ul>
+  <p th:if="${carrito.items.empty}">El carrito está vacío.</p>
+  <form th:action="@{/carrito/confirmar}" method="post"><input type="hidden" name="clienteId" th:value="${cliente.idCliente}"><button type="submit">Confirmar pedido</button></form>
+  <a th:href="@{/comidas/tarjetas(id=${cliente.idCliente})}">Volver al menú</a>
+</body>
+</html>

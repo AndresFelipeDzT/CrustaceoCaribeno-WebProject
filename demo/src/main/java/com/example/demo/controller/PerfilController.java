@@ -77,12 +77,18 @@ public class PerfilController {
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam(value = "id", required = false) Long id) {
+    public String eliminar(@RequestParam(value = "id", required = false) Long id,
+            RedirectAttributes redirectAttributes) {
         if (id == null) {
             return "redirect:/login";
         }
 
-        clienteService.eliminarCliente(id);
-        return "redirect:/home";
+        try {
+            clienteService.eliminarCliente(id);
+            return "redirect:/home";
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/perfil?id=" + id;
+        }
     }
 }

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Pedido;
 import com.example.demo.errors.ClienteAlreadyExistsException;
 import com.example.demo.errors.ClienteNotFoundException;
 import com.example.demo.repository.ClienteFakeRepository;
+import com.example.demo.repository.PedidoRepository;
 
 
 /**
@@ -20,6 +22,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     ClienteFakeRepository clienteRepository;
+
+    @Autowired
+    PedidoRepository pedidoRepository;
 
     @Override
     public List<Cliente> obtenerTodosLosClientes() {
@@ -86,7 +91,33 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void eliminarCliente(Long id) {
-        clienteRepository.deleteById(id);
+        Cliente cliente = obtenerClientePorId(id);
+
+        if (!cliente.isActivo()) {
+            throw new IllegalArgumentException("La cuenta ya fue eliminada.");
+        }
+
+        List<Pedido> pedidos = pedidoRepository.findByCliente(cliente);
+        boolean tienePedidoEnCurso = pedidos.stream()
+                .anyMatch(pedido -> !pedidoFinalizado(pedido));
+
+        if (tienePedidoEnCurso) {
+            throw new IllegalArgumentException(
+                    "No puedes eliminar tu cuenta mientras tengas pedidos en preparación, en camino o pendientes.");
+        }
+
+        // No se elimina la fila: los pedidos entregados o cancelados conservan su cliente.
+        cliente.setActivo(false);
+        clienteRepository.save(cliente);
+    }
+
+    private boolean pedidoFinalizado(Pedido pedido) {
+        if (pedido.getEstado() == null) {
+            return false;
+        }
+
+        return "Entregado".equalsIgnoreCase(pedido.getEstado().trim())
+                || "Cancelado".equalsIgnoreCase(pedido.getEstado().trim());
     }
 
     private boolean nombreValido(String nombre) {
@@ -118,6 +149,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         Cliente clienteExistente = obtenerClientePorId(idCliente);
         clienteFormulario.setIdCliente(idCliente);
+        clienteFormulario.setActivo(clienteExistente.isActivo());
 
         if (clienteFormulario.getNombre() == null || clienteFormulario.getNombre().isBlank()) {
             clienteFormulario.setNombre(clienteExistente.getNombre());
@@ -172,7 +204,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         if (clienteOpt.isPresent()) {
             Cliente cliente = clienteOpt.get();
-            if (password.equals(cliente.getPassword())) {
+            if (cliente.isActivo() && password.equals(cliente.getPassword())) {
                 return cliente;
             }
         }

@@ -7,13 +7,23 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entitys.Adicional;
+import com.example.demo.entitys.Carrito;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.entitys.ItemPedido;
+import com.example.demo.entitys.ItemCarrito;
+import com.example.demo.entitys.ItemCarritoAdicional;
+import com.example.demo.entitys.ItemPedidoAdicional;
+import com.example.demo.entitys.ProductoAdicional;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.AdicionalRepository;
+import com.example.demo.repository.CarritoRepository;
+import com.example.demo.repository.ItemCarritoRepository;
+import com.example.demo.repository.ItemCarritoAdicionalRepository;
+import com.example.demo.repository.ItemPedidoAdicionalRepository;
+import com.example.demo.repository.ProductoAdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
 import com.example.demo.repository.DomiciliarioRepository;
@@ -41,6 +51,11 @@ public class DataLoader implements CommandLineRunner {
     ItemPedidoRepository itemPedidoRepository;
     @Autowired
     AdicionalRepository adicionalRepository;
+    @Autowired CarritoRepository carritoRepository;
+    @Autowired ItemCarritoRepository itemCarritoRepository;
+    @Autowired ItemCarritoAdicionalRepository itemCarritoAdicionalRepository;
+    @Autowired ItemPedidoAdicionalRepository itemPedidoAdicionalRepository;
+    @Autowired ProductoAdicionalRepository productoAdicionalRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -460,15 +475,33 @@ public class DataLoader implements CommandLineRunner {
             .disponible(false)
             .build());
 
+        domiciliarioRepository.save(Domiciliario.builder()
+            .nombre("Mateo Rojas")
+            .celular("3156789012")
+            .cedula("1065432109")
+            .disponible(true)
+            .build());
+
+        domiciliarioRepository.save(Domiciliario.builder()
+            .nombre("Valentina Torres")
+            .celular("3167890123")
+            .cedula("1054321098")
+            .disponible(true)
+            .build());
+
         // ==========================================
         // AGREGAR PEDIDOS
         // ==========================================
         Cliente cliente1 = clienteRepository.findById(1L).orElse(null);
         Cliente cliente2 = clienteRepository.findById(2L).orElse(null);
         Cliente cliente3 = clienteRepository.findById(3L).orElse(null);
+        Cliente cliente4 = clienteRepository.findById(4L).orElse(null);
+        Cliente cliente5 = clienteRepository.findById(5L).orElse(null);
 
         Domiciliario dom1 = domiciliarioRepository.findById(1L).orElse(null);
         Domiciliario dom2 = domiciliarioRepository.findById(2L).orElse(null);
+        Domiciliario dom3 = domiciliarioRepository.findById(3L).orElse(null);
+        Domiciliario dom4 = domiciliarioRepository.findById(4L).orElse(null);
 
         Pedido pedido1 = pedidoRepository.save(Pedido.builder()
             .fechaCreacion(LocalDate.now().minusDays(1))
@@ -494,6 +527,22 @@ public class DataLoader implements CommandLineRunner {
             .domiciliario(null)
             .build());
 
+        Pedido pedido4 = pedidoRepository.save(Pedido.builder()
+            .fechaCreacion(LocalDate.now().minusDays(2))
+            .fechaEntrega(LocalDate.now().minusDays(2))
+            .estado("Entregado")
+            .cliente(cliente4)
+            .domiciliario(dom3)
+            .build());
+
+        Pedido pedido5 = pedidoRepository.save(Pedido.builder()
+            .fechaCreacion(LocalDate.now())
+            .fechaEntrega(null)
+            .estado("En preparación")
+            .cliente(cliente5)
+            .domiciliario(dom4)
+            .build());
+
         // ==========================================
         // AGREGAR ITEMS DE PEDIDO (TABLA PUENTE)
         // ==========================================
@@ -501,6 +550,7 @@ public class DataLoader implements CommandLineRunner {
         Producto prod14 = productoRepository.findById(14L).orElse(null); // Pulpo A Las Brasas
         Producto prod25 = productoRepository.findById(25L).orElse(null); // Paella De Mariscos
         Producto prod38 = productoRepository.findById(38L).orElse(null); // Limonada Natural
+        Producto prod41 = productoRepository.findById(41L).orElse(null); // Limonada Natural
 
         // Items para Pedido 1
         itemPedidoRepository.save(ItemPedido.builder()
@@ -540,6 +590,22 @@ public class DataLoader implements CommandLineRunner {
             .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
             .build());
 
+        // Items para Pedido 4
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido4)
+            .producto(prod14)
+            .cantidad(1)
+            .precioUnitario(prod14 != null ? prod14.getPrecio() : 58000.0)
+            .build());
+
+        // Items para Pedido 5
+        itemPedidoRepository.save(ItemPedido.builder()
+            .pedido(pedido5)
+            .producto(prod41)
+            .cantidad(2)
+            .precioUnitario(prod41 != null ? prod41.getPrecio() : 10000.0)
+            .build());
+
         // ==========================================
         // AGREGAR ADICIONALES (POR CATEGORÍA)
         // ==========================================
@@ -557,5 +623,34 @@ public class DataLoader implements CommandLineRunner {
         adicionalRepository.save(new Adicional("Salsa Tártara de la Casa", 4000.0, catEspecialidades));
         adicionalRepository.save(new Adicional("Bola de Helado de Vainilla", 5000.0, catPostre));
         adicionalRepository.save(new Adicional("Shot de Ron Caribeño", 6000.0, catBebida));
+
+        // Relaciones Producto - Adicional del DER
+        Adicional adicional1 = adicionalRepository.findById(1L).orElseThrow();
+        Adicional adicional2 = adicionalRepository.findById(2L).orElseThrow();
+        Adicional adicional3 = adicionalRepository.findById(3L).orElseThrow();
+        Adicional adicional4 = adicionalRepository.findById(4L).orElseThrow();
+        Adicional adicional5 = adicionalRepository.findById(5L).orElseThrow();
+        productoAdicionalRepository.save(new ProductoAdicional(prod1, adicional1));
+        productoAdicionalRepository.save(new ProductoAdicional(prod14, adicional3));
+        productoAdicionalRepository.save(new ProductoAdicional(prod25, adicional4));
+        productoAdicionalRepository.save(new ProductoAdicional(prod38, adicional2));
+        productoAdicionalRepository.save(new ProductoAdicional(prod41, adicional5));
+
+        // Cinco carritos con sus ítems y adicionales seleccionados
+        for (long clienteId = 4L; clienteId <= 8L; clienteId++) {
+            Cliente cliente = clienteRepository.findById(clienteId).orElseThrow();
+            Carrito carrito = carritoRepository.save(new Carrito(cliente));
+            Producto producto = productoRepository.findById(clienteId).orElseThrow();
+            ItemCarrito itemCarrito = itemCarritoRepository.save(new ItemCarrito(1, carrito, producto));
+            Adicional adicional = adicionalRepository.findById(clienteId).orElseThrow();
+            itemCarritoAdicionalRepository.save(new ItemCarritoAdicional(itemCarrito, adicional));
+        }
+
+        // Cinco adicionales asociados a ítems de pedidos ya generados
+        for (long itemPedidoId = 1L; itemPedidoId <= 5L; itemPedidoId++) {
+            ItemPedido itemPedido = itemPedidoRepository.findById(itemPedidoId).orElseThrow();
+            Adicional adicional = adicionalRepository.findById(itemPedidoId).orElseThrow();
+            itemPedidoAdicionalRepository.save(new ItemPedidoAdicional(itemPedido, adicional));
+        }
     }   
 }

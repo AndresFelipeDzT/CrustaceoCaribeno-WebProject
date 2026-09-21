@@ -5,9 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Clase que representa a un cliente registrado en el sistema.
@@ -46,6 +49,15 @@ public class Cliente {
     /** Contraseña del cliente */
     @Column (nullable = false, length = 50)
     private String password;
+
+    /** Indica si la cuenta puede seguir iniciando sesión. */
+    @Column(nullable = false)
+    private boolean activo = true;
+
+    @OneToOne(mappedBy = "cliente")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Carrito carrito;
 
     public Cliente(String nombre, String apellido, String correo, String telefono, String direccion, String password) {
         this.nombre = nombre;
