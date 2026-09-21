@@ -20,4 +20,6 @@ public interface CategoriaService {
      * @return La categoria encontrada o null si no existe.
      */
     Categoria obtenerCategoriaPorNombre(String nombre);
+
+    void eliminarCategoria(Long idCategoria);
 }

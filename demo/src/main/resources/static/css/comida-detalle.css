@@ -82,6 +82,7 @@ html { height: 100%; }
 .opcion-acompanamiento { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 9px; min-height: 30px; border-bottom: 1px dashed #d2ccc3; font-size: .74rem; cursor: pointer; }
 .opcion-acompanamiento input { accent-color: var(--azul); }
 .opcion-acompanamiento strong { font-weight: 500; }
-.boton-volver { display: block; width: max-content; margin: 29px 0 0 auto; padding: 7px 23px; border: 1px solid var(--dorado); border-radius: 999px; color: var(--texto); font-family: "Playfair Display", serif; font-size: .84rem; text-decoration: none; }
-.boton-volver:hover { background: #f0e5cf; }
+.acciones-detalle { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 29px; }
+.boton-detalle { display: inline-flex; align-items: center; justify-content: center; width: max-content; padding: 7px 23px; border: 1px solid var(--dorado); border-radius: 999px; background: transparent; color: var(--texto); font-family: "Playfair Display", serif; font-size: .84rem; text-decoration: none; cursor: pointer; }
+.boton-detalle:hover { background: #f0e5cf; }
 @media (max-width: 500px) { .pagina-detalle { padding-top: 32px; } .tarjeta-plato { grid-template-columns: 1fr; row-gap: 15px; } .imagen-plato { width: 100%; height: 190px; } }

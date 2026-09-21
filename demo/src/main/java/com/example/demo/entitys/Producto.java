@@ -6,9 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que representa un producto/plato gastronómico en el restaurante El Crustáceo Caribeño.
@@ -41,9 +46,17 @@ public class Producto {
     /** URL de la imagen representativa del plato (manejada como String) */
     private String imagenURL;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
     /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
-    @ManyToOne 
+    @ManyToOne
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "producto")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<ProductoAdicional> adicionalesDisponibles = new ArrayList<>();
 
     public Producto(String nombre, double precio, String descripcion, String imagenURL) {
         this.nombre = nombre;

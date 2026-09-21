@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Categoria;
+import com.example.demo.entitys.Producto;
+import com.example.demo.entitys.Adicional;
+import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 
@@ -18,6 +21,12 @@ public class CategoriaServiceImpl implements CategoriaService{
 
     @Autowired
     CategoriaFakeRepository categoriaRepository;
+    @Autowired
+    ProductoFakeRepository productoRepository;
+    @Autowired
+    AdicionalRepository adicionalRepository;
+    @Autowired
+    ProductoService productoService;
 
     @Override
     public List<Categoria> obtenerTodasLasCategorias(){
@@ -27,5 +36,21 @@ public class CategoriaServiceImpl implements CategoriaService{
     @Override
     public Categoria obtenerCategoriaPorNombre(String nombre){
         return categoriaRepository.findByNombre(nombre);
+    }
+
+    @Override
+    public void eliminarCategoria(Long idCategoria) {
+        Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow();
+        for (Producto producto : productoRepository.findByCategoria(categoria)) {
+            productoService.eliminarProducto(producto.getIdProducto());
+            producto.setCategoria(null);
+            productoRepository.save(producto);
+        }
+        for (Adicional adicional : adicionalRepository.findByCategoria(categoria)) {
+            adicional.setActivo(false);
+            adicional.setCategoria(null);
+            adicionalRepository.save(adicional);
+        }
+        categoriaRepository.delete(categoria);
     }
 }

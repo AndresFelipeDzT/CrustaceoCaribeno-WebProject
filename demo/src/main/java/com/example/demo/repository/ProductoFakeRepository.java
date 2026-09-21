@@ -2,10 +2,12 @@ package com.example.demo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.example.demo.entitys.Producto;
+import com.example.demo.entitys.Categoria;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Implementación de la falsa base de datos de productos para el Sprint 2.
@@ -15,4 +17,7 @@ import java.util.Map;
  * para permitir accesos directos por id sin recorrer toda la colección.
  */
 @Repository
-public interface ProductoFakeRepository extends JpaRepository<Producto, Long> {}
+public interface ProductoFakeRepository extends JpaRepository<Producto, Long> {
+    List<Producto> findByActivoTrue();
+    List<Producto> findByCategoria(Categoria categoria);
+}

@@ -17,7 +17,7 @@ public class AdicionalServiceImpl implements AdicionalService {
 
     @Override
     public List<Adicional> obtenerTodosLosAdicionales() {
-        return adicionalRepository.findAll();
+        return adicionalRepository.findByActivoTrue();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AdicionalServiceImpl implements AdicionalService {
         if (categoria == null) {
             return adicionalRepository.findAll();
         }
-        return adicionalRepository.findByCategoria(categoria);
+        return adicionalRepository.findByCategoriaAndActivoTrue(categoria);
     }
 
     @Override
@@ -40,6 +40,10 @@ public class AdicionalServiceImpl implements AdicionalService {
 
     @Override
     public void eliminarAdicional(Long idAdicional) {
-        adicionalRepository.deleteById(idAdicional);
+        Adicional adicional = adicionalRepository.findById(idAdicional)
+                .orElseThrow(() -> new IllegalArgumentException("El adicional no existe."));
+
+        adicional.setActivo(false);
+        adicionalRepository.save(adicional);
     }
 }

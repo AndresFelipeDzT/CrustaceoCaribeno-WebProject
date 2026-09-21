@@ -6,10 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad que representa un adicional o acompañamiento disponible para los platos.
@@ -31,12 +36,23 @@ public class Adicional {
     @Column(nullable = false)
     private double precio;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean activo = true;
+
     @ManyToOne
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "adicional")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    private List<ProductoAdicional> productosDisponibles = new ArrayList<>();
 
     public Adicional(String nombre, double precio, Categoria categoria) {
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
+        this.activo = true;
     }
 }
