@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.entitys.Adicional;
+import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
+import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
 import com.example.demo.repository.DomiciliarioRepository;
@@ -36,6 +39,8 @@ public class DataLoader implements CommandLineRunner {
     PedidoRepository pedidoRepository;
     @Autowired
     ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    AdicionalRepository adicionalRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -534,5 +539,23 @@ public class DataLoader implements CommandLineRunner {
             .cantidad(3)
             .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
             .build());
+
+        // ==========================================
+        // AGREGAR ADICIONALES (POR CATEGORÍA)
+        // ==========================================
+        Categoria catEntrada = categoriaRepository.findById(1L).orElse(null);
+        Categoria catPlatoFuerte = categoriaRepository.findById(2L).orElse(null);
+        Categoria catEspecialidades = categoriaRepository.findById(3L).orElse(null);
+        Categoria catPostre = categoriaRepository.findById(4L).orElse(null);
+        Categoria catBebida = categoriaRepository.findById(5L).orElse(null);
+
+        adicionalRepository.save(new Adicional("Patacones con Hogao", 7000.0, catEntrada));
+        adicionalRepository.save(new Adicional("Papas de Aguacate Frito", 10000.0, catEntrada));
+        adicionalRepository.save(new Adicional("Ensalada Mixta Tostada", 8000.0, catPlatoFuerte));
+        adicionalRepository.save(new Adicional("Arroz de Mariscos Extra", 12000.0, catPlatoFuerte));
+        adicionalRepository.save(new Adicional("Porción de Arroz con Coco", 9000.0, catEspecialidades));
+        adicionalRepository.save(new Adicional("Salsa Tártara de la Casa", 4000.0, catEspecialidades));
+        adicionalRepository.save(new Adicional("Bola de Helado de Vainilla", 5000.0, catPostre));
+        adicionalRepository.save(new Adicional("Shot de Ron Caribeño", 6000.0, catBebida));
     }   
 }

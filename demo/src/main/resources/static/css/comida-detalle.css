@@ -78,6 +78,7 @@ html { height: 100%; }
 .acompanamientos { margin-top: 28px; }
 .acompanamientos h2 { margin-bottom: 13px; }
 .instruccion { margin: 0 0 14px; font-family: "Playfair Display", serif; font-size: .78rem; font-style: italic; }
+.sin-adicionales { color: var(--dorado); font-family: "Playfair Display", serif; font-size: .82rem; font-style: italic; margin-top: 10px; }
 .opcion-acompanamiento { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 9px; min-height: 30px; border-bottom: 1px dashed #d2ccc3; font-size: .74rem; cursor: pointer; }
 .opcion-acompanamiento input { accent-color: var(--azul); }
 .opcion-acompanamiento strong { font-weight: 500; }

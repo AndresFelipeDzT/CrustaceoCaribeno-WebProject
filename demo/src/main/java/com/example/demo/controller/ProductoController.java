@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Producto;
+import com.example.demo.service.AdicionalService;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.ProductoService;
@@ -36,6 +38,8 @@ public class ProductoController {
     CategoriaService categoriaService;
     @Autowired 
     ClienteService clienteService;
+    @Autowired
+    AdicionalService adicionalService;
     
     /**
      * Muestra todas las comidas en formato de tabla (/comidas/tabla).
@@ -111,6 +115,11 @@ public class ProductoController {
             model.addAttribute("cliente", cliente);
         }
         model.addAttribute("comida", comida);
+
+        // Obtener los adicionales disponibles acorde a la categoría del plato
+        List<Adicional> adicionales = adicionalService.obtenerAdicionalesPorCategoria(comida.getCategoria());
+        model.addAttribute("adicionales", adicionales);
+
         return "comida-detalle";
     }
 

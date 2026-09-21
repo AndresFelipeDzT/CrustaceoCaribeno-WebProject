@@ -42,9 +42,12 @@
     <section class="acompanamientos" aria-labelledby="titulo-acompanamientos">
       <h2 id="titulo-acompanamientos">Acompañamientos</h2>
       <p class="instruccion">¿Puede agregar algún acompañamiento a este producto?</p>
-      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="arroz-mariscos"><span>Arroz de Mariscos</span><strong>$1.000</strong></label>
-      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="ensalada"><span>Ensalada Mixta Tostada</span><strong>$2.000</strong></label>
-      <label class="opcion-acompanamiento"><input type="checkbox" name="acompanamiento" value="papas"><span>Papas de Aguacate Frito</span><strong>$3.000</strong></label>
+      <label class="opcion-acompanamiento" th:each="adic : ${adicionales}">
+        <input type="checkbox" name="acompanamiento" th:value="${adic.idAdicional}">
+        <span th:text="${adic.nombre}">Nombre adicional</span>
+        <strong th:text="'$' + ${#numbers.formatDecimal(adic.precio, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+      </label>
+      <p class="sin-adicionales" th:if="${adicionales == null or adicionales.isEmpty()}">No hay adicionales disponibles para esta categoría.</p>
     </section>
     <a class="boton-volver" th:href="${cliente != null} ? @{/comidas/tarjetas(id=${cliente.idCliente})} : @{/comidas/tarjetas}">Volver</a>
   </main>
