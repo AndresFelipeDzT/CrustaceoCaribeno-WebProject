@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entitys.Adicional;
+import com.example.demo.entitys.Administrador;
 import com.example.demo.entitys.Carrito;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Cliente;
@@ -15,14 +16,17 @@ import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.ItemCarrito;
 import com.example.demo.entitys.ItemCarritoAdicional;
 import com.example.demo.entitys.ItemPedidoAdicional;
+import com.example.demo.entitys.Operador;
 import com.example.demo.entitys.ProductoAdicional;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.AdicionalRepository;
+import com.example.demo.repository.AdministradorRepository;
 import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.ItemCarritoRepository;
 import com.example.demo.repository.ItemCarritoAdicionalRepository;
 import com.example.demo.repository.ItemPedidoAdicionalRepository;
+import com.example.demo.repository.OperadorRepository;
 import com.example.demo.repository.ProductoAdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
@@ -51,6 +55,10 @@ public class DataLoader implements CommandLineRunner {
     ItemPedidoRepository itemPedidoRepository;
     @Autowired
     AdicionalRepository adicionalRepository;
+    @Autowired
+    AdministradorRepository administradorRepository;
+    @Autowired
+    OperadorRepository operadorRepository;
     @Autowired CarritoRepository carritoRepository;
     @Autowired ItemCarritoRepository itemCarritoRepository;
     @Autowired ItemCarritoAdicionalRepository itemCarritoAdicionalRepository;
@@ -59,6 +67,19 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        // Agregar cinco administradores y cinco operadores
+        administradorRepository.save(new Administrador("admin.general", "admin123"));
+        administradorRepository.save(new Administrador("admin.inventario", "inventario123"));
+        administradorRepository.save(new Administrador("admin.ventas", "ventas123"));
+        administradorRepository.save(new Administrador("admin.usuarios", "usuarios123"));
+        administradorRepository.save(new Administrador("admin.reportes", "reportes123"));
+
+        operadorRepository.save(new Operador("Juan García", "operador.principal", "operador123"));
+        operadorRepository.save(new Operador("Ana Velásquez", "operador.cocina", "cocina123"));
+        operadorRepository.save(new Operador("Carlos Rodríguez", "operador.despachos", "despachos123"));
+        operadorRepository.save(new Operador("María González", "operador.caja", "caja123"));
+        operadorRepository.save(new Operador("Luis Martínez", "operador.soporte", "soporte123"));
 
         //Agregar 10 clientes
         clienteRepository.save(new Cliente("Juan","Rodriguez","Juan.Rodriguez@gmail.com","33034534","Av carrera 45 # 34-56","1234"));
