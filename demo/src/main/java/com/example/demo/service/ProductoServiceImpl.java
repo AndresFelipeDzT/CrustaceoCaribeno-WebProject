@@ -31,6 +31,11 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public List<Producto> obtenerTodosLosProductosIncluyendoInactivos() {
+        return productoRepository.findAll();
+    }
+
+    @Override
     public Producto obtenerProductoPorId(Long idProducto) {
         return productoRepository.findById(idProducto)
                 .orElseThrow(() -> new ProductoNotFoundException(idProducto));

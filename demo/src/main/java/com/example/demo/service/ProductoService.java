@@ -15,6 +15,12 @@ public interface ProductoService {
     List<Producto> obtenerTodosLosProductos();
 
     /**
+     * Obtiene todos los productos, incluidos los que están inactivos.
+     * @return Lista completa de productos.
+     */
+    List<Producto> obtenerTodosLosProductosIncluyendoInactivos();
+
+    /**
      * Busca un plato por su identificador.
      * @param idProducto ID del producto.
      * @return El producto encontrado.

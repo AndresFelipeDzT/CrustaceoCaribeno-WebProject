@@ -51,7 +51,7 @@ public class ProductoController {
             Cliente cliente = clienteService.obtenerClientePorId(id);
             model.addAttribute("cliente", cliente);
         }
-        List<Producto> lista = productoService.obtenerTodosLosProductos();
+        List<Producto> lista = productoService.obtenerTodosLosProductosIncluyendoInactivos();
         model.addAttribute("comidas", lista);
         return "comidas-tabla";
     }
