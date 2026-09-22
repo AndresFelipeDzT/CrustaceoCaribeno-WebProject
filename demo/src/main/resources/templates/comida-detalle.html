@@ -41,20 +41,18 @@
     </section>
     <section class="acompanamientos" aria-labelledby="titulo-acompanamientos">
       <h2 id="titulo-acompanamientos">Acompañamientos</h2>
-      <p class="instruccion">¿Puede agregar algún acompañamiento a este producto?</p>
-      <form id="form-agregar-carrito" th:action="@{/carrito/agregar}" method="post">
-      <input th:if="${cliente != null}" type="hidden" name="clienteId" th:value="${cliente.idCliente}">
-      <input type="hidden" name="productoId" th:value="${comida.idProducto}">
-      <label class="opcion-acompanamiento" th:each="adic : ${adicionales}">
-        <input type="checkbox" name="adicionales" th:value="${adic.idAdicional}">
-        <span th:text="${adic.nombre}">Nombre adicional</span>
-        <strong th:text="'$' + ${#numbers.formatDecimal(adic.precio, 0, 'POINT', 0, 'COMMA')}">$0</strong>
-      </label>
-      </form>
-      <p class="sin-adicionales" th:if="${adicionales == null or adicionales.isEmpty()}">No hay adicionales disponibles para esta categoría.</p>
+      <p class="instruccion">Puedes escoger los acompañamientos desde el carrito después de agregar este producto.</p>
+      <div class="lista-acompanamientos" th:if="${adicionales != null and !adicionales.isEmpty()}">
+        <div class="opcion-acompanamiento" th:each="adic : ${adicionales}">
+          <span th:text="${adic.nombre}">Nombre adicional</span>
+          <strong th:text="'$' + ${#numbers.formatDecimal(adic.precio, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+        </div>
+      </div>
+      <p class="sin-adicionales" th:if="${adicionales == null or adicionales.isEmpty()}">
+        No hay adicionales disponibles para esta categoría.
+      </p>
     </section>
     <div class="acciones-detalle">
-      <button th:if="${cliente != null}" class="boton-detalle" type="submit" form="form-agregar-carrito">Agregar al carrito</button>
       <a class="boton-detalle" th:href="${cliente != null} ? @{/comidas/tarjetas(id=${cliente.idCliente})} : @{/comidas/tarjetas}">Volver</a>
     </div>
   </main>

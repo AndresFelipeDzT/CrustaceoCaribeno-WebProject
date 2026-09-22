@@ -44,4 +44,8 @@ public class ItemCarrito {
         this.carrito = carrito;
         this.producto = producto;
     }
+
+    public double getSubtotal() {
+        return cantidad * producto.getPrecio();
+    }
 }

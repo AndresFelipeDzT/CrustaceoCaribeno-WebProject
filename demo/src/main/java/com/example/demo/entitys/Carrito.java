@@ -39,4 +39,16 @@ public class Carrito {
     public Carrito(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public double getSubtotal() {
+        return items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+    }
+
+    public double getDomicilio() {
+        return items.isEmpty() ? 0 : 5000;
+    }
+
+    public double getTotal() {
+        return getSubtotal() + getDomicilio();
+    }
 }

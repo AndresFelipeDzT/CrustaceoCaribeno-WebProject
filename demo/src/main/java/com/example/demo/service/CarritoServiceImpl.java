@@ -71,6 +71,49 @@ public class CarritoServiceImpl implements CarritoService {
         }
     }
 
+    public void actualizarCantidad(Long idCliente, Long idItemCarrito, int cantidad) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
+        if (!item.getCarrito().equals(carrito)) {
+            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
+        }
+        if (cantidad < 1) {
+            eliminarItem(idCliente, idItemCarrito);
+            return;
+        }
+        item.setCantidad(cantidad);
+        itemCarritoRepository.save(item);
+    }
+
+    public void actualizarAdicionales(Long idCliente, Long idItemCarrito, Long[] idsAdicionales) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
+        if (!item.getCarrito().equals(carrito)) {
+            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
+        }
+        itemCarritoAdicionalRepository.deleteAll(itemCarritoAdicionalRepository.findByItemCarrito(item));
+        if (idsAdicionales == null) {
+            return;
+        }
+        for (Long idAdicional : idsAdicionales) {
+            Adicional adicional = adicionalRepository.findById(idAdicional).orElseThrow();
+            if (!adicional.isActivo() || !adicional.getCategoria().equals(item.getProducto().getCategoria())) {
+                throw new IllegalArgumentException("El adicional no está disponible para este producto.");
+            }
+            itemCarritoAdicionalRepository.save(new ItemCarritoAdicional(item, adicional));
+        }
+    }
+
+    public void eliminarItem(Long idCliente, Long idItemCarrito) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
+        if (!item.getCarrito().equals(carrito)) {
+            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
+        }
+        itemCarritoAdicionalRepository.deleteAll(itemCarritoAdicionalRepository.findByItemCarrito(item));
+        itemCarritoRepository.delete(item);
+    }
+
     public Pedido confirmarPedido(Long idCliente) {
         Carrito carrito = obtenerCarrito(idCliente);
         List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);

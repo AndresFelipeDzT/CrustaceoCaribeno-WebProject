@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del pedido | Crustáceo Caribeño</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dai+Banna+SIL:ital,wght@0,600;0,700;1,600;1,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/pedidos.css}">
+</head>
+<body>
+  <header class="pedidos-header">
+    <a class="pedidos-brand" th:href="@{/home}">
+      <img th:src="@{/images/logo2.png}" alt="Logo Crustáceo Caribeño">
+      <span>Crustáceo Caribeño</span>
+    </a>
+    <nav class="pedidos-nav">
+      <a th:href="@{/pedidos}">Reporte<br>Ventas</a>
+      <a th:href="@{/pedidos}">Pedidos</a>
+      <a href="#" aria-disabled="true">Perfil</a>
+    </nav>
+  </header>
+
+  <main class="detalle-pedido-main">
+    <a class="volver-pedidos" th:href="@{/pedidos}">← Volver a pedidos</a>
+    <h1>Detalles Del Pedido</h1>
+    <p class="detalle-subtitulo">Información Completa Del Pedido #<span th:text="${pedido.idPedido}">1</span></p>
+    <p class="pedidos-alerta" th:if="${mensaje}" th:text="${mensaje}"></p>
+    <p class="pedidos-alerta error" th:if="${error}" th:text="${error}"></p>
+
+    <div class="detalle-estado-actual">
+      Estado Actual:
+      <span class="estado" th:text="${pedido.estado}"
+            th:classappend="' estado-' + ${#strings.toLowerCase(pedido.estado).replace(' ', '-')}">Pendiente</span>
+    </div>
+
+    <section class="detalle-bloque">
+      <h2>Información Del Cliente</h2>
+      <div class="cliente-grid">
+        <strong>Nombre:</strong><span th:text="${pedido.cliente != null ? pedido.cliente.nombreCompleto : 'Sin cliente'}">Cliente</span>
+        <strong>Teléfono:</strong><span th:text="${pedido.cliente != null ? pedido.cliente.telefono : 'No disponible'}">No disponible</span>
+        <strong>Ubicación:</strong><span th:text="${pedido.cliente != null ? pedido.cliente.direccion : 'No disponible'}">No disponible</span>
+        <strong>Fecha / Hora:</strong><span th:text="${#temporals.format(pedido.fechaCreacion, 'dd/MM/yyyy')}">21/09/2026</span>
+      </div>
+    </section>
+
+    <section class="detalle-bloque">
+      <h2>Productos Ordenados</h2>
+      <div class="productos-detalle">
+        <div class="producto-detalle encabezado">
+          <strong>Producto</strong><strong>Categoría</strong><strong>Cantidad</strong><strong>Precio Unitario</strong><strong>Subtotal</strong>
+        </div>
+        <div class="producto-detalle" th:each="item : ${pedido.items}">
+          <span th:text="${item.producto.nombre}">Producto</span>
+          <span th:text="${item.producto.categoria != null ? item.producto.categoria.nombre : 'Sin categoría'}">Categoría</span>
+          <span th:text="${item.cantidad}">1</span>
+          <span th:text="'$' + ${#numbers.formatDecimal(item.precioUnitario, 0, 'POINT', 0, 'COMMA')}">$0</span>
+          <span th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</span>
+          <div class="adicionales-detalle" th:if="${!item.adicionales.empty}">
+            <span th:each="relacion : ${item.adicionales}" th:text="'+ ' + ${relacion.adicional.nombre}">+ Adicional</span>
+          </div>
+        </div>
+        <p class="sin-productos" th:if="${pedido.items.empty}">Este pedido no tiene productos.</p>
+      </div>
+    </section>
+
+    <section class="detalle-bloque resumen-detalle">
+      <h2>Resumen Del Pedido</h2>
+      <div><span>Subtotal</span><strong th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'POINT', 0, 'COMMA')}">$0</strong></div>
+      <div><span>Domicilio</span><strong>$5.000</strong></div>
+      <div><span>Total</span><strong th:text="'$' + ${#numbers.formatDecimal(pedido.total + 5000, 0, 'POINT', 0, 'COMMA')}">$0</strong></div>
+    </section>
+
+    <section class="detalle-bloque estado-formulario">
+      <h2>Estado Del Pedido</h2>
+      <form th:action="@{/pedidos/{id}/actualizar(id=${pedido.idPedido})}" method="post">
+        <label for="estado">Estado</label>
+        <select id="estado" name="estado">
+          <option th:each="opcion : ${ {'Pendiente', 'En preparación', 'En camino', 'Entregado', 'Cancelado'} }"
+                  th:value="${opcion}" th:text="${opcion}" th:selected="${opcion == pedido.estado}">Pendiente</option>
+        </select>
+        <button class="btn-actualizar" type="submit">Actualizar datos</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pedidos-footer">
+    <div class="footer-contenido">
+      <div class="footer-marca">
+        <div class="footer-logo-nombre"><img th:src="@{/images/logo2.png}" alt="Logo"><h3>Crustáceo<br>Caribeño</h3></div>
+        <div class="footer-platos"><img th:src="@{/images/img11.jpeg}" alt="Plato"><img th:src="@{/images/img22.jpeg}" alt="Plato"><img th:src="@{/images/img33.jpeg}" alt="Plato"></div>
+      </div>
+      <div class="footer-columna"><h4>Navegación</h4><a th:href="@{/home}">› Inicio</a><a th:href="@{/comidas/tarjetas}">› Menú</a><a th:href="@{/pedidos}">› Pedidos</a></div>
+      <div class="footer-columna"><h4>Información</h4><p>› Av. 44 #401 Sur</p><p>› 57 - 343 882 843</p><p>› Lun-Dom: 9:00am-5:00pm</p></div>
+      <div class="footer-columna"><h4>Ingresa</h4><a th:href="@{/login}">› Iniciar Sesión</a><a th:href="@{/registro}">› Registrarse</a></div>
+    </div>
+    <p class="footer-copyright">© 2026 El Crustáceo Caribeño. Todos Los Derechos Reservados.</p>
+  </footer>
+</body>
+</html>
