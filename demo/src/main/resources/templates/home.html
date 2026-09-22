@@ -30,6 +30,13 @@
     <nav class="navbar-crustaceo">
         <div class="nav-contenido">
 
+            <!-- Navegación de las secciones de inicio -->
+            <div class="nav-principal">
+                <a href="#lo-mejor-del-caribe">Lo Mejor del Caribe</a>
+                <a href="#por-que-nosotros">¿Por Qué Nosotros?</a>
+                <a href="#quienes-somos">¿Quiénes Somos?</a>
+            </div>
+
             <!-- Logo y nombre -->
             <a class="navbar-brand" th:href="@{/home}">
                 <img src="../images/logo2.png"
@@ -58,11 +65,14 @@
   <main class="pagina">
       <!-- 1. SECCIÓN HERO BANNER -->
     <section class="hero-section" aria-label="Bienvenida al restaurante">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="/videos/video_no_envato_final.mp4" type="video/mp4">
+      </video>
       <div class="hero-content">
         <img src="../images/decoracion-arriba.png" class="diseño">
         <h1 class="hero-title">Bienvenido Al <br>Crustáceo Caribeño</h1>
         <img src="../images/decoracion-abajo.png" class="diseño">
-        
+      </div>
     </section>
 
 
@@ -70,7 +80,7 @@
              SECCIÓN 1
         ========================== -->
 
-        <section class="intro">
+        <section id="lo-mejor-del-caribe" class="intro">
 
             <div class="imagen">
                 <img src="../images/imagen1.png" alt="">
@@ -102,7 +112,7 @@
              SECCIÓN 2
         ========================== -->
 
-        <section class="seccion">
+        <section id="por-que-nosotros" class="seccion">
 
             <div class="contenido">
 
@@ -157,7 +167,7 @@ Desde cazuelas hasta paellas.
              SECCIÓN 3
         ========================== -->
 
-        <section class="seccion">
+        <section id="quienes-somos" class="seccion">
 
             <div class="contenido">
 

@@ -30,13 +30,19 @@
     <nav class="navbar-crustaceo">
       <div class="nav-contenido">
 
+        <!-- Navegación principal -->
+        <div class="nav-principal">
+          <a th:href="@{/home}" class="nav-link-item"><i class="bi bi-house-door"></i> Inicio</a>
+          <a href="#menu-tarjetas" class="nav-link-item"><i class="bi bi-list-ul"></i> Menú</a>
+        </div>
+
         <!-- Logo y marca -->
         <a class="navbar-brand" th:href="@{/home}">
           <img th:src="@{/images/logo2.png}" alt="Logo de Crustáceo Caribeño" width="48" height="48">
           <span>Crustáceo Caribeño</span>
         </a>
 
-        <!-- Botones derecha: Carrito y Perfil -->
+        <!-- Accesos de cuenta -->
         <div class="nav-botones">
           <a th:if="${cliente != null}" th:href="@{/carrito(clienteId=${cliente.idCliente})}" class="nav-link-item"><i class="bi bi-cart3"></i> Carrito</a>
           <a th:if="${cliente != null}" th:href="@{/perfil(id=${cliente.idCliente})}" class="nav-link-item"><i class="bi bi-person-circle"></i> Perfil</a>
