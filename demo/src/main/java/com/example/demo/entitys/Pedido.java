@@ -58,4 +58,8 @@ public class Pedido {
         this.cliente = cliente;
         this.domiciliario = domiciliario;
     }
+
+    public double getTotal() {
+        return items.stream().mapToDouble(ItemPedido::getSubtotal).sum();
+    }
 }

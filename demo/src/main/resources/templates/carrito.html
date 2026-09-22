@@ -1,20 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head><meta charset="UTF-8"><title>Carrito</title></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito | Crustáceo Caribeño</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dai+Banna+SIL:ital,wght@0,600;0,700;1,600;1,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/carrito.css}">
+</head>
 <body>
-  <h1>Mi carrito</h1>
-  <p th:if="${mensaje}" th:text="${mensaje}"></p><p th:if="${error}" th:text="${error}"></p>
-  <ul>
-    <li th:each="item : ${carrito.items}">
-      <span th:text="${item.cantidad + ' x ' + item.producto.nombre}">1 x Producto</span>
-      <ul th:if="${!item.adicionales.empty}">
-        <li th:each="relacion : ${item.adicionales}"
-            th:text="${'+ ' + relacion.adicional.nombre + ' — $' + #numbers.formatDecimal(relacion.adicional.precio, 0, 'POINT', 0, 'COMMA')}">+ Acompañamiento — $0</li>
-      </ul>
-    </li>
-  </ul>
-  <p th:if="${carrito.items.empty}">El carrito está vacío.</p>
-  <form th:action="@{/carrito/confirmar}" method="post"><input type="hidden" name="clienteId" th:value="${cliente.idCliente}"><button type="submit">Confirmar pedido</button></form>
-  <a th:href="@{/comidas/tarjetas(id=${cliente.idCliente})}">Volver al menú</a>
+  <header class="header-crustaceo">
+    <nav class="navbar-crustaceo">
+      <div class="nav-contenido">
+        <a class="navbar-brand" th:href="@{/home}">
+          <img th:src="@{/images/logo2.png}"
+               alt="Logo de Crustáceo Caribeño"
+               width="48"
+               height="48">
+          <span>Crustáceo Caribeño</span>
+        </a>
+        <div class="nav-botones"></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="carrito-pagina">
+    <a class="volver-menu" th:href="@{/comidas/tarjetas(id=${cliente.idCliente})}">← Volver Al Menú</a>
+    <h1 class="carrito-titulo">Carrito</h1>
+    <p class="carrito-subtitulo">Revisa Los Productos Que Agregaste:</p>
+
+    <p class="carrito-alerta" th:if="${mensaje}" th:text="${mensaje}"></p>
+    <p class="carrito-alerta" th:if="${error}" th:text="${error}"></p>
+
+    <section th:if="${!carrito.items.empty}">
+      <article class="carrito-item" th:each="item : ${carrito.items}">
+        <div class="carrito-item-principal">
+          <img class="carrito-item-imagen" th:src="@{${item.producto.imagenURL}}" th:alt="${item.producto.nombre}">
+          <div class="carrito-item-info">
+            <h2 th:text="${item.producto.nombre}">Producto</h2>
+            <p th:text="'Precio: $' + ${#numbers.formatDecimal(item.producto.precio, 0, 'POINT', 0, 'COMMA')}">Precio: $0</p>
+            <div class="carrito-controles">
+              <form class="cantidad-form" th:action="@{/carrito/cantidad}" method="post">
+                <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                <input type="hidden" name="itemId" th:value="${item.idItemCarrito}">
+                <input type="hidden" name="cantidad" th:value="${item.cantidad - 1}">
+                <button type="submit" aria-label="Disminuir cantidad">-</button>
+              </form>
+              <span class="cantidad-valor" th:text="${item.cantidad}">1</span>
+              <form class="cantidad-form" th:action="@{/carrito/cantidad}" method="post">
+                <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                <input type="hidden" name="itemId" th:value="${item.idItemCarrito}">
+                <input type="hidden" name="cantidad" th:value="${item.cantidad + 1}">
+                <button type="submit" aria-label="Aumentar cantidad">+</button>
+              </form>
+            </div>
+          </div>
+          <form th:action="@{/carrito/eliminar}" method="post">
+            <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+            <input type="hidden" name="itemId" th:value="${item.idItemCarrito}">
+            <button class="carrito-eliminar" type="submit" aria-label="Eliminar producto"><i class="bi bi-trash3"></i></button>
+          </form>
+        </div>
+        <ul class="carrito-adicionales" th:if="${!item.adicionales.empty}">
+          <li th:each="relacion : ${item.adicionales}">
+            <i class="bi bi-trash3"></i>
+            <span th:text="${relacion.adicional.nombre}">Adicional</span>
+          </li>
+        </ul>
+        <form class="seleccion-adicionales" th:action="@{/carrito/adicionales}" method="post">
+          <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+          <input type="hidden" name="itemId" th:value="${item.idItemCarrito}">
+          <p>Adicionales para esta línea:</p>
+          <label th:each="adic : ${item.producto.categoria.adicionales}">
+            <input type="checkbox" name="adicionales" th:value="${adic.idAdicional}"
+              th:checked="${#lists.contains(item.adicionales, adic)}">
+            <span th:text="${adic.nombre}">Adicional</span>
+            <strong th:text="'$' + ${#numbers.formatDecimal(adic.precio, 0, 'POINT', 0, 'COMMA')}">$0</strong>
+          </label>
+          <button type="submit">Guardar adicionales</button>
+        </form>
+        <p class="carrito-item-total" th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</p>
+      </article>
+
+      <section class="carrito-resumen">
+        <h2>Resumen Del Pedido</h2>
+        <div class="resumen-linea"><span>Subtotal</span><strong th:text="'$' + ${#numbers.formatDecimal(carrito.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</strong></div>
+        <div class="resumen-linea"><span>Domicilio</span><strong th:text="'$' + ${#numbers.formatDecimal(carrito.domicilio, 0, 'POINT', 0, 'COMMA')}">$0</strong></div>
+        <div class="resumen-linea resumen-total"><span>Total</span><strong th:text="'$' + ${#numbers.formatDecimal(carrito.total, 0, 'POINT', 0, 'COMMA')}">$0</strong></div>
+      </section>
+      <form th:action="@{/carrito/confirmar}" method="post">
+        <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+        <button class="btn-realizar-pedido" type="submit">Realizar<br>Pedido</button>
+      </form>
+    </section>
+
+    <p class="carrito-vacio" th:if="${carrito.items.empty}">El carrito está vacío.</p>
+  </main>
 </body>
 </html>

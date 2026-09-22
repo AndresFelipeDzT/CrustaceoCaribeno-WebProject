@@ -82,6 +82,7 @@ html { height: 100%; }
 .opcion-acompanamiento { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 9px; min-height: 30px; border-bottom: 1px dashed #d2ccc3; font-size: .74rem; cursor: pointer; }
 .opcion-acompanamiento input { accent-color: var(--azul); }
 .opcion-acompanamiento strong { font-weight: 500; }
+.lista-acompanamientos .opcion-acompanamiento { grid-template-columns: 1fr auto; cursor: default; }
 .acciones-detalle { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 29px; }
 .boton-detalle { display: inline-flex; align-items: center; justify-content: center; width: max-content; padding: 7px 23px; border: 1px solid var(--dorado); border-radius: 999px; background: transparent; color: var(--texto); font-family: "Playfair Display", serif; font-size: .84rem; text-decoration: none; cursor: pointer; }
 .boton-detalle:hover { background: #f0e5cf; }
