@@ -66,7 +66,9 @@ public class ProductoController {
             Cliente cliente = clienteService.obtenerClientePorId(id);
             model.addAttribute("cliente", cliente);
         }
-        List<Producto> lista = productoService.obtenerTodosLosProductos();
+        List<Producto> lista = productoService.obtenerTodosLosProductos().stream()
+            .filter(Producto::isActivo)
+            .toList();
         model.addAttribute("comidas", lista);
 
         // Agrupación limpia para las secciones del diseño
