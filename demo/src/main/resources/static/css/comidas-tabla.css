@@ -244,6 +244,33 @@ body {
     width: 12%;
 }
 
+.col-estado {
+    text-align: center;
+    width: 10%;
+}
+
+.estado-producto {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid;
+    border-radius: 16px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.estado-activo {
+    color: #235b2a;
+    background-color: #d8f3dc;
+    border-color: #7aba83;
+}
+
+.estado-inactivo {
+    color: #7a2525;
+    background-color: #f8d7da;
+    border-color: #d68a90;
+}
+
 .col-accion {
     text-align: center;
     width: 10%;

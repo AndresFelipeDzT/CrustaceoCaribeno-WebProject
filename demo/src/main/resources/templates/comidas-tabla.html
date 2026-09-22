@@ -80,6 +80,7 @@
               <th scope="col" class="th-imagen">Imagen</th>
               <th scope="col" class="th-descripcion">Descripción</th>
               <th scope="col" class="th-precio">Precio</th>
+              <th scope="col" class="th-estado">Estado</th>
               <th scope="col" class="th-accion">Acciónes</th>
             </tr>
           </thead>
@@ -91,6 +92,11 @@
               </td>
               <td class="col-descripcion" th:text="${producto.descripcion}">Descripción del platillo.</td>
               <td class="col-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</td>
+              <td class="col-estado">
+                <span class="estado-producto"
+                      th:classappend="${producto.activo} ? ' estado-activo' : ' estado-inactivo'"
+                      th:text="${producto.activo} ? 'Activo' : 'Inactivo'">Activo</span>
+              </td>
               <td class="col-accion">
                 <a th:href="@{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-accion">Ver Más</a>
                 <a th:href="@{/comidas/tabla/update/{id}(id=${producto.idProducto})}" class="btn-accion">Update</a>
