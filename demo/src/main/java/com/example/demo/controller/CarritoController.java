@@ -34,6 +34,39 @@ public class CarritoController {
         return "redirect:/carrito?clienteId=" + clienteId;
     }
 
+    @PostMapping("/carrito/cantidad")
+    public String actualizarCantidad(@RequestParam Long clienteId, @RequestParam Long itemId,
+            @RequestParam int cantidad, RedirectAttributes atributos) {
+        try {
+            carritoService.actualizarCantidad(clienteId, itemId, cantidad);
+        } catch (IllegalArgumentException ex) {
+            atributos.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/carrito?clienteId=" + clienteId;
+    }
+
+    @PostMapping("/carrito/adicionales")
+    public String actualizarAdicionales(@RequestParam Long clienteId, @RequestParam Long itemId,
+            @RequestParam(required = false) Long[] adicionales, RedirectAttributes atributos) {
+        try {
+            carritoService.actualizarAdicionales(clienteId, itemId, adicionales);
+        } catch (IllegalArgumentException ex) {
+            atributos.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/carrito?clienteId=" + clienteId;
+    }
+
+    @PostMapping("/carrito/eliminar")
+    public String eliminarItem(@RequestParam Long clienteId, @RequestParam Long itemId,
+            RedirectAttributes atributos) {
+        try {
+            carritoService.eliminarItem(clienteId, itemId);
+        } catch (IllegalArgumentException ex) {
+            atributos.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/carrito?clienteId=" + clienteId;
+    }
+
     @PostMapping("/carrito/confirmar")
     public String confirmar(@RequestParam Long clienteId, RedirectAttributes atributos) {
         try {

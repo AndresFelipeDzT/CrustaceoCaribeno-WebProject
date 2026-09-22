@@ -94,6 +94,12 @@
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
                 <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <form th:if="${cliente != null}" th:action="@{/carrito/agregar}" method="post" class="form-agregar-tarjeta">
+                  <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                  <input type="hidden" name="productoId" th:value="${producto.idProducto}">
+                  <button type="submit" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+                </form>
+                <a th:if="${cliente == null}" th:href="@{/login}" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Inicia sesión para agregar al carrito</a>
               </div>
             </div>
           </article>
@@ -121,6 +127,12 @@
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
                 <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <form th:if="${cliente != null}" th:action="@{/carrito/agregar}" method="post" class="form-agregar-tarjeta">
+                  <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                  <input type="hidden" name="productoId" th:value="${producto.idProducto}">
+                  <button type="submit" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+                </form>
+                <a th:if="${cliente == null}" th:href="@{/login}" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Inicia sesión para agregar al carrito</a>
               </div>
             </div>
           </article>
@@ -148,6 +160,12 @@
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
                 <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <form th:if="${cliente != null}" th:action="@{/carrito/agregar}" method="post" class="form-agregar-tarjeta">
+                  <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                  <input type="hidden" name="productoId" th:value="${producto.idProducto}">
+                  <button type="submit" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+                </form>
+                <a th:if="${cliente == null}" th:href="@{/login}" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Inicia sesión para agregar al carrito</a>
               </div>
             </div>
           </article>
@@ -175,6 +193,12 @@
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
                 <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <form th:if="${cliente != null}" th:action="@{/carrito/agregar}" method="post" class="form-agregar-tarjeta">
+                  <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                  <input type="hidden" name="productoId" th:value="${producto.idProducto}">
+                  <button type="submit" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+                </form>
+                <a th:if="${cliente == null}" th:href="@{/login}" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Inicia sesión para agregar al carrito</a>
               </div>
             </div>
           </article>
@@ -202,6 +226,12 @@
                 <div class="linea-puntos" aria-hidden="true"></div>
                 <span class="tarjeta-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</span>
                 <a th:href="${cliente != null} ? @{/comidas/detalle/{id}(id=${producto.idProducto}, clienteId=${cliente.idCliente})} : @{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-ver-mas">Ver Más</a>
+                <form th:if="${cliente != null}" th:action="@{/carrito/agregar}" method="post" class="form-agregar-tarjeta">
+                  <input type="hidden" name="clienteId" th:value="${cliente.idCliente}">
+                  <input type="hidden" name="productoId" th:value="${producto.idProducto}">
+                  <button type="submit" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+                </form>
+                <a th:if="${cliente == null}" th:href="@{/login}" class="btn-agregar-carrito"><i class="bi bi-cart-plus"></i> Inicia sesión para agregar al carrito</a>
               </div>
             </div>
           </article>
