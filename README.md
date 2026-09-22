@@ -58,7 +58,7 @@ Representa la estructura estática del sistema, sus clases de dominio, atributos
 ### Diagrama Entidad–Relación (DER)
 Representa el modelo relacional físico, llaves primarias (`PK`), foráneas (`FK`), restricciones de nulidad y unicidad:
 
-![Diagrama Entidad–Relación](images/diagrama-entidad-relacion.jpg)
+![Diagrama Entidad–Relación](images/Diagrama Entidad-Relacion Crustaceo CaribeÑo.jpg)
 
 #### Entidades Principales Persistidas con Spring Data JPA:
 1. **`Cliente`**: Identificador único autoincremental (`idCliente`), nombre, apellido, correo único, contraseña, teléfono y dirección.
