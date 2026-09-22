@@ -54,6 +54,7 @@ body.registro-body {
 /* Tarjeta azul cobalto/marino de Figma */
 .registro-card {
   background: linear-gradient(180deg, #102a63 0%, #0c1e48 50%, #071330 100%);
+  border: 2px solid #ffffff;
   border-radius: 10px;
   padding: 2.5rem 3rem;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
