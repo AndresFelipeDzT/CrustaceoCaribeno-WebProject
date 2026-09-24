@@ -5,13 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +53,9 @@ public class Producto {
     @ManyToOne
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "producto")
+    @ManyToMany
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<ProductoAdicional> adicionalesDisponibles = new ArrayList<>();
+    private List<Adicional> adicionalesDisponibles = new ArrayList<>();
 
     public Producto(String nombre, double precio, String descripcion, String imagenURL) {
         this.nombre = nombre;

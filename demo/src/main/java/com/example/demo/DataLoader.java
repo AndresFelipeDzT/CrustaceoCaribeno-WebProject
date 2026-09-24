@@ -14,20 +14,14 @@ import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.ItemCarrito;
-import com.example.demo.entitys.ItemCarritoAdicional;
-import com.example.demo.entitys.ItemPedidoAdicional;
 import com.example.demo.entitys.Operador;
-import com.example.demo.entitys.ProductoAdicional;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.AdministradorRepository;
 import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.ItemCarritoRepository;
-import com.example.demo.repository.ItemCarritoAdicionalRepository;
-import com.example.demo.repository.ItemPedidoAdicionalRepository;
 import com.example.demo.repository.OperadorRepository;
-import com.example.demo.repository.ProductoAdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ClienteFakeRepository;
 import com.example.demo.repository.DomiciliarioRepository;
@@ -61,9 +55,6 @@ public class DataLoader implements CommandLineRunner {
     OperadorRepository operadorRepository;
     @Autowired CarritoRepository carritoRepository;
     @Autowired ItemCarritoRepository itemCarritoRepository;
-    @Autowired ItemCarritoAdicionalRepository itemCarritoAdicionalRepository;
-    @Autowired ItemPedidoAdicionalRepository itemPedidoAdicionalRepository;
-    @Autowired ProductoAdicionalRepository productoAdicionalRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -628,7 +619,19 @@ public class DataLoader implements CommandLineRunner {
             .build());
 
         // ==========================================
-        // AGREGAR ADICIONALES (POR CATEGORÍA)
+        // AGREGAR ADICIONALES
+        // ==========================================
+        Adicional adic1 = adicionalRepository.save(new Adicional("Patacones con Hogao", 7000.0));
+        Adicional adic2 = adicionalRepository.save(new Adicional("Papas de Aguacate Frito", 10000.0));
+        Adicional adic3 = adicionalRepository.save(new Adicional("Ensalada Mixta Tostada", 8000.0));
+        Adicional adic4 = adicionalRepository.save(new Adicional("Arroz de Mariscos Extra", 12000.0));
+        Adicional adic5 = adicionalRepository.save(new Adicional("Porción de Arroz con Coco", 9000.0));
+        Adicional adic6 = adicionalRepository.save(new Adicional("Salsa Tártara de la Casa", 4000.0));
+        Adicional adic7 = adicionalRepository.save(new Adicional("Bola de Helado de Vainilla", 5000.0));
+        Adicional adic8 = adicionalRepository.save(new Adicional("Shot de Ron Caribeño", 6000.0));
+
+        // ==========================================
+        // ASOCIAR ADICIONALES A CATEGORÍAS (Muchos a Muchos)
         // ==========================================
         Categoria catEntrada = categoriaRepository.findById(1L).orElse(null);
         Categoria catPlatoFuerte = categoriaRepository.findById(2L).orElse(null);
@@ -636,14 +639,41 @@ public class DataLoader implements CommandLineRunner {
         Categoria catPostre = categoriaRepository.findById(4L).orElse(null);
         Categoria catBebida = categoriaRepository.findById(5L).orElse(null);
 
-        adicionalRepository.save(new Adicional("Patacones con Hogao", 7000.0, catEntrada));
-        adicionalRepository.save(new Adicional("Papas de Aguacate Frito", 10000.0, catEntrada));
-        adicionalRepository.save(new Adicional("Ensalada Mixta Tostada", 8000.0, catPlatoFuerte));
-        adicionalRepository.save(new Adicional("Arroz de Mariscos Extra", 12000.0, catPlatoFuerte));
-        adicionalRepository.save(new Adicional("Porción de Arroz con Coco", 9000.0, catEspecialidades));
-        adicionalRepository.save(new Adicional("Salsa Tártara de la Casa", 4000.0, catEspecialidades));
-        adicionalRepository.save(new Adicional("Bola de Helado de Vainilla", 5000.0, catPostre));
-        adicionalRepository.save(new Adicional("Shot de Ron Caribeño", 6000.0, catBebida));
+        // Patacones: disponibles para Entrada y Plato Fuerte (Muchos a Muchos)
+        catEntrada.getAdicionales().add(adic1);
+        catPlatoFuerte.getAdicionales().add(adic1);
+
+        // Papas de Aguacate: disponibles para Entrada
+        catEntrada.getAdicionales().add(adic2);
+
+        // Ensalada Mixta: disponibles para Plato Fuerte y Especialidades
+        catPlatoFuerte.getAdicionales().add(adic3);
+        catEspecialidades.getAdicionales().add(adic3);
+
+        // Arroz de Mariscos Extra: disponible para Plato Fuerte
+        catPlatoFuerte.getAdicionales().add(adic4);
+
+        // Porción de Arroz con Coco: disponible para Plato Fuerte y Especialidades
+        catPlatoFuerte.getAdicionales().add(adic5);
+        catEspecialidades.getAdicionales().add(adic5);
+
+        // Salsa Tártara: disponible para Entrada, Plato Fuerte y Especialidades
+        catEntrada.getAdicionales().add(adic6);
+        catPlatoFuerte.getAdicionales().add(adic6);
+        catEspecialidades.getAdicionales().add(adic6);
+
+        // Bola de Helado: disponible para Postre
+        catPostre.getAdicionales().add(adic7);
+
+        // Shot de Ron: disponible para Bebida y Especialidades
+        catBebida.getAdicionales().add(adic8);
+        catEspecialidades.getAdicionales().add(adic8);
+
+        categoriaRepository.save(catEntrada);
+        categoriaRepository.save(catPlatoFuerte);
+        categoriaRepository.save(catEspecialidades);
+        categoriaRepository.save(catPostre);
+        categoriaRepository.save(catBebida);
 
         // Relaciones Producto - Adicional del DER
         Adicional adicional1 = adicionalRepository.findById(1L).orElseThrow();
@@ -651,27 +681,39 @@ public class DataLoader implements CommandLineRunner {
         Adicional adicional3 = adicionalRepository.findById(3L).orElseThrow();
         Adicional adicional4 = adicionalRepository.findById(4L).orElseThrow();
         Adicional adicional5 = adicionalRepository.findById(5L).orElseThrow();
-        productoAdicionalRepository.save(new ProductoAdicional(prod1, adicional1));
-        productoAdicionalRepository.save(new ProductoAdicional(prod14, adicional3));
-        productoAdicionalRepository.save(new ProductoAdicional(prod25, adicional4));
-        productoAdicionalRepository.save(new ProductoAdicional(prod38, adicional2));
-        productoAdicionalRepository.save(new ProductoAdicional(prod41, adicional5));
+
+        prod1.getAdicionalesDisponibles().add(adicional1);
+        productoRepository.save(prod1);
+
+        prod14.getAdicionalesDisponibles().add(adicional3);
+        productoRepository.save(prod14);
+
+        prod25.getAdicionalesDisponibles().add(adicional4);
+        productoRepository.save(prod25);
+
+        prod38.getAdicionalesDisponibles().add(adicional2);
+        productoRepository.save(prod38);
+
+        prod41.getAdicionalesDisponibles().add(adicional5);
+        productoRepository.save(prod41);
 
         // Cinco carritos con sus ítems y adicionales seleccionados
         for (long clienteId = 4L; clienteId <= 8L; clienteId++) {
             Cliente cliente = clienteRepository.findById(clienteId).orElseThrow();
             Carrito carrito = carritoRepository.save(new Carrito(cliente));
             Producto producto = productoRepository.findById(clienteId).orElseThrow();
-            ItemCarrito itemCarrito = itemCarritoRepository.save(new ItemCarrito(1, carrito, producto));
             Adicional adicional = adicionalRepository.findById(clienteId).orElseThrow();
-            itemCarritoAdicionalRepository.save(new ItemCarritoAdicional(itemCarrito, adicional));
+            ItemCarrito itemCarrito = new ItemCarrito(1, carrito, producto);
+            itemCarrito.getAdicionales().add(adicional);
+            itemCarritoRepository.save(itemCarrito);
         }
 
         // Cinco adicionales asociados a ítems de pedidos ya generados
         for (long itemPedidoId = 1L; itemPedidoId <= 5L; itemPedidoId++) {
             ItemPedido itemPedido = itemPedidoRepository.findById(itemPedidoId).orElseThrow();
             Adicional adicional = adicionalRepository.findById(itemPedidoId).orElseThrow();
-            itemPedidoAdicionalRepository.save(new ItemPedidoAdicional(itemPedido, adicional));
+            itemPedido.getAdicionales().add(adicional);
+            itemPedidoRepository.save(itemPedido);
         }
     }   
 }

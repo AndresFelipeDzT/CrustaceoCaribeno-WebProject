@@ -1,24 +1,22 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Carrito;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.ItemCarrito;
-import com.example.demo.entitys.ItemCarritoAdicional;
 import com.example.demo.entitys.ItemPedido;
-import com.example.demo.entitys.ItemPedidoAdicional;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CarritoRepository;
-import com.example.demo.repository.ItemCarritoAdicionalRepository;
 import com.example.demo.repository.ItemCarritoRepository;
-import com.example.demo.repository.ItemPedidoAdicionalRepository;
 import com.example.demo.repository.ItemPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.ProductoFakeRepository;
@@ -28,53 +26,62 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class CarritoServiceImpl implements CarritoService {
-    private final CarritoRepository carritoRepository;
-    private final ClienteService clienteService;
-    private final ProductoFakeRepository productoRepository;
-    private final AdicionalRepository adicionalRepository;
-    private final ItemCarritoRepository itemCarritoRepository;
-    private final ItemCarritoAdicionalRepository itemCarritoAdicionalRepository;
-    private final PedidoRepository pedidoRepository;
-    private final ItemPedidoRepository itemPedidoRepository;
-    private final ItemPedidoAdicionalRepository itemPedidoAdicionalRepository;
 
-    public CarritoServiceImpl(CarritoRepository carritoRepository, ClienteService clienteService,
-            ProductoFakeRepository productoRepository, AdicionalRepository adicionalRepository,
-            ItemCarritoRepository itemCarritoRepository, ItemCarritoAdicionalRepository itemCarritoAdicionalRepository,
-            PedidoRepository pedidoRepository, ItemPedidoRepository itemPedidoRepository,
-            ItemPedidoAdicionalRepository itemPedidoAdicionalRepository) {
-        this.carritoRepository = carritoRepository; this.clienteService = clienteService;
-        this.productoRepository = productoRepository; this.adicionalRepository = adicionalRepository;
-        this.itemCarritoRepository = itemCarritoRepository; this.itemCarritoAdicionalRepository = itemCarritoAdicionalRepository;
-        this.pedidoRepository = pedidoRepository; this.itemPedidoRepository = itemPedidoRepository;
-        this.itemPedidoAdicionalRepository = itemPedidoAdicionalRepository;
-    }
+    @Autowired
+    private CarritoRepository carritoRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private ProductoFakeRepository productoRepository;
+
+    @Autowired
+    private AdicionalRepository adicionalRepository;
+
+    @Autowired
+    private ItemCarritoRepository itemCarritoRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    @Override
     public Carrito obtenerCarrito(Long idCliente) {
         Cliente cliente = clienteService.obtenerClientePorId(idCliente);
-        return carritoRepository.findByCliente(cliente).orElseGet(() -> carritoRepository.save(new Carrito(cliente)));
+        Carrito carrito = carritoRepository.findByCliente(cliente);
+        if (carrito == null) {
+            carrito = new Carrito(cliente);
+            carrito = carritoRepository.save(carrito);
+        }
+        return carrito;
     }
 
     public void agregarProducto(Long idCliente, Long idProducto, Long[] idsAdicionales) {
         Carrito carrito = obtenerCarrito(idCliente);
-        Producto producto = productoRepository.findById(idProducto).orElseThrow();
-        if (!producto.isActivo()) {
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
+        if (producto == null || !producto.isActivo()) {
             throw new IllegalArgumentException("El producto ya no está disponible.");
         }
-        ItemCarrito item = itemCarritoRepository.save(new ItemCarrito(1, carrito, producto));
-        if (idsAdicionales != null) for (Long idAdicional : idsAdicionales) {
-            Adicional adicional = adicionalRepository.findById(idAdicional).orElseThrow();
-            if (!adicional.isActivo()) {
-                throw new IllegalArgumentException("El adicional ya no está disponible.");
+        ItemCarrito item = new ItemCarrito(1, carrito, producto);
+        if (idsAdicionales != null) {
+            for (Long idAdicional : idsAdicionales) {
+                Adicional adicional = adicionalRepository.findById(idAdicional).orElse(null);
+                if (adicional == null || !adicional.isActivo()) {
+                    throw new IllegalArgumentException("El adicional ya no está disponible.");
+                }
+                item.getAdicionales().add(adicional);
             }
-            itemCarritoAdicionalRepository.save(new ItemCarritoAdicional(item, adicional));
         }
+        itemCarritoRepository.save(item);
     }
 
     public void actualizarCantidad(Long idCliente, Long idItemCarrito, int cantidad) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
-        if (!item.getCarrito().equals(carrito)) {
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
+        if (item == null || !item.getCarrito().equals(carrito)) {
             throw new IllegalArgumentException("El producto no pertenece a este carrito.");
         }
         if (cantidad < 1) {
@@ -87,46 +94,54 @@ public class CarritoServiceImpl implements CarritoService {
 
     public void actualizarAdicionales(Long idCliente, Long idItemCarrito, Long[] idsAdicionales) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
-        if (!item.getCarrito().equals(carrito)) {
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
+        if (item == null || !item.getCarrito().equals(carrito)) {
             throw new IllegalArgumentException("El producto no pertenece a este carrito.");
         }
-        itemCarritoAdicionalRepository.deleteAll(itemCarritoAdicionalRepository.findByItemCarrito(item));
-        if (idsAdicionales == null) {
-            return;
-        }
-        for (Long idAdicional : idsAdicionales) {
-            Adicional adicional = adicionalRepository.findById(idAdicional).orElseThrow();
-            if (!adicional.isActivo() || !adicional.getCategoria().equals(item.getProducto().getCategoria())) {
-                throw new IllegalArgumentException("El adicional no está disponible para este producto.");
+        item.getAdicionales().clear();
+        if (idsAdicionales != null) {
+            for (Long idAdicional : idsAdicionales) {
+                Adicional adicional = adicionalRepository.findById(idAdicional).orElse(null);
+                boolean disponible = item.getProducto().getCategoria() != null &&
+                    item.getProducto().getCategoria().getAdicionales().contains(adicional);
+                if (adicional == null || !adicional.isActivo() || !disponible) {
+                    throw new IllegalArgumentException("El adicional no está disponible para este producto.");
+                }
+                item.getAdicionales().add(adicional);
             }
-            itemCarritoAdicionalRepository.save(new ItemCarritoAdicional(item, adicional));
         }
+        itemCarritoRepository.save(item);
     }
 
     public void eliminarItem(Long idCliente, Long idItemCarrito) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElseThrow();
-        if (!item.getCarrito().equals(carrito)) {
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
+        if (item == null || !item.getCarrito().equals(carrito)) {
             throw new IllegalArgumentException("El producto no pertenece a este carrito.");
         }
-        itemCarritoAdicionalRepository.deleteAll(itemCarritoAdicionalRepository.findByItemCarrito(item));
         itemCarritoRepository.delete(item);
     }
 
     public Pedido confirmarPedido(Long idCliente) {
         Carrito carrito = obtenerCarrito(idCliente);
         List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);
-        if (items.isEmpty()) throw new IllegalArgumentException("El carrito está vacío.");
-        Pedido pedido = pedidoRepository.save(Pedido.builder().fechaCreacion(LocalDate.now())
-                .estado("Pendiente").cliente(carrito.getCliente()).build());
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("El carrito está vacío.");
+        }
+        Pedido pedido = new Pedido();
+        pedido.setFechaCreacion(LocalDate.now());
+        pedido.setEstado("Pendiente");
+        pedido.setCliente(carrito.getCliente());
+        pedido = pedidoRepository.save(pedido);
+
         for (ItemCarrito item : items) {
-            ItemPedido itemPedido = itemPedidoRepository.save(ItemPedido.builder().pedido(pedido)
-                    .producto(item.getProducto()).cantidad(item.getCantidad())
-                    .precioUnitario(item.getProducto().getPrecio()).build());
-            for (ItemCarritoAdicional relacion : itemCarritoAdicionalRepository.findByItemCarrito(item))
-                itemPedidoAdicionalRepository.save(new ItemPedidoAdicional(itemPedido, relacion.getAdicional()));
-            itemCarritoAdicionalRepository.deleteAll(itemCarritoAdicionalRepository.findByItemCarrito(item));
+            ItemPedido itemPedido = new ItemPedido();
+            itemPedido.setPedido(pedido);
+            itemPedido.setProducto(item.getProducto());
+            itemPedido.setCantidad(item.getCantidad());
+            itemPedido.setPrecioUnitario(item.getProducto().getPrecio());
+            itemPedido.setAdicionales(new ArrayList<>(item.getAdicionales()));
+            itemPedidoRepository.save(itemPedido);
         }
         itemCarritoRepository.deleteAll(items);
         return pedido;

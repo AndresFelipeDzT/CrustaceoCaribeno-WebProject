@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
-import com.example.demo.entitys.Adicional;
-import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 
@@ -17,40 +15,39 @@ import com.example.demo.repository.ProductoFakeRepository;
  * Maneja la lógica de negocio y se comunica con el repositorio.
  */
 @Service
-public class CategoriaServiceImpl implements CategoriaService{
+public class CategoriaServiceImpl implements CategoriaService {
 
     @Autowired
-    CategoriaFakeRepository categoriaRepository;
+    private CategoriaFakeRepository categoriaRepository;
+
     @Autowired
-    ProductoFakeRepository productoRepository;
+    private ProductoFakeRepository productoRepository;
+
     @Autowired
-    AdicionalRepository adicionalRepository;
-    @Autowired
-    ProductoService productoService;
+    private ProductoService productoService;
 
     @Override
-    public List<Categoria> obtenerTodasLasCategorias(){
+    public List<Categoria> obtenerTodasLasCategorias() {
         return categoriaRepository.findAll();
     }
 
     @Override
-    public Categoria obtenerCategoriaPorNombre(String nombre){
+    public Categoria obtenerCategoriaPorNombre(String nombre) {
         return categoriaRepository.findByNombre(nombre);
     }
 
     @Override
     public void eliminarCategoria(Long idCategoria) {
-        Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow();
+        Categoria categoria = categoriaRepository.findById(idCategoria).orElse(null);
+        if (categoria == null) {
+            return;
+        }
         for (Producto producto : productoRepository.findByCategoria(categoria)) {
             productoService.eliminarProducto(producto.getIdProducto());
             producto.setCategoria(null);
             productoRepository.save(producto);
         }
-        for (Adicional adicional : adicionalRepository.findByCategoria(categoria)) {
-            adicional.setActivo(false);
-            adicional.setCategoria(null);
-            adicionalRepository.save(adicional);
-        }
+        categoria.getAdicionales().clear();
         categoriaRepository.delete(categoria);
     }
 }

@@ -7,12 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,19 +40,27 @@ public class Adicional {
     @Builder.Default
     private boolean activo = true;
 
-    @ManyToOne
-    private Categoria categoria;
-
-    @OneToMany(mappedBy = "adicional")
+    @ManyToMany(mappedBy = "adicionales")
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Builder.Default
-    private List<ProductoAdicional> productosDisponibles = new ArrayList<>();
+    private List<Categoria> categorias = new ArrayList<>();
 
-    public Adicional(String nombre, double precio, Categoria categoria) {
+    public List<Categoria> getCategoriasDisponibles() {
+        return categorias;
+    }
+
+    public void setCategoriasDisponibles(List<Categoria> categoriasDisponibles) {
+        this.categorias = categoriasDisponibles;
+    }
+
+    @ManyToMany(mappedBy = "adicionalesDisponibles")
+    @ToString.Exclude
+    @Builder.Default
+    private List<Producto> productosDisponibles = new ArrayList<>();
+
+    public Adicional(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
-        this.categoria = categoria;
         this.activo = true;
     }
 }

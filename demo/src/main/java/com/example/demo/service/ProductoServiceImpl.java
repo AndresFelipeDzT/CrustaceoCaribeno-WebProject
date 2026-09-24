@@ -6,7 +6,6 @@ import com.example.demo.entitys.Producto;
 import com.example.demo.errors.ProductoNotFoundException;
 import com.example.demo.repository.ProductoFakeRepository;
 import com.example.demo.repository.ItemCarritoRepository;
-import com.example.demo.repository.ItemCarritoAdicionalRepository;
 import com.example.demo.entitys.ItemCarrito;
 
 import java.util.List;
@@ -22,8 +21,6 @@ public class ProductoServiceImpl implements ProductoService {
     ProductoFakeRepository productoRepository;
     @Autowired
     ItemCarritoRepository itemCarritoRepository;
-    @Autowired
-    ItemCarritoAdicionalRepository itemCarritoAdicionalRepository;
 
     @Override
     public List<Producto> obtenerTodosLosProductos() {
@@ -54,8 +51,6 @@ public class ProductoServiceImpl implements ProductoService {
     public void eliminarProducto(Long idProducto) {
         Producto producto = obtenerProductoPorId(idProducto);
         for (ItemCarrito itemCarrito : itemCarritoRepository.findByProducto(producto)) {
-            itemCarritoAdicionalRepository.deleteAll(
-                    itemCarritoAdicionalRepository.findByItemCarrito(itemCarrito));
             itemCarritoRepository.delete(itemCarrito);
         }
         producto.setActivo(false);

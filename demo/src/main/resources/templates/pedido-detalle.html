@@ -59,7 +59,7 @@
           <span th:text="'$' + ${#numbers.formatDecimal(item.precioUnitario, 0, 'POINT', 0, 'COMMA')}">$0</span>
           <span th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')}">$0</span>
           <div class="adicionales-detalle" th:if="${!item.adicionales.empty}">
-            <span th:each="relacion : ${item.adicionales}" th:text="'+ ' + ${relacion.adicional.nombre}">+ Adicional</span>
+            <span th:each="adic : ${item.adicionales}" th:text="'+ ' + ${adic.nombre}">+ Adicional</span>
           </div>
         </div>
         <p class="sin-productos" th:if="${pedido.items.empty}">Este pedido no tiene productos.</p>

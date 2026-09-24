@@ -3,16 +3,14 @@ package com.example.demo.entitys;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -34,10 +32,9 @@ public class ItemCarrito {
     @ManyToOne(optional = false)
     private Producto producto;
 
-    @OneToMany(mappedBy = "itemCarrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<ItemCarritoAdicional> adicionales = new ArrayList<>();
+    private List<Adicional> adicionales = new ArrayList<>();
 
     public ItemCarrito(int cantidad, Carrito carrito, Producto producto) {
         this.cantidad = cantidad;

@@ -13,7 +13,7 @@ import com.example.demo.repository.AdicionalRepository;
 public class AdicionalServiceImpl implements AdicionalService {
 
     @Autowired
-    AdicionalRepository adicionalRepository;
+    private AdicionalRepository adicionalRepository;
 
     @Override
     public List<Adicional> obtenerTodosLosAdicionales() {
@@ -28,9 +28,9 @@ public class AdicionalServiceImpl implements AdicionalService {
     @Override
     public List<Adicional> obtenerAdicionalesPorCategoria(Categoria categoria) {
         if (categoria == null) {
-            return adicionalRepository.findAll();
+            return obtenerTodosLosAdicionales();
         }
-        return adicionalRepository.findByCategoriaAndActivoTrue(categoria);
+        return adicionalRepository.findByCategoriasContainingAndActivoTrue(categoria);
     }
 
     @Override
@@ -40,10 +40,10 @@ public class AdicionalServiceImpl implements AdicionalService {
 
     @Override
     public void eliminarAdicional(Long idAdicional) {
-        Adicional adicional = adicionalRepository.findById(idAdicional)
-                .orElseThrow(() -> new IllegalArgumentException("El adicional no existe."));
-
-        adicional.setActivo(false);
-        adicionalRepository.save(adicional);
+        Adicional adicional = obtenerAdicionalPorId(idAdicional);
+        if (adicional != null) {
+            adicional.setActivo(false);
+            adicionalRepository.save(adicional);
+        }
     }
 }

@@ -64,9 +64,9 @@
           </form>
         </div>
         <ul class="carrito-adicionales" th:if="${!item.adicionales.empty}">
-          <li th:each="relacion : ${item.adicionales}">
+          <li th:each="adic : ${item.adicionales}">
             <i class="bi bi-trash3"></i>
-            <span th:text="${relacion.adicional.nombre}">Adicional</span>
+            <span th:text="${adic.nombre}">Adicional</span>
           </li>
         </ul>
         <form class="seleccion-adicionales" th:action="@{/carrito/adicionales}" method="post">

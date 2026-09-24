@@ -1,5 +1,6 @@
 package com.example.demo.entitys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -7,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +33,16 @@ public class Categoria {
     @OneToMany (mappedBy = "categoria")
     private List<Producto> productos;
 
-    @OneToMany (mappedBy = "categoria")
-    private List<Adicional> adicionales;
+    @ManyToMany
+    private List<Adicional> adicionales = new ArrayList<>();
+
+    public List<Adicional> getAdicionalesDisponibles() {
+        return adicionales;
+    }
+
+    public void setAdicionalesDisponibles(List<Adicional> adicionalesDisponibles) {
+        this.adicionales = adicionalesDisponibles;
+    }
 
     public Categoria(String nombre) {
         this.nombre = nombre;

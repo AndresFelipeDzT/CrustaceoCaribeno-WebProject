@@ -5,14 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +43,10 @@ public class ItemPedido {
     @ManyToOne
     private Producto producto;
 
-    @OneToMany(mappedBy = "itemPedido")
+    @ManyToMany
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Builder.Default
-    private List<ItemPedidoAdicional> adicionales = new ArrayList<>();
+    private List<Adicional> adicionales = new ArrayList<>();
 
     public ItemPedido(int cantidad, double precioUnitario, Pedido pedido, Producto producto) {
         this.cantidad = cantidad;
