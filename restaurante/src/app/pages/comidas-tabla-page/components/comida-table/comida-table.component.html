@@ -1,0 +1,36 @@
+<div class="table-responsive">
+  <table class="table align-middle tabla-platillos">
+    <thead>
+      <tr>
+        <th scope="col" class="th-nombre">Nombre</th>
+        <th scope="col" class="th-imagen">Imagen</th>
+        <th scope="col" class="th-descripcion">Descripción</th>
+        <th scope="col" class="th-precio">Precio</th>
+        <th scope="col" class="th-estado">Estado</th>
+        <th scope="col" class="th-accion">Acciónes</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (comida of comidas(); track $index) {
+        <tr>
+          <td class="col-nombre">{{ comida.nombre }}</td>
+          <td class="col-imagen"><img [src]="comida.imagenURL" [alt]="comida.nombre" class="img-platillo" loading="lazy"></td>
+          <td class="col-descripcion">{{ comida.descripcion }}</td>
+          <td class="col-precio">{{ comida.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+          <td class="col-estado">
+            <span class="estado-producto" [class.estado-activo]="comida.activo !== false" [class.estado-inactivo]="comida.activo === false">
+              {{ comida.activo === false ? 'Inactivo' : 'Activo' }}
+            </span>
+          </td>
+          <td class="col-accion">
+            <a [routerLink]="['/comidas/detalle', comida.id]" class="btn-accion">Ver Más</a>
+            <a [routerLink]="['/comidas/tabla/update', comida.id]" class="btn-accion">Update</a>
+            <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.id)">Eliminar</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td class="tabla-vacia" colspan="6">No hay comidas registradas.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

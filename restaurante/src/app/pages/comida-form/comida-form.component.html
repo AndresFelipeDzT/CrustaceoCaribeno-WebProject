@@ -1,0 +1,56 @@
+<header class="header-crustaceo">
+  <nav class="navbar-crustaceo">
+    <div class="nav-contenido">
+      <a class="navbar-brand" routerLink="/">
+        <img src="/imagenes/logo2.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
+        <span>Crustáceo Caribeño</span>
+      </a>
+      <a class="btn-volver-nav" routerLink="/comidas/tabla">
+        <span class="flecha">←</span><span>Volver</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main class="pagina-agregar">
+  <section class="form-panel" aria-label="Agregar plato">
+    <h1>{{ esEdicion ? 'Editar Plato' : 'Agregar Plato' }}</h1>
+    <form class="formulario" [formGroup]="comidaForm" (ngSubmit)="guardar()">
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" formControlName="nombre" required>
+        @if (comidaForm.controls.nombre.touched && comidaForm.controls.nombre.invalid) {
+          <small class="error">Escribe un nombre válido.</small>
+        }
+      </div>
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <input id="descripcion" type="text" formControlName="descripcion" required>
+        @if (comidaForm.controls.descripcion.touched && comidaForm.controls.descripcion.invalid) {
+          <small class="error">La descripción es obligatoria.</small>
+        }
+      </div>
+      <div class="campo">
+        <label for="precio">Precio</label>
+        <input id="precio" type="number" min="1" formControlName="precio" required>
+      </div>
+      <div class="campo">
+        <label for="imagen">Imagen (URL)</label>
+        <input id="imagen" type="text" formControlName="imagenURL" required>
+      </div>
+      <div class="campo">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" formControlName="categoria" required>
+          <option value="">Selecciona una opción</option>
+          @for (categoria of categorias; track categoria) {
+            <option [value]="categoria">{{ categoria }}</option>
+          }
+        </select>
+      </div>
+      <div class="boton-contenedor">
+        <button class="btn-enviar" type="submit">Enviar</button>
+      </div>
+    </form>
+  </section>
+</main>
+<app-footer></app-footer>

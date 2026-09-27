@@ -1,0 +1,16 @@
+<app-table-navbar></app-table-navbar>
+
+<app-table-hero-banner></app-table-hero-banner>
+
+<section id="menu-tabla" class="menu-section container my-5">
+  <div class="separador-menu mb-5">
+    <div class="linea-decorativa"></div>
+    <h2 class="titulo-menu">Menú</h2>
+    <div class="linea-decorativa"></div>
+  </div>
+
+  <app-comida-table [comidas]="comidas" (comidaEliminada)="eliminarComida($event)"></app-comida-table>
+  <a routerLink="/comidas/tabla/add" class="btn-accion">Agregar plato</a>
+</section>
+
+<app-footer></app-footer>

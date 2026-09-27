@@ -1,0 +1,81 @@
+.tarjeta-platillo {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 1.2rem 1.6rem;
+  border: 2px solid #1a3cb0;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(26, 60, 176, .07);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.tarjeta-platillo:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26, 60, 176, .14); }
+.tarjeta-img-box {
+  flex: 0 0 175px;
+  width: 175px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f3f4f6;
+}
+.tarjeta-img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.tarjeta-platillo:hover .tarjeta-img { transform: scale(1.04); }
+.tarjeta-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
+.tarjeta-header { margin-bottom: .5rem; }
+.tarjeta-nombre {
+  margin: 0 0 .4rem;
+  color: #4a2711;
+  font-family: "Dai Banna SIL", "Playfair Display", serif;
+  font-size: 1.45rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.tarjeta-descripcion { margin: 0; color: #2b2b2b; font-family: "Poppins", sans-serif; font-size: .93rem; line-height: 1.45; }
+.tarjeta-footer-row { display: flex; align-items: center; gap: 1rem; margin-top: .8rem; }
+.linea-puntos { flex-grow: 1; height: 1px; border-bottom: 2px dashed #9ca3af; }
+.tarjeta-precio { color: #1a1a1a; font-family: "Poppins", sans-serif; font-size: 1.25rem; font-weight: 700; white-space: nowrap; }
+.btn-ver-mas {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 20px;
+  border: 1.5px solid #6b4403;
+  border-radius: 20px;
+  color: #222;
+  background: transparent;
+  font-family: "Poppins", sans-serif;
+  font-size: .95rem;
+  font-style: italic;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all .25s ease;
+}
+.btn-ver-mas:hover { color: #fff; background: #6b4403; box-shadow: 0 4px 10px rgba(107, 68, 3, .25); }
+.form-agregar-tarjeta { display: inline-flex; }
+.btn-agregar-carrito {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px 14px;
+  border: 1.5px solid #0b1d5c;
+  border-radius: 20px;
+  color: #fff;
+  background: #0b1d5c;
+  font-family: "Poppins", sans-serif;
+  font-size: .9rem;
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all .25s ease;
+}
+.btn-agregar-carrito:hover { border-color: #6b4403; color: #fff; background: #6b4403; }
+
+@media (max-width: 768px) {
+  .tarjeta-platillo { align-items: stretch; flex-direction: column; gap: 1.2rem; padding: 1.2rem; }
+  .tarjeta-img-box { flex: initial; width: 100%; height: 180px; }
+  .tarjeta-info { min-height: auto; }
+}
