@@ -33,6 +33,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente obtenerClientePorId(Long idCliente) {
+        if (idCliente == null) {
+            throw new IllegalArgumentException("El ID del cliente es obligatorio.");
+        }
         return clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ClienteNotFoundException(idCliente));
     }
@@ -143,8 +146,11 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente prepararClienteEdicion(Cliente clienteFormulario, Long idCliente) {
-        if (clienteFormulario == null || idCliente == null) {
-            return null;
+        if (clienteFormulario == null) {
+            throw new IllegalArgumentException("Los datos del cliente no pueden ser nulos.");
+        }
+        if (idCliente == null) {
+            throw new IllegalArgumentException("El ID del cliente es obligatorio.");
         }
 
         Cliente clienteExistente = obtenerClientePorId(idCliente);

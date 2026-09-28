@@ -100,7 +100,8 @@
               <td class="col-accion">
                 <a th:href="@{/comidas/detalle/{id}(id=${producto.idProducto})}" class="btn-accion">Ver Más</a>
                 <a th:href="@{/comidas/tabla/update/{id}(id=${producto.idProducto})}" class="btn-accion">Update</a>
-                <a th:href="@{/comidas/tabla/delete/{id}(id=${producto.idProducto})}" class="btn-accion">Eliminar</a>
+                <a th:if="${producto.activo}" th:href="@{/comidas/tabla/delete/{id}(id=${producto.idProducto})}" class="btn-accion">Eliminar</a>
+                <a th:unless="${producto.activo}" th:href="@{/comidas/tabla/activar/{id}(id=${producto.idProducto})}" class="btn-accion">Activar</a>
               </td>
             </tr>
           </tbody>

@@ -10,7 +10,9 @@ public interface AdicionalService {
     /* Obtiene todos los adicionales disponibles */
     List<Adicional> obtenerTodosLosAdicionales();
 
-    /* Busca un adicional por su ID */
+    /**
+     * Busca un adicional por su ID.
+     */
     Adicional obtenerAdicionalPorId(Long idAdicional);
 
     /* Obtiene los adicionales disponibles acorde a una categoría */

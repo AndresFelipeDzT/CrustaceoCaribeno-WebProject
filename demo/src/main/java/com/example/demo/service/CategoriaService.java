@@ -17,7 +17,7 @@ public interface CategoriaService {
     /**
      * Busca una categoria por su nombre.
      * @param nombre nombre de la categoria.
-     * @return La categoria encontrada o null si no existe.
+     * @return La categoría encontrada.
      */
     Categoria obtenerCategoriaPorNombre(String nombre);
 

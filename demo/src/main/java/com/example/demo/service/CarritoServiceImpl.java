@@ -61,15 +61,23 @@ public class CarritoServiceImpl implements CarritoService {
 
     public void agregarProducto(Long idCliente, Long idProducto, Long[] idsAdicionales) {
         Carrito carrito = obtenerCarrito(idCliente);
-        Producto producto = productoRepository.findById(idProducto).orElse(null);
-        if (producto == null || !producto.isActivo()) {
+        if (idProducto == null) {
+            throw new IllegalArgumentException("El ID del producto es obligatorio.");
+        }
+        Producto producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new IllegalArgumentException("El producto ya no está disponible."));
+        if (!producto.isActivo()) {
             throw new IllegalArgumentException("El producto ya no está disponible.");
         }
         ItemCarrito item = new ItemCarrito(1, carrito, producto);
         if (idsAdicionales != null) {
             for (Long idAdicional : idsAdicionales) {
-                Adicional adicional = adicionalRepository.findById(idAdicional).orElse(null);
-                if (adicional == null || !adicional.isActivo()) {
+                if (idAdicional == null) {
+                    throw new IllegalArgumentException("El ID del adicional es obligatorio.");
+                }
+                Adicional adicional = adicionalRepository.findById(idAdicional)
+                        .orElseThrow(() -> new IllegalArgumentException("El adicional ya no está disponible."));
+                if (!adicional.isActivo()) {
                     throw new IllegalArgumentException("El adicional ya no está disponible.");
                 }
                 item.getAdicionales().add(adicional);
@@ -80,10 +88,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     public void actualizarCantidad(Long idCliente, Long idItemCarrito, int cantidad) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
-        if (item == null || !item.getCarrito().equals(carrito)) {
-            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
-        }
+        ItemCarrito item = obtenerItemDelCarrito(carrito, idItemCarrito);
         if (cantidad < 1) {
             eliminarItem(idCliente, idItemCarrito);
             return;
@@ -94,17 +99,18 @@ public class CarritoServiceImpl implements CarritoService {
 
     public void actualizarAdicionales(Long idCliente, Long idItemCarrito, Long[] idsAdicionales) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
-        if (item == null || !item.getCarrito().equals(carrito)) {
-            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
-        }
+        ItemCarrito item = obtenerItemDelCarrito(carrito, idItemCarrito);
         item.getAdicionales().clear();
         if (idsAdicionales != null) {
             for (Long idAdicional : idsAdicionales) {
-                Adicional adicional = adicionalRepository.findById(idAdicional).orElse(null);
+                if (idAdicional == null) {
+                    throw new IllegalArgumentException("El ID del adicional es obligatorio.");
+                }
+                Adicional adicional = adicionalRepository.findById(idAdicional)
+                        .orElseThrow(() -> new IllegalArgumentException("El adicional no está disponible para este producto."));
                 boolean disponible = item.getProducto().getCategoria() != null &&
                     item.getProducto().getCategoria().getAdicionales().contains(adicional);
-                if (adicional == null || !adicional.isActivo() || !disponible) {
+                if (!adicional.isActivo() || !disponible) {
                     throw new IllegalArgumentException("El adicional no está disponible para este producto.");
                 }
                 item.getAdicionales().add(adicional);
@@ -115,10 +121,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     public void eliminarItem(Long idCliente, Long idItemCarrito) {
         Carrito carrito = obtenerCarrito(idCliente);
-        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito).orElse(null);
-        if (item == null || !item.getCarrito().equals(carrito)) {
-            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
-        }
+        ItemCarrito item = obtenerItemDelCarrito(carrito, idItemCarrito);
         itemCarritoRepository.delete(item);
     }
 
@@ -145,5 +148,17 @@ public class CarritoServiceImpl implements CarritoService {
         }
         itemCarritoRepository.deleteAll(items);
         return pedido;
+    }
+
+    private ItemCarrito obtenerItemDelCarrito(Carrito carrito, Long idItemCarrito) {
+        if (idItemCarrito == null) {
+            throw new IllegalArgumentException("El ID del producto en el carrito es obligatorio.");
+        }
+        ItemCarrito item = itemCarritoRepository.findById(idItemCarrito)
+                .orElseThrow(() -> new IllegalArgumentException("El producto no pertenece a este carrito."));
+        if (!item.getCarrito().equals(carrito)) {
+            throw new IllegalArgumentException("El producto no pertenece a este carrito.");
+        }
+        return item;
     }
 }

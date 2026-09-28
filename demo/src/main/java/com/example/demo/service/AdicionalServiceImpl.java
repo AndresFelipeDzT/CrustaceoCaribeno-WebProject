@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
+import com.example.demo.errors.AdicionalNotFoundException;
 import com.example.demo.repository.AdicionalRepository;
 
 @Service
@@ -22,7 +23,11 @@ public class AdicionalServiceImpl implements AdicionalService {
 
     @Override
     public Adicional obtenerAdicionalPorId(Long idAdicional) {
-        return adicionalRepository.findById(idAdicional).orElse(null);
+        if (idAdicional == null) {
+            throw new IllegalArgumentException("El ID del adicional es obligatorio.");
+        }
+        return adicionalRepository.findById(idAdicional)
+                .orElseThrow(() -> new AdicionalNotFoundException(idAdicional));
     }
 
     @Override
@@ -35,15 +40,16 @@ public class AdicionalServiceImpl implements AdicionalService {
 
     @Override
     public Adicional guardarAdicional(Adicional adicional) {
+        if (adicional == null) {
+            throw new IllegalArgumentException("Los datos del adicional no pueden ser nulos.");
+        }
         return adicionalRepository.save(adicional);
     }
 
     @Override
     public void eliminarAdicional(Long idAdicional) {
         Adicional adicional = obtenerAdicionalPorId(idAdicional);
-        if (adicional != null) {
-            adicional.setActivo(false);
-            adicionalRepository.save(adicional);
-        }
+        adicional.setActivo(false);
+        adicionalRepository.save(adicional);
     }
 }

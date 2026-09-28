@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Domiciliario;
+import com.example.demo.errors.DomiciliarioNotFoundException;
 import com.example.demo.repository.DomiciliarioRepository;
 import com.example.demo.repository.PedidoRepository;
 
@@ -18,10 +19,11 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
 
     @Override
     public void eliminarDomiciliario(Long idDomiciliario) {
-        Domiciliario domiciliario = domiciliarioRepository.findById(idDomiciliario).orElse(null);
-        if (domiciliario == null) {
-            return;
+        if (idDomiciliario == null) {
+            throw new IllegalArgumentException("El ID del domiciliario es obligatorio.");
         }
+        Domiciliario domiciliario = domiciliarioRepository.findById(idDomiciliario)
+                .orElseThrow(() -> new DomiciliarioNotFoundException(idDomiciliario));
         if (!pedidoRepository.findByDomiciliario(domiciliario).isEmpty()) {
             domiciliario.setDisponible(false);
             domiciliarioRepository.save(domiciliario);

@@ -34,12 +34,18 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto obtenerProductoPorId(Long idProducto) {
+        if (idProducto == null) {
+            throw new IllegalArgumentException("El ID del producto es obligatorio.");
+        }
         return productoRepository.findById(idProducto)
                 .orElseThrow(() -> new ProductoNotFoundException(idProducto));
     }
 
     @Override
     public Producto guardarProducto(Producto producto) {
+        if (producto == null) {
+            throw new IllegalArgumentException("Los datos del producto no pueden ser nulos.");
+        }
         if (producto.getIdProducto() != null) {
             Producto existente = obtenerProductoPorId(producto.getIdProducto());
             producto.setActivo(existente.isActivo());
@@ -54,6 +60,13 @@ public class ProductoServiceImpl implements ProductoService {
             itemCarritoRepository.delete(itemCarrito);
         }
         producto.setActivo(false);
+        productoRepository.save(producto);
+    }
+
+    @Override
+    public void activarProducto(Long idProducto) {
+        Producto producto = obtenerProductoPorId(idProducto);
+        producto.setActivo(true);
         productoRepository.save(producto);
     }
 }

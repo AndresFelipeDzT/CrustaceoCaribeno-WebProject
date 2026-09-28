@@ -25,12 +25,8 @@ public class PedidoController {
     }
 
     @GetMapping("/pedidos/{id}")
-    public String verDetalle(@PathVariable Long id, Model model, RedirectAttributes atributos) {
+    public String verDetalle(@PathVariable Long id, Model model) {
         Pedido pedido = pedidoService.obtenerPedidoPorId(id);
-        if (pedido == null) {
-            atributos.addFlashAttribute("error", "El pedido no existe.");
-            return "redirect:/pedidos";
-        }
         model.addAttribute("pedido", pedido);
         return "pedido-detalle";
     }
@@ -38,22 +34,13 @@ public class PedidoController {
     @PostMapping("/pedidos/{id}/actualizar")
     public String actualizarPedido(@PathVariable Long id, @RequestParam String estado,
             RedirectAttributes atributos) {
-        Pedido pedido = pedidoService.actualizarEstadoPedido(id, estado);
-        if (pedido == null) {
-            atributos.addFlashAttribute("error", "El pedido no existe.");
-            return "redirect:/pedidos";
-        }
+        pedidoService.actualizarEstadoPedido(id, estado);
         atributos.addFlashAttribute("mensaje", "Pedido actualizado correctamente.");
         return "redirect:/pedidos/" + id;
     }
 
     @PostMapping("/pedidos/{id}/eliminar")
     public String eliminarPedido(@PathVariable Long id, RedirectAttributes atributos) {
-        Pedido pedido = pedidoService.obtenerPedidoPorId(id);
-        if (pedido == null) {
-            atributos.addFlashAttribute("error", "El pedido no existe.");
-            return "redirect:/pedidos";
-        }
         pedidoService.eliminarPedido(id);
         atributos.addFlashAttribute("mensaje", "Pedido eliminado correctamente.");
         return "redirect:/pedidos";

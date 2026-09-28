@@ -6,7 +6,13 @@ import com.example.demo.entitys.Pedido;
 
 public interface PedidoService {
     List<Pedido> obtenerTodosLosPedidos();
+
+    /**
+     * Busca un pedido por su identificador.
+     */
     Pedido obtenerPedidoPorId(Long id);
+
     Pedido actualizarEstadoPedido(Long id, String estado);
+
     void eliminarPedido(Long id);
 }
