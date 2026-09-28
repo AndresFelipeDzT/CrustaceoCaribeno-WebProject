@@ -26,4 +26,9 @@ export class ComidasTablaPageComponent implements OnInit {
     this.comidas = [...this.comidaService.getComidas()];
   }
 
+  activarComida(id: number): void {
+    this.comidaService.activarComida(id);
+    this.comidas = [...this.comidaService.getComidas()];
+  }
+
 }
