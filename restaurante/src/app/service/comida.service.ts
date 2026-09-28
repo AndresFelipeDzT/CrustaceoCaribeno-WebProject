@@ -6,14 +6,14 @@ import { Comida } from '../models/comida.model';
 export class ComidaService {
   private readonly storageKey = 'restaurante.comidas';
   private adicionales: Adicional[] = [
-    { idAdicional: 1, nombre: 'Patacones con Hogao', precio: 7000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 2, nombre: 'Papas de Aguacate Frito', precio: 10000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 3, nombre: 'Ensalada Mixta Tostada', precio: 8000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 4, nombre: 'Arroz de Mariscos Extra', precio: 12000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 5, nombre: 'Porción de Arroz con Coco', precio: 9000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 6, nombre: 'Salsa Tártara de la Casa', precio: 4000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 7, nombre: 'Bola de Helado de Vainilla', precio: 5000, activo: true, categorias: [], productosDisponibles: [] },
-    { idAdicional: 8, nombre: 'Shot de Ron Caribeño', precio: 6000, activo: true, categorias: [], productosDisponibles: [] }
+    { idAdicional: 1, nombre: 'Patacones con Hogao', precio: 7000, activo: true, categorias: [] },
+    { idAdicional: 2, nombre: 'Papas de Aguacate Frito', precio: 10000, activo: true, categorias: [] },
+    { idAdicional: 3, nombre: 'Ensalada Mixta Tostada', precio: 8000, activo: true, categorias: [] },
+    { idAdicional: 4, nombre: 'Arroz de Mariscos Extra', precio: 12000, activo: true, categorias: [] },
+    { idAdicional: 5, nombre: 'Porción de Arroz con Coco', precio: 9000, activo: true, categorias: [] },
+    { idAdicional: 6, nombre: 'Salsa Tártara de la Casa', precio: 4000, activo: true, categorias: [] },
+    { idAdicional: 7, nombre: 'Bola de Helado de Vainilla', precio: 5000, activo: true, categorias: [] },
+    { idAdicional: 8, nombre: 'Shot de Ron Caribeño', precio: 6000, activo: true, categorias: [] }
   ];
 
   private readonly adicionalesPorCategoria: Record<string, number[]> = {

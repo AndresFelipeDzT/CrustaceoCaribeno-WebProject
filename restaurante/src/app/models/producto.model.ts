@@ -1,4 +1,3 @@
-import { Adicional } from './adicional.model';
 import { Categoria } from './categoria.model';
 
 /** Representa la entidad Producto de Spring Boot. */
@@ -10,5 +9,4 @@ export interface Producto {
   imagenURL?: string | null;
   activo: boolean;
   categoria?: Categoria | null;
-  adicionalesDisponibles: Adicional[];
 }
