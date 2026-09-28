@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Pedido;
+import com.example.demo.errors.PedidoNotFoundException;
 import com.example.demo.repository.PedidoRepository;
 
 import jakarta.transaction.Transactional;
@@ -24,24 +25,26 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido obtenerPedidoPorId(Long id) {
-        return pedidoRepository.findById(id).orElse(null);
+        if (id == null) {
+            throw new IllegalArgumentException("El ID del pedido es obligatorio.");
+        }
+        return pedidoRepository.findById(id)
+                .orElseThrow(() -> new PedidoNotFoundException(id));
     }
 
     @Override
     public Pedido actualizarEstadoPedido(Long id, String estado) {
-        Pedido pedido = obtenerPedidoPorId(id);
-        if (pedido != null) {
-            pedido.setEstado(estado);
-            return pedidoRepository.save(pedido);
+        if (estado == null || estado.isBlank()) {
+            throw new IllegalArgumentException("El estado del pedido es obligatorio.");
         }
-        return null;
+        Pedido pedido = obtenerPedidoPorId(id);
+        pedido.setEstado(estado.trim());
+        return pedidoRepository.save(pedido);
     }
 
     @Override
     public void eliminarPedido(Long id) {
         Pedido pedido = obtenerPedidoPorId(id);
-        if (pedido != null) {
-            pedidoRepository.delete(pedido);
-        }
+        pedidoRepository.delete(pedido);
     }
 }

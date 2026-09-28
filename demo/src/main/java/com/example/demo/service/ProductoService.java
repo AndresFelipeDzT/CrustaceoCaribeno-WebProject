@@ -36,9 +36,14 @@ public interface ProductoService {
     Producto guardarProducto(Producto producto);
 
     /**
-     * Elimina un producto del catálogo.
+     * Desactiva un producto del catálogo.
      * @param idProducto ID del producto.
-     * @return true si se eliminó, false en caso contrario.
      */
     void eliminarProducto(Long idProducto);
+
+    /**
+     * Reactiva un producto del catálogo.
+     * @param idProducto ID del producto.
+     */
+    void activarProducto(Long idProducto);
 }

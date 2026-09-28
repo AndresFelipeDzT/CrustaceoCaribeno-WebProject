@@ -154,6 +154,12 @@ public class ProductoController {
         return "redirect:/comidas/tabla";
     }
 
+    @GetMapping("/tabla/activar/{id}")
+    public String activarProducto(@PathVariable Long id) {
+        productoService.activarProducto(id);
+        return "redirect:/comidas/tabla";
+    }
+
     // localhost:8080/comidas/tabla/update/{id}
     @GetMapping("tabla/update/{id}")
     public String actualizarProducto(@PathVariable Long id, Model model) {

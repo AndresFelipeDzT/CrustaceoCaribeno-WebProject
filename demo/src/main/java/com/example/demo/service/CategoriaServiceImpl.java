@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
+import com.example.demo.errors.CategoriaNotFoundException;
 import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 
@@ -33,15 +34,24 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Categoria obtenerCategoriaPorNombre(String nombre) {
-        return categoriaRepository.findByNombre(nombre);
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la categoría es obligatorio.");
+        }
+        String nombreNormalizado = nombre.trim();
+        Categoria categoria = categoriaRepository.findByNombre(nombreNormalizado);
+        if (categoria == null) {
+            throw new CategoriaNotFoundException(nombreNormalizado);
+        }
+        return categoria;
     }
 
     @Override
     public void eliminarCategoria(Long idCategoria) {
-        Categoria categoria = categoriaRepository.findById(idCategoria).orElse(null);
-        if (categoria == null) {
-            return;
+        if (idCategoria == null) {
+            throw new IllegalArgumentException("El ID de la categoría es obligatorio.");
         }
+        Categoria categoria = categoriaRepository.findById(idCategoria)
+                .orElseThrow(() -> new CategoriaNotFoundException(idCategoria));
         for (Producto producto : productoRepository.findByCategoria(categoria)) {
             productoService.eliminarProducto(producto.getIdProducto());
             producto.setCategoria(null);

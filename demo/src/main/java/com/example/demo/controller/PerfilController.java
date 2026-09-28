@@ -25,9 +25,6 @@ public class PerfilController {
             return "redirect:/login";
         }
         Cliente cliente = clienteService.obtenerClientePorId(id);
-        if (cliente == null) {
-            return "redirect:/login";
-        }
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("modoEdicion", false);
@@ -40,9 +37,6 @@ public class PerfilController {
             return "redirect:/login";
         }
         Cliente cliente = clienteService.obtenerClientePorId(id);
-        if (cliente == null) {
-            return "redirect:/login";
-        }
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("modoEdicion", true);
@@ -60,9 +54,6 @@ public class PerfilController {
         }
 
         clienteForm = clienteService.prepararClienteEdicion(clienteForm, id);
-        if (clienteForm == null) {
-            return "redirect:/login";
-        }
 
         try {
             clienteService.guardarCliente(clienteForm);
