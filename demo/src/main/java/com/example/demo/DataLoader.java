@@ -675,28 +675,6 @@ public class DataLoader implements CommandLineRunner {
         categoriaRepository.save(catPostre);
         categoriaRepository.save(catBebida);
 
-        // Relaciones Producto - Adicional del DER
-        Adicional adicional1 = adicionalRepository.findById(1L).orElseThrow();
-        Adicional adicional2 = adicionalRepository.findById(2L).orElseThrow();
-        Adicional adicional3 = adicionalRepository.findById(3L).orElseThrow();
-        Adicional adicional4 = adicionalRepository.findById(4L).orElseThrow();
-        Adicional adicional5 = adicionalRepository.findById(5L).orElseThrow();
-
-        prod1.getAdicionalesDisponibles().add(adicional1);
-        productoRepository.save(prod1);
-
-        prod14.getAdicionalesDisponibles().add(adicional3);
-        productoRepository.save(prod14);
-
-        prod25.getAdicionalesDisponibles().add(adicional4);
-        productoRepository.save(prod25);
-
-        prod38.getAdicionalesDisponibles().add(adicional2);
-        productoRepository.save(prod38);
-
-        prod41.getAdicionalesDisponibles().add(adicional5);
-        productoRepository.save(prod41);
-
         // Cinco carritos con sus ítems y adicionales seleccionados
         for (long clienteId = 4L; clienteId <= 8L; clienteId++) {
             Cliente cliente = clienteRepository.findById(clienteId).orElseThrow();

@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,11 +50,6 @@ public class Adicional {
     public void setCategoriasDisponibles(List<Categoria> categoriasDisponibles) {
         this.categorias = categoriasDisponibles;
     }
-
-    @ManyToMany(mappedBy = "adicionalesDisponibles")
-    @ToString.Exclude
-    @Builder.Default
-    private List<Producto> productosDisponibles = new ArrayList<>();
 
     public Adicional(String nombre, double precio) {
         this.nombre = nombre;
