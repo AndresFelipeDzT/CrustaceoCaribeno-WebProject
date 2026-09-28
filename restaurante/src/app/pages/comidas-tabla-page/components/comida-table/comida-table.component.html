@@ -25,7 +25,11 @@
           <td class="col-accion">
             <a [routerLink]="['/comidas/detalle', comida.id]" class="btn-accion">Ver Más</a>
             <a [routerLink]="['/comidas/tabla/update', comida.id]" class="btn-accion">Update</a>
-            <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.id)">Eliminar</button>
+            @if (comida.activo !== false) {
+              <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.id)">Eliminar</button>
+            } @else {
+              <button type="button" class="btn-accion" (click)="comidaActivada.emit(comida.id)">Activar</button>
+            }
           </td>
         </tr>
       } @empty {

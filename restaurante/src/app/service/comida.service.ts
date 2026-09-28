@@ -450,6 +450,11 @@ export class ComidaService {
     if (comida) comida.activo = false;
   }
 
+  activarComida(id: number): void {
+    const comida = this.getComidaById(id);
+    if (comida) comida.activo = true;
+  }
+
   // Conserva el método que usa la tabla; eliminar equivale a desactivar el producto.
   deleteComida(id: number): void {
     this.desactivarComida(id);

@@ -9,7 +9,11 @@
     <div class="linea-decorativa"></div>
   </div>
 
-  <app-comida-table [comidas]="comidas" (comidaEliminada)="eliminarComida($event)"></app-comida-table>
+  <app-comida-table
+    [comidas]="comidas"
+    (comidaEliminada)="eliminarComida($event)"
+    (comidaActivada)="activarComida($event)"
+  ></app-comida-table>
   <a routerLink="/comidas/tabla/add" class="btn-accion">Agregar plato</a>
 </section>
 

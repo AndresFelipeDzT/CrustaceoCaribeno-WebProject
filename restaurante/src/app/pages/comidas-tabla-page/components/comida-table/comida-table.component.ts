@@ -12,4 +12,5 @@ import { Comida } from '../../../../models/comida.model';
 export class ComidaTableComponent {
   comidas = input.required<Comida[]>();
   comidaEliminada = output<number>();
+  comidaActivada = output<number>();
 }
