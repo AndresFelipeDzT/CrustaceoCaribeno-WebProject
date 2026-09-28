@@ -1,12 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ComidaService } from '../../service/comida.service';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { ComidaFormNavbarComponent } from './components/comida-form-navbar/comida-form-navbar.component';
+import { ComidaFormPanelComponent } from './components/comida-form-panel/comida-form-panel.component';
 
 @Component({
   selector: 'app-comida-form',
-  imports: [ReactiveFormsModule, RouterLink, FooterComponent],
+  imports: [ReactiveFormsModule, FooterComponent, ComidaFormNavbarComponent, ComidaFormPanelComponent],
   templateUrl: './comida-form.component.html',
   styleUrl: './comida-form.component.scss'
 })

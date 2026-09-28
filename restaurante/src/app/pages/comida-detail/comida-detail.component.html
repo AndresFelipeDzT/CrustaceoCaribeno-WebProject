@@ -1,41 +1,8 @@
-<header class="header-crustaceo">
-  <nav class="navbar-crustaceo">
-    <div class="nav-contenido">
-      <a class="navbar-brand" routerLink="/">
-        <img src="/imagenes/logo2.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
-        <span>Crustáceo Caribeño</span>
-      </a>
-      <div class="nav-botones"></div>
-    </div>
-  </nav>
-</header>
+<app-comida-detail-navbar />
 <main class="pagina-detalle">
   @if (comida; as item) {
-    <h1 class="categoria">{{ item.categoria }}</h1>
-    <section class="tarjeta-plato" aria-label="Detalle del plato">
-      <img class="imagen-plato" [src]="item.imagenURL" [alt]="item.nombre">
-      <div class="informacion-plato">
-        <h2>{{ item.nombre }}</h2>
-        <p>{{ item.descripcion }}</p>
-      </div>
-      <p class="precio">{{ item.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
-    </section>
-    <section class="acompanamientos" aria-labelledby="titulo-acompanamientos">
-      <h2 id="titulo-acompanamientos">Acompañamientos</h2>
-      <p class="instruccion">Puedes escoger los acompañamientos desde el carrito después de agregar este producto.</p>
-      @if (adicionales.length > 0) {
-        <div class="lista-acompanamientos">
-          @for (adicional of adicionales; track adicional.idAdicional) {
-            <div class="opcion-acompanamiento">
-              <span>{{ adicional.nombre }}</span>
-              <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
-            </div>
-          }
-        </div>
-      } @else {
-        <p class="sin-adicionales">No hay adicionales disponibles para esta categoría.</p>
-      }
-    </section>
+    <app-comida-plato [comida]="item" />
+    <app-comida-acompanamientos [categoria]="item.categoria" />
     <div class="acciones-detalle">
       <a class="boton-detalle" routerLink="/comidas/tarjetas">Volver</a>
     </div>

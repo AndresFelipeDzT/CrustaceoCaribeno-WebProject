@@ -4,6 +4,7 @@ import { Comida } from '../models/comida.model';
 
 @Injectable({ providedIn: 'root' })
 export class ComidaService {
+  private readonly storageKey = 'restaurante.comidas';
   private adicionales: Adicional[] = [
     { idAdicional: 1, nombre: 'Patacones con Hogao', precio: 7000, activo: true, categorias: [], productosDisponibles: [] },
     { idAdicional: 2, nombre: 'Papas de Aguacate Frito', precio: 10000, activo: true, categorias: [], productosDisponibles: [] },
@@ -414,6 +415,35 @@ export class ComidaService {
   }
 ];
 
+  constructor() {
+    const comidasGuardadas = this.leerComidasGuardadas();
+    if (comidasGuardadas) {
+      this.comidas = comidasGuardadas;
+    }
+  }
+
+  private leerComidasGuardadas(): Comida[] | null {
+    try {
+      if (typeof localStorage === 'undefined') return null;
+      const guardadas = localStorage.getItem(this.storageKey);
+      if (!guardadas) return null;
+      const comidas = JSON.parse(guardadas) as Comida[];
+      return Array.isArray(comidas) ? comidas : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private guardarComidas(): void {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.comidas));
+      }
+    } catch {
+      // Si el navegador bloquea el almacenamiento, los cambios siguen en memoria.
+    }
+  }
+
   // La tabla muestra todos los productos, igual que la tabla de Spring Boot.
   getComidas(): Comida[] {
     return this.comidas;
@@ -435,6 +465,7 @@ export class ComidaService {
   addComida(comida: Omit<Comida, 'id'>): void {
     const nextId = Math.max(0, ...this.comidas.map(item => item.id)) + 1;
     this.comidas.push({ ...comida, id: nextId, activo: true });
+    this.guardarComidas();
   }
 
   updateComida(id: number, comida: Omit<Comida, 'id'>): void {
@@ -442,17 +473,24 @@ export class ComidaService {
     if (index >= 0) {
       const activo = this.comidas[index].activo !== false;
       this.comidas[index] = { ...this.comidas[index], ...comida, id, activo };
+      this.guardarComidas();
     }
   }
 
   desactivarComida(id: number): void {
     const comida = this.getComidaById(id);
-    if (comida) comida.activo = false;
+    if (comida) {
+      comida.activo = false;
+      this.guardarComidas();
+    }
   }
 
   activarComida(id: number): void {
     const comida = this.getComidaById(id);
-    if (comida) comida.activo = true;
+    if (comida) {
+      comida.activo = true;
+      this.guardarComidas();
+    }
   }
 
   // Conserva el método que usa la tabla; eliminar equivale a desactivar el producto.
