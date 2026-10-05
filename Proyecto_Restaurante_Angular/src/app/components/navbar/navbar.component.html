@@ -1,30 +1,18 @@
-<!-- HEADER & NAVBAR DE NAVEGACIÓN -->
-<header class="header-crustaceo">
+﻿<header class="header-crustaceo">
   <nav class="navbar-crustaceo">
-      <div class="nav-contenido">
-
-          <!-- Navegación de las secciones de inicio -->
-          <div class="nav-principal">
-              <a class="nav-link-item" routerLink="/"><i class="bi bi-house-door" aria-hidden="true"></i> Inicio</a>
-              <a class="nav-link-item" routerLink="/comidas/tarjetas"><i class="bi bi-list-ul" aria-hidden="true"></i> Menú</a>
-              <a class="nav-link-item" routerLink="/comidas/tabla"><i class="bi bi-table" aria-hidden="true"></i> Platos</a>
-              <a class="nav-link-item" routerLink="/clientes"><i class="bi bi-people" aria-hidden="true"></i> Clientes</a>
-          </div>
-
-          <!-- Logo y nombre -->
-          <a class="navbar-brand" routerLink="/">
-              <img src="/imagenes/logo2.png"
-                   alt="Logo de Crustáceo Caribeño"
-                   width="48"
-                   height="48">
-
-              <span>Crustáceo Caribeño</span>
-          </a>
-
-          <!-- Login y Registro -->
-          <div class="nav-botones">
-              <a href="/login" class="nav-link-item"><i class="bi bi-person-circle" aria-hidden="true"></i> Iniciar sesión</a>
-          </div>
+    <a class="navbar-brand" routerLink="/comidas/tarjetas">
+      <img src="/imagenes/logo2.png" alt="" width="38" height="38">
+      <span>Crustáceo Caribeño</span>
+    </a>
+    @if (conectado) {
+      <div class="nav-botones">
+        <a class="nav-link-item" routerLink="/comidas/tarjetas"><i class="bi bi-grid" aria-hidden="true"></i> Menú</a>
+        <a class="nav-link-item perfil-link" routerLink="/perfil"><i class="bi bi-person-circle" aria-hidden="true"></i> Perfil</a>
       </div>
+    } @else {
+      <div class="nav-botones">
+        <a class="nav-link-item" routerLink="/login"><i class="bi bi-person-circle" aria-hidden="true"></i> Iniciar sesión</a>
+      </div>
+    }
   </nav>
 </header>

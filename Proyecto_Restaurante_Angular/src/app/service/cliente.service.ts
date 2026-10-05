@@ -6,6 +6,7 @@ import { Cliente } from '../models/cliente.model';
 })
 export class ClienteService {
   private readonly storageKey = 'restaurante.clientes';
+  private readonly currentClienteKey = 'restaurante.clienteActual';
 
   // 10 clientes iniciales que corresponden con la base de datos de Spring Boot (DataLoader.java)
   private clientes: Cliente[] = [
@@ -155,8 +156,31 @@ export class ClienteService {
     return this.clientes.find(c => c.idCliente === id);
   }
 
+  getClienteActual(): Cliente | undefined {
+    try {
+      const id = Number(localStorage.getItem(this.currentClienteKey));
+      return id ? this.getClienteById(id) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  iniciarSesion(correo: string, password: string): Cliente | undefined {
+    const cliente = this.getClientesActivos().find(c =>
+      c.correo.trim().toLowerCase() === correo.trim().toLowerCase() && c.password === password
+    );
+    if (cliente) {
+      try { localStorage.setItem(this.currentClienteKey, String(cliente.idCliente)); } catch { /* sesión solo en memoria no disponible */ }
+    }
+    return cliente;
+  }
+
+  cerrarSesion(): void {
+    try { localStorage.removeItem(this.currentClienteKey); } catch { /* almacenamiento opcional */ }
+  }
+
   // Crear nuevo cliente
-  addCliente(cliente: Omit<Cliente, 'idCliente'>): void {
+  addCliente(cliente: Omit<Cliente, 'idCliente'>): Cliente {
     const nextId = Math.max(0, ...this.clientes.map(c => c.idCliente)) + 1;
     const nuevoCliente: Cliente = {
       ...cliente,
@@ -165,6 +189,7 @@ export class ClienteService {
     };
     this.clientes.push(nuevoCliente);
     this.guardarEnStorage();
+    return nuevoCliente;
   }
 
   // Actualizar datos de cliente existente

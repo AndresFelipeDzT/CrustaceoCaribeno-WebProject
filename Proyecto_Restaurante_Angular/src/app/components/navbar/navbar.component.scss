@@ -1,100 +1,19 @@
-.header-crustaceo { 
-  width: 100%; 
-  margin: 0; 
-  padding: 0; 
-}
-.navbar-crustaceo { 
-  width: 100%; 
-  min-height: 80px; 
-  margin: 0; 
-  padding: 0; 
-  background: #0b1d5c; 
-}
-.nav-contenido {
+﻿.header-crustaceo { width: 100%; margin: 0; }
+.navbar-crustaceo {
+  box-sizing: border-box;
   width: 100%;
-  min-height: 80px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  padding: 0 40px;
-}
-.nav-principal { 
-  display: flex; 
-  align-items: center; 
-  justify-self: start; 
-  gap: 18px; 
-}
-.nav-botones { 
-  display: flex; 
-  align-items: center; 
-  justify-self: end; 
-  gap: 18px; }
-.nav-link-item {
+  min-height: 55px;
+  padding: 0 3.1%;
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #fff;
-  font-family: "Dai Banna SIL", serif;
-  font-size: 18px;
-  font-style: italic;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color .2s ease;
+  justify-content: space-between;
+  background: #10264b;
+  border-bottom: 2px solid rgba(210, 154, 97, .62);
 }
-.nav-link-item:hover { 
-  color: #cfa138; }
-.navbar-brand { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
-  margin: 0; 
-  padding: 0; 
-  color: #fff; 
-  text-decoration: none; 
-}
-.navbar-brand img { 
-  border-radius: 50%; 
-  object-fit: cover; 
-}
-.navbar-brand span { 
-  color: #fff; 
-  font-family: "Playfair Display", serif; 
-  font-size: 22px; 
-  font-style: italic; 
-  font-weight: 700; 
-  white-space: nowrap; 
-}
-
-@media (max-width: 1100px) {
-  .nav-contenido {
-  grid-template-columns: 1fr auto; 
-  gap: 12px 20px; 
-  padding: 12px 20px; 
-}
-  .navbar-brand { 
-    grid-column: 1 / -1; 
-    grid-row: 1; 
-    justify-self: center; 
-  }
-  .nav-principal { 
-    grid-column: 1; 
-    grid-row: 2; 
-    flex-wrap: wrap; 
-    gap: 8px 16px; 
-  }
-  .nav-botones { grid-column: 2; 
-    grid-row: 2; }
-  .nav-link-item { font-size: 16px; }
-}
-@media (max-width: 600px) {
-  .nav-contenido { 
-    grid-template-columns: 1fr; 
-    justify-items: center; }
-  .nav-principal, .nav-botones { grid-column: 1; 
-    justify-self: center; 
-    justify-content: center; 
-    flex-wrap: wrap; }
-  .nav-seccion-link { display: none; }
-  .navbar-brand span { font-size: 19px; }
-}
+.navbar-brand { display: flex; align-items: center; gap: 9px; color: #fff; text-decoration: none; }
+.navbar-brand img { border-radius: 50%; object-fit: cover; }
+.navbar-brand span { font: italic 700 16px "Playfair Display", Georgia, serif; white-space: nowrap; }
+.nav-botones { display: flex; align-items: center; gap: 23px; }
+.nav-link-item { display: flex; align-items: center; gap: 5px; padding: 6px 9px; color: #fff; border-radius: 7px; font: 13px Arial, sans-serif; text-decoration: none; }
+.nav-link-item:hover, .perfil-link { background: rgba(255, 255, 255, .13); }
+@media (max-width: 520px) { .navbar-crustaceo { padding: 0 16px; } .navbar-brand span { font-size: 14px; } .nav-botones { gap: 8px; } }

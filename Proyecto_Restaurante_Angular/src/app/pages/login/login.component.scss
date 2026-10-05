@@ -4,7 +4,7 @@
   font-family: "Playfair Display", Georgia, serif;
 }
 
-.signup-page {
+.login-page {
   box-sizing: border-box;
   display: grid;
   min-height: 100vh;
@@ -13,10 +13,10 @@
   background: linear-gradient(rgba(8, 13, 24, 0.68), rgba(8, 13, 24, 0.68)), url("/imagenes/hero_seafood.jpg") center / cover fixed;
 }
 
-.signup-card {
+.login-card {
   box-sizing: border-box;
-  width: min(100%, 522px);
-  padding: 39px 49px 42px;
+  width: min(100%, 480px);
+  padding: 45px 50px 42px;
   color: #fff;
   background: linear-gradient(145deg, #1b3262 0%, #111b36 100%);
   border: 2px solid rgba(255, 255, 255, 0.88);
@@ -24,7 +24,7 @@
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
 
   h1 {
-    margin: 0 0 28px;
+    margin: 0 0 38px;
     text-align: center;
     font-size: 38px;
     line-height: 1.2;
@@ -34,11 +34,11 @@
 }
 
 .field {
-  margin-bottom: 22px;
+  margin-bottom: 28px;
 
   label {
     display: block;
-    margin: 0 0 7px;
+    margin: 0 0 10px;
     font-size: 20px;
     line-height: 1.15;
     font-style: italic;
@@ -48,7 +48,7 @@
   input {
     box-sizing: border-box;
     width: 100%;
-    height: 43px;
+    height: 45px;
     padding: 7px 10px;
     color: #17213a;
     background: #fff;
@@ -63,15 +63,22 @@
   small { display: block; margin-top: 5px; color: #ffd1ca; font: 13px Arial, sans-serif; }
 }
 
+.error-message {
+  margin: -12px 0 0;
+  color: #ffd1ca;
+  text-align: center;
+  font: 14px Arial, sans-serif;
+}
+
 .actions {
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 31px;
+  margin-top: 35px;
 
   button, a {
     display: inline-flex;
-    min-width: 146px;
+    min-width: 148px;
     min-height: 49px;
     align-items: center;
     justify-content: center;
@@ -91,8 +98,7 @@
 }
 
 @media (max-width: 540px) {
-  .signup-card { padding: 30px 25px; }
-  .signup-card h1 { font-size: 34px; }
+  .login-card { padding: 38px 25px; }
   .actions { gap: 12px; }
   .actions button, .actions a { min-width: 0; flex: 1; padding: 0 12px; font-size: 16px; }
 }
