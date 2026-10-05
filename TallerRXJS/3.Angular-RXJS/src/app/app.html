@@ -1,0 +1,105 @@
+<div class="container">
+  <header class="header">
+    <div class="badge">Semana 9 &bull; Desarrollo Web</div>
+    <h1>Taller RxJS: Angular + JSONPlaceholder</h1>
+    <p class="subtitle">
+      Demostración de consumo de API y peticiones HTTP encadenadas usando 
+      <code>pipe()</code> y el operador <code>mergeMap</code> de RxJS.
+    </p>
+  </header>
+
+  <!-- Formulario de búsqueda -->
+  <section class="card form-card">
+    <form (ngSubmit)="obtenerUsuarioYPosts()">
+      <label for="txtUser">Nombre de usuario (Username):</label>
+      <div class="input-group">
+        <input 
+          id="txtUser"
+          type="text" 
+          name="username"
+          [(ngModel)]="txtUser" 
+          placeholder="Ej: Bret, Antonette, Samantha..." 
+          required
+        />
+        <button type="submit" [disabled]="cargando">
+          {{ cargando ? 'Consultando...' : 'Buscar con RxJS' }}
+        </button>
+      </div>
+    </form>
+
+    <div class="quick-links">
+      <span>Probar con usuarios existentes:</span>
+      <button type="button" class="chip" (click)="seleccionarEjemplo('Bret')">Bret</button>
+      <button type="button" class="chip" (click)="seleccionarEjemplo('Antonette')">Antonette</button>
+      <button type="button" class="chip" (click)="seleccionarEjemplo('Samantha')">Samantha</button>
+      <button type="button" class="chip" (click)="seleccionarEjemplo('Karianne')">Karianne</button>
+      <button type="button" class="chip chip-invalid" (click)="seleccionarEjemplo('usuario_inexistente')">Inexistente</button>
+    </div>
+  </section>
+
+  <!-- Mensaje de error -->
+  @if (mensajeError) {
+    <div class="alert error">
+      <strong>Aviso:</strong> {{ mensajeError }}
+    </div>
+  }
+
+  <!-- Spinner de carga -->
+  @if (cargando) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Encadenando peticiones reactivas (User -> Posts)...</p>
+    </div>
+  }
+
+  <!-- Resultados reactivos -->
+  <div class="results-grid">
+    <!-- Información del Usuario -->
+    @if (usuario) {
+      <div class="card result-card user-card">
+        <div class="card-header">
+          <span class="step-tag">Paso 1: Resultado mergeMap</span>
+          <h3>Datos del Usuario</h3>
+        </div>
+        <div class="card-body">
+          <p><strong>ID Usuario:</strong> <span class="highlight">{{ usuario.id }}</span></p>
+          <p><strong>Nombre completo:</strong> {{ usuario.name }}</p>
+          <p><strong>Username:</strong> {{ usuario.username }}</p>
+          <p><strong>Correo electrónico:</strong> {{ usuario.email }}</p>
+          @if (usuario.website) {
+            <p><strong>Sitio Web:</strong> {{ usuario.website }}</p>
+          }
+          @if (usuario.phone) {
+            <p><strong>Teléfono:</strong> {{ usuario.phone }}</p>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Información del Post asociado -->
+    @if (publicacion) {
+      <div class="card result-card post-card">
+        <div class="card-header">
+          <span class="step-tag step-post">Paso 2: Post encadenado por ID</span>
+          <h3>Publicación del Usuario</h3>
+        </div>
+        <div class="card-body">
+          <p><strong>ID Post:</strong> {{ publicacion.id }} (Pertenece a User ID: {{ publicacion.userId }})</p>
+          <h4 class="post-title">{{ publicacion.title }}</h4>
+          <p class="post-body">{{ publicacion.body }}</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Explicación didáctica del flujo en la clase -->
+  <footer class="footer-card">
+    <h4>¿Cómo funciona la programación reactiva aquí?</h4>
+    <ol>
+      <li>Se lanza <code>http.get('/users?username=' + username)</code> que retorna un <code>Observable</code>.</li>
+      <li>Dentro de <code>.pipe(mergeMap(...))</code>, una vez recibido el usuario, extraemos su <code>usuario.id</code>.</li>
+      <li>Se retorna el segundo observable: <code>http.get('/posts?userId=' + usuario.id)</code>.</li>
+      <li>El <code>.subscribe()</code> final captura las publicaciones únicamente cuando ambas peticiones se completaron en orden, evitando datos nulos.</li>
+    </ol>
+  </footer>
+</div>

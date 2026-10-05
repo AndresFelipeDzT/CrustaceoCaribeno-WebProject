@@ -1,0 +1,7 @@
+:host { display: block; min-height: 100vh; background: #202020; color: #24201c; font-family: "Poppins", sans-serif; }
+.pagina-detalle { width: 100%; min-height: calc(100vh - 80px); margin: 0; padding: 46px clamp(18px, 7vw, 82px) 42px; background: #f7f5f0; }
+.acciones-detalle { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 29px; }
+.boton-detalle { display: inline-flex; align-items: center; justify-content: center; width: max-content; padding: 7px 23px; border: 1px solid #9c6415; border-radius: 999px; background: transparent; color: #24201c; font-family: "Playfair Display", serif; font-size: .84rem; text-decoration: none; }
+.boton-detalle:hover { background: #f0e5cf; }
+.no-encontrada { padding: 3rem 0; text-align: center; }
+@media (max-width: 500px) { .pagina-detalle { padding-top: 32px; } }

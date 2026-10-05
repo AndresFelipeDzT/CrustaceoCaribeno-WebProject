@@ -1,0 +1,16 @@
+{
+  "name": "2.rxjs-javascript",
+  "version": "1.0.0",
+  "description": "Programación reactiva con RxJS en JavaScript - Semana 9",
+  "type": "module",
+  "main": "01_intro.js",
+  "scripts": {
+    "intro": "node 01_intro.js",
+    "observable": "node 02_observable.js",
+    "pipes": "node 03_pipes.js",
+    "merge-concat": "node 04_merge_concat.js"
+  },
+  "dependencies": {
+    "rxjs": "^7.8.1"
+  }
+}

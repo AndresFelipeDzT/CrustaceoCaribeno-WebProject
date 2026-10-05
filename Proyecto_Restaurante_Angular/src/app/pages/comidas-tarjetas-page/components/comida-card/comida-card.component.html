@@ -1,0 +1,17 @@
+<article class="tarjeta-platillo">
+  <a class="tarjeta-img-box" [routerLink]="['/comidas/detalle', comida().id]" [attr.aria-label]="'Ver detalle de ' + comida().nombre">
+    <img [src]="comida().imagenURL" [alt]="comida().nombre" class="tarjeta-img" loading="lazy">
+  </a>
+  <div class="tarjeta-info">
+    <div class="tarjeta-header">
+      <h4 class="tarjeta-nombre">{{ comida().nombre }}</h4>
+      <p class="tarjeta-descripcion">{{ comida().descripcion }}</p>
+    </div>
+    <div class="tarjeta-footer-row">
+      <div class="linea-puntos" aria-hidden="true"></div>
+      <span class="tarjeta-precio">{{ comida().precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
+      <a class="btn-ver-mas" [routerLink]="['/comidas/detalle', comida().id]">Ver Más</a>
+      <a class="btn-agregar-carrito" href="/login"><i class="bi bi-cart-plus" aria-hidden="true"></i> Inicia sesión para agregar al carrito</a>
+    </div>
+  </div>
+</article>

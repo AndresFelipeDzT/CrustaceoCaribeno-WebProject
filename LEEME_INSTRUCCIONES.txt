@@ -1,0 +1,32 @@
+﻿================================================================================
+CRUSTACEO CARIBENO - ENTREGA SEMANA 8 & 9 (DESARROLLO WEB)
+================================================================================
+
+Este paquete contiene todo el trabajo de la Semana 8 y 9 para el grupo de trabajo:
+
+1. CARPETA 'Documentacion_PDFs/':
+   - 'Informe_CRUD_Clientes_Angular.pdf': Informe detallado de todos los archivos
+     creados y modificados en Angular para el CRUD de Clientes, basado en el patron
+     oficial del profesor (8.Angular), con explicacion de codigo, rutas y validaciones.
+   - 'Informe_Taller_RXJS_Semana9.pdf': Guia completa del Taller de RxJS explicando
+     que se pedia en la clase, que se hizo en cada una de las 3 partes y como probarlo.
+
+2. CARPETA 'TallerRXJS/':
+   - '1.Funciones/': Repaso de arrow functions, closures y 'this' lexico.
+   - '2.RXJS-Javascript/': Scripts de Node con RxJS (intro, observables, pipes, merge vs concat).
+   - '3.Angular-RXJS/': Proyecto de Angular consumiendo JSONPlaceholder con mergeMap.
+   * Para ejecutar la parte de Angular:
+     cd TallerRXJS/3.Angular-RXJS
+     npm install
+     npm start
+
+3. CARPETA 'Proyecto_Restaurante_Angular/':
+   - Codigo completo del Frontend del restaurante en Angular con el nuevo CRUD de Clientes
+     integrado y coherente con los datos de Spring Boot (DataLoader.java).
+   * Para ejecutar:
+     cd Proyecto_Restaurante_Angular
+     npm install
+     npm start
+     Rutas de clientes: http://localhost:4200/clientes
+
+================================================================================
