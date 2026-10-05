@@ -1,0 +1,71 @@
+@import url("general.css");
+
+:root { --azul: #102d9a; --azul-oscuro: #091a61; --dorado: #754700; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f5f0; color: #211a13; font-family: "Dai Banna SIL", Georgia, serif; font-style: italic; }
+.pedidos-header { width: 100%; height: 80px; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; background: #0b1d5c; color: white; }
+.pedidos-brand { display: flex; align-items: center; gap: 10px; color: white; font: italic 700 20px "Playfair Display", serif; text-decoration: none; }
+.pedidos-brand img { width: 48px; height: 48px; }
+.pedidos-nav { display: flex; align-items: center; gap: 20px; }
+.pedidos-nav a { color: white; font: italic 700 20px "Dai Banna SIL", serif; text-decoration: none; }
+.pedidos-nav a:hover { color: #cfa138; }
+.pedidos-main { min-height: calc(100vh - 140px); padding: 28px 6% 54px; }
+.pedidos-main h1 { margin: 0; color: var(--dorado); font: 700 1.7rem "Playfair Display", serif; text-align: center; }
+.pedidos-subtitulo { margin: 4px 0 22px; text-align: center; font-size: .95rem; }
+.pedidos-alerta { width: min(100%, 680px); margin: 10px auto; padding: 8px; border-radius: 8px; background: #e6f7df; color: #245d1c; font-family: Poppins, sans-serif; font-style: normal; text-align: center; }
+.pedidos-alerta.error { background: #ffe3e3; color: #8c1c1c; }
+.filtro-pedidos { display: flex; justify-content: center; gap: 10px; margin: 0 auto 22px; }
+.filtro-pedidos input { width: min(100%, 420px); padding: 8px 15px; border: 1px solid #9c9c9c; border-radius: 20px; font-family: inherit; font-style: italic; }
+.filtro-pedidos button { padding: 7px 24px; border: 0; border-radius: 20px; background: var(--dorado); color: white; font: inherit; cursor: pointer; }
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; min-width: 980px; border-collapse: collapse; background: white; font-size: .85rem; font-style: italic; }
+th { padding: 8px 6px; background: var(--dorado); color: white; font-weight: 700; text-align: center; }
+td { padding: 8px 6px; border: 1px solid #aaa; text-align: center; vertical-align: middle; }
+tbody tr:nth-child(even) { background: #fbfaf7; }
+.estado { display: inline-block; padding: 3px 9px; border: 1px solid #91a7e8; border-radius: 14px; background: #edf1ff; font-size: .78rem; }
+.estado-entregado { background: #c9f5c0; border-color: #6fbc68; }
+.estado-cancelado { background: #ffc2c2; border-color: #e17b7b; }
+.estado-pendiente, .estado-en-preparación { background: #fff3b5; border-color: #d3b858; }
+.acciones { display: flex; justify-content: center; align-items: center; gap: 6px; }
+.acciones form { margin: 0; }
+.btn-detalle, .btn-eliminar { padding: 5px 10px; border: 1px solid #86a0e9; border-radius: 14px; background: white; color: #1c428f; font: inherit; font-size: .78rem; text-decoration: none; cursor: pointer; }
+.btn-eliminar { border-color: #bd6767; color: #a32929; }
+.btn-eliminar:hover { background: #ffe0e0; }
+.sin-pedidos { padding: 25px; }
+.detalle-pedido-main { min-height: calc(100vh - 140px); padding: 18px 7% 54px; background: #f7f5f0; }
+.volver-pedidos { display: inline-block; margin-bottom: 8px; color: #211a13; font-size: 1.1rem; text-decoration: none; }
+.detalle-pedido-main h1 { margin: 0; color: var(--dorado); font: 700 2rem "Playfair Display", serif; text-align: center; }
+.detalle-subtitulo { margin: 3px 0 14px; text-align: center; font-size: 1.1rem; }
+.detalle-estado-actual { margin: 0 auto 16px; text-align: center; font-size: 1.05rem; }
+.detalle-bloque { margin: 12px auto; padding: 12px 26px 18px; border: 2px solid #1539b0; border-radius: 16px; background: #fff; box-shadow: 0 2px 3px rgba(7,27,104,.15); }
+.detalle-bloque h2 { margin: 0 0 10px; color: var(--dorado); font: 700 1.35rem "Playfair Display", serif; }
+.cliente-grid { display: grid; grid-template-columns: 150px 1fr; gap: 8px 14px; font-size: 1.05rem; }
+.productos-detalle { overflow-x: auto; }
+.producto-detalle { display: grid; grid-template-columns: 1.5fr 1fr .7fr 1fr 1fr; position: relative; gap: 10px; padding: 11px 5px; border-bottom: 1px solid #b7b7b7; text-align: center; font-size: .98rem; }
+.producto-detalle.encabezado { color: #211a13; font-weight: 700; }
+.adicionales-detalle { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px; color: #5e3b13; text-align: left; }
+.sin-productos { margin: 14px 0 0; text-align: center; }
+.resumen-detalle { max-width: 740px; }
+.resumen-detalle > div { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 7px 12px; border-bottom: 1px dotted #888; font-size: 1.05rem; }
+.resumen-detalle > div:last-child { border-bottom: 0; font-weight: 700; }
+.estado-formulario { max-width: 740px; }
+.estado-formulario form { display: flex; flex-direction: column; gap: 6px; }
+.estado-formulario label { font-size: 1rem; font-weight: 700; }
+.estado-formulario select, .estado-formulario textarea { width: 100%; padding: 8px 10px; border: 1px solid #9eaff0; background: #fff; font: inherit; }
+.estado-formulario textarea { resize: vertical; }
+.btn-actualizar { align-self: center; margin-top: 8px; padding: 8px 24px; border: 0; border-radius: 18px; background: var(--dorado); color: #fff; font: inherit; cursor: pointer; }
+.btn-actualizar:hover { background: #542f00; }
+.pedidos-footer { background: #102c91; color: #fff; padding: 2.25rem max(1.5rem, calc((100% - 1120px) / 2)) 1rem; }
+.footer-contenido { display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: 2.5rem; align-items: start; }
+.footer-logo-nombre { display: flex; align-items: center; gap: .9rem; margin-bottom: 1rem; }
+.footer-logo-nombre > img { width: 58px; height: 58px; object-fit: contain; }
+.footer-logo-nombre h3 { margin: 0; color: #fff; font: 700 1.45rem/1.05 "Playfair Display", serif; }
+.footer-platos { display: flex; gap: .75rem; }
+.footer-platos img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.85); }
+.footer-columna h4 { margin: 0 0 .7rem; color: #fff; font: 1rem "Playfair Display", serif; }
+.footer-columna a, .footer-columna p { display: block; margin: .18rem 0; color: #fff; font-size: .78rem; line-height: 1.35; text-decoration: none; }
+.footer-columna a:hover { color: #d9bc67; }
+.footer-copyright { margin: 1.4rem 0 0; color: #fff; font-size: .72rem; }
+@media (max-width: 760px) { .pedidos-header { padding: 10px 16px; height: auto; flex-direction: column; gap: 10px; } .pedidos-nav { gap: 15px; } .footer-contenido { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; } .pedidos-main { padding: 24px 14px 40px; } }
+@media (max-width: 460px) { .footer-contenido { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .detalle-pedido-main { padding: 16px 14px 40px; } .detalle-bloque { padding: 12px 14px 16px; } .cliente-grid { grid-template-columns: 1fr; gap: 2px; } .producto-detalle { min-width: 620px; } }

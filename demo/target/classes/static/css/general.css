@@ -1,0 +1,515 @@
+/* ==========================================================================
+   CRUSTÁCEO CARIBEÑO - ESTILOS GENERALES (general.css)
+   Sistema de diseño compartido: Paleta de colores, tipografías, navbar,
+   footer, carrito Offcanvas y componentes reutilizables.
+   ========================================================================== */
+
+/* 1. VARIABLES Y DESIGN TOKENS */
+:root {
+  /* Paleta de Colores Principal */
+  --cc-blue-deep: #091a33;
+  --cc-blue-navy: #0d274c;
+  --cc-blue-caribbean: #144272;
+  --cc-blue-accent: #1e5fa8;
+  --cc-blue-light: #e8f1fa;
+
+  --cc-brown-dark: #4a2711;
+  --cc-brown-sienna: #6f3c1a;
+  --cc-brown-light: #9a592b;
+  --cc-brown-subtle: #f4ede6;
+
+  --cc-gold: #cfa138;
+  --cc-gold-hover: #b88a29;
+
+  --cc-sand-bg: #f9f7f2;
+  --cc-sand-light: #fefdfa;
+  --cc-white: #ffffff;
+  --cc-dark-text: #1d2129;
+  --cc-muted-text: #606770;
+  --cc-border-color: #e5dec9;
+
+  /* Tipografías */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Sombras y Bordes */
+  --shadow-sm: 0 2px 8px rgba(9, 26, 51, 0.08);
+  --shadow-md: 0 8px 24px rgba(9, 26, 51, 0.12);
+  --shadow-lg: 0 16px 36px rgba(9, 26, 51, 0.18);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 50px;
+}
+
+/* 2. RESET Y ESTILOS BASE */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--cc-sand-bg);
+  color: var(--cc-dark-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-serif);
+  color: var(--cc-blue-navy);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+a {
+  text-decoration: none;
+  transition: all 0.25s ease-in-out;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 3. NAVBAR SUPERIOR */
+.navbar-crustaceo {
+  background-color: var(--cc-white);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 2px solid var(--cc-border-color);
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  transition: all 0.3s ease;
+}
+
+.navbar-crustaceo .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--cc-blue-navy);
+}
+
+.navbar-crustaceo .navbar-brand img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--cc-gold);
+  object-fit: cover;
+}
+
+.navbar-crustaceo .nav-link {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--cc-blue-navy);
+  padding: 0.5rem 0.85rem !important;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.navbar-crustaceo .nav-link:hover,
+.navbar-crustaceo .nav-link.active {
+  color: var(--cc-brown-sienna);
+}
+
+.navbar-crustaceo .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.85rem;
+  right: 0.85rem;
+  height: 2px;
+  background-color: var(--cc-gold);
+  border-radius: 2px;
+}
+
+/* Botón del Carrito en Navbar */
+.btn-cart-nav {
+  position: relative;
+  background-color: var(--cc-blue-light);
+  color: var(--cc-blue-navy);
+  border: 1px solid var(--cc-blue-accent);
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.btn-cart-nav:hover {
+  background-color: var(--cc-blue-navy);
+  color: var(--cc-white);
+  transform: translateY(-1px);
+}
+
+.btn-cart-nav .badge-cart {
+  background-color: var(--cc-brown-sienna);
+  color: var(--cc-white);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-pill);
+}
+
+/* Botones de Auth en Navbar */
+.btn-cc-login {
+  color: var(--cc-blue-navy);
+  border: 1px solid var(--cc-blue-navy);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  padding: 0.45rem 1.25rem;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.btn-cc-login:hover {
+  background-color: var(--cc-blue-navy);
+  color: var(--cc-white);
+}
+
+.btn-cc-signup {
+  background-color: var(--cc-brown-sienna);
+  color: var(--cc-white);
+  border: 1px solid var(--cc-brown-sienna);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  padding: 0.45rem 1.25rem;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.btn-cc-signup:hover {
+  background-color: var(--cc-brown-dark);
+  color: var(--cc-white);
+  border-color: var(--cc-brown-dark);
+  box-shadow: 0 4px 12px rgba(111, 60, 26, 0.3);
+}
+
+/* 4. BOTONES REUTILIZABLES */
+.btn-caribbean {
+  background-color: var(--cc-blue-navy);
+  color: var(--cc-white);
+  border: 2px solid var(--cc-blue-navy);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  padding: 0.65rem 1.75rem;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-caribbean:hover {
+  background-color: var(--cc-blue-deep);
+  border-color: var(--cc-blue-deep);
+  color: var(--cc-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-caribbean-accent {
+  background-color: var(--cc-brown-sienna);
+  color: var(--cc-white);
+  border: 2px solid var(--cc-brown-sienna);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  padding: 0.65rem 1.75rem;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.btn-caribbean-accent:hover {
+  background-color: var(--cc-brown-dark);
+  border-color: var(--cc-brown-dark);
+  color: var(--cc-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(111, 60, 26, 0.35);
+}
+
+.btn-caribbean-gold {
+  background: linear-gradient(135deg, var(--cc-gold) 0%, #e0b44c 100%);
+  color: var(--cc-blue-deep);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  padding: 0.65rem 1.75rem;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(207, 161, 56, 0.35);
+}
+
+.btn-caribbean-gold:hover {
+  background: linear-gradient(135deg, #b88a29 0%, var(--cc-gold) 100%);
+  color: var(--cc-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(207, 161, 56, 0.45);
+}
+
+.btn-caribbean-outline {
+  background-color: transparent;
+  color: var(--cc-blue-navy);
+  border: 2px solid var(--cc-blue-navy);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  padding: 0.65rem 1.75rem;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.btn-caribbean-outline:hover {
+  background-color: var(--cc-blue-navy);
+  color: var(--cc-white);
+  transform: translateY(-2px);
+}
+
+/* 5. CARRITO OFFCANVAS (BOOTSTRAP 5) */
+.offcanvas-cart {
+  width: 420px !important;
+  max-width: 90vw;
+  background-color: var(--cc-sand-light);
+}
+
+.offcanvas-cart .offcanvas-header {
+  background-color: var(--cc-blue-navy);
+  color: var(--cc-white);
+  border-bottom: 3px solid var(--cc-gold);
+}
+
+.offcanvas-cart .offcanvas-title {
+  font-family: var(--font-serif);
+  color: var(--cc-gold);
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.offcanvas-cart .btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.cart-item-card {
+  background-color: var(--cc-white);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--cc-border-color);
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+}
+
+.cart-item-card:hover {
+  transform: translateY(-2px);
+}
+
+.cart-item-card img {
+  width: 65px;
+  height: 65px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--cc-border-color);
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.cart-item-info h6 {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+  color: var(--cc-blue-navy);
+}
+
+.cart-item-info .price {
+  font-size: 0.85rem;
+  color: var(--cc-brown-sienna);
+  font-weight: 600;
+}
+
+.cart-qty-badge {
+  background-color: var(--cc-blue-light);
+  color: var(--cc-blue-navy);
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+}
+
+.cart-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--cc-muted-text);
+}
+
+.cart-empty-state i {
+  font-size: 3.5rem;
+  color: var(--cc-border-color);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.cart-footer-summary {
+  background-color: var(--cc-white);
+  border-top: 2px solid var(--cc-border-color);
+  padding: 1.25rem;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--cc-blue-navy);
+  margin-bottom: 1rem;
+}
+
+.cart-total-row .total-amount {
+  color: var(--cc-brown-sienna);
+  font-size: 1.35rem;
+}
+
+/* 6. FOOTER COMPARTIDO */
+.footer-crustaceo {
+  background-color: var(--cc-blue-deep);
+  color: var(--cc-white);
+  padding: 3.5rem 0 2rem 0;
+  border-top: 4px solid var(--cc-gold);
+}
+
+.footer-brand h4 {
+  color: var(--cc-gold);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.footer-brand p {
+  color: #c0cbe0;
+  font-size: 0.95rem;
+  max-width: 320px;
+}
+
+.footer-heading {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--cc-gold);
+  margin-bottom: 1.25rem;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 30px;
+  height: 2px;
+  background-color: var(--cc-gold);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+  color: #c0cbe0;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-links a:hover {
+  color: var(--cc-gold);
+  transform: translateX(4px);
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.footer-social-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(207, 161, 56, 0.4);
+  color: var(--cc-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  transition: all 0.3s ease;
+}
+
+.footer-social-btn:hover {
+  background-color: var(--cc-gold);
+  color: var(--cc-blue-deep);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(207, 161, 56, 0.4);
+}
+
+.footer-bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: #98a9c8;
+  font-size: 0.88rem;
+}
+
+/* 7. REGLAS RESPONSIVAS */
+@media (max-width: 991.98px) {
+  .navbar-crustaceo .navbar-nav {
+    padding: 1rem 0;
+  }
+  .navbar-crustaceo .nav-link {
+    padding: 0.6rem 0 !important;
+  }
+  .navbar-crustaceo .nav-link.active::after {
+    display: none;
+  }
+  .offcanvas-cart {
+    width: 100% !important;
+  }
+}

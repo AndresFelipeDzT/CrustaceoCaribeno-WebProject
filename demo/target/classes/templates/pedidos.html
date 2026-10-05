@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedidos | Crustáceo Caribeño</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dai+Banna+SIL:ital,wght@0,600;0,700;1,600;1,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/pedidos.css}">
+</head>
+<body>
+  <header class="pedidos-header">
+    <a class="pedidos-brand" th:href="@{/home}">
+      <img th:src="@{/images/logo2.png}" alt="Logo Crustáceo Caribeño">
+      <span>Crustáceo Caribeño</span>
+    </a>
+    <nav class="pedidos-nav">
+      <a th:href="@{/pedidos}">Reporte<br>Ventas</a>
+      <a th:href="@{/pedidos}">Pedidos</a>
+      <a href="#" aria-disabled="true">Perfil</a>
+    </nav>
+  </header>
+
+  <main class="pedidos-main">
+    <h1>Pedidos Recibidos</h1>
+    <p class="pedidos-subtitulo">Gestión Y Revisión De Todos Los Pedidos Realizados:</p>
+    <p class="pedidos-alerta" th:if="${mensaje}" th:text="${mensaje}"></p>
+    <p class="pedidos-alerta error" th:if="${error}" th:text="${error}"></p>
+
+    <div class="filtro-pedidos">
+      <input type="search" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre, estado o fecha...">
+      <button type="button">Filtrar</button>
+    </div>
+
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Pedido</th><th>Fecha Creación</th><th>Fecha Entrega</th>
+            <th>Cliente</th><th>Estado</th><th>Domiciliario</th><th>Total</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="pedido : ${pedidos}">
+            <td th:text="${pedido.idPedido}">1</td>
+            <td th:text="${#temporals.format(pedido.fechaCreacion, 'dd/MM/yyyy')}">21/09/2026</td>
+            <td th:text="${pedido.fechaEntrega != null ? #temporals.format(pedido.fechaEntrega, 'dd/MM/yyyy') : 'Pendiente'}">Pendiente</td>
+            <td th:text="${pedido.cliente != null ? pedido.cliente.nombreCompleto : 'Sin cliente'}">Cliente</td>
+            <td><span class="estado" th:text="${pedido.estado}" th:classappend="' estado-' + ${#strings.toLowerCase(pedido.estado).replace(' ', '-')}">Pendiente</span></td>
+            <td th:text="${pedido.domiciliario != null ? pedido.domiciliario.nombre : 'Sin asignar'}">Sin asignar</td>
+            <td th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'POINT', 0, 'COMMA')}">$0</td>
+            <td class="acciones">
+              <a class="btn-detalle" th:href="@{/pedidos/{id}(id=${pedido.idPedido})}">Detalles</a>
+              <form th:action="@{/pedidos/{id}/eliminar(id=${pedido.idPedido})}" method="post">
+                <button class="btn-eliminar" type="submit" aria-label="Eliminar pedido"><i class="bi bi-trash3"></i></button>
+              </form>
+            </td>
+          </tr>
+          <tr th:if="${pedidos.empty}">
+            <td colspan="8" class="sin-pedidos">No hay pedidos para mostrar.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="pedidos-footer">
+    <div class="footer-contenido">
+      <div class="footer-marca">
+        <div class="footer-logo-nombre">
+          <img th:src="@{/images/logo2.png}" alt="Logo Crustáceo Caribeño">
+          <h3>Crustáceo<br>Caribeño</h3>
+        </div>
+        <div class="footer-platos">
+          <img th:src="@{/images/img11.jpeg}" alt="Plato del restaurante">
+          <img th:src="@{/images/img22.jpeg}" alt="Plato del restaurante">
+          <img th:src="@{/images/img33.jpeg}" alt="Plato del restaurante">
+        </div>
+      </div>
+      <div class="footer-columna">
+        <h4>Navegación</h4>
+        <a th:href="@{/home}">› Inicio</a>
+        <a th:href="@{/comidas/tarjetas}">› Menú</a>
+        <a th:href="@{/login}">› Perfil</a>
+        <a th:href="@{/carrito}">› Carrito</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Información</h4>
+        <p>› Av. 44 #401 Sur</p>
+        <p>› 57 - 343 882 843</p>
+        <p>› Lun-Dom: 9:00am-5:00pm</p>
+        <a th:href="@{/home#quienes-somos}">› ¿Quiénes Somos?</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Ingresa</h4>
+        <a th:href="@{/login}">› Iniciar Sesión</a>
+        <a th:href="@{/registro}">› Registrarse</a>
+      </div>
+    </div>
+    <p class="footer-copyright">© 2026 El Crustáceo Caribeño. Todos Los Derechos Reservados.</p>
+  </footer>
+</body>
+</html>

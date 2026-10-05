@@ -1,0 +1,76 @@
+/* Estilos para centralizar la vista de error usando las fuentes e identidad del sitio */
+.footer-crustaceo {
+  background-color: #0d226b;
+}
+
+.pagina-error {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background-color: #fcfbfa;
+}
+
+.card-error {
+  background-color: #ffffff;
+  border: 2px solid #0d226b;
+  border-radius: 20px;
+  padding: 50px 40px;
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(13, 34, 107, 0.08);
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.title-wrapper::before,
+.title-wrapper::after {
+  content: "";
+  height: 1px;
+  width: 35px;
+  background-color: #7a5c37;
+}
+
+.error-title {
+  font-family: 'Playfair Display', serif;
+  color: #7a5c37;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.error-message {
+  font-family: 'Poppins', sans-serif;
+  color: #555555;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+.boton-error {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  background-color: #5c4018;
+  color: #ffffff !important;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(92, 64, 24, 0.2);
+}
+
+.boton-error:hover {
+  background-color: #422d10;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(92, 64, 24, 0.3);
+}
