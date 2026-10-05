@@ -1,0 +1,15 @@
+<app-comida-detail-navbar />
+<main class="pagina-detalle">
+  @if (comida; as item) {
+    <app-comida-plato [comida]="item" />
+    <app-comida-acompanamientos [categoria]="item.categoria" />
+    <div class="acciones-detalle">
+      <a class="boton-detalle" routerLink="/comidas/tarjetas">Volver</a>
+    </div>
+  } @else {
+    <section class="no-encontrada">
+      <h1>No encontramos esa comida</h1>
+      <a routerLink="/comidas/tarjetas">Volver al menú</a>
+    </section>
+  }
+</main>

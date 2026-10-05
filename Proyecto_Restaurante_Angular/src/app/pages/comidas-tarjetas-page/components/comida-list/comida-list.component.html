@@ -1,0 +1,12 @@
+@for (categoria of categorias; track categoria.valor) {
+  @if (comidasPorCategoria(categoria.valor).length > 0) {
+    <section class="categoria-seccion">
+      <h3 class="titulo-categoria">{{ categoria.titulo }}</h3>
+      <div class="tarjetas-lista">
+        @for (comida of comidasPorCategoria(categoria.valor); track $index) {
+          <app-comida-card [comida]="comida"></app-comida-card>
+        }
+      </div>
+    </section>
+  }
+}

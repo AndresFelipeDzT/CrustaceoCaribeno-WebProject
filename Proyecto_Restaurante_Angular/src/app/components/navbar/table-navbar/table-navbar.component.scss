@@ -1,0 +1,10 @@
+.header-crustaceo { width: 100%; margin: 0; padding: 0; }
+.navbar-crustaceo { width: 100%; min-height: 80px; background: #0b1d5c; }
+.nav-contenido { width: 100%; min-height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+.navbar-brand { display: flex; align-items: center; gap: 12px; margin: 0; color: #fff; text-decoration: none; }
+.navbar-brand img { border-radius: 50%; object-fit: cover; }
+.navbar-brand span { color: #fff; font-family: "Playfair Display", serif; font-size: 22px; font-style: italic; font-weight: 700; }
+.nav-botones { display: flex; align-items: center; gap: 30px; }
+.nav-link-item { display: flex; align-items: center; gap: 8px; color: #fff; font-family: "Dai Banna SIL", serif; font-size: 20px; font-style: italic; font-weight: 700; text-decoration: none; transition: color .2s ease; }
+.nav-link-item:hover { color: #cfa138; }
+@media (max-width: 600px) { .nav-contenido { padding: 0 16px; } .navbar-brand span { font-size: 17px; } .nav-link-item { font-size: 16px; } }

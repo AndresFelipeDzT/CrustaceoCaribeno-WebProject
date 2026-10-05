@@ -1,0 +1,36 @@
+<form class="formulario" [formGroup]="comidaForm" (ngSubmit)="guardar.emit()">
+  <div class="campo">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" formControlName="nombre" required>
+    @if (comidaForm.get('nombre')?.touched && comidaForm.get('nombre')?.invalid) {
+      <small class="error">Escribe un nombre válido.</small>
+    }
+  </div>
+  <div class="campo">
+    <label for="descripcion">Descripción</label>
+    <input id="descripcion" type="text" formControlName="descripcion" required>
+    @if (comidaForm.get('descripcion')?.touched && comidaForm.get('descripcion')?.invalid) {
+      <small class="error">La descripción es obligatoria.</small>
+    }
+  </div>
+  <div class="campo">
+    <label for="precio">Precio</label>
+    <input id="precio" type="number" min="1" formControlName="precio" required>
+  </div>
+  <div class="campo">
+    <label for="imagen">Imagen (URL)</label>
+    <input id="imagen" type="text" formControlName="imagenURL" required>
+  </div>
+  <div class="campo">
+    <label for="categoria">Categoría</label>
+    <select id="categoria" formControlName="categoria" required>
+      <option value="">Selecciona una opción</option>
+      @for (categoria of categorias; track categoria) {
+        <option [value]="categoria">{{ categoria }}</option>
+      }
+    </select>
+  </div>
+  <div class="boton-contenedor">
+    <button class="btn-enviar" type="submit">{{ esEdicion ? 'Guardar cambios' : 'Enviar' }}</button>
+  </div>
+</form>
