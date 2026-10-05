@@ -1,8 +1,0 @@
-<section class="form-panel" aria-label="Formulario de comida">
-  <h1>{{ esEdicion ? 'Editar Plato' : 'Agregar Plato' }}</h1>
-  <app-comida-form-fields
-    [comidaForm]="comidaForm"
-    [categorias]="categorias"
-    [esEdicion]="esEdicion"
-    (guardar)="guardar.emit()" />
-</section>
