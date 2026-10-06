@@ -13,7 +13,6 @@ import { PostListComponent } from './components/post-list/post-list.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [CommonModule, FormsModule, UserCardComponent, PostListComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'

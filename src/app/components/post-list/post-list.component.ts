@@ -4,7 +4,6 @@ import { Post, PostReactions } from '../../models/post.model';
 
 @Component({
   selector: 'app-post-list',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css'
