@@ -45,14 +45,14 @@
                   <!-- Likes -->
                   <span class="d-inline-flex align-items-center text-success fw-bold" title="Reacciones positivas">
                     <i class="bi bi-hand-thumbs-up-fill fs-5 me-1 text-success"></i>
-                    {{ getLikes(post.reactions) }} likes
+                    {{ post.reactions.likes }} likes
                   </span>
 
                   <!-- Dislikes -->
-                  @if (getDislikes(post.reactions) > 0) {
+                  @if (post.reactions.dislikes > 0) {
                     <span class="d-inline-flex align-items-center text-danger fw-bold" title="Reacciones negativas">
                       <i class="bi bi-hand-thumbs-down-fill fs-5 me-1 text-danger"></i>
-                      {{ getDislikes(post.reactions) }} dislikes
+                      {{ post.reactions.dislikes }} dislikes
                     </span>
                   }
 

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Post, PostResponse } from '../models/post.model';
+import { Post } from '../models/post.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class PostService {
    */
   getPostsByUserId(userId: number): Observable<Post[]> {
     const url = `${this.baseUrl}/user/${userId}`;
-    return this.http.get<PostResponse>(url).pipe(
+    return this.http.get<{ posts: Post[] }>(url).pipe(
       map(response => response?.posts || [])
     );
   }
