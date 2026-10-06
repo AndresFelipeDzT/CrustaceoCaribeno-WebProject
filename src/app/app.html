@@ -1,0 +1,129 @@
+<div class="container py-4 my-2" style="max-width: 960px;">
+  <!-- Header Principal -->
+  <header class="text-center mb-4 pb-2 border-bottom">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-primary-subtle text-primary border border-primary-subtle rounded-pill mb-2 small fw-semibold">
+      <i class="bi bi-diagram-3-fill"></i> Pontificia Universidad Javeriana &bull; Taller RxJS
+    </div>
+    <h1 class="display-6 fw-bold text-dark mb-2">Búsqueda de Perfil Social con RxJS</h1>
+    <p class="text-muted lead fs-6 mb-0">
+      Simulación de consulta REST a <a href="https://dummyjson.com/" target="_blank" class="text-decoration-none">DummyJSON</a> 
+      encadenando <strong>Users &rarr; Posts &rarr; Comments</strong> mediante operadores reactivos de RxJS.
+    </p>
+  </header>
+
+  <!-- SECCIÓN 1: Barra de Búsqueda -->
+  <section class="card shadow-sm border-0 mb-4 rounded-4 overflow-hidden">
+    <div class="card-header bg-primary text-white py-3">
+      <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+        <i class="bi bi-search"></i> Sección 1: Búsqueda de Usuario
+      </h5>
+    </div>
+
+    <div class="card-body p-4 bg-white">
+      <form (ngSubmit)="buscarUsuario()" class="mb-3">
+        <label for="usernameInput" class="form-label fw-bold text-secondary">
+          Ingrese el nombre de usuario (username):
+        </label>
+        <div class="input-group input-group-lg shadow-sm">
+          <span class="input-group-text bg-light text-muted border-end-0">
+            <i class="bi bi-at fs-4"></i>
+          </span>
+          <input
+            id="usernameInput"
+            type="text"
+            name="username"
+            class="form-control border-start-0 ps-0"
+            [(ngModel)]="usernameBuscado"
+            placeholder="Ej: emilys, michaelw, lillians, atuny0..."
+            required
+          />
+          <button 
+            type="submit" 
+            class="btn btn-primary px-4 fw-bold d-flex align-items-center gap-2"
+            [disabled]="cargando"
+          >
+            @if (cargando) {
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Consultando...
+            } @else {
+              <i class="bi bi-search"></i> Buscar
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Botones de ejemplo rápido -->
+      <div class="d-flex align-items-center flex-wrap gap-2 pt-2 border-top">
+        <small class="text-muted fw-semibold me-1">Ejemplos para probar:</small>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" (click)="seleccionarEjemplo('emilys')">
+          emilys (Con posts y comentarios)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" (click)="seleccionarEjemplo('michaelw')">
+          michaelw (Múltiples posts)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" (click)="seleccionarEjemplo('lillians')">
+          lillians (Posts con reacciones)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="seleccionarEjemplo('atuny0')">
+          atuny0 (Probar usuario no existente)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Alerta de Carga -->
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <h5 class="text-primary mt-3 fw-bold">Encadenando consultas reactivas con RxJS...</h5>
+      <p class="text-muted small">1. Buscando usuario &rarr; 2. Obteniendo posts &rarr; 3. Obteniendo comentarios de cada post</p>
+    </div>
+  }
+
+  <!-- Mensaje de Error (Requisito: Informar si el usuario no existe y no mostrar datos) -->
+  @if (mensajeError && !cargando) {
+    <div class="alert alert-danger shadow-sm border-danger-subtle d-flex align-items-center gap-3 p-3 rounded-4 mb-4" role="alert">
+      <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
+      <div>
+        <h6 class="alert-heading mb-1 fw-bold">Usuario no encontrado</h6>
+        <p class="mb-0">{{ mensajeError }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- SECCIONES 2 Y 3: Componentes Hijos con @Input (Solo si el usuario existe) -->
+  @if (usuarioEncontrado && !cargando) {
+    <!-- Sección 2: Componente Hijo con Datos del Usuario -->
+    <app-user-card [user]="usuarioEncontrado"></app-user-card>
+
+    <!-- Sección 3: Componente Hijo con Posts y Comentarios -->
+    <app-post-list [posts]="postsDelUsuario"></app-post-list>
+  }
+
+  <!-- Estado Inicial (Antes de buscar) -->
+  @if (!busquedaRealizada && !cargando) {
+    <div class="card border-0 bg-white shadow-sm p-4 text-center rounded-4 mb-4">
+      <div class="text-muted mb-2">
+        <i class="bi bi-cloud-arrow-down-fill text-primary" style="font-size: 3rem;"></i>
+      </div>
+      <h5 class="fw-bold text-dark">Listo para consultar la API de DummyJSON</h5>
+      <p class="text-muted mb-0 small">
+        Ingresa un nombre de usuario en la barra de búsqueda o presiona cualquiera de los botones de ejemplo para iniciar el flujo reactivo.
+      </p>
+    </div>
+  }
+
+  <!-- Resumen Técnico de Arquitectura -->
+  <footer class="card bg-white border shadow-sm p-4 rounded-4 mt-4">
+    <h6 class="fw-bold text-dark mb-2 d-flex align-items-center gap-2">
+      <i class="bi bi-info-circle-fill text-primary"></i> Arquitectura RxJS del Taller:
+    </h6>
+    <ul class="text-secondary small mb-0 ps-3">
+      <li><strong>Sin routing:</strong> Todo el flujo corre sobre esta pantalla inicial única.</li>
+      <li><strong>Componentes hijos desacoplados:</strong> <code>&lt;app-user-card&gt;</code> y <code>&lt;app-post-list&gt;</code> reciben datos limpios vía <code>@Input</code>.</li>
+      <li><strong>Operadores utilizados:</strong> <code>map</code> para transformar respuestas DTO, <code>concatMap</code> para garantizar que la consulta de posts espere la respuesta del usuario, y <code>forkJoin</code> para consultar en paralelo los comentarios de todos los posts.</li>
+    </ul>
+  </footer>
+</div>

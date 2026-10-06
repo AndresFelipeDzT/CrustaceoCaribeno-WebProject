@@ -1,214 +1,107 @@
-# 🦀 El Crustáceo Caribeño — Plataforma Web Gastronómica
-
-Bienvenido al repositorio oficial del proyecto **Crustáceo Caribeño**, una plataforma web integral desarrollada para un restaurante especializado en gastronomía marina tradicional y sabores auténticos de las costas del Caribe (mariscos frescos, pescados a la brasa, ceviches, cazuelas y arroces marineros).
-
-La solución permite a los clientes explorar el menú gastronómico por categorías o en tabla detallada, gestionar su perfil, consultar el detalle y acompañamientos de cada plato, y proporciona la base arquitectónica para la gestión de comandas y pedidos a domicilio.
+# Taller de RxJS (Semana 9) - Desarrollo Web
+**Pontificia Universidad Javeriana**  
+**Profesor:** Juan Sebastián Angarita Torres  
 
 ---
 
-## 📋 Tabla de Contenido
-- [🌊 Visión General](#-visión-general)
-- [🎨 Identidad Visual y Paleta de Colores](#-identidad-visual-y-paleta-de-colores)
-- [📐 Arquitectura y Modelado del Dominio](#-arquitectura-y-modelado-del-dominio)
-  - [Diagrama de Clases (UML)](#diagrama-de-clases-uml)
-  - [Diagrama Entidad–Relación (DER)](#diagrama-entidadrelación-der)
-- [📁 Estructura del Proyecto](#-estructura-del-proyecto)
-- [🛠️ Tecnologías y Dependencias](#️-tecnologías-y-dependencias)
-- [🚀 Puesta en Marcha (Cómo Ejecutar)](#-puesta-en-marcha-cómo-ejecutar)
-- [🗄️ Base de Datos H2 y DataLoader](#️-base-de-datos-h2-y-dataloader)
-- [🛡️ Manejo Centralizado de Errores](#️-manejo-centralizado-de-errores)
-- [👥 Equipo de Desarrollo](#-equipo-de-desarrollo)
+## 📌 Descripción del Proyecto
+Este proyecto corresponde a la entrega oficial evaluable del **Taller de RxJS**. El objetivo es consumir de manera asíncrona y reactiva la API pública [DummyJSON](https://dummyjson.com/) mediante **Angular** y operadores de **RxJS**, demostrando el flujo de datos dependientes (Usuario ➔ Publicaciones ➔ Comentarios) sin recargar la página y sin condiciones de carrera.
 
 ---
 
-## 🌊 Visión General
+## 🚀 Requerimientos Oficiales Cumplidos (100% + Puntos Extra)
 
-El restaurante cuenta con una sede física y alta demanda de pedidos. Esta plataforma digitaliza el catálogo gastronómico y la atención al cliente mediante:
-- **Catálogo interactivo de platos:** Visualización agrupada por categorías (Entradas, Platos Fuertes, Especialidades, Postres, Bebidas) y en formato tabular con acciones CRUD.
-- **Detalle de producto y acompañamientos:** Visualización detallada de ingredientes, categoría y opciones adicionales.
-- **Gestión de clientes y perfil:** Registro, inicio de sesión y edición de datos del perfil con propagación limpia de estado por URL.
-- **Persistencia relacional:** Migración completa a **Spring Data JPA** sobre base de datos **H2** en archivo.
-
----
-
-## 🎨 Identidad Visual y Paleta de Colores
-
-La identidad visual del proyecto evoca la frescura marina, elegancia y calidez caribeña:
-
-![Paleta de Colores](images/paleta-colores.jpg)
-
-| Color | Código HEX | Rol / Uso en la Interfaz |
-|---|:---:|---|
-| **Azul Caribe** | `#193AB9` | Botones de acción principal, acentos y llamados a la acción (CTA). |
-| **Azul Marino Profundo** | `#0B1A53` | Barra de navegación (Navbar), pie de página (Footer) y encabezados. |
-| **Blanco Nieve** | `#FFFFFF` | Fondos de tarjetas, paneles de formulario y legibilidad general. |
-| **Café Náutico / Dorado** | `#633E03` | Detalles cálidos, líneas divisorias decorativas y estados secundarios. |
+| Requisito Oficial | Implementación | Estado |
+| :--- | :--- | :---: |
+| **Sin enrutamiento** | Toda la aplicación funciona en una única vista principal (`App`). | ✅ Cumplido |
+| **API DummyJSON** | Endpoints oficiales: `/users/filter?key=username=...`, `/posts/user/{userId}`, `/comments/post/{postId}`. | ✅ Cumplido |
+| **Sección 1: Buscador** | Input reactivo para ingresar el `username`, botón de búsqueda y accesos rápidos de prueba. | ✅ Cumplido |
+| **Sección 2: Datos de Usuario** | Componente hijo independiente `UserCardComponent` que recibe la información mediante `@Input() user`. | ✅ Cumplido |
+| **Sección 3: Posts y Comentarios** | Componente hijo independiente `PostListComponent` que recibe los posts y comentarios anidados mediante `@Input() posts`. | ✅ Cumplido |
+| **Carita Muy Feliz 1: Reacciones con Íconos** | Conteo de reacciones por post (likes/dislikes) representadas con íconos vectoriales de **Bootstrap Icons** (`bi-hand-thumbs-up-fill`, `bi-hand-thumbs-down-fill`). | ⭐ Puntos Extra |
+| **Carita Muy Feliz 2: Nombre de Autor en Comentarios** | Cada comentario muestra el nombre completo del autor (`comment.user.fullName`) y sus likes. | ⭐ Puntos Extra |
+| **Manejo de Errores** | Si el usuario no existe, se muestra un banner de alerta en pantalla y se limpia la información anterior. | ✅ Cumplido |
+| **Diseño y Estilos** | Maquetación con **Bootstrap 5.3.3** y **Bootstrap Icons 1.11.3**. | ✅ Cumplido |
 
 ---
 
-## 📐 Arquitectura y Modelado del Dominio
+## 🏗️ Arquitectura y Estructura del Código
 
-El sistema se modeló bajo principios de arquitectura limpia, separación de responsabilidades y diseño orientado a objetos sin herencia en entidades del dominio.
-
-### Diagrama de Clases (UML)
-Representa la estructura estática del sistema, sus clases de dominio, atributos, operaciones y multiplicidades:
-
-![Diagrama de Clases UML](images/diagrama-clases.jpg)
-
-### Diagrama Entidad–Relación (DER)
-Representa el modelo relacional físico, llaves primarias (`PK`), foráneas (`FK`), restricciones de nulidad y unicidad:
-
-![Diagrama Entidad–Relación](images/DiagramaEntidad-Relacion.jpg)
-
-#### Entidades Principales Persistidas con Spring Data JPA:
-1. **`Cliente`**: Identificador único autoincremental (`idCliente`), nombre, apellido, correo único, contraseña, teléfono y dirección.
-2. **`Categoria`**: Categorías del menú (`idCategoria`, `nombre` único), con relación `@OneToMany` hacia productos y borrado en cascada.
-3. **`Producto`**: Plato o bebida (`idProducto`, `nombre`, `precio`, `descripcion`, `imagenURL`), asociado mediante `@ManyToOne` a su correspondiente `Categoria`.
-
----
-
-## 📁 Estructura del Proyecto
-
-El proyecto sigue una arquitectura multicapa desacoplada:
+Siguiendo las buenas prácticas explicadas por el profesor, la lógica se separó en modelos, servicios dedicados y componentes hijos:
 
 ```text
-CrustaceoCaribeno-WebProject/
-├── demo/                                # Módulo de la aplicación Spring Boot
-│   ├── src/main/java/com/example/demo/
-│   │   ├── controller/                  # Controladores Spring MVC (@Controller)
-│   │   │   ├── HomeController.java      # Enrutamiento de la Landing Page (/home)
-│   │   │   ├── ProductoController.java  # Catálogo en tarjetas, tabla, detalle y CRUD
-│   │   │   ├── LoginController.java     # Autenticación y registro de clientes
-│   │   │   └── PerfilController.java    # Consulta y edición del perfil de cliente
+3.Angular-RXJS/
+├── src/
+│   ├── app/
+│   │   ├── models/                    # Modelos e interfaces tipadas
+│   │   │   ├── user.model.ts          # Interface User, Address, Company
+│   │   │   ├── post.model.ts          # Interface Post, PostReactions
+│   │   │   └── comment.model.ts       # Interface Comment, CommentUser
 │   │   │
-│   │   ├── entitys/                     # Entidades de dominio mapeadas con JPA (@Entity)
-│   │   │   ├── Categoria.java           # Categoría de platos (@OneToMany)
-│   │   │   ├── Cliente.java             # Entidad Cliente con restricciones DDL
-│   │   │   └── Producto.java            # Entidad Producto con relación @ManyToOne
+│   │   ├── services/                  # Servicios HTTP modulares (1 por entidad)
+│   │   │   ├── user.service.ts        # GET /users/filter?key=username={username}
+│   │   │   ├── post.service.ts        # GET /posts/user/{userId}
+│   │   │   └── comment.service.ts     # GET /comments/post/{postId}
 │   │   │
-│   │   ├── errors/                      # Manejo global de excepciones (@ControllerAdvice)
-│   │   │   ├── GlobalExceptionHandler.java
-│   │   │   ├── ClienteAlreadyExistsException.java
-│   │   │   ├── ClienteNotFoundException.java
-│   │   │   └── ProductoNotFoundException.java
+│   │   ├── components/                # Componentes hijos para Secciones 2 y 3
+│   │   │   ├── user-card/             # Sección 2: @Input() user (Tarjeta de perfil)
+│   │   │   └── post-list/             # Sección 3: @Input() posts (Posts + comentarios)
 │   │   │
-│   │   ├── repository/                  # Repositorios Spring Data JPA (JpaRepository)
-│   │   │   ├── CategoriaFakeRepository.java
-│   │   │   ├── ClienteFakeRepository.java
-│   │   │   └── ProductoFakeRepository.java
-│   │   │
-│   │   ├── service/                     # Capa de lógica de negocio desacoplada
-│   │   │   ├── CategoriaService.java / CategoriaServiceImpl.java
-│   │   │   ├── ClienteService.java / ClienteServiceImpl.java
-│   │   │   └── ProductoService.java / ProductoServiceImpl.java
-│   │   │
-│   │   ├── DataLoader.java              # Carga inicial de datos al arranque (CommandLineRunner)
-│   │   └── DemoApplication.java         # Punto de entrada de la aplicación Spring Boot
-│   │
-│   └── src/main/resources/
-│       ├── static/                      # Recursos estáticos web
-│       │   ├── css/                     # Hojas de estilo modulares (general, tarjetas, tabla, detalle, etc.)
-│       │   ├── js/                      # Interactividad y scripts del frontend
-│       │   └── images/                  # Activos gráficos, logos y fotografías de platos
-│       ├── templates/                   # Plantillas dinámicas Thymeleaf
-│       │   ├── home.html                # Landing Page
-│       │   ├── login.html               # Formulario de login
-│       │   ├── registro.html            # Formulario de registro
-│       │   ├── perfil.html              # Vista y edición de perfil de cliente
-│       │   ├── comidas-tarjetas.html    # Catálogo visual por categorías (tarjetas)
-│       │   ├── comidas-tabla.html       # Catálogo tabular con acciones CRUD
-│       │   ├── comida-detalle.html      # Detalle del plato con categoría visible y adicionales
-│       │   ├── comida-agregar.html      # Formulario para agregar / editar plato con selector de categoría
-│       │   └── error.html               # Pantalla amigable para captura de errores
-│       └── application.properties       # Configuración de H2, JPA, Hibernate y servidor
-│
-├── images/                              # Diagramas de modelado y paleta de colores
-│   ├── diagrama-clases.jpg
-│   ├── diagrama-entidad-relacion.jpg
-│   └── paleta-colores.jpg
-│
-└── pom.xml                              # Configuración Maven y dependencias del ecosistema Spring
+│   │   ├── app.ts                     # Componente principal: orquestación con RxJS
+│   │   ├── app.html                   # Sección 1 (Buscador) y renderizado de hijos
+│   │   ├── app.css                    # Estilos complementarios
+│   │   └── app.config.ts              # provideHttpClient() configurado
+│   └── index.html                     # CDNs de Bootstrap 5 y Bootstrap Icons
 ```
 
 ---
 
-## 🛠️ Tecnologías y Dependencias
+## ⚡ ¿Cómo funciona la consulta reactiva con RxJS? (`app.ts`)
 
-- **Java 17 (LTS)**
-- **Spring Boot 3.x:**
-  - `spring-boot-starter-web`: Creación de API y controladores MVC.
-  - `spring-boot-starter-thymeleaf`: Renderizado del lado del servidor.
-  - `spring-boot-starter-data-jpa`: Persistencia ORM con Hibernate.
-- **H2 Database Engine:** Base de datos relacional ligera persistida en disco (`file:./mydatabase`).
-- **Lombok:** Generación de `@Getter`, `@Setter`, `@ToString` y `@Builder`.
-- **Frontend:** HTML5 semántico, CSS3 modular, Bootstrap Icons y fuentes tipográficas Google Fonts (*Playfair Display* y *Poppins*).
+Para evitar suscripciones anidadas (*callback hell*) y condiciones de carrera, el componente principal orquesta los 3 servicios usando tuberías (`pipe`) y operadores reactivos:
+
+1. **`concatMap`:** Recibe el usuario desde `UserService`. Si el usuario no existe, corta el flujo y emite el error. Si existe, espera a tener su `user.id` y dispara la petición de publicaciones en `PostService`.
+2. **`forkJoin`:** Por cada publicación encontrada, lanza en paralelo las peticiones a `CommentService` para traer sus comentarios respectivos y los fusiona en el objeto `post.comments`.
+3. **`catchError`:** Captura errores de red o usuario no encontrado, limpia los estados y muestra el mensaje amigable al usuario.
+4. **`subscribe`:** Un único punto de suscripción final que actualiza las variables que se envían a los componentes hijos vía `@Input`.
 
 ---
 
-## 🚀 Puesta en Marcha (Cómo Ejecutar)
+## 💻 Instrucciones para Ejecutar
 
-### Prerrequisitos
-- Tener instalado **Java JDK 17** o superior.
-- Git instalado.
+### 1. Prerrequisitos
+* Tener instalado **Node.js** (versión 18 o superior).
 
-### Pasos de ejecución:
-1. Clonar el repositorio y situarse en la carpeta `demo`:
-   ```bash
-   cd demo
-   ```
-2. Ejecutar la aplicación con el Maven Wrapper:
-   - **En Windows (CMD o PowerShell):**
-     ```cmd
-     .\mvnw.cmd spring-boot:run
-     ```
-   - **En Linux / macOS:**
-     ```bash
-     ./mvnw spring-boot:run
-     ```
-3. Abrir el navegador en:
-   ```text
-   http://localhost:8080/home
-   ```
+### 2. Instalación de dependencias
+Abre una terminal en esta carpeta y ejecuta:
+```bash
+npm install
+```
+
+### 3. Iniciar el servidor de desarrollo
+```bash
+npm start
+```
+*(O alternativamente: `npx ng serve`)*
+
+Abre tu navegador en:
+```
+http://localhost:4200/
+```
 
 ---
 
-## 🗄️ Base de Datos H2 y DataLoader
+## 🧪 Casos de Prueba Recomendados
 
-### Carga Automática de Datos (`DataLoader`)
-Al arrancar la aplicación, el componente `DataLoader` puebla automáticamente la base de datos con:
-- **10 Clientes registrados:**
-  - Ejemplo: Correo `Juan.Rodriguez@gmail.com` | Contraseña `1234`
-  - Ejemplo: Correo `maria.gomez@gmail.com` | Contraseña `5678`
-- **5 Categorías:** Entrada, Plato Fuerte, Especialidad de la Casa, Postre, Bebida.
-- **43+ Productos (Platillos y Bebidas):** Con nombres reales, precios en COP, descripciones gourmet y URLs de imágenes representativas, vinculados relacionalmente a su respectiva categoría.
+En la parte superior de la página encontrarás botones de prueba rápida para verificar los diferentes flujos:
 
-### Consola de Administración H2
-Es posible inspeccionar las tablas relacionales y ejecutar consultas SQL desde el navegador:
-- **URL de acceso:** `http://localhost:8080/h2`
-- **Driver Class:** `org.h2.Driver`
-- **JDBC URL:** `jdbc:h2:file:./mydatabase`
-- **User Name:** `sa`
-- **Password:** *(dejar vacío)*
-
----
-
-## 🛡️ Manejo Centralizado de Errores
-
-El proyecto cuenta con un controlador de asesoría global (`@ControllerAdvice`) en [GlobalExceptionHandler.java](demo/src/main/java/com/example/demo/errors/GlobalExceptionHandler.java):
-- **Producto no encontrado:** Al intentar consultar `/comidas/detalle/{id}` con un ID inexistente, se dispara `ProductoNotFoundException` y se despliega una vista amigable `error.html` con mensaje claro y botón de retorno.
-- **Cliente no encontrado / Correo ya registrado:** Se capturan `ClienteNotFoundException` y `ClienteAlreadyExistsException` protegiendo las reglas del negocio.
-- **Excepciones generales:** Se capturan fallos inesperados previniendo pantallas de error genéricas.
-
----
-
-## 👥 Equipo de Desarrollo
-
-Proyecto desarrollado para la asignatura de **Desarrollo Web** — Pontificia Universidad Javeriana:
-
-- **Sebastián Gaibor**
-- **Dana Trujillo**
-- **Santiago Cano**
-- **Andrés Díaz**
-
----
-*© 2026 El Crustáceo Caribeño. Todos los derechos reservados.*
+1. **Usuario con posts y comentarios (Éxito completo):**
+   * Haz clic en el botón **`emilys`** o escribe `emilys` en el buscador.
+   * *Resultado:* Carga el perfil con foto, datos de contacto, sus publicaciones con etiquetas, cantidad de reacciones con íconos de pulgar arriba/abajo, y cada comentario con el nombre completo de su autor.
+2. **Otro usuario válido:**
+   * Haz clic en **`michaelw`** o escribe `michaelw`.
+3. **Usuario con múltiples publicaciones:**
+   * Haz clic en **`lillians`** o escribe `lillians`.
+4. **Manejo de Error (Usuario inexistente):**
+   * Haz clic en **`atuny0 (no existe)`** o escribe cualquier texto al azar (ej. `usuario_invalido_xyz`).
+   * *Resultado:* No se muestran tarjetas de datos y aparece la alerta roja: *"El nombre de usuario '...' no existe en el sistema."*
