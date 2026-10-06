@@ -1,16 +1,3 @@
-export interface UserAddress {
-  address: string;
-  city: string;
-  state: string;
-  country?: string;
-}
-
-export interface UserCompany {
-  department: string;
-  name: string;
-  title: string;
-}
-
 export interface User {
   id: number;
   firstName: string;
@@ -25,13 +12,15 @@ export interface User {
   image: string;
   university?: string;
   role?: string;
-  address?: UserAddress;
-  company?: UserCompany;
-}
-
-export interface UserResponse {
-  users: User[];
-  total: number;
-  skip: number;
-  limit: number;
+  address?: {
+    address: string;
+    city: string;
+    state: string;
+    country?: string;
+  };
+  company?: {
+    department: string;
+    name: string;
+    title: string;
+  };
 }

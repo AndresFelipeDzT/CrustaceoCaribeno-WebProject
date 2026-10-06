@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { User, UserResponse } from '../models/user.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class UserService {
    */
   getUserByUsername(username: string): Observable<User | null> {
     const url = `${this.baseUrl}/filter?key=username&value=${encodeURIComponent(username.trim())}`;
-    return this.http.get<UserResponse>(url).pipe(
+    return this.http.get<{ users: User[] }>(url).pipe(
       map(response => {
         if (response && response.users && response.users.length > 0) {
           return response.users[0];
