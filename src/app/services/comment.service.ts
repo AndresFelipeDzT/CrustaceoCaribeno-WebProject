@@ -11,7 +11,16 @@ export class CommentService {
   private readonly baseUrl = 'https://dummyjson.com/comments';
 
   /**
-   * Obtiene todos los comentarios asociados a un post según su postId
+   * Obtiene todos los comentarios en una sola consulta eficiente
+   */
+  getAllComments(): Observable<Comment[]> {
+    return this.http.get<CommentResponse>(`${this.baseUrl}?limit=0`).pipe(
+      map(response => response?.comments || [])
+    );
+  }
+
+  /**
+   * Obtiene los comentarios de un post específico
    */
   getCommentsByPostId(postId: number): Observable<Comment[]> {
     const url = `${this.baseUrl}/post/${postId}`;

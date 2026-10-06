@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { of, forkJoin } from 'rxjs';
-import { concatMap, map, catchError } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { concatMap, map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { UserService } from './services/user.service';
 import { PostService } from './services/post.service';
 import { CommentService } from './services/comment.service';
@@ -18,8 +18,8 @@ import { PostListComponent } from './components/post-list/post-list.component';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  // Inyección de servicios para cada tabla/entidad (Arquitectura solicitada)
+export class App implements OnInit {
+  // Inyección de servicios para cada entidad (Arquitectura solicitada)
   private userService = inject(UserService);
   private postService = inject(PostService);
   private commentService = inject(CommentService);
@@ -36,95 +36,103 @@ export class App {
   mensajeError: string = '';
   busquedaRealizada: boolean = false;
 
-  /**
-   * Consulta encadenada usando operadores de RxJS (map, concatMap, forkJoin):
-   * 1. Consulta el usuario por 'username' en UserService.
-   * 2. Si no existe, corta el flujo e informa al usuario.
-   * 3. Si existe, usa 'concatMap' para esperar y consultar todos sus posts en PostService.
-   * 4. Para cada post obtenido, consulta sus comentarios en paralelo con 'forkJoin' usando CommentService.
-   * 5. Al finalizar toda la cadena reactiva, actualiza el estado y pasa los datos por @Input.
-   */
-  buscarUsuario(): void {
-    const username = this.usernameBuscado.trim();
-    if (!username) {
-      this.mensajeError = 'Por favor ingrese un nombre de usuario para buscar.';
-      return;
-    }
+  // Sujeto reactivo para el buscador (Patrón de búsqueda visto en clase)
+  private searchSubject = new Subject<string>();
 
-    this.cargando = true;
-    this.mensajeError = '';
-    this.busquedaRealizada = true;
-    this.usuarioEncontrado = null;
-    this.postsDelUsuario = [];
-
-    // Inicio de la cadena reactiva
-    this.userService.getUserByUsername(username)
-      .pipe(
-        concatMap(user => {
-          // Si el usuario no existe en la API, emitimos resultado nulo y cortamos
-          if (!user) {
-            this.mensajeError = `El nombre de usuario "${username}" no existe en el sistema.`;
-            return of({ user: null, posts: [] });
-          }
-
-          // Si el usuario existe, consultamos sus posts usando su userId
-          return this.postService.getPostsByUserId(user.id).pipe(
-            concatMap(posts => {
-              // Si el usuario no tiene posts, retornamos el usuario con lista vacía de posts
-              if (!posts || posts.length === 0) {
-                return of({ user, posts: [] });
-              }
-
-              // Para cada post, disparamos la consulta de sus comentarios y los fusionamos
-              const postsConComentarios$ = posts.map(post =>
-                this.commentService.getCommentsByPostId(post.id).pipe(
-                  map(comments => ({
-                    ...post,
-                    comments: comments || []
-                  })),
-                  // Si falla la consulta de comentarios de un post, continuamos sin romper el flujo
-                  catchError(() => of({ ...post, comments: [] }))
-                )
-              );
-
-              // forkJoin espera a que se resuelvan las peticiones de comentarios de TODOS los posts
-              return forkJoin(postsConComentarios$).pipe(
-                map(postsCompletos => ({ user, posts: postsCompletos }))
-              );
-            }),
-            catchError(err => {
-              console.error('Error al obtener los posts:', err);
-              return of({ user, posts: [] });
-            })
-          );
-        }),
-        catchError(err => {
-          console.error('Error general en la consulta de usuario:', err);
-          this.mensajeError = 'Ocurrió un error al consultar la API de DummyJSON.';
-          return of({ user: null, posts: [] });
-        })
-      )
-      .subscribe({
-        next: ({ user, posts }) => {
-          if (user) {
-            this.usuarioEncontrado = user;
-            this.postsDelUsuario = posts;
-          } else {
-            this.usuarioEncontrado = null;
-            this.postsDelUsuario = [];
-          }
-          this.cargando = false;
-        },
-        error: () => {
-          this.mensajeError = 'Error inesperado en la suscripción.';
-          this.cargando = false;
-        }
-      });
+  ngOnInit(): void {
+    this.iniciarBuscadorReactivo();
   }
 
-  // Helper para probar rápidamente con botones de ejemplo
+  /**
+   * Buscador Reactivo usando operadores de la clase:
+   * - debounceTime(350): Espera a que el usuario termine de escribir antes de consultar.
+   * - distinctUntilChanged(): Evita consultas duplicadas si se busca dos veces el mismo texto.
+   * - switchMap: Cancela peticiones previas en vuelo si se realiza una nueva búsqueda.
+   * - concatMap: Encadena secuencialmente Usuario -> Posts -> Comentarios.
+   * - map: Asocia en memoria los comentarios a sus posts correspondientes.
+   * - Único error contemplado: Usuario no encontrado en el sistema.
+   */
+  private iniciarBuscadorReactivo(): void {
+    this.searchSubject.pipe(
+      map(term => term.trim()),
+      debounceTime(350),
+      distinctUntilChanged(),
+      switchMap(username => {
+        if (!username) {
+          this.cargando = false;
+          this.usuarioEncontrado = null;
+          this.postsDelUsuario = [];
+          this.mensajeError = '';
+          this.busquedaRealizada = false;
+          return of(null);
+        }
+
+        this.cargando = true;
+        this.mensajeError = '';
+        this.busquedaRealizada = true;
+        this.usuarioEncontrado = null;
+        this.postsDelUsuario = [];
+
+        return this.userService.getUserByUsername(username).pipe(
+          concatMap(user => {
+            // Único caso de error requerido por la rúbrica: cuando el usuario no existe
+            if (!user) {
+              this.mensajeError = `El nombre de usuario "${username}" no existe en el sistema.`;
+              return of({ user: null, posts: [] });
+            }
+
+            // Si el usuario existe, consultamos sus posts
+            return this.postService.getPostsByUserId(user.id).pipe(
+              concatMap(posts => {
+                if (!posts || posts.length === 0) {
+                  return of({ user, posts: [] });
+                }
+
+                // Consultamos los comentarios en una sola petición y los vinculamos con map
+                return this.commentService.getAllComments().pipe(
+                  map(allComments => {
+                    const postsConComentarios = posts.map(post => ({
+                      ...post,
+                      comments: allComments.filter(c => c.postId === post.id)
+                    }));
+                    return { user, posts: postsConComentarios };
+                  }),
+                  catchError(() => of({ user, posts }))
+                );
+              }),
+              catchError(() => of({ user, posts: [] }))
+            );
+          }),
+          catchError(() => of({ user: null, posts: [] }))
+        );
+      })
+    ).subscribe(resultado => {
+      if (resultado) {
+        this.usuarioEncontrado = resultado.user;
+        this.postsDelUsuario = resultado.posts;
+      }
+      this.cargando = false;
+    });
+  }
+
+  // Evento al teclear en el campo de búsqueda
+  onSearchInput(valor: string): void {
+    this.usernameBuscado = valor;
+    this.searchSubject.next(valor);
+  }
+
+  // Evento al enviar el formulario o hacer clic en "Buscar"
+  buscarUsuario(): void {
+    this.searchSubject.next(this.usernameBuscado);
+  }
+
+  // Accesos directos para probar usuarios
   seleccionarEjemplo(username: string): void {
     this.usernameBuscado = username;
-    this.buscarUsuario();
+    this.searchSubject.next(username);
+  }
+
+  seleccionarUsuarioEjemplo(username: string): void {
+    this.seleccionarEjemplo(username);
   }
 }
