@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, of } from 'rxjs';
@@ -22,6 +22,7 @@ export class App implements OnInit {
   private userService = inject(UserService);
   private postService = inject(PostService);
   private commentService = inject(CommentService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   // Sección 1: Campo de búsqueda vinculado al formulario
   usernameBuscado: string = 'emilys';
@@ -111,6 +112,7 @@ export class App implements OnInit {
         this.postsDelUsuario = resultado.posts;
       }
       this.cargando = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
