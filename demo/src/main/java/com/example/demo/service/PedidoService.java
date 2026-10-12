@@ -12,7 +12,9 @@ public interface PedidoService {
      */
     Pedido obtenerPedidoPorId(Long id);
 
-    Pedido actualizarEstadoPedido(Long id, String estado);
+    void guardarPedido(Pedido pedido);
+
+    void actualizarEstadoPedido(Long id, Pedido pedido);
 
     void eliminarPedido(Long id);
 }

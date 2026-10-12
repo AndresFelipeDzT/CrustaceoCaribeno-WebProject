@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.demo.entitys.Cliente;
 
@@ -16,9 +15,9 @@ public interface ClienteService {
 
     Cliente guardarCliente(Cliente cliente);
 
-    void eliminarCliente(Long id);
+    void actualizarCliente(Long idCliente, Cliente cliente);
 
-    Cliente prepararClienteEdicion(Cliente clienteFormulario, Long idCliente);
+    void eliminarCliente(Long id);
 
     /**
      * Valida las credenciales de un cliente por su nombre o correo.

@@ -28,10 +28,9 @@ public class DemoApplication {
 		System.out.println("  >> CRUSTACEO CARIBENO - SERVIDOR INICIADO CON EXITO <<");
 		System.out.println("================================================================");
 		System.out.println("  [+] Estado: Listo para recibir peticiones");
-		System.out.println("  [+] URL Principal: " + baseUrl + "/home");
+		System.out.println("  [+] Productos JSON: " + baseUrl + "/api/productos");
 		System.out.println("================================================================");
 		System.out.println();
 	}
 
 }
-

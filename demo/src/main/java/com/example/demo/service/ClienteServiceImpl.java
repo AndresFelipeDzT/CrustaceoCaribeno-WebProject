@@ -145,8 +145,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente prepararClienteEdicion(Cliente clienteFormulario, Long idCliente) {
-        if (clienteFormulario == null) {
+    public void actualizarCliente(Long idCliente, Cliente cliente) {
+        if (cliente == null) {
             throw new IllegalArgumentException("Los datos del cliente no pueden ser nulos.");
         }
         if (idCliente == null) {
@@ -154,26 +154,26 @@ public class ClienteServiceImpl implements ClienteService {
         }
 
         Cliente clienteExistente = obtenerClientePorId(idCliente);
-        clienteFormulario.setIdCliente(idCliente);
-        clienteFormulario.setActivo(clienteExistente.isActivo());
+        cliente.setIdCliente(idCliente);
+        cliente.setActivo(clienteExistente.isActivo());
 
-        if (clienteFormulario.getNombre() == null || clienteFormulario.getNombre().isBlank()) {
-            clienteFormulario.setNombre(clienteExistente.getNombre());
+        if (cliente.getNombre() == null || cliente.getNombre().isBlank()) {
+            cliente.setNombre(clienteExistente.getNombre());
         }
-        if (clienteFormulario.getApellido() == null || clienteFormulario.getApellido().isBlank()) {
-            clienteFormulario.setApellido(clienteExistente.getApellido());
+        if (cliente.getApellido() == null || cliente.getApellido().isBlank()) {
+            cliente.setApellido(clienteExistente.getApellido());
         }
-        if (clienteFormulario.getPassword() == null || clienteFormulario.getPassword().isBlank()) {
-            clienteFormulario.setPassword(clienteExistente.getPassword());
+        if (cliente.getPassword() == null || cliente.getPassword().isBlank()) {
+            cliente.setPassword(clienteExistente.getPassword());
         }
-        if (clienteFormulario.getTelefono() == null || clienteFormulario.getTelefono().isBlank()) {
-            clienteFormulario.setTelefono(clienteExistente.getTelefono());
+        if (cliente.getTelefono() == null || cliente.getTelefono().isBlank()) {
+            cliente.setTelefono(clienteExistente.getTelefono());
         }
-        if (clienteFormulario.getDireccion() == null || clienteFormulario.getDireccion().isBlank()) {
-            clienteFormulario.setDireccion(clienteExistente.getDireccion());
+        if (cliente.getDireccion() == null || cliente.getDireccion().isBlank()) {
+            cliente.setDireccion(clienteExistente.getDireccion());
         }
 
-        return clienteFormulario;
+        guardarCliente(cliente);
     }
 
     @Override

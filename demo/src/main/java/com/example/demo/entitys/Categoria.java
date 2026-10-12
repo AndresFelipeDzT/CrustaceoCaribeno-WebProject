@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,15 +32,19 @@ public class Categoria {
     private String nombre;
     
     @OneToMany (mappedBy = "categoria")
+    @JsonIgnore
     private List<Producto> productos;
 
     @ManyToMany
+    @JsonIgnore
     private List<Adicional> adicionales = new ArrayList<>();
 
+    @JsonIgnore
     public List<Adicional> getAdicionalesDisponibles() {
         return adicionales;
     }
 
+    @JsonIgnore
     public void setAdicionalesDisponibles(List<Adicional> adicionalesDisponibles) {
         this.adicionales = adicionalesDisponibles;
     }

@@ -35,6 +35,8 @@ public interface ProductoService {
      */
     Producto guardarProducto(Producto producto);
 
+    void actualizarProducto(Long idProducto, Producto producto);
+
     /**
      * Desactiva un producto del catálogo.
      * @param idProducto ID del producto.

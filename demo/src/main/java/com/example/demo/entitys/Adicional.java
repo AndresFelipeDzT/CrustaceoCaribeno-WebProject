@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,14 +40,17 @@ public class Adicional {
     private boolean activo = true;
 
     @ManyToMany(mappedBy = "adicionales")
+    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     private List<Categoria> categorias = new ArrayList<>();
 
+    @JsonIgnore
     public List<Categoria> getCategoriasDisponibles() {
         return categorias;
     }
 
+    @JsonIgnore
     public void setCategoriasDisponibles(List<Categoria> categoriasDisponibles) {
         this.categorias = categoriasDisponibles;
     }

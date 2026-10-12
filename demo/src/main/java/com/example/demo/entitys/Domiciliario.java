@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +43,7 @@ public class Domiciliario {
     private Boolean disponible;
 
     @OneToMany(mappedBy = "domiciliario")
+    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     private List<Pedido> pedidos = new ArrayList<>();

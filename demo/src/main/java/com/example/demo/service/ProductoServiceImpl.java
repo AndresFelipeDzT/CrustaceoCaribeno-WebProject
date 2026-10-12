@@ -54,6 +54,15 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public void actualizarProducto(Long idProducto, Producto producto) {
+        if (producto == null) {
+            throw new IllegalArgumentException("Los datos del producto no pueden ser nulos.");
+        }
+        producto.setIdProducto(idProducto);
+        guardarProducto(producto);
+    }
+
+    @Override
     public void eliminarProducto(Long idProducto) {
         Producto producto = obtenerProductoPorId(idProducto);
         for (ItemCarrito itemCarrito : itemCarritoRepository.findByProducto(producto)) {
