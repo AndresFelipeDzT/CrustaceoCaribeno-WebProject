@@ -14,12 +14,17 @@ public interface CategoriaService {
      * @return Lista completa de categorias.
      */
     List<Categoria> obtenerTodasLasCategorias();
+
+    Categoria obtenerCategoriaPorId(Long idCategoria);
+
     /**
      * Busca una categoria por su nombre.
      * @param nombre nombre de la categoria.
      * @return La categoría encontrada.
      */
     Categoria obtenerCategoriaPorNombre(String nombre);
+
+    Categoria guardarCategoria(Categoria categoria);
 
     void eliminarCategoria(Long idCategoria);
 }

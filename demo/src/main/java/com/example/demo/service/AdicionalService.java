@@ -21,6 +21,8 @@ public interface AdicionalService {
     /* Guarda o actualiza un adicional */
     Adicional guardarAdicional(Adicional adicional);
 
+    void actualizarAdicional(Long idAdicional, Adicional adicional);
+
     /* Elimina un adicional por ID */
     void eliminarAdicional(Long idAdicional);
 }
