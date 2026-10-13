@@ -17,8 +17,9 @@ export class ComidaCardComponent {
   private router = inject(Router);
   comida = input.required<Producto>();
   error = '';
+  get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }
   get conectado(): boolean {
-    return this.clienteService.getClienteActualId() !== undefined;
+    return this.clienteId !== undefined;
   }
 
   agregarAlCarrito(): void {
@@ -28,7 +29,9 @@ export class ComidaCardComponent {
       return;
     }
     this.carritoService.agregarProducto(clienteId, this.comida().idProducto).subscribe({
-      next: () => void this.router.navigate(['/carrito']),
+      next: () => void this.router.navigate(['/carrito'], {
+        queryParams: { id: clienteId }
+      }),
       error: () => this.error = 'No fue posible agregar el producto al carrito.'
     });
   }

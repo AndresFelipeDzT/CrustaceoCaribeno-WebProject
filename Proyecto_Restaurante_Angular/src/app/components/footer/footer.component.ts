@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ClienteService } from '../../service/cliente.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,5 +9,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-
+  private clienteService = inject(ClienteService);
+  get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }
 }

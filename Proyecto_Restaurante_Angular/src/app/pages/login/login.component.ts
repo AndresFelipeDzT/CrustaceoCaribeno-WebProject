@@ -12,7 +12,7 @@ import { ClienteService } from '../../service/cliente.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  // Formulario de acceso para clientes registrados en el almacenamiento local.
+  // El id del cliente se mantiene en la URL después de iniciar sesión.
   private formBuilder = inject(FormBuilder);
   private clienteService = inject(ClienteService);
   private router = inject(Router);
@@ -37,7 +37,9 @@ export class LoginComponent {
           this.error = 'El correo o la contraseña no son correctos.';
           return;
         }
-        void this.router.navigate(['/comidas/tarjetas']);
+        void this.router.navigate(['/comidas/tarjetas'], {
+          queryParams: { id: cliente.idCliente }
+        });
       },
       error: () => {
         this.error = 'No fue posible conectar con el servidor. Intenta de nuevo.';

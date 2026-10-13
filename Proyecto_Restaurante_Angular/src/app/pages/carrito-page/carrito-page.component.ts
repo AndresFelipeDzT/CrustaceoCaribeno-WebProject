@@ -23,6 +23,7 @@ export class CarritoPageComponent implements OnInit {
   seleccionados: Record<number, number[] | undefined> = {};
   error = '';
   mensaje = '';
+  get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }
 
   ngOnInit(): void {
     this.cargarCarrito();

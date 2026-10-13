@@ -1,14 +1,14 @@
 ﻿<header class="header-crustaceo">
   <nav class="navbar-crustaceo">
-    <a class="navbar-brand" routerLink="/comidas/tarjetas">
+    <a class="navbar-brand" routerLink="/comidas/tarjetas" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">
       <img src="/imagenes/logo2.png" alt="" width="38" height="38">
       <span>Crustáceo Caribeño</span>
     </a>
     @if (conectado) {
       <div class="nav-botones">
-        <a class="nav-link-item" routerLink="/comidas/tarjetas"><i class="bi bi-grid" aria-hidden="true"></i> Menú</a>
-        <a class="nav-link-item" routerLink="/carrito"><i class="bi bi-cart" aria-hidden="true"></i> Carrito</a>
-        <a class="nav-link-item perfil-link" routerLink="/perfil"><i class="bi bi-person-circle" aria-hidden="true"></i> Perfil</a>
+        <a class="nav-link-item" routerLink="/comidas/tarjetas" [queryParams]="{ id: clienteId }"><i class="bi bi-grid" aria-hidden="true"></i> Menú</a>
+        <a class="nav-link-item" routerLink="/carrito" [queryParams]="{ id: clienteId }"><i class="bi bi-cart" aria-hidden="true"></i> Carrito</a>
+        <a class="nav-link-item perfil-link" routerLink="/perfil" [queryParams]="{ id: clienteId }"><i class="bi bi-person-circle" aria-hidden="true"></i> Perfil</a>
       </div>
     } @else {
       <div class="nav-botones">

@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
+import { ClienteService } from '../../service/cliente.service';
 import { ComidaDetailNavbarComponent } from './components/comida-detail-navbar/comida-detail-navbar.component';
 import { ComidaPlatoComponent } from './components/comida-plato/comida-plato.component';
 import { ComidaAcompanamientosComponent } from './components/comida-acompanamientos/comida-acompanamientos.component';
@@ -15,8 +16,10 @@ import { ComidaAcompanamientosComponent } from './components/comida-acompanamien
 export class ComidaDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private comidaService = inject(ComidaService);
+  private clienteService = inject(ClienteService);
   comida: Producto | undefined;
   error = '';
+  get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));

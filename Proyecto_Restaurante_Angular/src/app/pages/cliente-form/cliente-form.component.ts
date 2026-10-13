@@ -82,7 +82,9 @@ export class ClienteFormComponent implements OnInit {
       ).subscribe({
         next: clienteAutenticado => {
           if (clienteAutenticado) {
-            void this.router.navigate(['/comidas/tarjetas']);
+            void this.router.navigate(['/comidas/tarjetas'], {
+              queryParams: { id: clienteAutenticado.idCliente }
+            });
           } else {
             void this.router.navigate(['/login']);
           }

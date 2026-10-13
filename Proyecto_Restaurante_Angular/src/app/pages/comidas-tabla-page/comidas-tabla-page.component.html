@@ -9,13 +9,16 @@
     <h2 class="titulo-menu">Menú</h2>
     <div class="linea-decorativa"></div>
   </div>
-
+  <div class="d-flex justify-content-end mb-4">
+    <a routerLink="/comidas/tabla/add" class="btn-cafe-agregar">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Agregar plato
+    </a>
+  </div>
   <app-comida-table
     [comidas]="comidas"
     (comidaEliminada)="eliminarComida($event)"
     (comidaActivada)="activarComida($event)"
   ></app-comida-table>
-  <a routerLink="/comidas/tabla/add" class="btn-accion">Agregar plato</a>
 </section>
 
 <app-footer></app-footer>
