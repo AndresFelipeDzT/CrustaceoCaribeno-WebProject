@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Comida } from '../../../../models/comida.model';
+import { Producto } from '../../../../models/producto.model';
 
 @Component({
   selector: 'app-comida-table',
@@ -10,7 +10,7 @@ import { Comida } from '../../../../models/comida.model';
   styleUrl: './comida-table.component.scss'
 })
 export class ComidaTableComponent {
-  comidas = input.required<Comida[]>();
+  comidas = input.required<Producto[]>();
   comidaEliminada = output<number>();
   comidaActivada = output<number>();
 }

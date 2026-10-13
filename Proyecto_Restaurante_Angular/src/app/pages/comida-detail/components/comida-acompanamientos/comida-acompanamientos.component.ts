@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input, inject, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Adicional } from '../../../../models/adicional.model';
 import { ComidaService } from '../../../../service/comida.service';
 
@@ -9,12 +9,17 @@ import { ComidaService } from '../../../../service/comida.service';
   templateUrl: './comida-acompanamientos.component.html',
   styleUrl: './comida-acompanamientos.component.scss'
 })
-export class ComidaAcompanamientosComponent implements OnChanges {
-  @Input({ required: true }) categoria = '';
+export class ComidaAcompanamientosComponent implements OnInit {
+  @Input() categoriaId?: number;
   private comidaService = inject(ComidaService);
   adicionales: Adicional[] = [];
+  error = '';
 
-  ngOnChanges(): void {
-    this.adicionales = this.comidaService.getAdicionalesPorCategoria(this.categoria);
+  ngOnInit(): void {
+    this.comidaService.getAdicionales(this.categoriaId).subscribe({
+      next: adicionales => this.adicionales = adicionales.filter(adicional => adicional.activo),
+      error: () => this.error = 'No fue posible cargar los adicionales.'
+    });
   }
+
 }

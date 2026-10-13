@@ -1,5 +1,3 @@
-import { Carrito } from './carrito.model';
-
 /** Representa la entidad Cliente de Spring Boot. */
 export interface Cliente {
   idCliente: number;
@@ -10,5 +8,5 @@ export interface Cliente {
   direccion?: string | null;
   password: string;
   activo: boolean;
-  carrito?: Carrito | null;
+  nombreCompleto?: string;
 }

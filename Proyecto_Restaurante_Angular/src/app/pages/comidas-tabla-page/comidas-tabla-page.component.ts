@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { TableNavbarComponent } from '../../components/navbar/table-navbar/table-navbar.component';
-import { Comida } from '../../models/comida.model';
+import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
 import { TableHeroBannerComponent } from './components/hero-banner/hero-banner.component';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
@@ -15,20 +15,32 @@ import { ComidaTableComponent } from './components/comida-table/comida-table.com
 })
 export class ComidasTablaPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
-  comidas: Comida[] = [];
+  comidas: Producto[] = [];
+  error = '';
 
   ngOnInit(): void {
-    this.comidas = [...this.comidaService.getComidas()];
+    this.cargarComidas();
+  }
+
+  cargarComidas(): void {
+    this.error = '';
+    this.comidaService.getComidas(true).subscribe({
+      next: comidas => this.comidas = comidas,
+      error: () => this.error = 'No fue posible cargar los productos.'
+    });
   }
 
   eliminarComida(id: number): void {
-    this.comidaService.deleteComida(id);
-    this.comidas = [...this.comidaService.getComidas()];
+    this.comidaService.deleteComida(id).subscribe({
+      next: () => this.cargarComidas(),
+      error: () => this.error = 'No fue posible desactivar el producto.'
+    });
   }
 
   activarComida(id: number): void {
-    this.comidaService.activarComida(id);
-    this.comidas = [...this.comidaService.getComidas()];
+    this.comidaService.activarComida(id).subscribe({
+      next: () => this.cargarComidas(),
+      error: () => this.error = 'No fue posible activar el producto.'
+    });
   }
-
 }

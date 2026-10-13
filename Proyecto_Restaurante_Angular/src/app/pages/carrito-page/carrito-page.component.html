@@ -1,0 +1,80 @@
+<header class="header-crustaceo">
+  <nav class="navbar-crustaceo">
+    <div class="nav-contenido">
+      <a class="navbar-brand" routerLink="/home">
+        <img src="/imagenes/logo2.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
+        <span>Crustáceo Caribeño</span>
+      </a>
+      <div class="nav-botones"></div>
+    </div>
+  </nav>
+</header>
+
+<main class="carrito-pagina">
+  <a class="volver-menu" routerLink="/comidas/tarjetas">← Volver Al Menú</a>
+  <h1 class="carrito-titulo">Carrito</h1>
+  <p class="carrito-subtitulo">Revisa Los Productos Que Agregaste:</p>
+
+  @if (mensaje) { <p class="carrito-alerta">{{ mensaje }}</p> }
+  @if (error) { <p class="carrito-alerta">{{ error }}</p> }
+
+  @if (carrito; as actual) {
+    @if (actual.items.length) {
+      @for (item of actual.items; track item.idItemCarrito) {
+        <article class="carrito-item">
+          <div class="carrito-item-principal">
+            <img class="carrito-item-imagen" [src]="item.producto.imagenURL" [alt]="item.producto.nombre">
+            <div class="carrito-item-info">
+              <h2>{{ item.producto.nombre }}</h2>
+              <p>Precio: {{ item.producto.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
+              <div class="carrito-controles cantidad-form">
+                <button type="button" aria-label="Disminuir cantidad" [disabled]="item.cantidad <= 1" (click)="actualizarCantidad(item, item.cantidad - 1)">-</button>
+                <span class="cantidad-valor">{{ item.cantidad }}</span>
+                <button type="button" aria-label="Aumentar cantidad" (click)="actualizarCantidad(item, item.cantidad + 1)">+</button>
+              </div>
+            </div>
+            <button class="carrito-eliminar" type="button" aria-label="Eliminar producto" (click)="eliminarItem(item)">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </div>
+
+          @if (item.adicionales.length) {
+            <ul class="carrito-adicionales">
+              @for (adicional of item.adicionales; track adicional.idAdicional) {
+                <li><i class="bi bi-trash3"></i><span>{{ adicional.nombre }}</span></li>
+              }
+            </ul>
+          }
+
+          @if (disponibles[item.idItemCarrito]?.length) {
+            <div class="seleccion-adicionales">
+              <p>Adicionales para esta línea:</p>
+              @for (adicional of disponibles[item.idItemCarrito]; track adicional.idAdicional) {
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="seleccionados[item.idItemCarrito]?.includes(adicional.idAdicional)"
+                    (change)="cambiarAdicional(item, adicional.idAdicional, $event)">
+                  <span>{{ adicional.nombre }}</span>
+                  <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
+                </label>
+              }
+              <button type="button" (click)="guardarAdicionales(item)">Guardar adicionales</button>
+            </div>
+          }
+          <p class="carrito-item-total">{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
+        </article>
+      }
+
+      <section class="carrito-resumen">
+        <h2>Resumen Del Pedido</h2>
+        <div class="resumen-linea"><span>Subtotal</span><strong>{{ actual.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        <div class="resumen-linea"><span>Domicilio</span><strong>{{ actual.domicilio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        <div class="resumen-linea resumen-total"><span>Total</span><strong>{{ actual.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+      </section>
+      <button class="btn-realizar-pedido" type="button" (click)="confirmarPedido()">Realizar<br>Pedido</button>
+    } @else {
+      <p class="carrito-vacio">El carrito está vacío.</p>
+    }
+  }
+</main>

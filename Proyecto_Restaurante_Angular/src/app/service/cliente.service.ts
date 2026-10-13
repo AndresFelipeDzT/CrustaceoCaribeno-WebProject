@@ -1,232 +1,64 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable, of, tap } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-  private readonly storageKey = 'restaurante.clientes';
+  private readonly apiUrl = 'http://localhost:8080/api/clientes';
   private readonly currentClienteKey = 'restaurante.clienteActual';
 
-  // 10 clientes iniciales que corresponden con la base de datos de Spring Boot (DataLoader.java)
-  private clientes: Cliente[] = [
-    {
-      idCliente: 1,
-      nombre: 'Juan',
-      apellido: 'Rodríguez',
-      correo: 'Juan.Rodriguez@gmail.com',
-      telefono: '33034534',
-      direccion: 'Av carrera 45 # 34-56',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 2,
-      nombre: 'María',
-      apellido: 'Gómez',
-      correo: 'maria.gomez@gmail.com',
-      telefono: '3104567890',
-      direccion: 'Calle 100 # 15-23',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 3,
-      nombre: 'Carlos',
-      apellido: 'López',
-      correo: 'carlos.lopez@hotmail.com',
-      telefono: '3209876543',
-      direccion: 'Carrera 7 # 72-10',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 4,
-      nombre: 'Ana',
-      apellido: 'Martínez',
-      correo: 'ana.martinez@yahoo.com',
-      telefono: '3152345678',
-      direccion: 'Diagonal 45 # 12-89',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 5,
-      nombre: 'Luis',
-      apellido: 'García',
-      correo: 'luis.garcia@outlook.com',
-      telefono: '3007654321',
-      direccion: 'Avenida Calle 26 # 68-90',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 6,
-      nombre: 'Diana',
-      apellido: 'Sánchez',
-      correo: 'diana.sanchez@gmail.com',
-      telefono: '3123450987',
-      direccion: 'Transversal 23 # 45-67',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 7,
-      nombre: 'Andrés',
-      apellido: 'Pérez',
-      correo: 'andres.perez@hotmail.com',
-      telefono: '3187654321',
-      direccion: 'Calle 134 # 45A-12',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 8,
-      nombre: 'Laura',
-      apellido: 'Ramírez',
-      correo: 'laura.ramirez@gmail.com',
-      telefono: '3214560987',
-      direccion: 'Carrera 50 # 80-45',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 9,
-      nombre: 'Jorge',
-      apellido: 'Herrera',
-      correo: 'jorge.herrera@outlook.com',
-      telefono: '3149876543',
-      direccion: 'Avenida Boyacá # 53-22',
-      password: '••••',
-      activo: true
-    },
-    {
-      idCliente: 10,
-      nombre: 'Sofía',
-      apellido: 'Castro',
-      correo: 'sofia.castro@yahoo.com',
-      telefono: '3165432109',
-      direccion: 'Circular 4 # 71-15',
-      password: '••••',
-      activo: true
-    }
-  ];
+  constructor(private http: HttpClient) {}
 
-  constructor() {
-    this.cargarDesdeStorage();
+  getClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.apiUrl);
   }
 
-  private cargarDesdeStorage(): void {
-    try {
-      if (typeof window === 'undefined' || !window.localStorage) return;
-      const raw = localStorage.getItem(this.storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          this.clientes = parsed;
+  getClienteById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
+  }
+
+  getClienteActual(): Observable<Cliente | undefined> {
+    const id = this.getClienteActualId();
+    return id === undefined ? of(undefined) : this.getClienteById(id);
+  }
+
+  getClienteActualId(): number | undefined {
+    const id = Number(localStorage.getItem(this.currentClienteKey));
+    return Number.isInteger(id) && id > 0 ? id : undefined;
+  }
+
+  iniciarSesion(correo: string, password: string): Observable<Cliente | undefined> {
+    return this.getClientes().pipe(
+      map(clientes => clientes.find(cliente =>
+        cliente.activo &&
+        cliente.correo.trim().toLowerCase() === correo.trim().toLowerCase() &&
+        cliente.password === password
+      )),
+      tap(cliente => {
+        if (cliente) {
+          localStorage.setItem(this.currentClienteKey, String(cliente.idCliente));
         }
-      }
-    } catch {
-      // Si el navegador bloquea localStorage, los datos continúan en memoria
-    }
-  }
-
-  private guardarEnStorage(): void {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.clientes));
-      }
-    } catch {
-      // Fallback seguro en memoria
-    }
-  }
-
-  // Obtener todos los clientes (activos e inactivos) para la tabla de administración
-  getClientes(): Cliente[] {
-    return this.clientes;
-  }
-
-  // Obtener únicamente clientes activos
-  getClientesActivos(): Cliente[] {
-    return this.clientes.filter(c => c.activo !== false);
-  }
-
-  // Buscar un cliente por ID
-  getClienteById(id: number): Cliente | undefined {
-    return this.clientes.find(c => c.idCliente === id);
-  }
-
-  getClienteActual(): Cliente | undefined {
-    try {
-      const id = Number(localStorage.getItem(this.currentClienteKey));
-      return id ? this.getClienteById(id) : undefined;
-    } catch {
-      return undefined;
-    }
-  }
-
-  iniciarSesion(correo: string, password: string): Cliente | undefined {
-    const cliente = this.getClientesActivos().find(c =>
-      c.correo.trim().toLowerCase() === correo.trim().toLowerCase() && c.password === password
+      })
     );
-    if (cliente) {
-      try { localStorage.setItem(this.currentClienteKey, String(cliente.idCliente)); } catch { /* sesión solo en memoria no disponible */ }
-    }
-    return cliente;
   }
 
   cerrarSesion(): void {
-    try { localStorage.removeItem(this.currentClienteKey); } catch { /* almacenamiento opcional */ }
+    localStorage.removeItem(this.currentClienteKey);
   }
 
-  // Crear nuevo cliente
-  addCliente(cliente: Omit<Cliente, 'idCliente'>): Cliente {
-    const nextId = Math.max(0, ...this.clientes.map(c => c.idCliente)) + 1;
-    const nuevoCliente: Cliente = {
-      ...cliente,
-      idCliente: nextId,
-      activo: true
-    };
-    this.clientes.push(nuevoCliente);
-    this.guardarEnStorage();
-    return nuevoCliente;
+  addCliente(cliente: Omit<Cliente, 'idCliente'>): Observable<void> {
+    return this.http.post<void>(this.apiUrl, cliente);
   }
 
-  // Actualizar datos de cliente existente
-  updateCliente(id: number, datos: Omit<Cliente, 'idCliente'>): void {
-    const index = this.clientes.findIndex(c => c.idCliente === id);
-    if (index >= 0) {
-      const activo = this.clientes[index].activo !== false;
-      this.clientes[index] = {
-        ...this.clientes[index],
-        ...datos,
-        idCliente: id,
-        activo
-      };
-      this.guardarEnStorage();
-    }
+  updateCliente(id: number, cliente: Omit<Cliente, 'idCliente'>): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, cliente);
   }
 
-  // Desactivar cliente (eliminación lógica según patrón del profesor)
-  desactivarCliente(id: number): void {
-    const cliente = this.getClienteById(id);
-    if (cliente) {
-      cliente.activo = false;
-      this.guardarEnStorage();
-    }
+  deleteCliente(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Reactivar cliente
-  activarCliente(id: number): void {
-    const cliente = this.getClienteById(id);
-    if (cliente) {
-      cliente.activo = true;
-      this.guardarEnStorage();
-    }
-  }
-
-  // Eliminar / Desactivar cliente
-  deleteCliente(id: number): void {
-    this.desactivarCliente(id);
-  }
 }

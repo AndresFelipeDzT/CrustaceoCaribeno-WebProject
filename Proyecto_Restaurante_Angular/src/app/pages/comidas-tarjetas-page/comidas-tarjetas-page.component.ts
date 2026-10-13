@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Comida } from '../../models/comida.model';
+import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
 import { MenuHeroBannerComponent } from './components/hero-banner/hero-banner.component';
 import { ComidaListComponent } from './components/comida-list/comida-list.component';
@@ -14,10 +14,13 @@ import { FooterComponent } from '../../components/footer/footer.component';
 })
 export class ComidasTarjetasPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
-  comidas: Comida[] = [];
+  comidas: Producto[] = [];
+  error = '';
 
   ngOnInit(): void {
-    this.comidas = this.comidaService.getComidasActivas();
+    this.comidaService.getComidas().subscribe({
+      next: comidas => this.comidas = comidas,
+      error: () => this.error = 'No fue posible cargar el menú.'
+    });
   }
-
 }

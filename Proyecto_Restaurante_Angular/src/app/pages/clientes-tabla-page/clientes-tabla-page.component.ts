@@ -16,22 +16,24 @@ import { ClienteService } from '../../service/cliente.service';
 export class ClientesTablaPageComponent implements OnInit {
   private clienteService = inject(ClienteService);
   clientes: Cliente[] = [];
+  error = '';
 
   ngOnInit(): void {
     this.cargarClientes();
   }
 
   cargarClientes(): void {
-    this.clientes = [...this.clienteService.getClientes()];
+    this.error = '';
+    this.clienteService.getClientes().subscribe({
+      next: clientes => this.clientes = clientes,
+      error: () => this.error = 'No fue posible cargar los clientes.'
+    });
   }
 
   eliminarCliente(id: number): void {
-    this.clienteService.deleteCliente(id);
-    this.cargarClientes();
-  }
-
-  activarCliente(id: number): void {
-    this.clienteService.activarCliente(id);
-    this.cargarClientes();
+    this.clienteService.deleteCliente(id).subscribe({
+      next: () => this.cargarClientes(),
+      error: () => this.error = 'No fue posible desactivar el cliente.'
+    });
   }
 }

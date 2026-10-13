@@ -13,6 +13,7 @@
       <i class="bi bi-person-plus-fill me-1"></i> Agregar nuevo cliente
     </a>
   </div>
+  @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
 
   <div class="table-responsive">
     <table class="table align-middle tabla-clientes">
@@ -45,10 +46,8 @@
             <td class="col-accion">
               <a [routerLink]="['/clientes/detalle', cliente.idCliente]" class="btn-accion btn-ver">Ver Más</a>
               <a [routerLink]="['/clientes/update', cliente.idCliente]" class="btn-accion btn-editar">Editar</a>
-              @if (cliente.activo !== false) {
+              @if (cliente.activo) {
                 <button type="button" class="btn-accion btn-eliminar" (click)="eliminarCliente(cliente.idCliente)">Desactivar</button>
-              } @else {
-                <button type="button" class="btn-accion btn-activar" (click)="activarCliente(cliente.idCliente)">Activar</button>
               }
             </td>
           </tr>

@@ -1,6 +1,7 @@
 <div>
   <app-navbar></app-navbar>
   <app-menu-hero-banner></app-menu-hero-banner>
+  @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
 
   <section id="menu-tarjetas" class="menu-tarjetas-container">
     <app-comida-list [comidas]="comidas"></app-comida-list>

@@ -1,6 +1,7 @@
 <app-comida-form-navbar />
 
 <main class="pagina-agregar">
+  @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
   <app-comida-form-panel
       [comidaForm]="comidaForm"
       [categorias]="categorias"
