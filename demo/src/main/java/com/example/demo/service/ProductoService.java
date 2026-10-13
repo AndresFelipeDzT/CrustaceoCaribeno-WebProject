@@ -1,6 +1,7 @@
 package com.example.demo.service;
 import java.util.List;
 
+import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
 
 /**
@@ -19,6 +20,10 @@ public interface ProductoService {
      * @return Lista completa de productos.
      */
     List<Producto> obtenerTodosLosProductosIncluyendoInactivos();
+
+    List<Producto> obtenerProductosPorCategoria(Categoria categoria);
+
+    List<Producto> obtenerProductosPorCategoriaIncluyendoInactivos(Categoria categoria);
 
     /**
      * Busca un plato por su identificador.

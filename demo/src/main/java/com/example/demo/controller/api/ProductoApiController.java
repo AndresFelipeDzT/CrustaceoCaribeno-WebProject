@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entitys.Producto;
+import com.example.demo.entitys.Categoria;
 import com.example.demo.service.ProductoService;
+import com.example.demo.service.CategoriaService;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -25,8 +27,19 @@ public class ProductoApiController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private CategoriaService categoriaService;
+
     @GetMapping
-    public List<Producto> listar(@RequestParam(defaultValue = "false") boolean incluirInactivos) {
+    public List<Producto> listar(
+            @RequestParam(defaultValue = "false") boolean incluirInactivos,
+            @RequestParam(required = false) Long categoriaId) {
+        if (categoriaId != null) {
+            Categoria categoria = categoriaService.obtenerCategoriaPorId(categoriaId);
+            return incluirInactivos
+                    ? productoService.obtenerProductosPorCategoriaIncluyendoInactivos(categoria)
+                    : productoService.obtenerProductosPorCategoria(categoria);
+        }
         return incluirInactivos
                 ? productoService.obtenerTodosLosProductosIncluyendoInactivos()
                 : productoService.obtenerTodosLosProductos();

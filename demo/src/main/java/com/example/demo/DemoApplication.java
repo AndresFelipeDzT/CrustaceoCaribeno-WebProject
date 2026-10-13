@@ -29,6 +29,8 @@ public class DemoApplication {
 		System.out.println("================================================================");
 		System.out.println("  [+] Estado: Listo para recibir peticiones");
 		System.out.println("  [+] Productos JSON: " + baseUrl + "/api/productos");
+		System.out.println("  [+] Categorias JSON: " + baseUrl + "/api/categorias");
+		System.out.println("  [+] Filtro de productos: " + baseUrl + "/api/productos?categoriaId={id}");
 		System.out.println("================================================================");
 		System.out.println();
 	}

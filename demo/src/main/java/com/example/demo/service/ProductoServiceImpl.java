@@ -2,6 +2,7 @@ package com.example.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
 import com.example.demo.errors.ProductoNotFoundException;
 import com.example.demo.repository.ProductoFakeRepository;
@@ -30,6 +31,22 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public List<Producto> obtenerTodosLosProductosIncluyendoInactivos() {
         return productoRepository.findAll();
+    }
+
+    @Override
+    public List<Producto> obtenerProductosPorCategoria(Categoria categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("La categoría es obligatoria.");
+        }
+        return productoRepository.findByCategoriaAndActivoTrue(categoria);
+    }
+
+    @Override
+    public List<Producto> obtenerProductosPorCategoriaIncluyendoInactivos(Categoria categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("La categoría es obligatoria.");
+        }
+        return productoRepository.findByCategoria(categoria);
     }
 
     @Override
