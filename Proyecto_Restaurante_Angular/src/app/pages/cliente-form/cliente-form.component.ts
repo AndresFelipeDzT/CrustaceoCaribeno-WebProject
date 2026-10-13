@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ClienteService } from '../../service/cliente.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cliente-form',
@@ -19,6 +20,7 @@ export class ClienteFormComponent implements OnInit {
 
   clienteId: number | undefined;
   isEdit = false;
+  error = '';
 
   clienteForm = this.formBuilder.nonNullable.group({
     nombreCompleto: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/)]],
@@ -33,19 +35,20 @@ export class ClienteFormComponent implements OnInit {
     if (idParam === null) return;
 
     this.clienteId = Number(idParam);
-    const cliente = this.clienteService.getClienteById(this.clienteId);
-    if (!cliente) {
-      void this.router.navigate(['/clientes']);
-      return;
-    }
-
-    this.isEdit = true;
-    this.clienteForm.patchValue({
-      nombreCompleto: `${cliente.nombre} ${cliente.apellido}`.trim(),
-      correo: cliente.correo,
-      telefono: cliente.telefono ?? '',
-      direccion: cliente.direccion ?? '',
-      password: cliente.password || ''
+    this.clienteService.getClienteById(this.clienteId).subscribe({
+      next: cliente => {
+        this.isEdit = true;
+        this.clienteForm.patchValue({
+          nombreCompleto: `${cliente.nombre} ${cliente.apellido}`.trim(),
+          correo: cliente.correo,
+          telefono: cliente.telefono ?? '',
+          direccion: cliente.direccion ?? '',
+          password: cliente.password || ''
+        });
+      },
+      error: () => {
+        this.error = 'No fue posible cargar el cliente.';
+      }
     });
   }
 
@@ -66,14 +69,26 @@ export class ClienteFormComponent implements OnInit {
       password: formVal.password,
       activo: true
     };
+    this.error = '';
 
     if (this.isEdit && this.clienteId !== undefined) {
-      this.clienteService.updateCliente(this.clienteId, cliente);
-      void this.router.navigate(['/clientes']);
+      this.clienteService.updateCliente(this.clienteId, cliente).subscribe({
+        next: () => void this.router.navigate(['/clientes']),
+        error: () => this.error = 'No fue posible actualizar el cliente.'
+      });
     } else {
-      const nuevoCliente = this.clienteService.addCliente(cliente);
-      this.clienteService.iniciarSesion(nuevoCliente.correo, nuevoCliente.password);
-      void this.router.navigate(['/comidas/tarjetas']);
+      this.clienteService.addCliente(cliente).pipe(
+        switchMap(() => this.clienteService.iniciarSesion(cliente.correo, cliente.password))
+      ).subscribe({
+        next: clienteAutenticado => {
+          if (clienteAutenticado) {
+            void this.router.navigate(['/comidas/tarjetas']);
+          } else {
+            void this.router.navigate(['/login']);
+          }
+        },
+        error: () => this.error = 'No fue posible registrar el cliente.'
+      });
     }
   }
 }

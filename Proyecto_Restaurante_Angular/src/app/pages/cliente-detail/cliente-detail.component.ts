@@ -17,9 +17,13 @@ export class ClienteDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private clienteService = inject(ClienteService);
   cliente: Cliente | undefined;
+  error = '';
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.cliente = this.clienteService.getClienteById(id);
+    this.clienteService.getClienteById(id).subscribe({
+      next: cliente => this.cliente = cliente,
+      error: () => this.error = 'No fue posible cargar el cliente solicitado.'
+    });
   }
 }

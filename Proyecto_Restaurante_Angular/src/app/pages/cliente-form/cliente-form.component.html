@@ -1,6 +1,7 @@
 ﻿<main class="signup-page">
   <section class="signup-card" aria-labelledby="signup-title">
     <h1 id="signup-title">{{ isEdit ? 'Editar perfil' : 'Signup' }}</h1>
+    @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
     <form [formGroup]="clienteForm" (ngSubmit)="guardar()" novalidate>
       <div class="field">
         <label for="nombreCompleto">Nombre Completo</label>
@@ -32,7 +33,7 @@
       </div>
       <div class="field">
         <label for="password">Contraseña</label>
-        <input id="password" type="password" formControlName="password" autocomplete="new-password" [class.invalid]="clienteForm.controls.password.touched && clienteForm.controls.password.invalid">
+        <input id="password" type="text" formControlName="password" [class.invalid]="clienteForm.controls.password.touched && clienteForm.controls.password.invalid">
         @if (clienteForm.controls.password.touched && clienteForm.controls.password.invalid) {
           <small>La contraseña debe tener al menos 4 caracteres.</small>
         }

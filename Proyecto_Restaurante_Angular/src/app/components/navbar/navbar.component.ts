@@ -11,7 +11,7 @@ import { ClienteService } from '../../service/cliente.service';
 export class NavbarComponent {
   private clienteService = inject(ClienteService);
   private router = inject(Router);
-  get conectado(): boolean { return !!this.clienteService.getClienteActual(); }
+  get conectado(): boolean { return this.clienteService.getClienteActualId() !== undefined; }
 
   cerrarSesion(): void {
     this.clienteService.cerrarSesion();

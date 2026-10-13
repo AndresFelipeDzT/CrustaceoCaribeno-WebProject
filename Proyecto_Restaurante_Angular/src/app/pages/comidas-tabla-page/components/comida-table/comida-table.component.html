@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (comida of comidas(); track $index) {
+      @for (comida of comidas(); track comida.idProducto) {
         <tr>
           <td class="col-nombre">{{ comida.nombre }}</td>
           <td class="col-imagen"><img [src]="comida.imagenURL" [alt]="comida.nombre" class="img-platillo" loading="lazy"></td>
@@ -23,12 +23,12 @@
             </span>
           </td>
           <td class="col-accion">
-            <a [routerLink]="['/comidas/detalle', comida.id]" class="btn-accion">Ver Más</a>
-            <a [routerLink]="['/comidas/tabla/update', comida.id]" class="btn-accion">Update</a>
-            @if (comida.activo !== false) {
-              <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.id)">Eliminar</button>
+            <a [routerLink]="['/comidas/detalle', comida.idProducto]" class="btn-accion">Ver Más</a>
+            <a [routerLink]="['/comidas/tabla/update', comida.idProducto]" class="btn-accion">Update</a>
+            @if (comida.activo) {
+              <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.idProducto)">Eliminar</button>
             } @else {
-              <button type="button" class="btn-accion" (click)="comidaActivada.emit(comida.id)">Activar</button>
+              <button type="button" class="btn-accion" (click)="comidaActivada.emit(comida.idProducto)">Activar</button>
             }
           </td>
         </tr>

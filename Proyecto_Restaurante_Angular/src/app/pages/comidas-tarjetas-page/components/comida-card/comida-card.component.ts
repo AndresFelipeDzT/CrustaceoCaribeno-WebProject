@@ -1,7 +1,9 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { Comida } from '../../../../models/comida.model';
+import { Router, RouterLink } from '@angular/router';
+import { Producto } from '../../../../models/producto.model';
+import { CarritoService } from '../../../../service/carrito.service';
+import { ClienteService } from '../../../../service/cliente.service';
 
 @Component({
   selector: 'app-comida-card',
@@ -10,5 +12,24 @@ import { Comida } from '../../../../models/comida.model';
   styleUrl: './comida-card.component.scss'
 })
 export class ComidaCardComponent {
-  comida = input.required<Comida>();
+  private carritoService = inject(CarritoService);
+  private clienteService = inject(ClienteService);
+  private router = inject(Router);
+  comida = input.required<Producto>();
+  error = '';
+  get conectado(): boolean {
+    return this.clienteService.getClienteActualId() !== undefined;
+  }
+
+  agregarAlCarrito(): void {
+    const clienteId = this.clienteService.getClienteActualId();
+    if (clienteId === undefined) {
+      void this.router.navigate(['/login']);
+      return;
+    }
+    this.carritoService.agregarProducto(clienteId, this.comida().idProducto).subscribe({
+      next: () => void this.router.navigate(['/carrito']),
+      error: () => this.error = 'No fue posible agregar el producto al carrito.'
+    });
+  }
 }

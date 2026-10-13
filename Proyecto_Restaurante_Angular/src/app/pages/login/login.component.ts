@@ -31,13 +31,17 @@ export class LoginComponent {
     }
 
     const { correo, password } = this.loginForm.getRawValue();
-    const cliente = this.clienteService.iniciarSesion(correo, password);
-
-    if (!cliente) {
-      this.error = 'El correo o la contraseña no son correctos.';
-      return;
-    }
-
-    void this.router.navigate(['/comidas/tarjetas']);
+    this.clienteService.iniciarSesion(correo, password).subscribe({
+      next: cliente => {
+        if (!cliente) {
+          this.error = 'El correo o la contraseña no son correctos.';
+          return;
+        }
+        void this.router.navigate(['/comidas/tarjetas']);
+      },
+      error: () => {
+        this.error = 'No fue posible conectar con el servidor. Intenta de nuevo.';
+      }
+    });
   }
 }

@@ -10,6 +10,6 @@ export interface Pedido {
   estado: string;
   cliente?: Cliente | null;
   domiciliario?: Domiciliario | null;
-  items: ItemPedido[];
   total?: number;
+  items?: ItemPedido[];
 }

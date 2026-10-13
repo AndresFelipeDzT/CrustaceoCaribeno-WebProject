@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Categoria } from '../../../../models/categoria.model';
 
 @Component({
   selector: 'app-comida-form-fields',
@@ -9,7 +10,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class ComidaFormFieldsComponent {
   @Input({ required: true }) comidaForm!: FormGroup;
-  @Input({ required: true }) categorias: string[] = [];
+  @Input({ required: true }) categorias: Categoria[] = [];
   @Input() esEdicion = false;
   @Output() guardar = new EventEmitter<void>();
 }

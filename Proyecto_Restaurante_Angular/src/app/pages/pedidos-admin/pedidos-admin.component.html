@@ -1,0 +1,171 @@
+<header class="pedidos-header">
+  <a class="pedidos-brand" routerLink="/home">
+    <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
+    <span>Crustáceo Caribeño</span>
+  </a>
+  <nav class="pedidos-nav">
+    <a routerLink="/pedidos">Reporte<br>Ventas</a>
+    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/perfil">Perfil</a>
+  </nav>
+</header>
+
+@if (pedido; as actual) {
+  <main class="detalle-pedido-main">
+    <a class="volver-pedidos" routerLink="/pedidos">← Volver a pedidos</a>
+    <h1>Detalles Del Pedido</h1>
+    <p class="detalle-subtitulo">Información Completa Del Pedido #{{ actual.idPedido }}</p>
+    @if (mensaje) { <p class="pedidos-alerta">{{ mensaje }}</p> }
+    @if (error) { <p class="pedidos-alerta error" role="alert">{{ error }}</p> }
+
+    <div class="detalle-estado-actual">
+      Estado Actual:
+      <span class="estado" [class.estado-entregado]="actual.estado.toLowerCase() === 'entregado'"
+        [class.estado-cancelado]="actual.estado.toLowerCase() === 'cancelado'"
+        [class.estado-pendiente]="actual.estado.toLowerCase() === 'pendiente'">
+        {{ actual.estado }}
+      </span>
+    </div>
+
+    <section class="detalle-bloque">
+      <h2>Información Del Cliente</h2>
+      <div class="cliente-grid">
+        <strong>Nombre:</strong><span>{{ actual.cliente?.nombreCompleto || ((actual.cliente?.nombre || '') + ' ' + (actual.cliente?.apellido || '')).trim() || 'Sin cliente' }}</span>
+        <strong>Teléfono:</strong><span>{{ actual.cliente?.telefono || 'No disponible' }}</span>
+        <strong>Ubicación:</strong><span>{{ actual.cliente?.direccion || 'No disponible' }}</span>
+        <strong>Fecha / Hora:</strong><span>{{ actual.fechaCreacion | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </section>
+
+    <section class="detalle-bloque">
+      <h2>Productos Ordenados</h2>
+      <div class="productos-detalle">
+        @if (actual.items?.length) {
+          <div class="producto-detalle encabezado">
+            <strong>Producto</strong><strong>Categoría</strong><strong>Cantidad</strong><strong>Precio Unitario</strong><strong>Subtotal</strong>
+          </div>
+          @for (item of actual.items; track item.idItemPedido) {
+            <div class="producto-detalle">
+              <span>{{ item.producto?.nombre }}</span>
+              <span>{{ item.producto?.categoria?.nombre || 'Sin categoría' }}</span>
+              <span>{{ item.cantidad }}</span>
+              <span>{{ item.precioUnitario | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
+              <span>{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
+              @if (item.adicionales.length) {
+                <div class="adicionales-detalle">
+                  @for (adicional of item.adicionales; track adicional.idAdicional) {
+                    <span>+ {{ adicional.nombre }}</span>
+                  }
+                </div>
+                }
+            </div>
+          }
+        } @else {
+          <p class="sin-productos">Este pedido no tiene productos.</p>
+        }
+      </div>
+    </section>
+
+    <section class="detalle-bloque resumen-detalle">
+      <h2>Resumen Del Pedido</h2>
+      <div><span>Subtotal</span><strong>{{ actual.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+      <div><span>Domicilio</span><strong>$5.000</strong></div>
+      <div><span>Total</span><strong>{{ (actual.total ?? 0) + 5000 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+    </section>
+
+    <section class="detalle-bloque estado-formulario">
+      <h2>Estado Del Pedido</h2>
+      <form (ngSubmit)="actualizarEstado()">
+        <label for="estado">Estado</label>
+        <select id="estado" name="estado" [(ngModel)]="estado">
+          @for (opcion of estados; track opcion) {
+            <option [value]="opcion">{{ opcion }}</option>
+          }
+        </select>
+        <button class="btn-actualizar" type="submit">Actualizar datos</button>
+      </form>
+    </section>
+  </main>
+} @else {
+  <main class="pedidos-main">
+    <h1>Pedidos Recibidos</h1>
+    <p class="pedidos-subtitulo">Gestión Y Revisión De Todos Los Pedidos Realizados:</p>
+    @if (mensaje) { <p class="pedidos-alerta">{{ mensaje }}</p> }
+    @if (error) { <p class="pedidos-alerta error" role="alert">{{ error }}</p> }
+
+    <div class="filtro-pedidos">
+      <input type="search" name="busqueda" placeholder="Buscar por nombre, estado o fecha...">
+      <button type="button">Filtrar</button>
+    </div>
+
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Pedido</th><th>Fecha Creación</th><th>Fecha Entrega</th>
+            <th>Cliente</th><th>Estado</th><th>Domiciliario</th><th>Total</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of pedidos; track item.idPedido) {
+            <tr>
+              <td>{{ item.idPedido }}</td>
+              <td>{{ item.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.fechaEntrega ? (item.fechaEntrega | date:'dd/MM/yyyy') : 'Pendiente' }}</td>
+              <td>{{ item.cliente?.nombreCompleto || ((item.cliente?.nombre || '') + ' ' + (item.cliente?.apellido || '')).trim() || 'Sin cliente' }}</td>
+              <td><span class="estado" [class.estado-entregado]="item.estado.toLowerCase() === 'entregado'"
+                [class.estado-cancelado]="item.estado.toLowerCase() === 'cancelado'"
+                [class.estado-pendiente]="item.estado.toLowerCase() === 'pendiente'">{{ item.estado }}</span></td>
+              <td>{{ item.domiciliario?.nombre || 'Sin asignar' }}</td>
+              <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+              <td class="acciones">
+                <a class="btn-detalle" [routerLink]="['/pedidos', item.idPedido]">Detalles</a>
+                <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="eliminarPedido(item.idPedido)">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="8" class="sin-pedidos">No hay pedidos para mostrar.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+}
+
+<footer class="pedidos-footer">
+  <div class="footer-contenido">
+    <div class="footer-marca">
+      <div class="footer-logo-nombre">
+        <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
+        <h3>Crustáceo<br>Caribeño</h3>
+      </div>
+      <div class="footer-platos">
+        <img src="/imagenes/img11.jpeg" alt="Plato del restaurante">
+        <img src="/imagenes/img22.jpeg" alt="Plato del restaurante">
+        <img src="/imagenes/img33.jpeg" alt="Plato del restaurante">
+      </div>
+    </div>
+    <div class="footer-columna">
+      <h4>Navegación</h4>
+      <a routerLink="/home">› Inicio</a>
+      <a routerLink="/comidas/tarjetas">› Menú</a>
+      <a routerLink="/login">› Perfil</a>
+      <a routerLink="/carrito">› Carrito</a>
+    </div>
+    <div class="footer-columna">
+      <h4>Información</h4>
+      <p>› Av. 44 #401 Sur</p>
+      <p>› 57 - 343 882 843</p>
+      <p>› Lun-Dom: 9:00am-5:00pm</p>
+      <a routerLink="/home">› ¿Quiénes Somos?</a>
+    </div>
+    <div class="footer-columna">
+      <h4>Ingresa</h4>
+      <a routerLink="/login">› Iniciar Sesión</a>
+      <a routerLink="/clientes/add">› Registrarse</a>
+    </div>
+  </div>
+  <p class="footer-copyright">© 2026 El Crustáceo Caribeño. Todos Los Derechos Reservados.</p>
+</footer>

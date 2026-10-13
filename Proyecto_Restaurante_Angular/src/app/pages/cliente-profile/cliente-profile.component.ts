@@ -20,6 +20,7 @@ export class ClienteProfileComponent implements OnInit {
   cliente: Cliente | undefined;
   editando = false;
   guardado = false;
+  error = '';
 
   perfilForm = this.formBuilder.nonNullable.group({
     correo: ['', [Validators.required, Validators.email]],
@@ -29,8 +30,13 @@ export class ClienteProfileComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.cliente = this.clienteService.getClienteActual();
-    if (!this.cliente) void this.router.navigate(['/login']);
+    this.clienteService.getClienteActual().subscribe({
+      next: cliente => {
+        this.cliente = cliente;
+        if (!cliente) void this.router.navigate(['/login']);
+      },
+      error: () => this.error = 'No fue posible cargar tu perfil.'
+    });
   }
 
   iniciarEdicion(): void {
@@ -58,6 +64,7 @@ export class ClienteProfileComponent implements OnInit {
     }
 
     const datos = this.perfilForm.getRawValue();
+    this.error = '';
     this.clienteService.updateCliente(this.cliente.idCliente, {
       nombre: this.cliente.nombre,
       apellido: this.cliente.apellido,
@@ -66,10 +73,17 @@ export class ClienteProfileComponent implements OnInit {
       direccion: datos.direccion.trim(),
       password: datos.password,
       activo: this.cliente.activo
+    }).subscribe({
+      next: () => this.clienteService.getClienteById(this.cliente!.idCliente).subscribe({
+        next: cliente => {
+          this.cliente = cliente;
+          this.editando = false;
+          this.guardado = true;
+        },
+        error: () => this.error = 'Los cambios se guardaron, pero no fue posible recargar el perfil.'
+      }),
+      error: () => this.error = 'No fue posible guardar los cambios.'
     });
-    this.cliente = this.clienteService.getClienteById(this.cliente.idCliente);
-    this.editando = false;
-    this.guardado = true;
   }
 
   cerrarSesion(): void {
@@ -79,8 +93,12 @@ export class ClienteProfileComponent implements OnInit {
 
   borrarCuenta(): void {
     if (!this.cliente) return;
-    this.clienteService.deleteCliente(this.cliente.idCliente);
-    this.clienteService.cerrarSesion();
-    void this.router.navigate(['/']);
+    this.clienteService.deleteCliente(this.cliente.idCliente).subscribe({
+      next: () => {
+        this.clienteService.cerrarSesion();
+        void this.router.navigate(['/']);
+      },
+      error: () => this.error = 'No fue posible desactivar la cuenta.'
+    });
   }
 }

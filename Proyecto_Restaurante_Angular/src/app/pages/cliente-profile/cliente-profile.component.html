@@ -2,6 +2,7 @@
 <main class="profile-page">
   @if (cliente) {
     <section class="profile-card" aria-labelledby="profile-name">
+      @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
       <div class="avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></div>
       <p class="eyebrow">MI CUENTA</p>
       <h1 id="profile-name">{{ cliente.nombre }} {{ cliente.apellido }}</h1>
@@ -39,10 +40,10 @@
           <div class="profile-field">
             <label for="password">Contraseña</label>
             @if (editando) {
-              <input id="password" type="password" formControlName="password" autocomplete="new-password" [class.invalid]="perfilForm.controls.password.touched && perfilForm.controls.password.invalid">
+              <input id="password" type="text" formControlName="password" [class.invalid]="perfilForm.controls.password.touched && perfilForm.controls.password.invalid">
               @if (perfilForm.controls.password.touched && perfilForm.controls.password.invalid) { <small>Usa al menos 4 caracteres.</small> }
             } @else {
-              <input id="password" type="password" [value]="cliente.password" readonly>
+              <input id="password" type="text" [value]="cliente.password" readonly>
             }
           </div>
         </div>
@@ -60,6 +61,7 @@
       </form>
     </section>
   }
+  @if (!cliente && error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
 </main>
 <footer class="profile-footer">
   <span>© 2026 Crustáceo Caribeño</span>

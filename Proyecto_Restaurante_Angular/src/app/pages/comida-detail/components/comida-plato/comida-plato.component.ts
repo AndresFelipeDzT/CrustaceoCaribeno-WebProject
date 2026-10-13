@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Comida } from '../../../../models/comida.model';
+import { Producto } from '../../../../models/producto.model';
 
 @Component({
   selector: 'app-comida-plato',
@@ -9,5 +9,5 @@ import { Comida } from '../../../../models/comida.model';
   styleUrl: './comida-plato.component.scss'
 })
 export class ComidaPlatoComponent {
-  @Input({ required: true }) comida!: Comida;
+  @Input({ required: true }) comida!: Producto;
 }

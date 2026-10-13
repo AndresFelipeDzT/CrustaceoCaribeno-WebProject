@@ -3,6 +3,7 @@
 <app-table-hero-banner></app-table-hero-banner>
 
 <section id="menu-tabla" class="menu-section container my-5">
+  @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
   <div class="separador-menu mb-5">
     <div class="linea-decorativa"></div>
     <h2 class="titulo-menu">Menú</h2>

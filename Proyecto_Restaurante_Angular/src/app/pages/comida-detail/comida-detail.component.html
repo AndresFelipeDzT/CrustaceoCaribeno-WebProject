@@ -2,13 +2,14 @@
 <main class="pagina-detalle">
   @if (comida; as item) {
     <app-comida-plato [comida]="item" />
-    <app-comida-acompanamientos [categoria]="item.categoria" />
+    <app-comida-acompanamientos [categoriaId]="item.categoria?.idCategoria" />
     <div class="acciones-detalle">
       <a class="boton-detalle" routerLink="/comidas/tarjetas">Volver</a>
     </div>
   } @else {
     <section class="no-encontrada">
-      <h1>No encontramos esa comida</h1>
+      <h1>{{ error ? 'No encontramos esa comida' : 'Cargando producto...' }}</h1>
+      @if (error) { <p role="alert">{{ error }}</p> }
       <a routerLink="/comidas/tarjetas">Volver al menú</a>
     </section>
   }

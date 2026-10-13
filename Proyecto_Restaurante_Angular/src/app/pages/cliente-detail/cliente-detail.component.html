@@ -36,7 +36,7 @@
 
           <div class="info-item">
             <span class="info-label"><i class="bi bi-shield-lock-fill me-1"></i> Contraseña:</span>
-            <span class="info-value password-masked">{{ cliente.password ? '••••••••' : 'No asignada' }}</span>
+            <span class="info-value">{{ cliente.password }}</span>
           </div>
 
           <div class="info-item">
@@ -59,8 +59,8 @@
     </div>
   } @else {
     <div class="alert alert-warning text-center mx-auto" style="max-width: 600px;">
-      <h4>Cliente no encontrado</h4>
-      <p>No se encontró ningún cliente con el ID solicitado.</p>
+      <h4>{{ error ? 'Error al cargar el cliente' : 'Cargando cliente...' }}</h4>
+      <p>{{ error || 'Espera mientras consultamos la API.' }}</p>
       <a routerLink="/clientes" class="btn btn-primary mt-2">Volver al listado</a>
     </div>
   }
