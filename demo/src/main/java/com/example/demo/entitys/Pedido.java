@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +47,6 @@ public class Pedido {
     private Domiciliario domiciliario;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     private List<ItemPedido> items = new ArrayList<>();
