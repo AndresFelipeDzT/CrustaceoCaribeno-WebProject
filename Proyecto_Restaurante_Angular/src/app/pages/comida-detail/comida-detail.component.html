@@ -4,13 +4,13 @@
     <app-comida-plato [comida]="item" />
     <app-comida-acompanamientos [categoriaId]="item.categoria?.idCategoria" />
     <div class="acciones-detalle">
-      <a class="boton-detalle" routerLink="/comidas/tarjetas">Volver</a>
+      <a class="boton-detalle" routerLink="/comidas/tarjetas" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">Volver</a>
     </div>
   } @else {
     <section class="no-encontrada">
       <h1>{{ error ? 'No encontramos esa comida' : 'Cargando producto...' }}</h1>
       @if (error) { <p role="alert">{{ error }}</p> }
-      <a routerLink="/comidas/tarjetas">Volver al menú</a>
+      <a routerLink="/comidas/tarjetas" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">Volver al menú</a>
     </section>
   }
 </main>

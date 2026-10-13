@@ -1,7 +1,7 @@
 <header class="header-crustaceo">
   <nav class="navbar-crustaceo">
     <div class="nav-contenido">
-      <a class="navbar-brand" routerLink="/home">
+      <a class="navbar-brand" routerLink="/home" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">
         <img src="/imagenes/logo2.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
         <span>Crustáceo Caribeño</span>
       </a>
@@ -11,7 +11,7 @@
 </header>
 
 <main class="carrito-pagina">
-  <a class="volver-menu" routerLink="/comidas/tarjetas">← Volver Al Menú</a>
+  <a class="volver-menu" routerLink="/comidas/tarjetas" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">← Volver Al Menú</a>
   <h1 class="carrito-titulo">Carrito</h1>
   <p class="carrito-subtitulo">Revisa Los Productos Que Agregaste:</p>
 

@@ -56,6 +56,7 @@
           } @else {
             <button class="edit-button" type="button" (click)="iniciarEdicion()"><i class="bi bi-pencil-square" aria-hidden="true"></i> Editar perfil</button>
             <button class="delete-button" type="button" (click)="borrarCuenta()"><i class="bi bi-trash3" aria-hidden="true"></i> Borrar cuenta</button>
+            <button class="logout-button" type="button" (click)="cerrarSesion()">Cerrar sesión <i class="bi bi-box-arrow-right" aria-hidden="true"></i></button>
           }
         </div>
       </form>
@@ -65,5 +66,4 @@
 </main>
 <footer class="profile-footer">
   <span>© 2026 Crustáceo Caribeño</span>
-  <button type="button" (click)="cerrarSesion()">Cerrar sesión <i class="bi bi-box-arrow-right" aria-hidden="true"></i></button>
 </footer>

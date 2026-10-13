@@ -87,7 +87,6 @@ export class ClienteProfileComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    this.clienteService.cerrarSesion();
     void this.router.navigate(['/']);
   }
 
@@ -95,7 +94,6 @@ export class ClienteProfileComponent implements OnInit {
     if (!this.cliente) return;
     this.clienteService.deleteCliente(this.cliente.idCliente).subscribe({
       next: () => {
-        this.clienteService.cerrarSesion();
         void this.router.navigate(['/']);
       },
       error: () => this.error = 'No fue posible desactivar la cuenta.'

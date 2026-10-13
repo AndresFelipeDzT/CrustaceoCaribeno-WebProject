@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private readonly apiUrl = 'http://localhost:8080/api/clientes';
-  private readonly currentClienteKey = 'restaurante.clienteActual';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);
@@ -26,7 +26,9 @@ export class ClienteService {
   }
 
   getClienteActualId(): number | undefined {
-    const id = Number(localStorage.getItem(this.currentClienteKey));
+    const idParam = this.router.parseUrl(this.router.url).queryParams['id'];
+    if (typeof idParam !== 'string') return undefined;
+    const id = Number(idParam);
     return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
@@ -36,17 +38,8 @@ export class ClienteService {
         cliente.activo &&
         cliente.correo.trim().toLowerCase() === correo.trim().toLowerCase() &&
         cliente.password === password
-      )),
-      tap(cliente => {
-        if (cliente) {
-          localStorage.setItem(this.currentClienteKey, String(cliente.idCliente));
-        }
-      })
+      ))
     );
-  }
-
-  cerrarSesion(): void {
-    localStorage.removeItem(this.currentClienteKey);
   }
 
   addCliente(cliente: Omit<Cliente, 'idCliente'>): Observable<void> {
