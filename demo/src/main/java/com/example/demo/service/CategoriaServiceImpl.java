@@ -33,6 +33,15 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    public Categoria obtenerCategoriaPorId(Long idCategoria) {
+        if (idCategoria == null) {
+            throw new IllegalArgumentException("El ID de la categoría es obligatorio.");
+        }
+        return categoriaRepository.findById(idCategoria)
+                .orElseThrow(() -> new CategoriaNotFoundException(idCategoria));
+    }
+
+    @Override
     public Categoria obtenerCategoriaPorNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre de la categoría es obligatorio.");
@@ -43,6 +52,14 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new CategoriaNotFoundException(nombreNormalizado);
         }
         return categoria;
+    }
+
+    @Override
+    public Categoria guardarCategoria(Categoria categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("Los datos de la categoría no pueden ser nulos.");
+        }
+        return categoriaRepository.save(categoria);
     }
 
     @Override

@@ -47,6 +47,17 @@ public class AdicionalServiceImpl implements AdicionalService {
     }
 
     @Override
+    public void actualizarAdicional(Long idAdicional, Adicional adicional) {
+        if (adicional == null) {
+            throw new IllegalArgumentException("Los datos del adicional no pueden ser nulos.");
+        }
+        Adicional adicionalExistente = obtenerAdicionalPorId(idAdicional);
+        adicional.setIdAdicional(idAdicional);
+        adicional.setActivo(adicionalExistente.isActivo());
+        adicionalRepository.save(adicional);
+    }
+
+    @Override
     public void eliminarAdicional(Long idAdicional) {
         Adicional adicional = obtenerAdicionalPorId(idAdicional);
         adicional.setActivo(false);
