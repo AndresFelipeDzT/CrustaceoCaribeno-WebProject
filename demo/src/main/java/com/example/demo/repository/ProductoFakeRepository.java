@@ -20,4 +20,5 @@ import java.util.List;
 public interface ProductoFakeRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByActivoTrue();
     List<Producto> findByCategoria(Categoria categoria);
+    List<Producto> findByCategoriaAndActivoTrue(Categoria categoria);
 }
