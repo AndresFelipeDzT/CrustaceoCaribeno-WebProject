@@ -40,7 +40,7 @@ export class ComidaFormComponent implements OnInit {
     this.comidaService.getCategorias().subscribe({
       next: categorias => {
         this.categorias = categorias;
-        if (categorias.length > 0) {
+        if (!this.esEdicion && categorias.length > 0) {
           this.comidaForm.controls.categoriaId.setValue(categorias[0].idCategoria);
         }
       },

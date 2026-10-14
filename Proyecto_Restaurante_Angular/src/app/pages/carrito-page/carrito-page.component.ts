@@ -19,8 +19,8 @@ export class CarritoPageComponent implements OnInit {
   private clienteService = inject(ClienteService);
   private comidaService = inject(ComidaService);
   carrito?: Carrito;
-  disponibles: Record<number, Adicional[] | undefined> = {};
-  seleccionados: Record<number, number[] | undefined> = {};
+  disponibles: { [idItemCarrito: number]: Adicional[] | undefined } = {};
+  seleccionados: { [idItemCarrito: number]: number[] | undefined } = {};
   error = '';
   mensaje = '';
   get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }

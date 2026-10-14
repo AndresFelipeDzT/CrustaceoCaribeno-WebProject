@@ -23,10 +23,10 @@
   </div>
   <div class="campo">
     <label for="categoria">Categoría</label>
-    <select id="categoria" formControlName="categoria" required>
-      <option value="">Selecciona una opción</option>
+    <select id="categoria" formControlName="categoriaId" required>
+      <option [ngValue]="0" disabled>Selecciona una opción</option>
       @for (categoria of categorias; track categoria.idCategoria) {
-        <option [value]="categoria.idCategoria">{{ categoria.nombre }}</option>
+        <option [ngValue]="categoria.idCategoria">{{ categoria.nombre }}</option>
       }
     </select>
   </div>
