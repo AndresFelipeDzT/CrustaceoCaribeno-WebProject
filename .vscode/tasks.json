@@ -4,16 +4,16 @@
         {
             "label": "maven-clean-compile",
             "type": "process",
-            "command": "${workspaceFolder}/mvnw",
+            "command": "${workspaceFolder}/demo/mvnw",
             "args": [
                 "clean",
                 "compile"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}/demo"
             },
             "windows": {
-                "command": "${workspaceFolder}\\mvnw.cmd"
+                "command": "${workspaceFolder}\\demo\\mvnw.cmd"
             },
             "problemMatcher": [
                 "$maven"
