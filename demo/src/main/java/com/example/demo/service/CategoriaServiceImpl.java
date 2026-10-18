@@ -100,6 +100,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         }
         Categoria categoria = categoriaRepository.findById(idCategoria)
                 .orElseThrow(() -> new CategoriaNotFoundException(idCategoria));
+        // Desvincula productos y adicionales antes de borrar la categoría por sus relaciones JPA.
         for (Producto producto : productoRepository.findByCategoria(categoria)) {
             productoService.eliminarProducto(producto.getIdProducto());
             producto.setCategoria(null);
