@@ -4,5 +4,6 @@ export interface Domiciliario {
   nombre: string;
   celular: string;
   cedula: string;
+  imagenURL?: string | null;
   disponible: boolean;
 }

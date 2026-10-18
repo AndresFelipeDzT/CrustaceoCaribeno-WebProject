@@ -10,6 +10,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { ClienteProfileComponent } from './pages/cliente-profile/cliente-profile.component';
 import { PedidosAdminComponent } from './pages/pedidos-admin/pedidos-admin.component';
 import { CarritoPageComponent } from './pages/carrito-page/carrito-page.component';
+import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
+import { DomiciliarioFormComponent } from './pages/domiciliario-form/domiciliario-form.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
@@ -21,6 +23,9 @@ export const routes: Routes = [
   { path: 'carrito', component: CarritoPageComponent, title: 'Mi carrito | Crustáceo Caribeño' },
   { path: 'pedidos', component: PedidosAdminComponent, title: 'Pedidos | Crustáceo Caribeño' },
   { path: 'pedidos/:id', component: PedidosAdminComponent, title: 'Detalle del pedido' },
+  { path: 'domiciliarios/add', component: DomiciliarioFormComponent, title: 'Registrar domiciliario' },
+  { path: 'domiciliarios/update/:id', component: DomiciliarioFormComponent, title: 'Editar domiciliario' },
+  { path: 'domiciliarios', component: DomiciliariosPageComponent, title: 'Domiciliarios | Crustáceo Caribeño' },
 
   // Rutas de Comidas
   { path: 'comidas/tarjetas', component: ComidasTarjetasPageComponent, title: 'Crustáceo Caribeño | Menú' },

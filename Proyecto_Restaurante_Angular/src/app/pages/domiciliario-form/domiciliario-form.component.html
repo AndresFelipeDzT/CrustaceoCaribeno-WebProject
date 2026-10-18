@@ -1,0 +1,45 @@
+<main class="signup-page">
+  <section class="signup-card" aria-labelledby="signup-title">
+    <h1 id="signup-title">{{ isEdit ? 'Editar domiciliario' : 'Registrar domiciliario' }}</h1>
+    @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
+    <form [formGroup]="domiciliarioForm" (ngSubmit)="guardar()" novalidate>
+      <div class="field">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" type="text" formControlName="nombre" autocomplete="name" [class.invalid]="domiciliarioForm.controls.nombre.touched && domiciliarioForm.controls.nombre.invalid">
+        @if (domiciliarioForm.controls.nombre.touched && domiciliarioForm.controls.nombre.invalid) {
+          <small>Ingresa un nombre de entre 2 y 100 caracteres.</small>
+        }
+      </div>
+      <div class="field">
+        <label for="cedula">Cédula</label>
+        <input id="cedula" type="text" inputmode="numeric" formControlName="cedula" autocomplete="off" [class.invalid]="domiciliarioForm.controls.cedula.touched && domiciliarioForm.controls.cedula.invalid">
+        @if (domiciliarioForm.controls.cedula.touched && domiciliarioForm.controls.cedula.invalid) {
+          <small>Ingresa una cédula válida usando solo números.</small>
+        }
+      </div>
+      <div class="field">
+        <label for="celular">Celular</label>
+        <input id="celular" type="tel" formControlName="celular" autocomplete="tel" [class.invalid]="domiciliarioForm.controls.celular.touched && domiciliarioForm.controls.celular.invalid">
+        @if (domiciliarioForm.controls.celular.touched && domiciliarioForm.controls.celular.invalid) {
+          <small>Ingresa un celular válido (mínimo 7 dígitos).</small>
+        }
+      </div>
+      <div class="field">
+        <label for="imagenURL">Foto (URL o ruta de imagen)</label>
+        <input id="imagenURL" type="url" formControlName="imagenURL" autocomplete="off" [class.invalid]="domiciliarioForm.controls.imagenURL.touched && domiciliarioForm.controls.imagenURL.invalid">
+        @if (domiciliarioForm.controls.imagenURL.touched && domiciliarioForm.controls.imagenURL.invalid) {
+          <small>Ingresa una URL http(s) o una ruta local válida para la foto.</small>
+        }
+      </div>
+      @if (domiciliarioForm.controls.imagenURL.value; as imagenURL) {
+        <div class="photo-preview">
+          <img [src]="imagenURL" alt="Vista previa de la foto del domiciliario">
+        </div>
+      }
+      <div class="actions">
+        <button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button>
+        <a routerLink="/domiciliarios" [queryParams]="queryParams">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
