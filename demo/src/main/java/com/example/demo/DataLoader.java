@@ -470,6 +470,7 @@ public class DataLoader implements CommandLineRunner {
             .nombre("Carlos Mendoza")
             .celular("3001234567")
             .cedula("1098765432")
+            .imagenURL("https://static.vecteezy.com/system/resources/thumbnails/043/210/041/small/portrait-of-a-confident-young-black-man-for-lifestyle-or-fashion-marketing-free-photo.jpeg")
             .disponible(true)
             .build());
 
@@ -477,6 +478,7 @@ public class DataLoader implements CommandLineRunner {
             .nombre("Brayan Martínez")
             .celular("3119876543")
             .cedula("1087654321")
+            .imagenURL("https://img.magnific.com/fotos-premium/hombre-sonriente-brazos-cruzados-pose-informal_1028533-6204.jpg?semt=ais_hybrid&w=740&q=80")
             .disponible(true)
             .build());
 
@@ -484,6 +486,7 @@ public class DataLoader implements CommandLineRunner {
             .nombre("Laura Gómez")
             .celular("3205551234")
             .cedula("1076543210")
+            .imagenURL("https://cdn.pixabay.com/photo/2022/05/05/01/13/woman-7175038_1280.jpg")
             .disponible(false)
             .build());
 
@@ -491,6 +494,7 @@ public class DataLoader implements CommandLineRunner {
             .nombre("Mateo Rojas")
             .celular("3156789012")
             .cedula("1065432109")
+            .imagenURL("https://media.istockphoto.com/id/1550589735/es/foto/retrato-hombre-asi%C3%A1tico-feliz-o-seguro-con-los-brazos-cruzados-o-sonrisa-en-el-estudio-de.jpg?s=612x612&w=0&k=20&c=XbN8O_EhE60BV1ha7VM_wmyhNmBNZWU8irPQc2H-uVk=")
             .disponible(true)
             .build());
 
@@ -498,6 +502,7 @@ public class DataLoader implements CommandLineRunner {
             .nombre("Valentina Torres")
             .celular("3167890123")
             .cedula("1054321098")
+            .imagenURL("https://img.magnific.com/foto-gratis/mujer-joven-hermosa-sueter-rosa-calido-aspecto-natural-sonriente-retrato-aislado-cabello-largo_285396-896.jpg?semt=ais_hybrid&w=740&q=80")
             .disponible(true)
             .build());
 
