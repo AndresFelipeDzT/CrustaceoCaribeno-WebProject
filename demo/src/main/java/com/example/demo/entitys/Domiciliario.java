@@ -35,6 +35,8 @@ public class Domiciliario {
     @Column(nullable = false, unique = true, length = 20)
     private String cedula;
 
+    private String imagenURL;
+
     @Column(nullable = false)
     private Boolean disponible;
 
@@ -55,12 +57,31 @@ public class Domiciliario {
         this.disponible = disponible;
     }
 
+    public Domiciliario(String nombre, String celular, String cedula, String imagenURL, Boolean disponible) {
+        this.nombre = nombre;
+        this.celular = celular;
+        this.cedula = cedula;
+        this.imagenURL = imagenURL;
+        this.disponible = disponible;
+    }
+
     public Domiciliario(Long idDomiciliario, String nombre, String celular, String cedula, Boolean disponible,
             List<Pedido> pedidos) {
         this.idDomiciliario = idDomiciliario;
         this.nombre = nombre;
         this.celular = celular;
         this.cedula = cedula;
+        this.disponible = disponible;
+        this.pedidos = pedidos;
+    }
+
+    public Domiciliario(Long idDomiciliario, String nombre, String celular, String cedula, String imagenURL,
+            Boolean disponible, List<Pedido> pedidos) {
+        this.idDomiciliario = idDomiciliario;
+        this.nombre = nombre;
+        this.celular = celular;
+        this.cedula = cedula;
+        this.imagenURL = imagenURL;
         this.disponible = disponible;
         this.pedidos = pedidos;
     }
