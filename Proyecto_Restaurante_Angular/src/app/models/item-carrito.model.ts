@@ -9,3 +9,13 @@ export interface ItemCarrito {
   adicionales: Adicional[];
   subtotal?: number;
 }
+
+export interface ItemCarritoDTO {
+  idItemCarrito: number;
+  idCarrito: number;
+  idProducto: number;
+  nombreProducto: string;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal: number;
+}

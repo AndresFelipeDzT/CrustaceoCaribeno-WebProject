@@ -54,7 +54,7 @@ export class PedidosAdminComponent implements OnInit {
   actualizarEstado(): void {
     if (!this.pedido) return;
     const pedido = { ...this.pedido, estado: this.estado };
-    this.pedidoService.actualizarPedido(pedido.idPedido, pedido).subscribe({
+    this.pedidoService.actualizarPedido(pedido.idPedido, this.estado).subscribe({
       next: () => {
         this.pedido = pedido;
         this.mensaje = 'Pedido actualizado correctamente.';

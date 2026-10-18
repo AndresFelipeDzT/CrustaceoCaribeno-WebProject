@@ -10,3 +10,14 @@ export interface Producto {
   activo: boolean;
   categoria?: Categoria | null;
 }
+
+export interface ProductoDTO {
+  idProducto: number;
+  nombre: string;
+  precio: number;
+  descripcion?: string | null;
+  imagenURL?: string | null;
+  activo: boolean;
+  idCategoria?: number | null;
+  nombreCategoria?: string | null;
+}

@@ -12,3 +12,13 @@ export interface ItemPedido {
   adicionales: Adicional[];
   subtotal?: number;
 }
+
+export interface ItemPedidoDTO {
+  idItemPedido: number;
+  idPedido: number;
+  idProducto: number;
+  nombreProducto: string;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal: number;
+}
