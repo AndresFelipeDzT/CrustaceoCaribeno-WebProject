@@ -16,6 +16,7 @@ export const routes: Routes = [
   { path: 'home', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
 
   { path: 'login', component: LoginComponent, title: 'Login | Crustáceo Caribeño' },
+  { path: 'admin', component: LoginComponent, title: 'Acceso administrador | Crustáceo Caribeño' },
   { path: 'perfil', component: ClienteProfileComponent, title: 'Mi perfil | Crustáceo Caribeño' },
   { path: 'carrito', component: CarritoPageComponent, title: 'Mi carrito | Crustáceo Caribeño' },
   { path: 'pedidos', component: PedidosAdminComponent, title: 'Pedidos | Crustáceo Caribeño' },

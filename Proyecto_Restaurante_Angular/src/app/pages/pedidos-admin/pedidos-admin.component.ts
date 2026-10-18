@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
+import { AdministradorService } from '../../service/administrador.service';
 
 @Component({
   selector: 'app-pedidos-admin',
@@ -13,6 +14,7 @@ import { PedidoService } from '../../service/pedido.service';
 })
 export class PedidosAdminComponent implements OnInit {
   private pedidoService = inject(PedidoService);
+  private administradorService = inject(AdministradorService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   pedidos: Pedido[] = [];
@@ -20,6 +22,7 @@ export class PedidosAdminComponent implements OnInit {
   estado = '';
   error = '';
   mensaje = '';
+  get administradorId(): number | undefined { return this.administradorService.getAdministradorActualId(); }
   readonly estados = ['Pendiente', 'En preparación', 'En camino', 'Entregado', 'Cancelado'];
 
   ngOnInit(): void {
@@ -68,7 +71,9 @@ export class PedidosAdminComponent implements OnInit {
     this.pedidoService.eliminarPedido(id).subscribe({
       next: () => {
         this.cargarPedidos();
-        void this.router.navigate(['/pedidos']);
+        void this.router.navigate(['/pedidos'], {
+          queryParams: this.administradorId === undefined ? {} : { idAdministrador: this.administradorId }
+        });
       },
       error: () => this.error = 'No fue posible eliminar el pedido.'
     });

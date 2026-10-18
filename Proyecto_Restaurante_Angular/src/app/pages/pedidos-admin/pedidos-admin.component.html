@@ -1,18 +1,18 @@
 <header class="pedidos-header">
-  <a class="pedidos-brand" routerLink="/home">
+  <a class="pedidos-brand" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
     <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
     <span>Crustáceo Caribeño</span>
   </a>
   <nav class="pedidos-nav">
-    <a routerLink="/pedidos">Reporte<br>Ventas</a>
-    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Reporte<br>Ventas</a>
+    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
     <a routerLink="/perfil">Perfil</a>
   </nav>
 </header>
 
 @if (pedido; as actual) {
   <main class="detalle-pedido-main">
-    <a class="volver-pedidos" routerLink="/pedidos">← Volver a pedidos</a>
+    <a class="volver-pedidos" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">← Volver a pedidos</a>
     <h1>Detalles Del Pedido</h1>
     <p class="detalle-subtitulo">Información Completa Del Pedido #{{ actual.idPedido }}</p>
     @if (mensaje) { <p class="pedidos-alerta">{{ mensaje }}</p> }
@@ -119,7 +119,7 @@
               <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
               <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
               <td class="acciones">
-                <a class="btn-detalle" [routerLink]="['/pedidos', item.idPedido]">Detalles</a>
+                <a class="btn-detalle" [routerLink]="['/pedidos', item.idPedido]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Detalles</a>
                 <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="eliminarPedido(item.idPedido)">
                   <i class="bi bi-trash3"></i>
                 </button>

@@ -1,17 +1,17 @@
 ﻿<main class="login-page">
   <section class="login-card" aria-labelledby="login-title">
-    <h1 id="login-title">Login</h1>
+    <h1 id="login-title">{{ esAdministrador ? 'Acceso de administrador' : 'Login' }}</h1>
     <form [formGroup]="loginForm" (ngSubmit)="ingresar()" novalidate>
       <div class="field">
-        <label for="correo">Correo</label>
-        <input id="correo" type="email" formControlName="correo" autocomplete="email" [class.invalid]="loginForm.controls.correo.touched && loginForm.controls.correo.invalid">
+        <label for="correo">{{ esAdministrador ? 'Usuario' : 'Correo' }}</label>
+        <input id="correo" [type]="esAdministrador ? 'text' : 'email'" formControlName="correo" [attr.autocomplete]="esAdministrador ? 'username' : 'email'" [class.invalid]="loginForm.controls.correo.touched && loginForm.controls.correo.invalid">
         @if (loginForm.controls.correo.touched && loginForm.controls.correo.invalid) {
-          <small>Ingresa un correo válido.</small>
+          <small>{{ esAdministrador ? 'Ingresa tu usuario.' : 'Ingresa un correo válido.' }}</small>
         }
       </div>
       <div class="field">
         <label for="password">Contraseña</label>
-        <input id="password" type="text" formControlName="password" [class.invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+        <input id="password" type="password" formControlName="password" autocomplete="current-password" [class.invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid">
         @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
           <small>La contraseña es obligatoria.</small>
         }
