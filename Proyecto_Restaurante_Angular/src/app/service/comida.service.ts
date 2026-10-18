@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Adicional } from '../models/adicional.model';
 import { Categoria } from '../models/categoria.model';
-import { Producto } from '../models/producto.model';
+import { Producto, ProductoDTO } from '../models/producto.model';
 
 @Injectable({ providedIn: 'root' })
 export class ComidaService {
@@ -17,7 +17,9 @@ export class ComidaService {
     const params = incluirInactivos
       ? new HttpParams().set('incluirInactivos', 'true')
       : undefined;
-    return this.http.get<Producto[]>(this.apiUrl, { params });
+    return this.http.get<ProductoDTO[]>(this.apiUrl, { params }).pipe(
+      map(productos => productos.map(producto => this.mapProducto(producto)))
+    );
   }
 
   getCategorias(): Observable<Categoria[]> {
@@ -56,7 +58,9 @@ export class ComidaService {
   }
 
   getComidaById(id: number): Observable<Producto> {
-    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
+    return this.http.get<ProductoDTO>(`${this.apiUrl}/${id}`).pipe(
+      map(producto => this.mapProducto(producto))
+    );
   }
 
   addComida(comida: Omit<Producto, 'idProducto'>): Observable<void> {
@@ -73,5 +77,19 @@ export class ComidaService {
 
   activarComida(id: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}/activar`, {});
+  }
+
+  private mapProducto(producto: ProductoDTO): Producto {
+    return {
+      idProducto: producto.idProducto,
+      nombre: producto.nombre,
+      precio: producto.precio,
+      descripcion: producto.descripcion,
+      imagenURL: producto.imagenURL,
+      activo: producto.activo,
+      categoria: producto.idCategoria == null
+        ? null
+        : { idCategoria: producto.idCategoria, nombre: producto.nombreCategoria ?? '' }
+    };
   }
 }

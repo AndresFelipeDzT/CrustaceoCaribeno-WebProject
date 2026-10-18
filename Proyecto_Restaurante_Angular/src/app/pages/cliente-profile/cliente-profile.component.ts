@@ -47,7 +47,7 @@ export class ClienteProfileComponent implements OnInit {
       correo: this.cliente.correo,
       telefono: this.cliente.telefono ?? '',
       direccion: this.cliente.direccion ?? '',
-      password: this.cliente.password
+      password: this.cliente.password ?? ''
     });
   }
 

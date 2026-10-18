@@ -116,7 +116,7 @@
               <td><span class="estado" [class.estado-entregado]="item.estado.toLowerCase() === 'entregado'"
                 [class.estado-cancelado]="item.estado.toLowerCase() === 'cancelado'"
                 [class.estado-pendiente]="item.estado.toLowerCase() === 'pendiente'">{{ item.estado }}</span></td>
-              <td>{{ item.domiciliario?.nombre || 'Sin asignar' }}</td>
+              <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
               <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
               <td class="acciones">
                 <a class="btn-detalle" [routerLink]="['/pedidos', item.idPedido]">Detalles</a>

@@ -10,6 +10,18 @@ export interface Pedido {
   estado: string;
   cliente?: Cliente | null;
   domiciliario?: Domiciliario | null;
+  idCliente?: number | null;
+  idDomiciliario?: number | null;
   total?: number;
   items?: ItemPedido[];
+}
+
+export interface PedidoDTO {
+  idPedido: number;
+  fechaCreacion: string;
+  fechaEntrega?: string | null;
+  estado: string;
+  idCliente?: number | null;
+  idDomiciliario?: number | null;
+  total?: number;
 }
