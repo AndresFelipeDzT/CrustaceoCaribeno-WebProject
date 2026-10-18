@@ -1,0 +1,83 @@
+<header class="domiciliarios-header">
+  <a class="domiciliarios-brand" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+    <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
+    <span>Crustáceo Caribeño</span>
+  </a>
+  <nav class="domiciliarios-nav">
+    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Reporte Ventas</a>
+    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
+    <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
+    <a routerLink="/perfil">Perfil</a>
+  </nav>
+</header>
+
+<main class="domiciliarios-main">
+  <div class="domiciliarios-heading">
+    <div class="heading-decoration"></div>
+    <h1>Domiciliarios</h1>
+    <div class="heading-decoration"></div>
+    <p>Lista de domiciliarios registrados en el sistema</p>
+  </div>
+
+  @if (error) { <p class="domiciliarios-alert error" role="alert">{{ error }}</p> }
+  @if (mensaje) { <p class="domiciliarios-alert" role="status">{{ mensaje }}</p> }
+
+  <div class="domiciliarios-layout">
+    <section class="domiciliarios-list" aria-label="Domiciliarios registrados">
+      <a class="crear-domiciliario" [routerLink]="['/domiciliarios/add']" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+        + Registrar domiciliario
+      </a>
+      @for (domiciliario of domiciliarios; track domiciliario.idDomiciliario) {
+        <article class="domiciliario-card" [class.seleccionado]="domiciliarioSeleccionado?.idDomiciliario === domiciliario.idDomiciliario">
+          <label class="selector-domiciliario">
+            <input type="radio" name="domiciliario" [checked]="domiciliarioSeleccionado?.idDomiciliario === domiciliario.idDomiciliario" (change)="seleccionarDomiciliario(domiciliario)" [attr.aria-label]="'Seleccionar ' + domiciliario.nombre">
+          </label>
+          <button class="domiciliario-summary" type="button" (click)="seleccionarDomiciliario(domiciliario)">
+            <img class="domiciliario-avatar" [src]="domiciliario.imagenURL" [alt]="'Foto de ' + domiciliario.nombre">
+            <span class="domiciliario-summary-content">
+              <strong>{{ domiciliario.nombre }}</strong>
+              <span>Cédula: {{ domiciliario.cedula }}</span>
+              <span>Celular: {{ domiciliario.celular }}</span>
+            </span>
+            <span class="estado-domiciliario" [class.estado-inactivo]="!domiciliario.disponible">
+              {{ domiciliario.disponible ? 'Activo' : 'Inactivo' }}
+            </span>
+          </button>
+        </article>
+      } @empty {
+        <p class="domiciliarios-empty">No hay domiciliarios registrados.</p>
+      }
+    </section>
+
+    <aside class="domiciliario-details" aria-live="polite">
+      @if (domiciliarioSeleccionado; as actual) {
+        <h2>Detalles del domiciliario</h2>
+        <img class="domiciliario-avatar avatar-large" [src]="actual.imagenURL" [alt]="'Foto de ' + actual.nombre">
+        <h3>{{ actual.nombre }}</h3>
+        <dl>
+          <div><dt>Cédula</dt><dd>{{ actual.cedula }}</dd></div>
+          <div><dt>Celular</dt><dd>{{ actual.celular }}</dd></div>
+          <div>
+            <dt>Estado</dt>
+            <dd><span class="estado-domiciliario" [class.estado-inactivo]="!actual.disponible">{{ actual.disponible ? 'Activo' : 'Inactivo' }}</span></dd>
+          </div>
+        </dl>
+        <div class="detail-actions">
+          <button class="status-toggle" type="button" (click)="cambiarDisponibilidad(actual)">
+            {{ actual.disponible ? 'Desactivar' : 'Activar' }}
+          </button>
+          <a [routerLink]="['/domiciliarios/update', actual.idDomiciliario]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Editar datos</a>
+          <button class="delete-domiciliario" type="button" (click)="eliminarDomiciliario(actual)">Eliminar</button>
+        </div>
+      } @else {
+        <h2>Detalles del domiciliario</h2>
+        <p>Selecciona un domiciliario para consultar sus datos.</p>
+      }
+    </aside>
+  </div>
+</main>
+
+<footer class="domiciliarios-footer">
+  <span>© 2026 Crustáceo Caribeño</span>
+  <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Volver a pedidos</a>
+</footer>

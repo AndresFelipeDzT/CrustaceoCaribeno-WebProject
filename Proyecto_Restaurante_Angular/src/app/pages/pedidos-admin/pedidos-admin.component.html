@@ -6,7 +6,8 @@
   <nav class="pedidos-nav">
     <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Reporte<br>Ventas</a>
     <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
-    <a routerLink="/perfil">Perfil</a>
+    <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
+    <a routerLink="/perfil" [queryParams]="administradorId === undefined ? {} : { tipo: 'administrador', idAdministrador: administradorId }">Perfil</a>
   </nav>
 </header>
 

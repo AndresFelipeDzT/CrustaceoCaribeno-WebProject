@@ -1,0 +1,16 @@
+:host { display: block; min-height: 100vh; font-family: "Playfair Display", Georgia, serif; }
+.signup-page { box-sizing: border-box; display: grid; min-height: 100vh; place-items: center; padding: 32px 20px; background: linear-gradient(rgba(8, 13, 24, .68), rgba(8, 13, 24, .68)), url("/imagenes/hero_seafood.jpg") center / cover fixed; }
+.signup-card { box-sizing: border-box; width: min(100%, 522px); padding: 39px 49px 42px; color: #fff; background: linear-gradient(145deg, #1b3262 0%, #111b36 100%); border: 2px solid rgba(255, 255, 255, .88); border-radius: 11px; box-shadow: 0 12px 34px rgba(0, 0, 0, .32); }
+.signup-card h1 { margin: 0 0 28px; text-align: center; font-size: 34px; line-height: 1.2; font-style: italic; font-weight: 700; }
+.field { margin-bottom: 22px; }
+.field label { display: block; margin: 0 0 7px; font-size: 19px; line-height: 1.15; font-style: italic; font-weight: 700; }
+.field input { box-sizing: border-box; width: 100%; height: 43px; padding: 7px 10px; color: #17213a; background: #fff; border: 1px solid #d4d4d4; border-radius: 4px; font: 17px Georgia, serif; }
+.field input:focus { outline: 2px solid #d29a61; outline-offset: 1px; }
+.field input.invalid { border-color: #ff9c8f; }
+.field small { display: block; margin-top: 5px; color: #ffd1ca; font: 13px Arial, sans-serif; }
+.photo-preview { display: flex; justify-content: center; margin: -4px 0 18px; }
+.photo-preview img { width: 96px; height: 96px; border: 3px solid #d29a61; border-radius: 50%; object-fit: cover; background: #fff; }
+.actions { display: flex; justify-content: center; gap: 16px; margin-top: 31px; }
+.actions button, .actions a { display: inline-flex; min-width: 150px; min-height: 47px; align-items: center; justify-content: center; padding: 0 18px; color: #fff; background: #713e17; border: 0; border-radius: 28px; box-shadow: 0 4px 9px rgba(0, 0, 0, .2); font: italic 700 16px "Playfair Display", Georgia, serif; text-decoration: none; cursor: pointer; }
+.actions button:hover, .actions a:hover { background: #8b5226; }
+@media (max-width: 540px) { .signup-card { padding: 30px 25px; } .signup-card h1 { font-size: 29px; } .actions { gap: 10px; } .actions button, .actions a { min-width: 0; flex: 1; padding: 0 10px; font-size: 14px; } }
