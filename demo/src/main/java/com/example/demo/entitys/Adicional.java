@@ -7,10 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
  * Entidad que representa un adicional o acompañamiento disponible para los platos.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 public class Adicional {
@@ -45,6 +41,10 @@ public class Adicional {
     @Builder.Default
     private List<Categoria> categorias = new ArrayList<>();
 
+    public Adicional() {
+        this.categorias = new ArrayList<>();
+    }
+
     @JsonIgnore
     public List<Categoria> getCategoriasDisponibles() {
         return categorias;
@@ -59,5 +59,13 @@ public class Adicional {
         this.nombre = nombre;
         this.precio = precio;
         this.activo = true;
+    }
+
+    public Adicional(Long idAdicional, String nombre, double precio, boolean activo, List<Categoria> categorias) {
+        this.idAdicional = idAdicional;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.activo = activo;
+        this.categorias = categorias;
     }
 }

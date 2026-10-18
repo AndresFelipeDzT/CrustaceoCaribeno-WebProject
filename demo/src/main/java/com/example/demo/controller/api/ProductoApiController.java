@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entitys.Producto;
-import com.example.demo.entitys.Categoria;
+import com.example.demo.dto.ProductoDTO;
 import com.example.demo.service.ProductoService;
-import com.example.demo.service.CategoriaService;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -27,27 +26,16 @@ public class ProductoApiController {
     @Autowired
     private ProductoService productoService;
 
-    @Autowired
-    private CategoriaService categoriaService;
-
     @GetMapping
-    public List<Producto> listar(
+    public List<ProductoDTO> listar(
             @RequestParam(defaultValue = "false") boolean incluirInactivos,
             @RequestParam(required = false) Long categoriaId) {
-        if (categoriaId != null) {
-            Categoria categoria = categoriaService.obtenerCategoriaPorId(categoriaId);
-            return incluirInactivos
-                    ? productoService.obtenerProductosPorCategoriaIncluyendoInactivos(categoria)
-                    : productoService.obtenerProductosPorCategoria(categoria);
-        }
-        return incluirInactivos
-                ? productoService.obtenerTodosLosProductosIncluyendoInactivos()
-                : productoService.obtenerTodosLosProductos();
+        return productoService.obtenerProductosDTO(incluirInactivos, categoriaId);
     }
 
     @GetMapping("/{id}")
-    public Producto obtener(@PathVariable Long id) {
-        return productoService.obtenerProductoPorId(id);
+    public ProductoDTO obtener(@PathVariable Long id) {
+        return productoService.obtenerProductoDTOPorId(id);
     }
 
     @PostMapping
@@ -69,4 +57,5 @@ public class ProductoApiController {
     public void activar(@PathVariable Long id) {
         productoService.activarProducto(id);
     }
+
 }

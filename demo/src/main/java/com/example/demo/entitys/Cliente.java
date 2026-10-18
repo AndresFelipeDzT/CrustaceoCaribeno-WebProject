@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.ToString;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity 
 public class Cliente {
 
@@ -68,6 +66,19 @@ public class Cliente {
         this.telefono = telefono;
         this.direccion = direccion;
         this.password = password;
+    }
+
+    public Cliente(Long idCliente, String nombre, String apellido, String correo, String telefono, String direccion,
+            String password, boolean activo, Carrito carrito) {
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.password = password;
+        this.activo = activo;
+        this.carrito = carrito;
     }
 
     public String getNombreCompleto() {

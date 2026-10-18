@@ -1,6 +1,7 @@
 package com.example.demo.service;
 import java.util.List;
 
+import com.example.demo.dto.ProductoDTO;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
 
@@ -24,6 +25,10 @@ public interface ProductoService {
     List<Producto> obtenerProductosPorCategoria(Categoria categoria);
 
     List<Producto> obtenerProductosPorCategoriaIncluyendoInactivos(Categoria categoria);
+
+    List<ProductoDTO> obtenerProductosDTO(boolean incluirInactivos, Long categoriaId);
+
+    ProductoDTO obtenerProductoDTOPorId(Long idProducto);
 
     /**
      * Busca un plato por su identificador.

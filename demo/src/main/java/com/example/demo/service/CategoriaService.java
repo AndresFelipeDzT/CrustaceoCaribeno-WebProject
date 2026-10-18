@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entitys.Categoria;
 
 /**
@@ -15,7 +16,11 @@ public interface CategoriaService {
      */
     List<Categoria> obtenerTodasLasCategorias();
 
+    List<CategoriaDTO> obtenerCategoriasDTO();
+
     Categoria obtenerCategoriaPorId(Long idCategoria);
+
+    CategoriaDTO obtenerCategoriaDTOPorId(Long idCategoria);
 
     /**
      * Busca una categoria por su nombre.
@@ -24,7 +29,13 @@ public interface CategoriaService {
      */
     Categoria obtenerCategoriaPorNombre(String nombre);
 
+    CategoriaDTO obtenerCategoriaDTOPorNombre(String nombre);
+
     Categoria guardarCategoria(Categoria categoria);
+
+    CategoriaDTO guardarCategoriaDTO(Categoria categoria);
+
+    CategoriaDTO actualizarCategoriaDTO(Long idCategoria, Categoria categoria);
 
     void eliminarCategoria(Long idCategoria);
 }

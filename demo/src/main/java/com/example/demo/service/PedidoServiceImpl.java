@@ -5,8 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.ItemPedidoDTO;
+import com.example.demo.dto.PedidoDTO;
+import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.errors.PedidoNotFoundException;
+import com.example.demo.repository.ItemPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
 
 import jakarta.transaction.Transactional;
@@ -19,11 +24,16 @@ public class PedidoServiceImpl implements PedidoService {
     private PedidoRepository pedidoRepository;
 
     @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
     private CarritoService carritoService;
 
     @Override
-    public List<Pedido> obtenerTodosLosPedidos() {
-        return pedidoRepository.findAll();
+    public List<PedidoDTO> obtenerPedidosDTO() {
+        return pedidoRepository.findAll().stream()
+                .map(this::mapearPedidoDTO)
+                .toList();
     }
 
     @Override
@@ -33,6 +43,61 @@ public class PedidoServiceImpl implements PedidoService {
         }
         return pedidoRepository.findById(id)
                 .orElseThrow(() -> new PedidoNotFoundException(id));
+    }
+
+    @Override
+    public PedidoDTO obtenerPedidoDTOPorId(Long id) {
+        return mapearPedidoDTO(obtenerPedidoPorId(id));
+    }
+
+    @Override
+    public List<ItemPedidoDTO> obtenerItemsDTODePedido(Long id) {
+        Pedido pedido = obtenerPedidoPorId(id);
+        return itemPedidoRepository.findByPedido(pedido).stream()
+                .map(this::mapearItemPedidoDTO)
+                .toList();
+    }
+
+    @Override
+    public List<AdicionalDTO> obtenerAdicionalesDTODeItem(Long idPedido, Long idItemPedido) {
+        obtenerPedidoPorId(idPedido);
+        if (idItemPedido == null) {
+            throw new IllegalArgumentException("El ID del ítem del pedido es obligatorio.");
+        }
+        ItemPedido item = itemPedidoRepository.findById(idItemPedido)
+                .orElseThrow(() -> new IllegalArgumentException("El ítem no pertenece a este pedido."));
+        if (item.getPedido() == null || !idPedido.equals(item.getPedido().getIdPedido())) {
+            throw new IllegalArgumentException("El ítem no pertenece a este pedido.");
+        }
+        return item.getAdicionales().stream()
+                .map(adicional -> new AdicionalDTO(
+                        adicional.getIdAdicional(),
+                        adicional.getNombre(),
+                        adicional.getPrecio(),
+                        adicional.isActivo()))
+                .toList();
+    }
+
+    private PedidoDTO mapearPedidoDTO(Pedido pedido) {
+        return new PedidoDTO(
+                pedido.getIdPedido(),
+                pedido.getFechaCreacion(),
+                pedido.getFechaEntrega(),
+                pedido.getEstado(),
+                pedido.getCliente() == null ? null : pedido.getCliente().getIdCliente(),
+                pedido.getDomiciliario() == null ? null : pedido.getDomiciliario().getIdDomiciliario(),
+                pedido.getTotal());
+    }
+
+    private ItemPedidoDTO mapearItemPedidoDTO(ItemPedido item) {
+        return new ItemPedidoDTO(
+                item.getIdItemPedido(),
+                item.getPedido().getIdPedido(),
+                item.getProducto() == null ? null : item.getProducto().getIdProducto(),
+                item.getProducto() == null ? null : item.getProducto().getNombre(),
+                item.getCantidad(),
+                item.getPrecioUnitario(),
+                item.getSubtotal());
     }
 
     @Override

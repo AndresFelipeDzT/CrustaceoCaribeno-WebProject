@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Administrador {
 
@@ -27,6 +25,12 @@ public class Administrador {
 
     @Column(nullable = false, length = 50)
     private String contrasena;
+
+    public Administrador(Long idAdministrador, String usuario, String contrasena) {
+        this.idAdministrador = idAdministrador;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+    }
 
     public Administrador(String usuario, String contrasena) {
         this.usuario = usuario;

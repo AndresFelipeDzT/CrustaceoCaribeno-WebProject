@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
 
@@ -17,6 +18,10 @@ public interface AdicionalService {
 
     /* Obtiene los adicionales disponibles acorde a una categoría */
     List<Adicional> obtenerAdicionalesPorCategoria(Categoria categoria);
+
+    List<AdicionalDTO> obtenerAdicionalesDTO(Long categoriaId);
+
+    AdicionalDTO obtenerAdicionalDTOPorId(Long idAdicional);
 
     /* Guarda o actualiza un adicional */
     Adicional guardarAdicional(Adicional adicional);

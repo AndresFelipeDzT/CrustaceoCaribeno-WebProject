@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.service.CategoriaService;
 
@@ -25,37 +26,33 @@ public class CategoriaApiController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public List<Categoria> listar() {
-        return categoriaService.obtenerTodasLasCategorias();
+    public List<CategoriaDTO> listar() {
+        return categoriaService.obtenerCategoriasDTO();
     }
 
     @GetMapping("/{id}")
-    public Categoria obtener(@PathVariable Long id) {
-        return categoriaService.obtenerCategoriaPorId(id);
+    public CategoriaDTO obtener(@PathVariable Long id) {
+        return categoriaService.obtenerCategoriaDTOPorId(id);
     }
 
     @GetMapping("/nombre/{nombre}")
-    public Categoria obtenerPorNombre(@PathVariable String nombre) {
-        return categoriaService.obtenerCategoriaPorNombre(nombre);
+    public CategoriaDTO obtenerPorNombre(@PathVariable String nombre) {
+        return categoriaService.obtenerCategoriaDTOPorNombre(nombre);
     }
 
     @PostMapping
-    public Categoria crear(@RequestBody Categoria categoria) {
-        return categoriaService.guardarCategoria(categoria);
+    public CategoriaDTO crear(@RequestBody Categoria categoria) {
+        return categoriaService.guardarCategoriaDTO(categoria);
     }
 
     @PutMapping("/{id}")
-    public Categoria actualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
-        if (categoria == null) {
-            throw new IllegalArgumentException("Los datos de la categoría no pueden ser nulos.");
-        }
-        categoriaService.obtenerCategoriaPorId(id);
-        categoria.setIdCategoria(id);
-        return categoriaService.guardarCategoria(categoria);
+    public CategoriaDTO actualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
+        return categoriaService.actualizarCategoriaDTO(id, categoria);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         categoriaService.eliminarCategoria(id);
     }
+
 }

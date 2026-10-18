@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.errors.ClienteAlreadyExistsException;
@@ -32,12 +33,22 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public List<ClienteDTO> obtenerTodosLosClientesDTO() {
+        return obtenerTodosLosClientes().stream().map(this::aDTO).toList();
+    }
+
+    @Override
     public Cliente obtenerClientePorId(Long idCliente) {
         if (idCliente == null) {
             throw new IllegalArgumentException("El ID del cliente es obligatorio.");
         }
         return clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ClienteNotFoundException(idCliente));
+    }
+
+    @Override
+    public ClienteDTO obtenerClienteDTOPorId(Long idCliente) {
+        return aDTO(obtenerClientePorId(idCliente));
     }
 
     @Override
@@ -215,5 +226,17 @@ public class ClienteServiceImpl implements ClienteService {
             }
         }
         return null;
+    }
+
+    private ClienteDTO aDTO(Cliente cliente) {
+        return new ClienteDTO(
+                cliente.getIdCliente(),
+                cliente.getNombre(),
+                cliente.getApellido(),
+                cliente.getCorreo(),
+                cliente.getTelefono(),
+                cliente.getDireccion(),
+                cliente.getPassword(),
+                cliente.isActivo());
     }
 }

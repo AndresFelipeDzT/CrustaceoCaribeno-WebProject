@@ -10,18 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  * Entidad que representa a un domiciliario encargado de las entregas de pedidos.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 public class Domiciliario {
@@ -48,10 +44,24 @@ public class Domiciliario {
     @Builder.Default
     private List<Pedido> pedidos = new ArrayList<>();
 
+    public Domiciliario() {
+        this.pedidos = new ArrayList<>();
+    }
+
     public Domiciliario(String nombre, String celular, String cedula, Boolean disponible) {
         this.nombre = nombre;
         this.celular = celular;
         this.cedula = cedula;
         this.disponible = disponible;
+    }
+
+    public Domiciliario(Long idDomiciliario, String nombre, String celular, String cedula, Boolean disponible,
+            List<Pedido> pedidos) {
+        this.idDomiciliario = idDomiciliario;
+        this.nombre = nombre;
+        this.celular = celular;
+        this.cedula = cedula;
+        this.disponible = disponible;
+        this.pedidos = pedidos;
     }
 }

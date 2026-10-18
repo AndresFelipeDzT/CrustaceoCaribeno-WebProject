@@ -1,5 +1,7 @@
 package com.example.demo.controller.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entitys.Carrito;
-import com.example.demo.entitys.Pedido;
+import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.CarritoDTO;
+import com.example.demo.dto.ItemCarritoDTO;
+import com.example.demo.dto.PedidoDTO;
 import com.example.demo.service.CarritoService;
 
 @RestController
@@ -24,8 +28,20 @@ public class CarritoApiController {
     private CarritoService carritoService;
 
     @GetMapping("/{idCliente}")
-    public Carrito obtener(@PathVariable Long idCliente) {
-        return carritoService.obtenerCarrito(idCliente);
+    public CarritoDTO obtener(@PathVariable Long idCliente) {
+        return carritoService.obtenerCarritoDTO(idCliente);
+    }
+
+    @GetMapping("/{idCliente}/items")
+    public List<ItemCarritoDTO> listarItems(@PathVariable Long idCliente) {
+        return carritoService.obtenerItemsDTO(idCliente);
+    }
+
+    @GetMapping("/{idCliente}/items/{idItemCarrito}/adicionales")
+    public List<AdicionalDTO> listarAdicionales(
+            @PathVariable Long idCliente,
+            @PathVariable Long idItemCarrito) {
+        return carritoService.obtenerAdicionalesDTO(idCliente, idItemCarrito);
     }
 
     @PostMapping("/{idCliente}/items")
@@ -64,7 +80,7 @@ public class CarritoApiController {
     }
 
     @PostMapping("/{idCliente}/confirmar")
-    public Pedido confirmarPedido(@PathVariable Long idCliente) {
+    public PedidoDTO confirmarPedido(@PathVariable Long idCliente) {
         return carritoService.confirmarPedido(idCliente);
     }
 

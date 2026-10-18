@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 
 /**
@@ -11,7 +12,11 @@ public interface ClienteService {
 
     List<Cliente> obtenerTodosLosClientes();
 
+    List<ClienteDTO> obtenerTodosLosClientesDTO();
+
     Cliente obtenerClientePorId(Long id);
+
+    ClienteDTO obtenerClienteDTOPorId(Long id);
 
     Cliente guardarCliente(Cliente cliente);
 
