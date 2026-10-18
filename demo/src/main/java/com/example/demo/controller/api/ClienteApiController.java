@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
@@ -25,13 +26,13 @@ public class ClienteApiController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<Cliente> listar() {
-        return clienteService.obtenerTodosLosClientes();
+    public List<ClienteDTO> listar() {
+        return clienteService.obtenerTodosLosClientesDTO();
     }
 
     @GetMapping("/{id}")
-    public Cliente obtener(@PathVariable Long id) {
-        return clienteService.obtenerClientePorId(id);
+    public ClienteDTO obtener(@PathVariable Long id) {
+        return clienteService.obtenerClienteDTOPorId(id);
     }
 
     @PostMapping

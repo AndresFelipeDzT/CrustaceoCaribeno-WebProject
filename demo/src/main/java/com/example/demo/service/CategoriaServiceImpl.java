@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
 import com.example.demo.errors.CategoriaNotFoundException;
@@ -33,12 +34,22 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    public List<CategoriaDTO> obtenerCategoriasDTO() {
+        return obtenerTodasLasCategorias().stream().map(this::aDTO).toList();
+    }
+
+    @Override
     public Categoria obtenerCategoriaPorId(Long idCategoria) {
         if (idCategoria == null) {
             throw new IllegalArgumentException("El ID de la categoría es obligatorio.");
         }
         return categoriaRepository.findById(idCategoria)
                 .orElseThrow(() -> new CategoriaNotFoundException(idCategoria));
+    }
+
+    @Override
+    public CategoriaDTO obtenerCategoriaDTOPorId(Long idCategoria) {
+        return aDTO(obtenerCategoriaPorId(idCategoria));
     }
 
     @Override
@@ -55,11 +66,31 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    public CategoriaDTO obtenerCategoriaDTOPorNombre(String nombre) {
+        return aDTO(obtenerCategoriaPorNombre(nombre));
+    }
+
+    @Override
     public Categoria guardarCategoria(Categoria categoria) {
         if (categoria == null) {
             throw new IllegalArgumentException("Los datos de la categoría no pueden ser nulos.");
         }
         return categoriaRepository.save(categoria);
+    }
+
+    @Override
+    public CategoriaDTO guardarCategoriaDTO(Categoria categoria) {
+        return aDTO(guardarCategoria(categoria));
+    }
+
+    @Override
+    public CategoriaDTO actualizarCategoriaDTO(Long idCategoria, Categoria categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("Los datos de la categoría no pueden ser nulos.");
+        }
+        obtenerCategoriaPorId(idCategoria);
+        categoria.setIdCategoria(idCategoria);
+        return guardarCategoriaDTO(categoria);
     }
 
     @Override
@@ -76,5 +107,9 @@ public class CategoriaServiceImpl implements CategoriaService {
         }
         categoria.getAdicionales().clear();
         categoriaRepository.delete(categoria);
+    }
+
+    private CategoriaDTO aDTO(Categoria categoria) {
+        return new CategoriaDTO(categoria.getIdCategoria(), categoria.getNombre());
     }
 }

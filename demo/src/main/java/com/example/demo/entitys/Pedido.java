@@ -12,18 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  * Entidad que representa un pedido realizado por un cliente en el restaurante.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 public class Pedido {
@@ -51,12 +47,27 @@ public class Pedido {
     @Builder.Default
     private List<ItemPedido> items = new ArrayList<>();
 
+    public Pedido() {
+        this.items = new ArrayList<>();
+    }
+
     public Pedido(LocalDate fechaCreacion, LocalDate fechaEntrega, String estado, Cliente cliente, Domiciliario domiciliario) {
         this.fechaCreacion = fechaCreacion;
         this.fechaEntrega = fechaEntrega;
         this.estado = estado;
         this.cliente = cliente;
         this.domiciliario = domiciliario;
+    }
+
+    public Pedido(Long idPedido, LocalDate fechaCreacion, LocalDate fechaEntrega, String estado, Cliente cliente,
+            Domiciliario domiciliario, List<ItemPedido> items) {
+        this.idPedido = idPedido;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaEntrega = fechaEntrega;
+        this.estado = estado;
+        this.cliente = cliente;
+        this.domiciliario = domiciliario;
+        this.items = items;
     }
 
     public double getTotal() {

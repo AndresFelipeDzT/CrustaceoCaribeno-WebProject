@@ -14,6 +14,10 @@ import com.example.demo.entitys.ItemCarrito;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
+import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.CarritoDTO;
+import com.example.demo.dto.ItemCarritoDTO;
+import com.example.demo.dto.PedidoDTO;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.ItemCarritoRepository;
@@ -57,6 +61,45 @@ public class CarritoServiceImpl implements CarritoService {
             carrito = carritoRepository.save(carrito);
         }
         return carrito;
+    }
+
+    @Override
+    public CarritoDTO obtenerCarritoDTO(Long idCliente) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        return new CarritoDTO(
+                carrito.getIdCarrito(),
+                carrito.getCliente().getIdCliente(),
+                carrito.getSubtotal(),
+                carrito.getDomicilio(),
+                carrito.getTotal());
+    }
+
+    @Override
+    public List<ItemCarritoDTO> obtenerItemsDTO(Long idCliente) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        return itemCarritoRepository.findByCarrito(carrito).stream()
+                .map(item -> new ItemCarritoDTO(
+                        item.getIdItemCarrito(),
+                        carrito.getIdCarrito(),
+                        item.getProducto().getIdProducto(),
+                        item.getProducto().getNombre(),
+                        item.getCantidad(),
+                        item.getProducto().getPrecio(),
+                        item.getSubtotal()))
+                .toList();
+    }
+
+    @Override
+    public List<AdicionalDTO> obtenerAdicionalesDTO(Long idCliente, Long idItemCarrito) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        ItemCarrito item = obtenerItemDelCarrito(carrito, idItemCarrito);
+        return item.getAdicionales().stream()
+                .map(adicional -> new AdicionalDTO(
+                        adicional.getIdAdicional(),
+                        adicional.getNombre(),
+                        adicional.getPrecio(),
+                        adicional.isActivo()))
+                .toList();
     }
 
     public void agregarProducto(Long idCliente, Long idProducto, Long[] idsAdicionales) {
@@ -125,7 +168,7 @@ public class CarritoServiceImpl implements CarritoService {
         itemCarritoRepository.delete(item);
     }
 
-    public Pedido confirmarPedido(Long idCliente) {
+    public PedidoDTO confirmarPedido(Long idCliente) {
         Carrito carrito = obtenerCarrito(idCliente);
         List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);
         if (items.isEmpty()) {
@@ -136,6 +179,7 @@ public class CarritoServiceImpl implements CarritoService {
         pedido.setEstado("Pendiente");
         pedido.setCliente(carrito.getCliente());
         pedido = pedidoRepository.save(pedido);
+        double total = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
 
         for (ItemCarrito item : items) {
             ItemPedido itemPedido = new ItemPedido();
@@ -147,7 +191,14 @@ public class CarritoServiceImpl implements CarritoService {
             itemPedidoRepository.save(itemPedido);
         }
         itemCarritoRepository.deleteAll(items);
-        return pedido;
+        return new PedidoDTO(
+                pedido.getIdPedido(),
+                pedido.getFechaCreacion(),
+                pedido.getFechaEntrega(),
+                pedido.getEstado(),
+                pedido.getCliente().getIdCliente(),
+                null,
+                total);
     }
 
     private ItemCarrito obtenerItemDelCarrito(Carrito carrito, Long idItemCarrito) {

@@ -2,9 +2,12 @@ package com.example.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.ProductoDTO;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.entitys.Producto;
+import com.example.demo.errors.CategoriaNotFoundException;
 import com.example.demo.errors.ProductoNotFoundException;
+import com.example.demo.repository.CategoriaFakeRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 import com.example.demo.repository.ItemCarritoRepository;
 import com.example.demo.entitys.ItemCarrito;
@@ -22,6 +25,8 @@ public class ProductoServiceImpl implements ProductoService {
     ProductoFakeRepository productoRepository;
     @Autowired
     ItemCarritoRepository itemCarritoRepository;
+    @Autowired
+    CategoriaFakeRepository categoriaRepository;
 
     @Override
     public List<Producto> obtenerTodosLosProductos() {
@@ -47,6 +52,28 @@ public class ProductoServiceImpl implements ProductoService {
             throw new IllegalArgumentException("La categoría es obligatoria.");
         }
         return productoRepository.findByCategoria(categoria);
+    }
+
+    @Override
+    public List<ProductoDTO> obtenerProductosDTO(boolean incluirInactivos, Long categoriaId) {
+        List<Producto> productos;
+        if (categoriaId != null) {
+            Categoria categoria = categoriaRepository.findById(categoriaId)
+                    .orElseThrow(() -> new CategoriaNotFoundException(categoriaId));
+            productos = incluirInactivos
+                    ? obtenerProductosPorCategoriaIncluyendoInactivos(categoria)
+                    : obtenerProductosPorCategoria(categoria);
+        } else {
+            productos = incluirInactivos
+                    ? obtenerTodosLosProductosIncluyendoInactivos()
+                    : obtenerTodosLosProductos();
+        }
+        return productos.stream().map(this::aDTO).toList();
+    }
+
+    @Override
+    public ProductoDTO obtenerProductoDTOPorId(Long idProducto) {
+        return aDTO(obtenerProductoPorId(idProducto));
     }
 
     @Override
@@ -94,5 +121,18 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = obtenerProductoPorId(idProducto);
         producto.setActivo(true);
         productoRepository.save(producto);
+    }
+
+    private ProductoDTO aDTO(Producto producto) {
+        Categoria categoria = producto.getCategoria();
+        return new ProductoDTO(
+                producto.getIdProducto(),
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getDescripcion(),
+                producto.getImagenURL(),
+                producto.isActivo(),
+                categoria == null ? null : categoria.getIdCategoria(),
+                categoria == null ? null : categoria.getNombre());
     }
 }

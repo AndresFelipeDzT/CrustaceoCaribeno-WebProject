@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 /**
@@ -19,7 +18,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity 
 public class Categoria {
 
@@ -51,5 +49,12 @@ public class Categoria {
 
     public Categoria(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Categoria(long idCategoria, String nombre, List<Producto> productos, List<Adicional> adicionales) {
+        this.idCategoria = idCategoria;
+        this.nombre = nombre;
+        this.productos = productos;
+        this.adicionales = adicionales;
     }
 }

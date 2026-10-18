@@ -8,10 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.List;
  * indicando la cantidad solicitada y el precio unitario pactado.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 public class ItemPedido {
@@ -50,11 +46,25 @@ public class ItemPedido {
     @Builder.Default
     private List<Adicional> adicionales = new ArrayList<>();
 
+    public ItemPedido() {
+        this.adicionales = new ArrayList<>();
+    }
+
     public ItemPedido(int cantidad, double precioUnitario, Pedido pedido, Producto producto) {
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.pedido = pedido;
         this.producto = producto;
+    }
+
+    public ItemPedido(Long idItemPedido, int cantidad, double precioUnitario, Pedido pedido, Producto producto,
+            List<Adicional> adicionales) {
+        this.idItemPedido = idItemPedido;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.pedido = pedido;
+        this.producto = producto;
+        this.adicionales = adicionales;
     }
 
     public double getSubtotal() {

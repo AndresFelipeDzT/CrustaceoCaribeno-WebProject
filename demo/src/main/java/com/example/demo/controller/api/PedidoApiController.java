@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.ItemPedidoDTO;
+import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.service.PedidoService;
 
@@ -25,13 +28,25 @@ public class PedidoApiController {
     private PedidoService pedidoService;
 
     @GetMapping
-    public List<Pedido> listar() {
-        return pedidoService.obtenerTodosLosPedidos();
+    public List<PedidoDTO> listar() {
+        return pedidoService.obtenerPedidosDTO();
     }
 
     @GetMapping("/{id}")
-    public Pedido obtener(@PathVariable Long id) {
-        return pedidoService.obtenerPedidoPorId(id);
+    public PedidoDTO obtener(@PathVariable Long id) {
+        return pedidoService.obtenerPedidoDTOPorId(id);
+    }
+
+    @GetMapping("/{id}/items")
+    public List<ItemPedidoDTO> listarItems(@PathVariable Long id) {
+        return pedidoService.obtenerItemsDTODePedido(id);
+    }
+
+    @GetMapping("/{idPedido}/items/{idItemPedido}/adicionales")
+    public List<AdicionalDTO> listarAdicionales(
+            @PathVariable Long idPedido,
+            @PathVariable Long idItemPedido) {
+        return pedidoService.obtenerAdicionalesDTODeItem(idPedido, idItemPedido);
     }
 
     @PostMapping
