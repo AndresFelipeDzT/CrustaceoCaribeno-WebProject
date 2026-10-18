@@ -66,6 +66,7 @@ public class PedidoServiceImpl implements PedidoService {
         }
         ItemPedido item = itemPedidoRepository.findById(idItemPedido)
                 .orElseThrow(() -> new IllegalArgumentException("El ítem no pertenece a este pedido."));
+        // Evita consultar adicionales usando un ítem perteneciente a otro pedido.
         if (item.getPedido() == null || !idPedido.equals(item.getPedido().getIdPedido())) {
             throw new IllegalArgumentException("El ítem no pertenece a este pedido.");
         }

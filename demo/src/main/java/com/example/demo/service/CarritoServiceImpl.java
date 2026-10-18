@@ -151,6 +151,7 @@ public class CarritoServiceImpl implements CarritoService {
                 }
                 Adicional adicional = adicionalRepository.findById(idAdicional)
                         .orElseThrow(() -> new IllegalArgumentException("El adicional no está disponible para este producto."));
+                // Los adicionales se habilitan por la categoría del producto, no solo por existir.
                 boolean disponible = item.getProducto().getCategoria() != null &&
                     item.getProducto().getCategoria().getAdicionales().contains(adicional);
                 if (!adicional.isActivo() || !disponible) {
@@ -181,6 +182,7 @@ public class CarritoServiceImpl implements CarritoService {
         pedido = pedidoRepository.save(pedido);
         double total = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
 
+        // Copia los ítems antes de vaciar el carrito; ambos cambios participan en la misma transacción.
         for (ItemCarrito item : items) {
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setPedido(pedido);
@@ -207,6 +209,7 @@ public class CarritoServiceImpl implements CarritoService {
         }
         ItemCarrito item = itemCarritoRepository.findById(idItemCarrito)
                 .orElseThrow(() -> new IllegalArgumentException("El producto no pertenece a este carrito."));
+        // El ID por sí solo no basta: el ítem debe pertenecer al carrito del cliente solicitado.
         if (!item.getCarrito().equals(carrito)) {
             throw new IllegalArgumentException("El producto no pertenece a este carrito.");
         }
