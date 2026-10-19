@@ -12,6 +12,8 @@ import { PedidosAdminComponent } from './pages/pedidos-admin/pedidos-admin.compo
 import { CarritoPageComponent } from './pages/carrito-page/carrito-page.component';
 import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
 import { DomiciliarioFormComponent } from './pages/domiciliario-form/domiciliario-form.component';
+import { AdicionalesTablaPageComponent } from './pages/adicionales-tabla-page/adicionales-tabla-page.component';
+import { AdicionalFormComponent } from './pages/adicional-form/adicional-form.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
@@ -33,6 +35,11 @@ export const routes: Routes = [
   { path: 'comidas/tabla/update/:id', component: ComidaFormComponent, title: 'Editar plato' },
   { path: 'comidas/tabla', component: ComidasTablaPageComponent, title: 'Crustáceo Caribeño | Menú en tabla' },
   { path: 'comidas/detalle/:id', component: ComidaDetailComponent, title: 'Detalle de comida' },
+
+  // Rutas de Adicionales
+  { path: 'adicionales/tabla/add', component: AdicionalFormComponent, title: 'Agregar adicional' },
+  { path: 'adicionales/tabla/update/:id', component: AdicionalFormComponent, title: 'Editar adicional' },
+  { path: 'adicionales/tabla', component: AdicionalesTablaPageComponent, title: 'Adicionales | Crustáceo Caribeño' },
 
   // Rutas de Clientes (CRUD)
   { path: 'clientes', redirectTo: '' },

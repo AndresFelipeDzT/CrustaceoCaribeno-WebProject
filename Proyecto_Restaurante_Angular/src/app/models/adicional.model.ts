@@ -4,4 +4,12 @@ export interface Adicional {
   nombre: string;
   precio: number;
   activo: boolean;
+  categoriaIds: number[];
+}
+
+/** Campos que acepta AdicionalRequestDTO al crear o actualizar. */
+export interface AdicionalRequest {
+  nombre: string;
+  precio: number;
+  categoriaIds: number[];
 }

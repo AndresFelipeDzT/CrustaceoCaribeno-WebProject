@@ -1,0 +1,18 @@
+.tabla-adicionales { width: 100%; border-collapse: collapse; border: 1px solid #4a3828; }
+.tabla-adicionales th { padding: 12px 15px; border: 1px solid #4a3828; color: #fff; background: #5c3500; font-family: "Playfair Display", serif; font-size: 1.35rem; font-weight: 700; text-align: center; white-space: nowrap; }
+.tabla-adicionales td { padding: 20px; border: 1px solid #4a3828; background: #fff; vertical-align: middle; }
+.col-nombre { width: 38%; color: #4a2711; font-family: "Playfair Display", serif; font-size: 1.35rem; font-weight: 800; line-height: 1.3; text-align: center; }
+.col-precio { width: 20%; color: #222; font-family: "Poppins", sans-serif; font-size: 1.3rem; font-weight: 700; text-align: center; white-space: nowrap; }
+.col-categorias { width: 25%; color: #222; font-family: "Poppins", sans-serif; text-align: center; }
+.col-estado { width: 17%; text-align: center; }
+.estado-adicional { display: inline-block; padding: 5px 12px; border: 1px solid; border-radius: 16px; font-family: "Poppins", sans-serif; font-size: .9rem; font-weight: 600; }
+.estado-activo { border-color: #7aba83; color: #235b2a; background: #d8f3dc; }
+.estado-inactivo { border-color: #d68a90; color: #7a2525; background: #f8d7da; }
+.col-acciones { width: 25%; text-align: center; }
+.btn-accion { display: inline-block; margin: 4px; padding: 6px 18px; border: 1px solid #6b4403; border-radius: 20px; color: #fff; background: #6b4403; font-family: "Poppins", sans-serif; font-size: .95rem; font-style: italic; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.tabla-vacia { text-align: center; }
+@media (max-width: 768px) {
+  .tabla-adicionales th { font-size: 1rem; }
+  .tabla-adicionales td { padding: 12px; }
+  .col-acciones { min-width: 175px; }
+}

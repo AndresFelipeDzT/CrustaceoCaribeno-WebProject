@@ -1,0 +1,37 @@
+<div class="table-responsive">
+  <table class="table align-middle tabla-adicionales">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Categorías</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (adicional of adicionales(); track adicional.idAdicional) {
+        <tr>
+          <td class="col-nombre">{{ adicional.nombre }}</td>
+          <td class="col-precio">{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+          <td class="col-categorias">{{ nombresCategorias(adicional) }}</td>
+          <td class="col-estado">
+            <span class="estado-adicional" [class.estado-activo]="adicional.activo" [class.estado-inactivo]="!adicional.activo">
+              {{ adicional.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="col-acciones">
+            <a [routerLink]="['/adicionales/tabla/update', adicional.idAdicional]" class="btn-accion">Editar</a>
+            @if (adicional.activo) {
+              <button type="button" class="btn-accion" (click)="adicionalEliminado.emit(adicional.idAdicional)">Eliminar</button>
+            } @else {
+              <button type="button" class="btn-accion" (click)="adicionalActivado.emit(adicional)">Activar</button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr><td class="tabla-vacia" colspan="5">No hay adicionales registrados.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
