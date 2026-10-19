@@ -1,0 +1,43 @@
+<article class="carrito-item">
+  <div class="carrito-item-principal">
+    <img class="carrito-item-imagen" [src]="item().producto.imagenURL" [alt]="item().producto.nombre">
+    <div class="carrito-item-info">
+      <h2>{{ item().producto.nombre }}</h2>
+      <p>Precio: {{ item().producto.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
+      <div class="carrito-controles cantidad-form">
+        <button type="button" aria-label="Disminuir cantidad" [disabled]="item().cantidad <= 1" (click)="cantidadCambiada.emit(item().cantidad - 1)">-</button>
+        <span class="cantidad-valor">{{ item().cantidad }}</span>
+        <button type="button" aria-label="Aumentar cantidad" (click)="cantidadCambiada.emit(item().cantidad + 1)">+</button>
+      </div>
+    </div>
+    <button class="carrito-eliminar" type="button" aria-label="Eliminar producto" (click)="eliminacionSolicitada.emit()">
+      <i class="bi bi-trash3"></i>
+    </button>
+  </div>
+
+  @if (item().adicionales.length) {
+    <ul class="carrito-adicionales">
+      @for (adicional of item().adicionales; track adicional.idAdicional) {
+        <li><i class="bi bi-trash3"></i><span>{{ adicional.nombre }}</span></li>
+      }
+    </ul>
+  }
+
+  @if (adicionalesDisponibles().length) {
+    <div class="seleccion-adicionales">
+      <p>Adicionales para esta línea:</p>
+      @for (adicional of adicionalesDisponibles(); track adicional.idAdicional) {
+        <label>
+          <input
+            type="checkbox"
+            [checked]="adicionalesSeleccionados().includes(adicional.idAdicional)"
+            (change)="adicionalCambiado.emit({ adicionalId: adicional.idAdicional, event: $event })">
+          <span>{{ adicional.nombre }}</span>
+          <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
+        </label>
+      }
+      <button type="button" (click)="adicionalesGuardados.emit()">Guardar adicionales</button>
+    </div>
+  }
+  <p class="carrito-item-total">{{ item().subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
+</article>

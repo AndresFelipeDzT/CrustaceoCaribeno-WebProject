@@ -21,49 +21,15 @@
   @if (carrito; as actual) {
     @if (actual.items.length) {
       @for (item of actual.items; track item.idItemCarrito) {
-        <article class="carrito-item">
-          <div class="carrito-item-principal">
-            <img class="carrito-item-imagen" [src]="item.producto.imagenURL" [alt]="item.producto.nombre">
-            <div class="carrito-item-info">
-              <h2>{{ item.producto.nombre }}</h2>
-              <p>Precio: {{ item.producto.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
-              <div class="carrito-controles cantidad-form">
-                <button type="button" aria-label="Disminuir cantidad" [disabled]="item.cantidad <= 1" (click)="actualizarCantidad(item, item.cantidad - 1)">-</button>
-                <span class="cantidad-valor">{{ item.cantidad }}</span>
-                <button type="button" aria-label="Aumentar cantidad" (click)="actualizarCantidad(item, item.cantidad + 1)">+</button>
-              </div>
-            </div>
-            <button class="carrito-eliminar" type="button" aria-label="Eliminar producto" (click)="eliminarItem(item)">
-              <i class="bi bi-trash3"></i>
-            </button>
-          </div>
-
-          @if (item.adicionales.length) {
-            <ul class="carrito-adicionales">
-              @for (adicional of item.adicionales; track adicional.idAdicional) {
-                <li><i class="bi bi-trash3"></i><span>{{ adicional.nombre }}</span></li>
-              }
-            </ul>
-          }
-
-          @if (disponibles[item.idItemCarrito]?.length) {
-            <div class="seleccion-adicionales">
-              <p>Adicionales para esta línea:</p>
-              @for (adicional of disponibles[item.idItemCarrito]; track adicional.idAdicional) {
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="seleccionados[item.idItemCarrito]?.includes(adicional.idAdicional)"
-                    (change)="cambiarAdicional(item, adicional.idAdicional, $event)">
-                  <span>{{ adicional.nombre }}</span>
-                  <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
-                </label>
-              }
-              <button type="button" (click)="guardarAdicionales(item)">Guardar adicionales</button>
-            </div>
-          }
-          <p class="carrito-item-total">{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
-        </article>
+        <app-carrito-item
+          [item]="item"
+          [adicionalesDisponibles]="disponibles[item.idItemCarrito] ?? []"
+          [adicionalesSeleccionados]="seleccionados[item.idItemCarrito] ?? []"
+          (cantidadCambiada)="actualizarCantidad(item, $event)"
+          (eliminacionSolicitada)="eliminarItem(item)"
+          (adicionalCambiado)="cambiarAdicional(item, $event.adicionalId, $event.event)"
+          (adicionalesGuardados)="guardarAdicionales(item)"
+        ></app-carrito-item>
       }
 
       <section class="carrito-resumen">

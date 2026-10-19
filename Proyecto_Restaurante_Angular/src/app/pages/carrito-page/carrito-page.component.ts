@@ -7,10 +7,11 @@ import { ItemCarrito } from '../../models/item-carrito.model';
 import { CarritoService } from '../../service/carrito.service';
 import { ClienteService } from '../../service/cliente.service';
 import { ComidaService } from '../../service/comida.service';
+import { CarritoItemComponent } from './components/carrito-item/carrito-item.component';
 
 @Component({
   selector: 'app-carrito-page',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink, CarritoItemComponent],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css'
 })

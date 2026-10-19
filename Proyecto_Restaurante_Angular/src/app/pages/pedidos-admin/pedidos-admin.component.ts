@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
 import { AdministradorService } from '../../service/administrador.service';
+import { PedidoDetalleComponent } from './components/pedido-detalle/pedido-detalle.component';
+import { PedidosListaComponent } from './components/pedidos-lista/pedidos-lista.component';
 
 @Component({
   selector: 'app-pedidos-admin',
-  imports: [CurrencyPipe, DatePipe, FormsModule, RouterLink],
+  imports: [RouterLink, PedidoDetalleComponent, PedidosListaComponent],
   templateUrl: './pedidos-admin.component.html',
   styleUrl: './pedidos-admin.component.css'
 })
