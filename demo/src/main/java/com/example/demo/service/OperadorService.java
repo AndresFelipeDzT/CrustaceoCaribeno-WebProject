@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.example.demo.entitys.Operador;
 
+/**
+ * Contrato de las operaciones de servicio para operador.
+ */
 public interface OperadorService {
 
     List<Operador> obtenerTodosLosOperadores();

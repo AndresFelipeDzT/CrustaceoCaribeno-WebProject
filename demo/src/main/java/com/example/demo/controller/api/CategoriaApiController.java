@@ -17,6 +17,9 @@ import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.service.CategoriaService;
 
+/**
+ * Controlador REST para las operaciones de categoria.
+ */
 @RestController
 @RequestMapping("/api/categorias")
 @CrossOrigin(origins = "http://localhost:4200")

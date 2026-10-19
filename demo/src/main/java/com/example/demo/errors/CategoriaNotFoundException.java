@@ -1,5 +1,8 @@
 package com.example.demo.errors;
 
+/**
+ * Excepción que informa un problema relacionado con categoria no encontrado.
+ */
 public class CategoriaNotFoundException extends RuntimeException {
 
     public CategoriaNotFoundException(String nombre) {

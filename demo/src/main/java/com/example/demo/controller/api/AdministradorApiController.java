@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entitys.Administrador;
 import com.example.demo.service.AdministradorService;
 
+/**
+ * Controlador REST para las operaciones de administrador.
+ */
 @RestController
 @RequestMapping("/api/administradores")
 @CrossOrigin(origins = "http://localhost:4200")

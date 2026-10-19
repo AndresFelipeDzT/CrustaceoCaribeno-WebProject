@@ -19,6 +19,9 @@ import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.service.PedidoService;
 
+/**
+ * Controlador REST para las operaciones de pedido.
+ */
 @RestController
 @RequestMapping("/api/pedidos")
 @CrossOrigin(origins = "http://localhost:4200")

@@ -7,6 +7,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 
+/**
+ * Punto de entrada de la aplicación Spring Boot.
+ */
 @SpringBootApplication
 public class DemoApplication {
 

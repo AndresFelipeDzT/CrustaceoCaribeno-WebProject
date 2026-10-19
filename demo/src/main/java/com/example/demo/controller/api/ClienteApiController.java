@@ -17,6 +17,9 @@ import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.service.ClienteService;
 
+/**
+ * Controlador REST para las operaciones de cliente.
+ */
 @RestController
 @RequestMapping("/api/clientes")
 @CrossOrigin(origins = "http://localhost:4200")

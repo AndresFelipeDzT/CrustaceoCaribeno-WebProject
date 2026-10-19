@@ -3,6 +3,9 @@ package com.example.demo.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Objeto de transferencia de datos para carrito.
+ */
 @Data
 @NoArgsConstructor
 public class CarritoDTO {

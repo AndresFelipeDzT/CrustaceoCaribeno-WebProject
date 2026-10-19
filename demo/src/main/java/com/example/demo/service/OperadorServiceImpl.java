@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entitys.Operador;
 import com.example.demo.repository.OperadorRepository;
 
+/**
+ * Implementación de la lógica de servicio para operador.
+ */
 @Service
 public class OperadorServiceImpl implements OperadorService {
 

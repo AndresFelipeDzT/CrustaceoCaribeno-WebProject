@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.service.DomiciliarioService;
 
+/**
+ * Controlador REST para las operaciones de domiciliario.
+ */
 @RestController
 @RequestMapping("/api/domiciliarios")
 @CrossOrigin(origins = "http://localhost:4200")

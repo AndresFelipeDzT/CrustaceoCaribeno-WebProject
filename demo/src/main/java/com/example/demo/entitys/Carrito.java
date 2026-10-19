@@ -16,6 +16,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad JPA que representa carrito en el sistema.
+ */
 @Data
 @NoArgsConstructor
 @Entity

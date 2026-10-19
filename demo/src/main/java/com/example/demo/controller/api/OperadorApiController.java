@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entitys.Operador;
 import com.example.demo.service.OperadorService;
 
+/**
+ * Controlador REST para las operaciones de operador.
+ */
 @RestController
 @RequestMapping("/api/operadores")
 @CrossOrigin(origins = "http://localhost:4200")

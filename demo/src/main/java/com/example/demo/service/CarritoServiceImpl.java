@@ -27,6 +27,9 @@ import com.example.demo.repository.ProductoFakeRepository;
 
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementación de la lógica de servicio para carrito.
+ */
 @Service
 @Transactional
 public class CarritoServiceImpl implements CarritoService {

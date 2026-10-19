@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entitys.Operador;
 
+/**
+ * Repositorio de acceso a datos para operador mediante Spring Data JPA.
+ */
 @Repository
 public interface OperadorRepository extends JpaRepository<Operador, Long> {
 }
