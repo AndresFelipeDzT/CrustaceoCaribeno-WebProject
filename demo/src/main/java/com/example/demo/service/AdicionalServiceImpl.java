@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.AdicionalRequestDTO;
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
 import com.example.demo.errors.AdicionalNotFoundException;
@@ -28,6 +31,11 @@ public class AdicionalServiceImpl implements AdicionalService {
     }
 
     @Override
+    public List<Adicional> obtenerTodosLosAdicionalesIncluyendoInactivos() {
+        return adicionalRepository.findAll();
+    }
+
+    @Override
     public Adicional obtenerAdicionalPorId(Long idAdicional) {
         if (idAdicional == null) {
             throw new IllegalArgumentException("El ID del adicional es obligatorio.");
@@ -45,40 +53,100 @@ public class AdicionalServiceImpl implements AdicionalService {
     }
 
     @Override
-    public List<AdicionalDTO> obtenerAdicionalesDTO(Long categoriaId) {
+    public List<Adicional> obtenerAdicionalesPorCategoriaIncluyendoInactivos(Categoria categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("La categoría es obligatoria.");
+        }
+        return adicionalRepository.findByCategoriasContaining(categoria);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AdicionalDTO> obtenerAdicionalesDTO(boolean incluirInactivos, Long categoriaId) {
         List<Adicional> adicionales;
-        if (categoriaId == null) {
-            adicionales = obtenerTodosLosAdicionales();
-        } else {
+        if (categoriaId != null) {
             Categoria categoria = categoriaRepository.findById(categoriaId)
                     .orElseThrow(() -> new CategoriaNotFoundException(categoriaId));
-            adicionales = obtenerAdicionalesPorCategoria(categoria);
+            adicionales = incluirInactivos
+                    ? obtenerAdicionalesPorCategoriaIncluyendoInactivos(categoria)
+                    : obtenerAdicionalesPorCategoria(categoria);
+        } else {
+            adicionales = incluirInactivos
+                    ? obtenerTodosLosAdicionalesIncluyendoInactivos()
+                    : obtenerTodosLosAdicionales();
         }
         return adicionales.stream().map(this::aDTO).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdicionalDTO obtenerAdicionalDTOPorId(Long idAdicional) {
         return aDTO(obtenerAdicionalPorId(idAdicional));
     }
 
     @Override
-    public Adicional guardarAdicional(Adicional adicional) {
-        if (adicional == null) {
-            throw new IllegalArgumentException("Los datos del adicional no pueden ser nulos.");
-        }
-        return adicionalRepository.save(adicional);
+    @Transactional
+    public Adicional guardarAdicional(AdicionalRequestDTO datos) {
+        validarDatos(datos);
+        Adicional adicional = new Adicional(datos.getNombre(), datos.getPrecio());
+        adicional = adicionalRepository.save(adicional);
+        actualizarCategorias(adicional, datos.getCategoriaIds());
+        return adicional;
     }
 
     @Override
-    public void actualizarAdicional(Long idAdicional, Adicional adicional) {
-        if (adicional == null) {
+    @Transactional
+    public void actualizarAdicional(Long idAdicional, AdicionalRequestDTO datos) {
+        validarDatos(datos);
+        Adicional adicional = obtenerAdicionalPorId(idAdicional);
+        adicional.setNombre(datos.getNombre());
+        adicional.setPrecio(datos.getPrecio());
+        adicionalRepository.save(adicional);
+        actualizarCategorias(adicional, datos.getCategoriaIds());
+    }
+
+    private void validarDatos(AdicionalRequestDTO datos) {
+        if (datos == null) {
             throw new IllegalArgumentException("Los datos del adicional no pueden ser nulos.");
         }
-        Adicional adicionalExistente = obtenerAdicionalPorId(idAdicional);
-        adicional.setIdAdicional(idAdicional);
-        adicional.setActivo(adicionalExistente.isActivo());
-        adicionalRepository.save(adicional);
+        if (datos.getCategoriaIds() == null) {
+            throw new IllegalArgumentException("La lista de categorías es obligatoria.");
+        }
+    }
+
+    private void actualizarCategorias(Adicional adicional, List<Long> categoriaIds) {
+        if (adicional.getCategorias() == null) {
+            adicional.setCategorias(new ArrayList<>());
+        }
+        List<Categoria> categoriasActuales = new ArrayList<>(adicional.getCategorias());
+        for (Categoria categoria : categoriasActuales) {
+            if (categoria.getAdicionales() == null) {
+                categoria.setAdicionales(new ArrayList<>());
+            }
+            categoria.getAdicionales().removeIf(
+                    adicionalRelacionado -> adicional.getIdAdicional().equals(adicionalRelacionado.getIdAdicional()));
+            categoriaRepository.save(categoria);
+        }
+        adicional.getCategorias().clear();
+
+        List<Long> categoriasProcesadas = new ArrayList<>();
+        for (Long categoriaId : categoriaIds) {
+            if (categoriaId == null) {
+                throw new IllegalArgumentException("Los IDs de categoría no pueden ser nulos.");
+            }
+            if (categoriasProcesadas.contains(categoriaId)) {
+                continue;
+            }
+            categoriasProcesadas.add(categoriaId);
+            Categoria categoria = categoriaRepository.findById(categoriaId)
+                    .orElseThrow(() -> new CategoriaNotFoundException(categoriaId));
+            if (categoria.getAdicionales() == null) {
+                categoria.setAdicionales(new ArrayList<>());
+            }
+            categoria.getAdicionales().add(adicional);
+            adicional.getCategorias().add(categoria);
+            categoriaRepository.save(categoria);
+        }
     }
 
     @Override
@@ -88,11 +156,19 @@ public class AdicionalServiceImpl implements AdicionalService {
         adicionalRepository.save(adicional);
     }
 
+    @Override
+    public void activarAdicional(Long idAdicional) {
+        Adicional adicional = obtenerAdicionalPorId(idAdicional);
+        adicional.setActivo(true);
+        adicionalRepository.save(adicional);
+    }
+
     private AdicionalDTO aDTO(Adicional adicional) {
         return new AdicionalDTO(
                 adicional.getIdAdicional(),
                 adicional.getNombre(),
                 adicional.getPrecio(),
-                adicional.isActivo());
+                adicional.isActivo(),
+                adicional.getCategorias().stream().map(Categoria::getIdCategoria).toList());
     }
 }

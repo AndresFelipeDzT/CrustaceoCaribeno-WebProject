@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdicionalDTO;
-import com.example.demo.entitys.Adicional;
+import com.example.demo.dto.AdicionalRequestDTO;
 import com.example.demo.service.AdicionalService;
 
 @RestController
@@ -27,8 +27,10 @@ public class AdicionalApiController {
     private AdicionalService adicionalService;
 
     @GetMapping
-    public List<AdicionalDTO> listar(@RequestParam(required = false) Long categoriaId) {
-        return adicionalService.obtenerAdicionalesDTO(categoriaId);
+    public List<AdicionalDTO> listar(
+            @RequestParam(defaultValue = "false") boolean incluirInactivos,
+            @RequestParam(required = false) Long categoriaId) {
+        return adicionalService.obtenerAdicionalesDTO(incluirInactivos, categoriaId);
     }
 
     @GetMapping("/{id}")
@@ -37,18 +39,23 @@ public class AdicionalApiController {
     }
 
     @PostMapping
-    public void crear(@RequestBody Adicional adicional) {
+    public void crear(@RequestBody AdicionalRequestDTO adicional) {
         adicionalService.guardarAdicional(adicional);
     }
 
     @PutMapping("/{id}")
-    public void actualizar(@PathVariable Long id, @RequestBody Adicional adicional) {
+    public void actualizar(@PathVariable Long id, @RequestBody AdicionalRequestDTO adicional) {
         adicionalService.actualizarAdicional(id, adicional);
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         adicionalService.eliminarAdicional(id);
+    }
+
+    @PutMapping("/{id}/activar")
+    public void activar(@PathVariable Long id) {
+        adicionalService.activarAdicional(id);
     }
 
 }
