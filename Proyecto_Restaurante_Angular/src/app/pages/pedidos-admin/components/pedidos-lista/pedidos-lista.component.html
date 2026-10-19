@@ -1,0 +1,47 @@
+<main class="pedidos-main">
+  <h1>Pedidos Recibidos</h1>
+  <p class="pedidos-subtitulo">{{ esOperador() ? 'Pedidos que aún no han sido completados:' : 'Gestión Y Revisión De Todos Los Pedidos Realizados:' }}</p>
+  @if (mensaje()) { <p class="pedidos-alerta">{{ mensaje() }}</p> }
+  @if (error()) { <p class="pedidos-alerta error" role="alert">{{ error() }}</p> }
+
+  <div class="filtro-pedidos">
+    <input type="search" name="busqueda" placeholder="Buscar por nombre, estado o fecha...">
+    <button type="button">Filtrar</button>
+  </div>
+
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>ID Pedido</th><th>Fecha Creación</th><th>Fecha Entrega</th>
+          <th>Cliente</th><th>Estado</th><th>Domiciliario</th><th>Total</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of pedidos(); track item.idPedido) {
+          <tr>
+            <td>{{ item.idPedido }}</td>
+            <td>{{ item.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+            <td>{{ item.fechaEntrega ? (item.fechaEntrega | date:'dd/MM/yyyy') : 'Pendiente' }}</td>
+            <td>{{ item.cliente?.nombreCompleto || ((item.cliente?.nombre || '') + ' ' + (item.cliente?.apellido || '')).trim() || 'Sin cliente' }}</td>
+            <td><span class="estado" [class.estado-entregado]="item.estado.toLowerCase() === 'entregado'"
+              [class.estado-cancelado]="item.estado.toLowerCase() === 'cancelado'"
+              [class.estado-pendiente]="item.estado.toLowerCase() === 'pendiente'">{{ item.estado }}</span></td>
+            <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
+            <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+            <td class="acciones">
+              <a class="btn-detalle" [routerLink]="esOperador() ? ['/operador/pedidos', item.idPedido] : ['/pedidos', item.idPedido]" [queryParams]="esOperador() ? (operadorId() === undefined ? {} : { idOperador: operadorId() }) : (administradorId() === undefined ? {} : { idAdministrador: administradorId() })">Detalles</a>
+              @if (!esOperador()) {
+                <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="pedidoEliminado.emit(item.idPedido)">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="8" class="sin-pedidos">No hay pedidos para mostrar.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>

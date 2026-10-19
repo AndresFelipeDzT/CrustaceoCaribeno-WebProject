@@ -1,0 +1,23 @@
+.pedidos-main { min-height: calc(100vh - 140px); padding: 28px 6% 54px; }
+.pedidos-main h1 { margin: 0; color: var(--dorado); font: 700 1.7rem "Playfair Display", serif; text-align: center; }
+.pedidos-subtitulo { margin: 4px 0 22px; text-align: center; font-size: .95rem; }
+.pedidos-alerta { width: min(100%, 680px); margin: 10px auto; padding: 8px; border-radius: 8px; background: #e6f7df; color: #245d1c; font-family: Poppins, sans-serif; font-style: normal; text-align: center; }
+.pedidos-alerta.error { background: #ffe3e3; color: #8c1c1c; }
+.filtro-pedidos { display: flex; justify-content: center; gap: 10px; margin: 0 auto 22px; }
+.filtro-pedidos input { width: min(100%, 420px); padding: 8px 15px; border: 1px solid #9c9c9c; border-radius: 20px; font-family: inherit; font-style: italic; }
+.filtro-pedidos button { padding: 7px 24px; border: 0; border-radius: 20px; background: var(--dorado); color: white; font: inherit; cursor: pointer; }
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; min-width: 980px; border-collapse: collapse; background: white; font-size: .85rem; font-style: italic; }
+th { padding: 8px 6px; background: var(--dorado); color: white; font-weight: 700; text-align: center; }
+td { padding: 8px 6px; border: 1px solid #aaa; text-align: center; vertical-align: middle; }
+tbody tr:nth-child(even) { background: #fbfaf7; }
+.estado { display: inline-block; padding: 3px 9px; border: 1px solid #91a7e8; border-radius: 14px; background: #edf1ff; font-size: .78rem; }
+.estado-entregado { background: #c9f5c0; border-color: #6fbc68; }
+.estado-cancelado { background: #ffc2c2; border-color: #e17b7b; }
+.estado-pendiente, .estado-en-preparación { background: #fff3b5; border-color: #d3b858; }
+.acciones { display: flex; justify-content: center; align-items: center; gap: 6px; }
+.btn-detalle, .btn-eliminar { padding: 5px 10px; border: 1px solid #86a0e9; border-radius: 14px; background: white; color: #1c428f; font: inherit; font-size: .78rem; text-decoration: none; cursor: pointer; }
+.btn-eliminar { border-color: #bd6767; color: #a32929; }
+.btn-eliminar:hover { background: #ffe0e0; }
+.sin-pedidos { padding: 25px; }
+@media (max-width: 760px) { .pedidos-main { padding: 24px 14px 40px; } }

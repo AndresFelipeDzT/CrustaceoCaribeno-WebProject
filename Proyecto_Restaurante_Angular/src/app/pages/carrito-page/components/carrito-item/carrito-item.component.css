@@ -1,0 +1,40 @@
+:host { display: block; }
+* { box-sizing: border-box; }
+
+.carrito-item {
+    position: relative;
+    margin: 0 0 10px;
+    padding: 12px 12px 10px;
+    border: 2px solid var(--carrito-azul);
+    border-radius: 21px;
+    background: #fff;
+    box-shadow: 0 2px 3px rgba(7, 27, 104, .15);
+}
+
+.carrito-item-principal {
+    display: grid;
+    grid-template-columns: 126px 1fr 26px;
+    gap: 18px;
+    align-items: start;
+}
+
+.carrito-item-imagen { width: 126px; height: 82px; border-radius: 12px; object-fit: cover; }
+.carrito-item-info h2 { margin: 0 0 6px; color: var(--carrito-dorado); font-family: "Playfair Display", serif; font-size: 1.3rem; font-style: normal; }
+.carrito-item-info p { margin: 0 0 8px; font-size: 1rem; }
+.carrito-controles { display: flex; align-items: center; gap: 8px; }
+.cantidad-form { display: inline-flex; gap: 8px; align-items: center; }
+.cantidad-form button, .cantidad-valor { width: 28px; height: 26px; padding: 0; border: 0; background: var(--carrito-azul); color: #fff; font-family: inherit; font-style: normal; line-height: 26px; text-align: center; }
+.cantidad-valor { border: 1px solid var(--carrito-azul); background: #fff; color: var(--carrito-azul); }
+.cantidad-form button { cursor: pointer; }
+.carrito-eliminar { padding: 0; border: 0; background: transparent; color: #1b1b1b; font-size: 1.3rem; cursor: pointer; }
+.carrito-item-total { margin: -1px 0 0; color: var(--carrito-dorado); font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; text-align: right; }
+.carrito-adicionales { margin: 6px 38px 0 28px; padding: 5px 0 0 25px; border-top: 1px dotted #888; list-style: none; font-size: .95rem; }
+.carrito-adicionales li { margin: 3px 0; }
+.carrito-adicionales i { margin-right: 8px; }
+.seleccion-adicionales { margin: 10px 28px 0; padding: 8px 0; border-top: 1px dotted #888; font-family: "Poppins", sans-serif; font-size: .95rem; font-style: normal; }
+.seleccion-adicionales p { margin: 0 0 5px; font-weight: 600; }
+.seleccion-adicionales label { display: flex; align-items: center; gap: 5px; width: 100%; margin: 6px 0; }
+.seleccion-adicionales input { accent-color: var(--carrito-azul); }
+.seleccion-adicionales span { flex: 1; }
+.seleccion-adicionales strong { min-width: 72px; font-weight: 500; text-align: right; }
+.seleccion-adicionales button { display: block; margin-top: 5px; padding: 4px 12px; border: 1px solid var(--carrito-azul); border-radius: 14px; background: var(--carrito-azul); color: white; cursor: pointer; font: inherit; }
