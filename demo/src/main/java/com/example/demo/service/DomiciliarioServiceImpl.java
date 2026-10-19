@@ -11,6 +11,9 @@ import com.example.demo.repository.DomiciliarioRepository;
 import com.example.demo.repository.PedidoRepository;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementación de la lógica de servicio para domiciliario.
+ */
 @Service
 public class DomiciliarioServiceImpl implements DomiciliarioService {
 

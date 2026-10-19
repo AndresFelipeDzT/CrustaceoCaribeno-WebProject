@@ -31,6 +31,9 @@ import com.example.demo.repository.ProductoFakeRepository;
 
 import jakarta.transaction.Transactional;
 
+/**
+ * Carga los datos iniciales de ejemplo al iniciar la aplicación.
+ */
 @Component 
 @Transactional 
 public class DataLoader implements CommandLineRunner {

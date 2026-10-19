@@ -8,6 +8,9 @@ import com.example.demo.dto.CarritoDTO;
 import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
 
+/**
+ * Contrato de las operaciones de servicio para carrito.
+ */
 public interface CarritoService {
     Carrito obtenerCarrito(Long idCliente);
     CarritoDTO obtenerCarritoDTO(Long idCliente);

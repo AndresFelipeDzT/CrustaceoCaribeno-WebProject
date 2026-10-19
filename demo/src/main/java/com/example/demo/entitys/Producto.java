@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
  * Representa la entidad Producto del Diagrama de Clases UML sin herencia.
  */
 
+/**
+ * Entidad JPA que representa producto en el sistema.
+ */
 @Data
 @NoArgsConstructor
 @Entity 

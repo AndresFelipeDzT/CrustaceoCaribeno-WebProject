@@ -9,6 +9,9 @@ import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.entitys.Pedido;
 
+/**
+ * Repositorio de acceso a datos para pedido mediante Spring Data JPA.
+ */
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByCliente(Cliente cliente);

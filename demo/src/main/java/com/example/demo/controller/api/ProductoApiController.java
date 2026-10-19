@@ -18,6 +18,9 @@ import com.example.demo.entitys.Producto;
 import com.example.demo.dto.ProductoDTO;
 import com.example.demo.service.ProductoService;
 
+/**
+ * Controlador REST para las operaciones de producto.
+ */
 @RestController
 @RequestMapping("/api/productos")
 @CrossOrigin(origins = "http://localhost:4200")

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
 
+/**
+ * Repositorio de acceso a datos para adicional mediante Spring Data JPA.
+ */
 @Repository
 public interface AdicionalRepository extends JpaRepository<Adicional, Long> {
     List<Adicional> findByActivoTrue();

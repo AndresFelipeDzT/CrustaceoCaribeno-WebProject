@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.example.demo.entitys.Domiciliario;
 
+/**
+ * Contrato de las operaciones de servicio para domiciliario.
+ */
 public interface DomiciliarioService {
 
     List<Domiciliario> obtenerTodosLosDomiciliarios();

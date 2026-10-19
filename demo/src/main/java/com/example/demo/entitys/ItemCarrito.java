@@ -15,6 +15,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad JPA que representa itemcarrito en el sistema.
+ */
 @Data
 @NoArgsConstructor
 @Entity

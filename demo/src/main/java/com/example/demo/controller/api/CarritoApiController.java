@@ -19,6 +19,9 @@ import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.service.CarritoService;
 
+/**
+ * Controlador REST para las operaciones de carrito.
+ */
 @RestController
 @RequestMapping("/api/carritos")
 @CrossOrigin(origins = "http://localhost:4200")

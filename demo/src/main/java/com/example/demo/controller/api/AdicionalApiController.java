@@ -18,6 +18,9 @@ import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.AdicionalRequestDTO;
 import com.example.demo.service.AdicionalService;
 
+/**
+ * Controlador REST para las operaciones de adicional.
+ */
 @RestController
 @RequestMapping("/api/adicionales")
 @CrossOrigin(origins = "http://localhost:4200")

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entitys.Administrador;
 import com.example.demo.repository.AdministradorRepository;
 
+/**
+ * Implementación de la lógica de servicio para administrador.
+ */
 @Service
 public class AdministradorServiceImpl implements AdministradorService {
 

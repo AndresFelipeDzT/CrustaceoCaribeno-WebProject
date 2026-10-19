@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Objeto de transferencia de datos para pedido.
+ */
 @Data
 @NoArgsConstructor
 public class PedidoDTO {

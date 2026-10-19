@@ -9,6 +9,9 @@ import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 
+/**
+ * Repositorio de acceso a datos para itempedido mediante Spring Data JPA.
+ */
 @Repository
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
     List<ItemPedido> findByPedido(Pedido pedido);

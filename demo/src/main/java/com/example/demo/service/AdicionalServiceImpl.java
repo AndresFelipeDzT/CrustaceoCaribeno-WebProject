@@ -16,6 +16,9 @@ import com.example.demo.errors.CategoriaNotFoundException;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CategoriaFakeRepository;
 
+/**
+ * Implementación de la lógica de servicio para adicional.
+ */
 @Service
 public class AdicionalServiceImpl implements AdicionalService {
 

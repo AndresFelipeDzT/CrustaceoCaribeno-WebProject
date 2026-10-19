@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.example.demo.entitys.Administrador;
 
+/**
+ * Contrato de las operaciones de servicio para administrador.
+ */
 public interface AdministradorService {
 
     List<Administrador> obtenerTodosLosAdministradores();

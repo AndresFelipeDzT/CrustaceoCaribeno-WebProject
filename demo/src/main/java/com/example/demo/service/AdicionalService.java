@@ -7,6 +7,9 @@ import com.example.demo.dto.AdicionalRequestDTO;
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Categoria;
 
+/**
+ * Contrato de las operaciones de servicio para adicional.
+ */
 public interface AdicionalService {
 
     /* Obtiene todos los adicionales disponibles */

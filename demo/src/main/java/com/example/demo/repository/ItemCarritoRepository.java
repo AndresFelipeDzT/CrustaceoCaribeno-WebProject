@@ -9,6 +9,9 @@ import com.example.demo.entitys.Carrito;
 import com.example.demo.entitys.ItemCarrito;
 import com.example.demo.entitys.Producto;
 
+/**
+ * Repositorio de acceso a datos para itemcarrito mediante Spring Data JPA.
+ */
 @Repository
 public interface ItemCarritoRepository extends JpaRepository<ItemCarrito, Long> {
     List<ItemCarrito> findByCarrito(Carrito carrito);

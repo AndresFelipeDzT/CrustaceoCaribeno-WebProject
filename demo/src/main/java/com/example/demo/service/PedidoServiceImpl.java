@@ -16,6 +16,9 @@ import com.example.demo.repository.PedidoRepository;
 
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementación de la lógica de servicio para pedido.
+ */
 @Service
 @Transactional
 public class PedidoServiceImpl implements PedidoService {

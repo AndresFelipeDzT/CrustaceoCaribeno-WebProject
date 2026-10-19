@@ -7,6 +7,9 @@ import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Pedido;
 
+/**
+ * Contrato de las operaciones de servicio para pedido.
+ */
 public interface PedidoService {
     List<PedidoDTO> obtenerPedidosDTO();
 
