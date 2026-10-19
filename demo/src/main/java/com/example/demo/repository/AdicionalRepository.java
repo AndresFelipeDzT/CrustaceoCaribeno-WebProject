@@ -11,5 +11,6 @@ import com.example.demo.entitys.Categoria;
 @Repository
 public interface AdicionalRepository extends JpaRepository<Adicional, Long> {
     List<Adicional> findByActivoTrue();
+    List<Adicional> findByCategoriasContaining(Categoria categoria);
     List<Adicional> findByCategoriasContainingAndActivoTrue(Categoria categoria);
 }
