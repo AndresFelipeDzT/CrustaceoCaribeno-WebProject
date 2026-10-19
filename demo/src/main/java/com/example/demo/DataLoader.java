@@ -66,11 +66,21 @@ public class DataLoader implements CommandLineRunner {
         administradorRepository.save(new Administrador("admin.usuarios", "usuarios123"));
         administradorRepository.save(new Administrador("admin.reportes", "reportes123"));
 
-        operadorRepository.save(new Operador("Juan García", "operador.principal", "operador123"));
-        operadorRepository.save(new Operador("Ana Velásquez", "operador.cocina", "cocina123"));
-        operadorRepository.save(new Operador("Carlos Rodríguez", "operador.despachos", "despachos123"));
-        operadorRepository.save(new Operador("María González", "operador.caja", "caja123"));
-        operadorRepository.save(new Operador("Luis Martínez", "operador.soporte", "soporte123"));
+        operadorRepository.save(new Operador("Juan García",
+                "https://template.canva.com/EAGaiz0UGo0/1/0/1600w-3IOAEhUAWKI.jpg",
+                "operador.principal", "operador123"));
+        operadorRepository.save(new Operador("Ana Velásquez",
+                "https://images.squarespace-cdn.com/content/v1/62756b70a2dead6247ee2ddb/02cd6c6f-cbc2-4bea-9160-378353e27d1a/angela-delmar-27.jpg",
+                "operador.cocina", "cocina123"));
+        operadorRepository.save(new Operador("Carlos Rodríguez",
+                "https://s.magicaitool.com/nanobanana/nano-banana-lora/linkedIn-profile-photo/after3.webp",
+                "operador.despachos", "despachos123"));
+        operadorRepository.save(new Operador("María González",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2XhB3ru5Ru0u3XRKS7J4bD0DVNSFZYCkjC2yBedGnQsB-Zu8NoM9MKa8&s=10",
+                "operador.caja", "caja123"));
+        operadorRepository.save(new Operador("Luis Martínez",
+                "https://estudiofoto.com/wp-content/uploads/2025/09/Foto-Corporativa-LinkedIn-687x1030.webp",
+                "operador.soporte", "soporte123"));
 
         //Agregar 10 clientes
         clienteRepository.save(new Cliente("Juan","Rodriguez","Juan.Rodriguez@gmail.com","33034534","Av carrera 45 # 34-56","1234"));
