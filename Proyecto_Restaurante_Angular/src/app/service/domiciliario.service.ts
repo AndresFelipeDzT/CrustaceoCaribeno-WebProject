@@ -6,6 +6,7 @@ import { Domiciliario } from '../models/domiciliario.model';
 @Injectable({
   providedIn: 'root'
 })
+/** Provee las operaciones CRUD y de disponibilidad de domiciliarios. */
 export class DomiciliarioService {
   private readonly apiUrl = 'http://localhost:8080/api/domiciliarios';
   private http = inject(HttpClient);

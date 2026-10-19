@@ -9,6 +9,7 @@ import { ComidaService } from '../../../../service/comida.service';
   templateUrl: './comida-acompanamientos.component.html',
   styleUrl: './comida-acompanamientos.component.scss'
 })
+/** Muestra únicamente los adicionales activos del producto. */
 export class ComidaAcompanamientosComponent implements OnInit {
   @Input() categoriaId?: number;
   private comidaService = inject(ComidaService);

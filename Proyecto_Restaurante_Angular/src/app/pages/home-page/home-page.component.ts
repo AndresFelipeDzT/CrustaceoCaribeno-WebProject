@@ -12,4 +12,5 @@ import { TerceraSeccionComponent } from './components/tercera-seccion/tercera-se
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
+/** Compone la página principal del restaurante. */
 export class HomePageComponent {}

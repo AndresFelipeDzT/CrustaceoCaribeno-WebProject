@@ -1,7 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { TableNavbarComponent } from '../../components/navbar/table-navbar/table-navbar.component';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Adicional } from '../../models/adicional.model';
 import { Categoria } from '../../models/categoria.model';
 import { ComidaService } from '../../service/comida.service';
@@ -9,15 +7,22 @@ import { AdicionalTableComponent } from './components/adicional-table/adicional-
 
 @Component({
   selector: 'app-adicionales-tabla-page',
-  imports: [RouterLink, FooterComponent, TableNavbarComponent, AdicionalTableComponent],
+  imports: [RouterLink, AdicionalTableComponent],
   templateUrl: './adicionales-tabla-page.component.html',
   styleUrl: './adicionales-tabla-page.component.scss'
 })
+/** Administra el listado, activación y desactivación de adicionales. */
 export class AdicionalesTablaPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
+  private route = inject(ActivatedRoute);
   adicionales: Adicional[] = [];
   categorias: Categoria[] = [];
   error = '';
+
+  get administradorId(): number | undefined {
+    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
+    return Number.isInteger(id) && id > 0 ? id : undefined;
+  }
 
   ngOnInit(): void {
     this.comidaService.getCategorias().subscribe({

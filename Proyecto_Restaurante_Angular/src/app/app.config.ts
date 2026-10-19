@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
+/** Proveedores globales para enrutamiento y peticiones HTTP. */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

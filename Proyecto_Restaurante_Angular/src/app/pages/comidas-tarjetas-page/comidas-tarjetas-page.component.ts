@@ -12,6 +12,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
   templateUrl: './comidas-tarjetas-page.component.html',
   styleUrl: './comidas-tarjetas-page.component.scss'
 })
+/** Carga el menú visible para los clientes en formato de tarjetas. */
 export class ComidasTarjetasPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
   comidas: Producto[] = [];

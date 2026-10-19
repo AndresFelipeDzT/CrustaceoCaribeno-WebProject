@@ -8,6 +8,7 @@ import { Categoria } from '../../../../models/categoria.model';
   templateUrl: './comida-form-fields.component.html',
   styleUrl: './comida-form-fields.component.scss'
 })
+/** Contiene los controles reutilizables del formulario de platos. */
 export class ComidaFormFieldsComponent {
   @Input({ required: true }) comidaForm!: FormGroup;
   @Input({ required: true }) categorias: Categoria[] = [];

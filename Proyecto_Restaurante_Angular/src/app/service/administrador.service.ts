@@ -7,6 +7,7 @@ import { Administrador } from '../models/administrador.model';
 @Injectable({
   providedIn: 'root'
 })
+/** Consulta administradores y resuelve el administrador indicado en la URL actual. */
 export class AdministradorService {
   private readonly apiUrl = 'http://localhost:8080/api/administradores';
   private http = inject(HttpClient);
@@ -19,6 +20,7 @@ export class AdministradorService {
     return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
+  /** Busca las credenciales en la colección de administradores expuesta por la API. */
   iniciarSesion(usuario: string, contrasena: string): Observable<Administrador | undefined> {
     return this.http.get<Administrador[]>(this.apiUrl).pipe(
       map(administradores => administradores.find(administrador =>

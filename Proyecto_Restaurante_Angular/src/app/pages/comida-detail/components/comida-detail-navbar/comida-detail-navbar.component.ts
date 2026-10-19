@@ -8,6 +8,7 @@ import { ClienteService } from '../../../../service/cliente.service';
   templateUrl: './comida-detail-navbar.component.html',
   styleUrl: './comida-detail-navbar.component.scss'
 })
+/** Navegación contextual del detalle de un producto. */
 export class ComidaDetailNavbarComponent {
   private clienteService = inject(ClienteService);
   get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }

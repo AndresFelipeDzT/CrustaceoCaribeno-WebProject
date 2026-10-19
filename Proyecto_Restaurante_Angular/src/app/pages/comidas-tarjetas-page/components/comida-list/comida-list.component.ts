@@ -8,6 +8,7 @@ import { ComidaCardComponent } from '../comida-card/comida-card.component';
   templateUrl: './comida-list.component.html',
   styleUrl: './comida-list.component.scss'
 })
+/** Agrupa y muestra las tarjetas de comida recibidas. */
 export class ComidaListComponent {
   comidas = input.required<Producto[]>();
   readonly categorias = [

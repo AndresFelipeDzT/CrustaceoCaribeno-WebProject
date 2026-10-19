@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   templateUrl: './hero-banner.component.html',
   styleUrl: './hero-banner.component.scss'
 })
+/** Banner histórico de la vista de tabla de comidas. */
 export class TableHeroBannerComponent {}

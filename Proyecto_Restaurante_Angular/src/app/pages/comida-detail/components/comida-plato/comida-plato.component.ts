@@ -8,6 +8,7 @@ import { Producto } from '../../../../models/producto.model';
   templateUrl: './comida-plato.component.html',
   styleUrl: './comida-plato.component.scss'
 })
+/** Presenta la información principal de un plato. */
 export class ComidaPlatoComponent {
   @Input({ required: true }) comida!: Producto;
 }

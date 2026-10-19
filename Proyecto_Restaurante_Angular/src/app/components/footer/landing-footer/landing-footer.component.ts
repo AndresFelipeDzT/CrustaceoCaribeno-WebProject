@@ -7,4 +7,5 @@ import { RouterLink } from '@angular/router';
   templateUrl: './landing-footer.component.html',
   styleUrl: './landing-footer.component.scss'
 })
+/** Pie de página mostrado en la landing page. */
 export class LandingFooterComponent {}

@@ -12,6 +12,7 @@ import { AdministradorService } from '../../service/administrador.service';
   templateUrl: './pedidos-admin.component.html',
   styleUrl: './pedidos-admin.component.css'
 })
+/** Gestiona pedidos para administradores y reutiliza la vista para operadores. */
 export class PedidosAdminComponent implements OnInit {
   private pedidoService = inject(PedidoService);
   private administradorService = inject(AdministradorService);
@@ -22,6 +23,7 @@ export class PedidosAdminComponent implements OnInit {
   estado = '';
   error = '';
   mensaje = '';
+  /** Determina el rol mediante la ruta para adaptar acciones y resultados visibles. */
   get esOperador(): boolean { return this.router.url.split('?')[0].startsWith('/operador/'); }
   get operadorId(): number | undefined {
     const id = Number(this.route.snapshot.queryParamMap.get('idOperador'));
@@ -42,6 +44,7 @@ export class PedidosAdminComponent implements OnInit {
   cargarPedidos(): void {
     this.error = '';
     this.pedidoService.getPedidos().subscribe({
+      // Un operador no puede consultar pedidos ya entregados o cancelados.
       next: pedidos => this.pedidos = this.esOperador
         ? pedidos.filter(pedido => !['cancelado', 'entregado'].includes(pedido.estado.trim().toLowerCase()))
         : pedidos,

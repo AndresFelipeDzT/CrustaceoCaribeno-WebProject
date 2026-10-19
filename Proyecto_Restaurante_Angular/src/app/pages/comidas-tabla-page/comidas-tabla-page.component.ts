@@ -10,6 +10,7 @@ import { ComidaTableComponent } from './components/comida-table/comida-table.com
   templateUrl: './comidas-tabla-page.component.html',
   styleUrl: './comidas-tabla-page.component.scss'
 })
+/** Administra el catálogo de platos desde el portal de administrador. */
 export class ComidasTablaPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
   private route = inject(ActivatedRoute);

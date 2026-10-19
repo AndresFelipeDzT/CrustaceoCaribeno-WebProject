@@ -11,6 +11,7 @@ import { OperadorService } from '../../service/operador.service';
   templateUrl: './operadores-page.component.html',
   styleUrl: './operadores-page.component.scss'
 })
+/** Lista, selecciona y elimina cuentas de operador. */
 export class OperadoresPageComponent implements OnInit {
   private operadorService = inject(OperadorService);
   private router = inject(Router);

@@ -13,6 +13,7 @@ import { ClienteService } from '../../service/cliente.service';
   templateUrl: './clientes-tabla-page.component.html',
   styleUrl: './clientes-tabla-page.component.scss'
 })
+/** Lista los clientes para la gestión administrativa. */
 export class ClientesTablaPageComponent implements OnInit {
   private clienteService = inject(ClienteService);
   clientes: Cliente[] = [];

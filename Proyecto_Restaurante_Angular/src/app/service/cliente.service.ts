@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+/** Encapsula el CRUD de clientes y la validación del inicio de sesión. */
 export class ClienteService {
   private readonly apiUrl = 'http://localhost:8080/api/clientes';
 

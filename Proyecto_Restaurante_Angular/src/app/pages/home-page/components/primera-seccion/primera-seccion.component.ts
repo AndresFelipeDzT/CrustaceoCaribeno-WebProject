@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './primera-seccion.component.html',
   styleUrl: './primera-seccion.component.scss'
 })
+/** Primera sección informativa de la página de inicio. */
 export class PrimeraSeccionComponent {
 
 }

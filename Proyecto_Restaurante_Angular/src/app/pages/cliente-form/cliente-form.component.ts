@@ -12,6 +12,7 @@ import { switchMap } from 'rxjs';
   templateUrl: './cliente-form.component.html',
   styleUrl: './cliente-form.component.scss'
 })
+/** Crea o actualiza la información del cliente. */
 export class ClienteFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private clienteService = inject(ClienteService);

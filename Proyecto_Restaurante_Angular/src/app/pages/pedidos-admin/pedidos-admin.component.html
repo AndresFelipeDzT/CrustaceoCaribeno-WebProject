@@ -9,6 +9,7 @@
       <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
       <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
       <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
+      <a routerLink="/adicionales/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Adicionales</a>
     }
     <a [routerLink]="esOperador ? ['/operador'] : ['/admin']">Cerrar sesión</a>
   </nav>

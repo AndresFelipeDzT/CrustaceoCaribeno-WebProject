@@ -13,6 +13,7 @@ import { ComidaAcompanamientosComponent } from './components/comida-acompanamien
   templateUrl: './comida-detail.component.html',
   styleUrl: './comida-detail.component.scss'
 })
+/** Carga el detalle de un producto y sus acompañamientos. */
 export class ComidaDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private comidaService = inject(ComidaService);

@@ -6,6 +6,7 @@ import { Categoria } from '../models/categoria.model';
 import { Producto, ProductoDTO } from '../models/producto.model';
 
 @Injectable({ providedIn: 'root' })
+/** Centraliza las llamadas de productos, categorías y adicionales. */
 export class ComidaService {
   private readonly apiUrl = 'http://localhost:8080/api/productos';
   private readonly categoriasUrl = 'http://localhost:8080/api/categorias';
