@@ -11,6 +11,7 @@ import { ClienteService } from '../../../../service/cliente.service';
   templateUrl: './comida-card.component.html',
   styleUrl: './comida-card.component.scss'
 })
+/** Representa un plato individual dentro del menú de tarjetas. */
 export class ComidaCardComponent {
   private carritoService = inject(CarritoService);
   private clienteService = inject(ClienteService);

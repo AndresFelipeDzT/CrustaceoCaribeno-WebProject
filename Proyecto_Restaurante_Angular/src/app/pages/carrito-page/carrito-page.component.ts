@@ -14,6 +14,7 @@ import { ComidaService } from '../../service/comida.service';
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css'
 })
+/** Gestiona el carrito del cliente, incluidos sus adicionales seleccionados. */
 export class CarritoPageComponent implements OnInit {
   private carritoService = inject(CarritoService);
   private clienteService = inject(ClienteService);

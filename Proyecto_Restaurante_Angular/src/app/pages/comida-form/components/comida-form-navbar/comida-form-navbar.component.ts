@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './comida-form-navbar.component.html',
   styleUrl: './comida-form-navbar.component.scss'
 })
+/** Navegación del formulario de platos dentro del portal administrativo. */
 export class ComidaFormNavbarComponent {
   administradorId = input<number>();
 }

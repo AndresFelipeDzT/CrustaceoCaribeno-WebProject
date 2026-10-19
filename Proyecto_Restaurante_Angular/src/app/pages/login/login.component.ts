@@ -13,6 +13,7 @@ import { OperadorService } from '../../service/operador.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
+/** Reutiliza el formulario de acceso para clientes, administradores y operadores. */
 export class LoginComponent {
   private formBuilder = inject(FormBuilder);
   private clienteService = inject(ClienteService);
@@ -36,6 +37,7 @@ export class LoginComponent {
     }
 
     const { correo, password } = this.loginForm.getRawValue();
+    // Los operadores se autentican con usuario y solo acceden a pedidos pendientes.
     if (this.esOperador) {
       this.operadorService.iniciarSesion(correo, password).subscribe({
         next: operador => {
@@ -49,6 +51,7 @@ export class LoginComponent {
       });
       return;
     }
+    // Los administradores son dirigidos al portal completo de gestión.
     if (this.esAdministrador) {
       this.administradorService.iniciarSesion(correo, password).subscribe({
         next: administrador => {

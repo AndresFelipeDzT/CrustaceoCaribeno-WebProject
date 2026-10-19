@@ -8,6 +8,7 @@ import { ClienteService } from './cliente.service';
 import { ComidaService } from './comida.service';
 
 @Injectable({ providedIn: 'root' })
+/** Obtiene pedidos y completa sus datos relacionados para las vistas. */
 export class PedidoService {
   private readonly apiUrl = 'http://localhost:8080/api/pedidos';
 
@@ -49,6 +50,7 @@ export class PedidoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  /** Enriquece los ítems con producto y adicionales requeridos por el detalle. */
   private getItems(idPedido: number): Observable<ItemPedido[]> {
     return this.http.get<ItemPedidoDTO[]>(`${this.apiUrl}/${idPedido}/items`).pipe(
       switchMap(items => items.length === 0

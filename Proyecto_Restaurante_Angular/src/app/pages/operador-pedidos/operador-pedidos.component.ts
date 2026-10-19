@@ -11,6 +11,7 @@ import { PedidoService } from '../../service/pedido.service';
   templateUrl: './operador-pedidos.component.html',
   styleUrl: './operador-pedidos.component.scss'
 })
+/** Portal alternativo de pedidos para operadores. */
 export class OperadorPedidosComponent implements OnInit {
   private pedidoService = inject(PedidoService);
   private route = inject(ActivatedRoute);

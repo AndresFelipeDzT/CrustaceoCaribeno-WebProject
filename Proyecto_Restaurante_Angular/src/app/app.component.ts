@@ -7,6 +7,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+/** Punto de montaje de la aplicación Angular. */
 export class AppComponent {
   title = 'restaurante';
 }

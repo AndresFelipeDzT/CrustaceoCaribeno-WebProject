@@ -11,6 +11,7 @@ import { DomiciliarioService } from '../../service/domiciliario.service';
   templateUrl: './domiciliarios-page.component.html',
   styleUrl: './domiciliarios-page.component.scss'
 })
+/** Lista domiciliarios y permite gestionar su disponibilidad. */
 export class DomiciliariosPageComponent implements OnInit {
   private domiciliarioService = inject(DomiciliarioService);
   private router = inject(Router);

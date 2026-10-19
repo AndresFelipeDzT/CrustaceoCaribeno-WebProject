@@ -7,4 +7,5 @@ import { RouterLink } from '@angular/router';
   templateUrl: './landing-navbar.component.html',
   styleUrl: './landing-navbar.component.scss'
 })
+/** Barra de navegación de la página de inicio. */
 export class LandingNavbarComponent {}

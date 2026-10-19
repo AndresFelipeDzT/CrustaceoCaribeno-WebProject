@@ -8,6 +8,7 @@ import { ClienteService } from '../../service/cliente.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
+/** Barra de navegación para las pantallas públicas del cliente. */
 export class NavbarComponent {
   private clienteService = inject(ClienteService);
   get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }

@@ -12,6 +12,7 @@ import { OperadorService } from '../../service/operador.service';
   templateUrl: './operador-form.component.html',
   styleUrl: './operador-form.component.scss'
 })
+/** Crea o edita operadores desde el portal administrativo. */
 export class OperadorFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private operadorService = inject(OperadorService);
@@ -21,6 +22,7 @@ export class OperadorFormComponent implements OnInit {
   isEdit = false;
   error = '';
 
+  /** Conserva el administrador activo entre las pantallas del CRUD. */
   get queryParams(): Params {
     const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
     return Number.isInteger(id) && id > 0 ? { idAdministrador: id } : {};

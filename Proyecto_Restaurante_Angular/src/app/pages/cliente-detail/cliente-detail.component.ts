@@ -13,6 +13,7 @@ import { ClienteService } from '../../service/cliente.service';
   templateUrl: './cliente-detail.component.html',
   styleUrl: './cliente-detail.component.scss'
 })
+/** Muestra el detalle de un cliente registrado. */
 export class ClienteDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private clienteService = inject(ClienteService);

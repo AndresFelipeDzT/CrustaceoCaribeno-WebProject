@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './hero-banner.component.html',
   styleUrl: './hero-banner.component.scss'
 })
+/** Banner principal de la página de inicio. */
 export class HeroBannerComponent {
 
 }

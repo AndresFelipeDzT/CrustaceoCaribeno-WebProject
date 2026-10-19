@@ -21,7 +21,7 @@
             </span>
           </td>
           <td class="col-acciones">
-            <a [routerLink]="['/adicionales/tabla/update', adicional.idAdicional]" class="btn-accion">Editar</a>
+            <a [routerLink]="['/adicionales/tabla/update', adicional.idAdicional]" [queryParams]="administradorId() === undefined ? {} : { idAdministrador: administradorId() }" class="btn-accion">Editar</a>
             @if (adicional.activo) {
               <button type="button" class="btn-accion" (click)="adicionalEliminado.emit(adicional.idAdicional)">Eliminar</button>
             } @else {

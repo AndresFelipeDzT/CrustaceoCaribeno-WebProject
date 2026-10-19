@@ -13,6 +13,7 @@ import { ClienteService } from '../../service/cliente.service';
   templateUrl: './cliente-profile.component.html',
   styleUrl: './cliente-profile.component.scss'
 })
+/** Presenta el perfil del cliente identificado en la URL. */
 export class ClienteProfileComponent implements OnInit {
   private clienteService = inject(ClienteService);
   private router = inject(Router);

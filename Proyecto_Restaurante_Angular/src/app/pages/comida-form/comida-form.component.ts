@@ -14,6 +14,7 @@ import { ComidaFormPanelComponent } from './components/comida-form-panel/comida-
   templateUrl: './comida-form.component.html',
   styleUrl: './comida-form.component.scss'
 })
+/** Crea o edita platos desde el portal administrativo. */
 export class ComidaFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private comidaService = inject(ComidaService);

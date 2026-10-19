@@ -12,6 +12,7 @@ import { DomiciliarioService } from '../../service/domiciliario.service';
   templateUrl: './domiciliario-form.component.html',
   styleUrl: './domiciliario-form.component.scss'
 })
+/** Crea o edita domiciliarios y conserva el contexto administrativo. */
 export class DomiciliarioFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private domiciliarioService = inject(DomiciliarioService);

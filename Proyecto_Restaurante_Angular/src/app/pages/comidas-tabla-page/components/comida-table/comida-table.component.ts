@@ -9,6 +9,7 @@ import { Producto } from '../../../../models/producto.model';
   templateUrl: './comida-table.component.html',
   styleUrl: './comida-table.component.scss'
 })
+/** Renderiza las acciones disponibles para cada plato del catálogo. */
 export class ComidaTableComponent {
   comidas = input.required<Producto[]>();
   administradorId = input<number>();

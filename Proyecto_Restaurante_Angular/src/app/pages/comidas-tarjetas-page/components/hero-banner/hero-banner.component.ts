@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './hero-banner.component.html',
   styleUrl: './hero-banner.component.scss'
 })
+/** Banner de introducción del menú para clientes. */
 export class MenuHeroBannerComponent {
   @Input() menuAnchor = 'menu-tarjetas';
 }

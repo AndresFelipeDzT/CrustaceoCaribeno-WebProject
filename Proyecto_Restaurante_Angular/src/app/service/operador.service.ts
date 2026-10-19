@@ -5,6 +5,7 @@ import { map } from 'rxjs';
 import { Operador } from '../models/operador.model';
 
 @Injectable({ providedIn: 'root' })
+/** Provee el CRUD de operadores y la validación de su acceso. */
 export class OperadorService {
   private readonly apiUrl = 'http://localhost:8080/api/operadores';
   private http = inject(HttpClient);
@@ -13,6 +14,7 @@ export class OperadorService {
     return this.http.get<Operador[]>(this.apiUrl);
   }
 
+  /** Compara las credenciales ingresadas con los operadores devueltos por la API. */
   iniciarSesion(usuario: string, contrasena: string): Observable<Operador | undefined> {
     return this.getOperadores().pipe(map(operadores => operadores.find(operador =>
       operador.usuario.trim().toLowerCase() === usuario.trim().toLowerCase() && operador.contrasena === contrasena

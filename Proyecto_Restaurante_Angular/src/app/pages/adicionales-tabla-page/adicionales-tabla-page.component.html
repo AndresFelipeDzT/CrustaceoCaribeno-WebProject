@@ -1,4 +1,16 @@
-<app-table-navbar></app-table-navbar>
+<header class="admin-header">
+  <a class="admin-brand" routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">
+    <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span>
+  </a>
+  <nav class="admin-nav">
+    <a routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">Pedidos</a>
+    <a routerLink="/domiciliarios" [queryParams]="{ idAdministrador: administradorId }">Domiciliarios</a>
+    <a routerLink="/operadores" [queryParams]="{ idAdministrador: administradorId }">Operadores</a>
+    <a routerLink="/comidas/tabla" [queryParams]="{ idAdministrador: administradorId }">Comidas</a>
+    <a routerLink="/adicionales/tabla" [queryParams]="{ idAdministrador: administradorId }">Adicionales</a>
+    <a routerLink="/admin">Cerrar sesión</a>
+  </nav>
+</header>
 
 <section id="adicionales-tabla" class="adicionales-section container my-5">
   @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
@@ -8,16 +20,28 @@
     <div class="linea-decorativa"></div>
   </div>
   <div class="d-flex justify-content-end mb-4">
-    <a routerLink="/adicionales/tabla/add" class="btn-cafe-agregar">
+    <a routerLink="/adicionales/tabla/add" [queryParams]="{ idAdministrador: administradorId }" class="btn-cafe-agregar">
       <i class="bi bi-plus-lg" aria-hidden="true"></i> Agregar adicional
     </a>
   </div>
   <app-adicional-table
     [adicionales]="adicionales"
     [categorias]="categorias"
+    [administradorId]="administradorId"
     (adicionalEliminado)="eliminarAdicional($event)"
     (adicionalActivado)="activarAdicional($event)"
   ></app-adicional-table>
 </section>
 
-<app-footer></app-footer>
+<footer class="admin-footer">
+  <div class="footer-contenido">
+    <div class="footer-marca">
+      <div class="footer-logo-nombre"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><h3>Crustáceo<br>Caribeño</h3></div>
+      <div class="footer-platos"><img src="/imagenes/img11.jpeg" alt="Plato del restaurante"><img src="/imagenes/img22.jpeg" alt="Plato del restaurante"><img src="/imagenes/img33.jpeg" alt="Plato del restaurante"></div>
+    </div>
+    <div class="footer-columna"><h4>Navegación</h4><a routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">› Pedidos</a><a routerLink="/domiciliarios" [queryParams]="{ idAdministrador: administradorId }">› Domiciliarios</a><a routerLink="/operadores" [queryParams]="{ idAdministrador: administradorId }">› Operadores</a><a routerLink="/comidas/tabla" [queryParams]="{ idAdministrador: administradorId }">› Comidas</a><a routerLink="/adicionales/tabla" [queryParams]="{ idAdministrador: administradorId }">› Adicionales</a></div>
+    <div class="footer-columna"><h4>Información</h4><p>› Av. 44 #401 Sur</p><p>› 57 - 343 882 843</p><p>› Lun-Dom: 9:00am-5:00pm</p></div>
+    <div class="footer-columna"><h4>Cuenta</h4><a routerLink="/admin">› Cerrar sesión</a></div>
+  </div>
+  <p class="footer-copyright">© 2026 El Crustáceo Caribeño. Todos Los Derechos Reservados.</p>
+</footer>

@@ -2,18 +2,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { TableNavbarComponent } from '../../components/navbar/table-navbar/table-navbar.component';
 import { Adicional, AdicionalRequest } from '../../models/adicional.model';
 import { Categoria } from '../../models/categoria.model';
 import { ComidaService } from '../../service/comida.service';
 
 @Component({
   selector: 'app-adicional-form',
-  imports: [ReactiveFormsModule, RouterLink, FooterComponent, TableNavbarComponent],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './adicional-form.component.html',
   styleUrl: './adicional-form.component.scss'
 })
+/** Crea o edita adicionales y sus categorías compatibles. */
 export class AdicionalFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private comidaService = inject(ComidaService);
@@ -36,6 +35,11 @@ export class AdicionalFormComponent implements OnInit {
 
   get esEdicion(): boolean {
     return this.adicionalId !== undefined;
+  }
+
+  get administradorId(): number | undefined {
+    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
+    return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
   ngOnInit(): void {
@@ -76,12 +80,12 @@ export class AdicionalFormComponent implements OnInit {
     this.error = '';
     if (this.adicionalId === undefined) {
       this.comidaService.addAdicional(adicional).subscribe({
-        next: () => void this.router.navigate(['/adicionales/tabla']),
+        next: () => void this.router.navigate(['/adicionales/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
         error: error => this.error = this.mensajeError(error, 'No fue posible guardar el adicional.')
       });
     } else {
       this.comidaService.updateAdicional(this.adicionalId, adicional).subscribe({
-        next: () => void this.router.navigate(['/adicionales/tabla']),
+        next: () => void this.router.navigate(['/adicionales/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
         error: error => this.error = this.mensajeError(error, 'No fue posible actualizar el adicional.')
       });
     }

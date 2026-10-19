@@ -17,7 +17,13 @@
 }
 .btn-cafe-agregar:hover { color: #fff; background-color: #5c3f2d; transform: translateY(-1px); }
 .btn-cafe-agregar:active { transform: translateY(0); }
+.admin-header { min-height: 80px; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; gap: 18px; color: #fff; background: #0b1d5c; }
+.admin-brand { display: flex; align-items: center; gap: 10px; color: #fff; font: italic 700 20px "Playfair Display", serif; text-decoration: none; }.admin-brand img { width: 48px; height: 48px; object-fit: contain; }
+.admin-nav { display: flex; align-items: center; gap: 20px; }.admin-nav a { color: #fff; font: italic 700 18px "Dai Banna SIL", serif; text-decoration: none; }.admin-nav a:hover { color: #cfa138; }
+.admin-footer { margin-top: 30px; padding: 2.25rem max(1.5rem, calc((100% - 1120px) / 2)) 1rem; color: #fff; background: #102c91; }.footer-contenido { display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: 2.5rem; align-items: start; }.footer-logo-nombre { display: flex; align-items: center; gap: .9rem; margin-bottom: 1rem; }.footer-logo-nombre > img { width: 58px; height: 58px; object-fit: contain; }.footer-logo-nombre h3 { margin: 0; color: #fff; font: 700 1.45rem/1.05 "Playfair Display", serif; }.footer-platos { display: flex; gap: .75rem; }.footer-platos img { width: 52px; height: 52px; border: 2px solid rgba(255,255,255,.85); border-radius: 50%; object-fit: cover; }.footer-columna h4 { margin: 0 0 .7rem; color: #fff; font: 1rem "Playfair Display", serif; }.footer-columna a, .footer-columna p { display: block; margin: .18rem 0; color: #fff; font-size: .78rem; line-height: 1.35; text-decoration: none; }.footer-columna a:hover { color: #d9bc67; }.footer-copyright { margin: 1.4rem 0 0; color: #fff; font-size: .72rem; }
 @media (max-width: 620px) {
   .titulo-adicionales { font-size: 2.2rem; }
   .separador-adicionales { gap: 12px; }
 }
+@media (max-width: 760px) { .admin-header { padding: 10px 16px; flex-direction: column; }.admin-nav { justify-content: center; flex-wrap: wrap; gap: 12px; }.admin-nav a { font-size: 16px; }.footer-contenido { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; } }
+@media (max-width: 460px) { .footer-contenido { grid-template-columns: 1fr; } }

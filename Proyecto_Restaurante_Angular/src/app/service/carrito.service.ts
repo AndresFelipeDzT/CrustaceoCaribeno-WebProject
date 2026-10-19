@@ -8,6 +8,7 @@ import { PedidoDTO } from '../models/pedido.model';
 import { ComidaService } from './comida.service';
 
 @Injectable({ providedIn: 'root' })
+/** Encapsula las operaciones de carrito e ítems del cliente. */
 export class CarritoService {
   private readonly apiUrl = 'http://localhost:8080/api/carritos';
 
