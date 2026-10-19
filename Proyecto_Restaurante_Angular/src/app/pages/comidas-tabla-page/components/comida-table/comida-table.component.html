@@ -24,7 +24,7 @@
           </td>
           <td class="col-accion">
             <a [routerLink]="['/comidas/detalle', comida.idProducto]" class="btn-accion">Ver Más</a>
-            <a [routerLink]="['/comidas/tabla/update', comida.idProducto]" class="btn-accion">Update</a>
+            <a [routerLink]="['/comidas/tabla/update', comida.idProducto]" [queryParams]="administradorId() === undefined ? {} : { idAdministrador: administradorId() }" class="btn-accion">Update</a>
             @if (comida.activo) {
               <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.idProducto)">Eliminar</button>
             } @else {

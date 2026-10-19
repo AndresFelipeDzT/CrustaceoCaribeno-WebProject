@@ -1,3 +1,13 @@
+<header class="admin-header">
+  <a class="admin-brand" routerLink="/pedidos" [queryParams]="queryParams"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <nav class="admin-nav">
+    <a routerLink="/pedidos" [queryParams]="queryParams">Pedidos</a>
+    <a routerLink="/domiciliarios" [queryParams]="queryParams">Domiciliarios</a>
+    <a routerLink="/operadores" [queryParams]="queryParams">Operadores</a>
+    <a routerLink="/comidas/tabla" [queryParams]="queryParams">Comidas</a>
+    <a routerLink="/admin">Cerrar sesión</a>
+  </nav>
+</header>
 <main class="signup-page">
   <section class="signup-card" aria-labelledby="signup-title">
     <h1 id="signup-title">{{ isEdit ? 'Editar domiciliario' : 'Registrar domiciliario' }}</h1>

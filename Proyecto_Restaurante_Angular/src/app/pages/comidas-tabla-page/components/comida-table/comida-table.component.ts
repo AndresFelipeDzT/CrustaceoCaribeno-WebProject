@@ -11,6 +11,7 @@ import { Producto } from '../../../../models/producto.model';
 })
 export class ComidaTableComponent {
   comidas = input.required<Producto[]>();
+  administradorId = input<number>();
   comidaEliminada = output<number>();
   comidaActivada = output<number>();
 }

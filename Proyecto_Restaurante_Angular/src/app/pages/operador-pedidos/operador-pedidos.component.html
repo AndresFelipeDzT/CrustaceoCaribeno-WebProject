@@ -1,0 +1,39 @@
+<header class="operador-header">
+  <a class="operador-brand" routerLink="/operador/pedidos" [queryParams]="operadorId === undefined ? {} : { idOperador: operadorId }"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <nav><a routerLink="/operador/pedidos" [queryParams]="operadorId === undefined ? {} : { idOperador: operadorId }">Pedidos</a><button type="button" (click)="cerrarSesion()">Cerrar sesión</button></nav>
+</header>
+<main class="operador-main">
+  <div class="operador-heading"><span></span><h1>Pedidos pendientes</h1><span></span><p>Pedidos que aún no han sido completados</p></div>
+  @if (error) { <p class="operador-alert error" role="alert">{{ error }}</p> }
+  @if (mensaje) { <p class="operador-alert" role="status">{{ mensaje }}</p> }
+  <section class="orders-layout">
+    <div class="orders-table-wrap">
+      <table>
+        <thead><tr><th>Pedido</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+          @for (pedido of pedidos; track pedido.idPedido) {
+            <tr [class.selected]="pedidoSeleccionado?.idPedido === pedido.idPedido">
+              <td>#{{ pedido.idPedido }}</td><td>{{ pedido.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+              <td>{{ pedido.cliente?.nombreCompleto || ((pedido.cliente?.nombre || '') + ' ' + (pedido.cliente?.apellido || '')).trim() || 'Sin cliente' }}</td>
+              <td><span class="status">{{ pedido.estado }}</span></td><td>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+              <td><button class="view-button" type="button" (click)="seleccionar(pedido)">Gestionar</button></td>
+            </tr>
+          } @empty { <tr><td colspan="6" class="empty">No hay pedidos pendientes.</td></tr> }
+        </tbody>
+      </table>
+    </div>
+    @if (pedidoSeleccionado; as pedido) {
+      <aside class="order-details">
+        <h2>Pedido #{{ pedido.idPedido }}</h2>
+        <p class="detail-date">{{ pedido.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+        <dl><div><dt>Cliente</dt><dd>{{ pedido.cliente?.nombreCompleto || ((pedido.cliente?.nombre || '') + ' ' + (pedido.cliente?.apellido || '')).trim() || 'Sin cliente' }}</dd></div><div><dt>Teléfono</dt><dd>{{ pedido.cliente?.telefono || 'No disponible' }}</dd></div><div><dt>Dirección</dt><dd>{{ pedido.cliente?.direccion || 'No disponible' }}</dd></div><div><dt>Total</dt><dd>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</dd></div></dl>
+        <label for="estado-pedido">Estado del pedido</label>
+        <select id="estado-pedido" [value]="estado" (change)="estado = $any($event.target).value">
+          @for (opcion of estados; track opcion) { <option [value]="opcion">{{ opcion }}</option> }
+        </select>
+        <button class="save-button" type="button" (click)="actualizarEstado()">Actualizar estado</button>
+      </aside>
+    }
+  </section>
+</main>
+<footer class="operador-footer">© 2026 Crustáceo Caribeño</footer>

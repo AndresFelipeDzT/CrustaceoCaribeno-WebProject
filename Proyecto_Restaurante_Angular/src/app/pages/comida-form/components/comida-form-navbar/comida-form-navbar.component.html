@@ -1,11 +1,11 @@
 <header class="header-crustaceo">
   <nav class="navbar-crustaceo">
     <div class="nav-contenido">
-      <a class="navbar-brand" routerLink="/">
+      <a class="navbar-brand" routerLink="/pedidos" [queryParams]="administradorId() === undefined ? {} : { idAdministrador: administradorId() }">
         <img src="/imagenes/logo2.png" alt="Logo de Crustáceo Caribeño" width="48" height="48">
         <span>Crustáceo Caribeño</span>
       </a>
-      <a class="btn-volver-nav" routerLink="/comidas/tabla">
+      <a class="btn-volver-nav" routerLink="/comidas/tabla" [queryParams]="administradorId() === undefined ? {} : { idAdministrador: administradorId() }">
         <span class="flecha">←</span><span>Volver</span>
       </a>
     </div>

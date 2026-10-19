@@ -1,0 +1,43 @@
+<header class="operadores-header">
+  <a class="operadores-brand" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+    <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span>
+  </a>
+  <nav class="operadores-nav">
+    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
+    <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
+    <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
+    <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
+    <a routerLink="/admin">Cerrar sesión</a>
+  </nav>
+</header>
+
+<main class="operadores-main">
+  <div class="operadores-heading"><div class="heading-decoration"></div><h1>Operadores</h1><div class="heading-decoration"></div><p>Administra las cuentas de operadores registradas en el sistema</p></div>
+  @if (error) { <p class="operadores-alert error" role="alert">{{ error }}</p> }
+  @if (mensaje) { <p class="operadores-alert" role="status">{{ mensaje }}</p> }
+  <div class="operadores-layout">
+    <section class="operadores-list" aria-label="Operadores registrados">
+      <a class="crear-operador" [routerLink]="['/operadores/add']" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">+ Registrar operador</a>
+      @for (operador of operadores; track operador.idOperador) {
+        <article class="operador-card" [class.seleccionado]="operadorSeleccionado?.idOperador === operador.idOperador">
+          <label class="selector-operador"><input type="radio" name="operador" [checked]="operadorSeleccionado?.idOperador === operador.idOperador" (change)="seleccionarOperador(operador)" [attr.aria-label]="'Seleccionar ' + operador.nombre"></label>
+          <button class="operador-summary" type="button" (click)="seleccionarOperador(operador)">
+            <img class="operador-avatar" [src]="operador.imagenURL || '/imagenes/logo2.png'" [alt]="'Foto de ' + operador.nombre">
+            <span class="operador-summary-content"><strong>{{ operador.nombre }}</strong><span>Usuario: {{ operador.usuario }}</span></span>
+          </button>
+        </article>
+      } @empty { <p class="operadores-empty">No hay operadores registrados.</p> }
+    </section>
+    <aside class="operador-details" aria-live="polite">
+      @if (operadorSeleccionado; as actual) {
+        <h2>Detalles del operador</h2><img class="operador-avatar avatar-large" [src]="actual.imagenURL || '/imagenes/logo2.png'" [alt]="'Foto de ' + actual.nombre"><h3>{{ actual.nombre }}</h3>
+        <dl><div><dt>Usuario</dt><dd>{{ actual.usuario }}</dd></div></dl>
+        <div class="detail-actions">
+          <a [routerLink]="['/operadores/update', actual.idOperador]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Editar datos</a>
+          <button class="delete-operador" type="button" (click)="eliminarOperador(actual)">Eliminar</button>
+        </div>
+      } @else { <h2>Detalles del operador</h2><p>Selecciona un operador para consultar sus datos.</p> }
+    </aside>
+  </div>
+</main>
+<footer class="operadores-footer"><span>© 2026 Crustáceo Caribeño</span><a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Volver a pedidos</a></footer>

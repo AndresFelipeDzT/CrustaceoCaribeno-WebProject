@@ -12,6 +12,8 @@ import { PedidosAdminComponent } from './pages/pedidos-admin/pedidos-admin.compo
 import { CarritoPageComponent } from './pages/carrito-page/carrito-page.component';
 import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
 import { DomiciliarioFormComponent } from './pages/domiciliario-form/domiciliario-form.component';
+import { OperadoresPageComponent } from './pages/operadores-page/operadores-page.component';
+import { OperadorFormComponent } from './pages/operador-form/operador-form.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
@@ -19,6 +21,9 @@ export const routes: Routes = [
 
   { path: 'login', component: LoginComponent, title: 'Login | Crustáceo Caribeño' },
   { path: 'admin', component: LoginComponent, title: 'Acceso administrador | Crustáceo Caribeño' },
+  { path: 'operador', component: LoginComponent, title: 'Acceso operador | Crustáceo Caribeño' },
+  { path: 'operador/pedidos', component: PedidosAdminComponent, title: 'Pedidos | Portal de operador' },
+  { path: 'operador/pedidos/:id', component: PedidosAdminComponent, title: 'Detalle del pedido | Portal de operador' },
   { path: 'perfil', component: ClienteProfileComponent, title: 'Mi perfil | Crustáceo Caribeño' },
   { path: 'carrito', component: CarritoPageComponent, title: 'Mi carrito | Crustáceo Caribeño' },
   { path: 'pedidos', component: PedidosAdminComponent, title: 'Pedidos | Crustáceo Caribeño' },
@@ -26,6 +31,9 @@ export const routes: Routes = [
   { path: 'domiciliarios/add', component: DomiciliarioFormComponent, title: 'Registrar domiciliario' },
   { path: 'domiciliarios/update/:id', component: DomiciliarioFormComponent, title: 'Editar domiciliario' },
   { path: 'domiciliarios', component: DomiciliariosPageComponent, title: 'Domiciliarios | Crustáceo Caribeño' },
+  { path: 'operadores/add', component: OperadorFormComponent, title: 'Registrar operador' },
+  { path: 'operadores/update/:id', component: OperadorFormComponent, title: 'Editar operador' },
+  { path: 'operadores', component: OperadoresPageComponent, title: 'Operadores | Crustáceo Caribeño' },
 
   // Rutas de Comidas
   { path: 'comidas/tarjetas', component: ComidasTarjetasPageComponent, title: 'Crustáceo Caribeño | Menú' },

@@ -1,22 +1,25 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { TableNavbarComponent } from '../../components/navbar/table-navbar/table-navbar.component';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
-import { TableHeroBannerComponent } from './components/hero-banner/hero-banner.component';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
 
 @Component({
   selector: 'app-comidas-tabla-page',
-  imports: [RouterLink, FooterComponent, TableNavbarComponent, TableHeroBannerComponent, ComidaTableComponent],
+  imports: [RouterLink, ComidaTableComponent],
   templateUrl: './comidas-tabla-page.component.html',
   styleUrl: './comidas-tabla-page.component.scss'
 })
 export class ComidasTablaPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
+  private route = inject(ActivatedRoute);
   comidas: Producto[] = [];
   error = '';
+
+  get administradorId(): number | undefined {
+    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
+    return Number.isInteger(id) && id > 0 ? id : undefined;
+  }
 
   ngOnInit(): void {
     this.cargarComidas();

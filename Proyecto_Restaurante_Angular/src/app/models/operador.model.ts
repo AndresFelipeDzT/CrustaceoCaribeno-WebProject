@@ -2,6 +2,7 @@
 export interface Operador {
   idOperador: number;
   nombre: string;
+  imagenURL?: string | null;
   usuario: string;
   contrasena: string;
 }

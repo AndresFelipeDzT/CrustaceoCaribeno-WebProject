@@ -22,6 +22,11 @@ export class PedidosAdminComponent implements OnInit {
   estado = '';
   error = '';
   mensaje = '';
+  get esOperador(): boolean { return this.router.url.split('?')[0].startsWith('/operador/'); }
+  get operadorId(): number | undefined {
+    const id = Number(this.route.snapshot.queryParamMap.get('idOperador'));
+    return Number.isInteger(id) && id > 0 ? id : undefined;
+  }
   get administradorId(): number | undefined { return this.administradorService.getAdministradorActualId(); }
   readonly estados = ['Pendiente', 'En preparación', 'En camino', 'Entregado', 'Cancelado'];
 
@@ -37,7 +42,9 @@ export class PedidosAdminComponent implements OnInit {
   cargarPedidos(): void {
     this.error = '';
     this.pedidoService.getPedidos().subscribe({
-      next: pedidos => this.pedidos = pedidos,
+      next: pedidos => this.pedidos = this.esOperador
+        ? pedidos.filter(pedido => !['cancelado', 'entregado'].includes(pedido.estado.trim().toLowerCase()))
+        : pedidos,
       error: () => this.error = 'No fue posible cargar los pedidos.'
     });
   }

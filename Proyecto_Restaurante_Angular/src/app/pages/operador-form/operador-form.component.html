@@ -1,0 +1,24 @@
+<header class="admin-header">
+  <a class="admin-brand" routerLink="/pedidos" [queryParams]="queryParams"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <nav class="admin-nav">
+    <a routerLink="/pedidos" [queryParams]="queryParams">Pedidos</a>
+    <a routerLink="/domiciliarios" [queryParams]="queryParams">Domiciliarios</a>
+    <a routerLink="/operadores" [queryParams]="queryParams">Operadores</a>
+    <a routerLink="/comidas/tabla" [queryParams]="queryParams">Comidas</a>
+    <a routerLink="/admin">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="signup-page">
+  <section class="signup-card" aria-labelledby="signup-title">
+    <h1 id="signup-title">{{ isEdit ? 'Editar operador' : 'Registrar operador' }}</h1>
+    @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
+    <form [formGroup]="operadorForm" (ngSubmit)="guardar()" novalidate>
+      <div class="field"><label for="nombre">Nombre completo</label><input id="nombre" type="text" formControlName="nombre" autocomplete="name" [class.invalid]="operadorForm.controls.nombre.touched && operadorForm.controls.nombre.invalid">@if (operadorForm.controls.nombre.touched && operadorForm.controls.nombre.invalid) { <small>Ingresa un nombre de entre 2 y 100 caracteres.</small> }</div>
+      <div class="field"><label for="usuario">Usuario</label><input id="usuario" type="text" formControlName="usuario" autocomplete="username" [class.invalid]="operadorForm.controls.usuario.touched && operadorForm.controls.usuario.invalid">@if (operadorForm.controls.usuario.touched && operadorForm.controls.usuario.invalid) { <small>Ingresa un usuario de entre 3 y 50 caracteres.</small> }</div>
+      <div class="field"><label for="contrasena">Contraseña</label><input id="contrasena" type="password" formControlName="contrasena" autocomplete="new-password" [class.invalid]="operadorForm.controls.contrasena.touched && operadorForm.controls.contrasena.invalid">@if (operadorForm.controls.contrasena.touched && operadorForm.controls.contrasena.invalid) { <small>Ingresa la contraseña.</small> }</div>
+      <div class="field"><label for="imagenURL">Foto (URL o ruta de imagen)</label><input id="imagenURL" type="text" formControlName="imagenURL" autocomplete="off" [class.invalid]="operadorForm.controls.imagenURL.touched && operadorForm.controls.imagenURL.invalid">@if (operadorForm.controls.imagenURL.touched && operadorForm.controls.imagenURL.invalid) { <small>Ingresa una URL http(s) o una ruta local válida para la foto.</small> }</div>
+      @if (operadorForm.controls.imagenURL.value; as imagenURL) { <div class="photo-preview"><img [src]="imagenURL" alt="Vista previa de la foto del operador"></div> }
+      <div class="actions"><button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button><a routerLink="/operadores" [queryParams]="queryParams">Cancelar</a></div>
+    </form>
+  </section>
+</main>
