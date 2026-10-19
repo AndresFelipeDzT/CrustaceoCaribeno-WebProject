@@ -1,19 +1,22 @@
 <header class="pedidos-header">
-  <a class="pedidos-brand" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+  <a class="pedidos-brand" [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">
     <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
     <span>Crustáceo Caribeño</span>
   </a>
   <nav class="pedidos-nav">
-    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Reporte<br>Ventas</a>
-    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
-    <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
-    <a routerLink="/perfil" [queryParams]="administradorId === undefined ? {} : { tipo: 'administrador', idAdministrador: administradorId }">Perfil</a>
+    <a [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">Pedidos</a>
+    @if (!esOperador) {
+      <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
+      <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
+      <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
+    }
+    <a [routerLink]="esOperador ? ['/operador'] : ['/admin']">Cerrar sesión</a>
   </nav>
 </header>
 
 @if (pedido; as actual) {
   <main class="detalle-pedido-main">
-    <a class="volver-pedidos" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">← Volver a pedidos</a>
+    <a class="volver-pedidos" [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">← Volver a pedidos</a>
     <h1>Detalles Del Pedido</h1>
     <p class="detalle-subtitulo">Información Completa Del Pedido #{{ actual.idPedido }}</p>
     @if (mensaje) { <p class="pedidos-alerta">{{ mensaje }}</p> }
@@ -90,7 +93,7 @@
 } @else {
   <main class="pedidos-main">
     <h1>Pedidos Recibidos</h1>
-    <p class="pedidos-subtitulo">Gestión Y Revisión De Todos Los Pedidos Realizados:</p>
+    <p class="pedidos-subtitulo">{{ esOperador ? 'Pedidos que aún no han sido completados:' : 'Gestión Y Revisión De Todos Los Pedidos Realizados:' }}</p>
     @if (mensaje) { <p class="pedidos-alerta">{{ mensaje }}</p> }
     @if (error) { <p class="pedidos-alerta error" role="alert">{{ error }}</p> }
 
@@ -120,10 +123,12 @@
               <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
               <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
               <td class="acciones">
-                <a class="btn-detalle" [routerLink]="['/pedidos', item.idPedido]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Detalles</a>
-                <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="eliminarPedido(item.idPedido)">
-                  <i class="bi bi-trash3"></i>
-                </button>
+                <a class="btn-detalle" [routerLink]="esOperador ? ['/operador/pedidos', item.idPedido] : ['/pedidos', item.idPedido]" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">Detalles</a>
+                @if (!esOperador) {
+                  <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="eliminarPedido(item.idPedido)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                }
               </td>
             </tr>
           } @empty {

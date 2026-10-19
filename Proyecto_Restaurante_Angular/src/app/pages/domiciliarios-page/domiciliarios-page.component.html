@@ -4,10 +4,11 @@
     <span>Crustáceo Caribeño</span>
   </a>
   <nav class="domiciliarios-nav">
-    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Reporte Ventas</a>
     <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
     <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
-    <a routerLink="/perfil">Perfil</a>
+    <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
+    <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
+    <a routerLink="/admin">Cerrar sesión</a>
   </nav>
 </header>
 

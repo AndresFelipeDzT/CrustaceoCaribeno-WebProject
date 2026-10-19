@@ -1,12 +1,12 @@
 ﻿<main class="login-page">
   <section class="login-card" aria-labelledby="login-title">
-    <h1 id="login-title">{{ esAdministrador ? 'Acceso de administrador' : 'Login' }}</h1>
+    <h1 id="login-title">{{ esAdministrador ? 'Acceso de administrador' : esOperador ? 'Acceso de operador' : 'Login' }}</h1>
     <form [formGroup]="loginForm" (ngSubmit)="ingresar()" novalidate>
       <div class="field">
-        <label for="correo">{{ esAdministrador ? 'Usuario' : 'Correo' }}</label>
-        <input id="correo" [type]="esAdministrador ? 'text' : 'email'" formControlName="correo" [attr.autocomplete]="esAdministrador ? 'username' : 'email'" [class.invalid]="loginForm.controls.correo.touched && loginForm.controls.correo.invalid">
+        <label for="correo">{{ esAdministrador || esOperador ? 'Usuario' : 'Correo' }}</label>
+        <input id="correo" [type]="esAdministrador || esOperador ? 'text' : 'email'" formControlName="correo" [attr.autocomplete]="esAdministrador || esOperador ? 'username' : 'email'" [class.invalid]="loginForm.controls.correo.touched && loginForm.controls.correo.invalid">
         @if (loginForm.controls.correo.touched && loginForm.controls.correo.invalid) {
-          <small>{{ esAdministrador ? 'Ingresa tu usuario.' : 'Ingresa un correo válido.' }}</small>
+          <small>{{ esAdministrador || esOperador ? 'Ingresa tu usuario.' : 'Ingresa un correo válido.' }}</small>
         }
       </div>
       <div class="field">
