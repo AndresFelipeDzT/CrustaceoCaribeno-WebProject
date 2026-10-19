@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Adicional } from '../models/adicional.model';
+import { Adicional, AdicionalRequest } from '../models/adicional.model';
 import { Categoria } from '../models/categoria.model';
 import { Producto, ProductoDTO } from '../models/producto.model';
 
@@ -34,10 +34,10 @@ export class ComidaService {
     return this.http.delete<void>(`${this.categoriasUrl}/${id}`);
   }
 
-  getAdicionales(categoriaId?: number): Observable<Adicional[]> {
-    const params = categoriaId === undefined
-      ? undefined
-      : new HttpParams().set('categoriaId', categoriaId);
+  getAdicionales(categoriaId?: number, incluirInactivos = false): Observable<Adicional[]> {
+    let params = new HttpParams();
+    if (categoriaId !== undefined) params = params.set('categoriaId', categoriaId);
+    if (incluirInactivos) params = params.set('incluirInactivos', 'true');
     return this.http.get<Adicional[]>(this.adicionalesUrl, { params });
   }
 
@@ -45,11 +45,11 @@ export class ComidaService {
     return this.http.get<Adicional>(`${this.adicionalesUrl}/${id}`);
   }
 
-  addAdicional(adicional: Omit<Adicional, 'idAdicional'>): Observable<void> {
+  addAdicional(adicional: AdicionalRequest): Observable<void> {
     return this.http.post<void>(this.adicionalesUrl, adicional);
   }
 
-  updateAdicional(id: number, adicional: Omit<Adicional, 'idAdicional'>): Observable<void> {
+  updateAdicional(id: number, adicional: AdicionalRequest): Observable<void> {
     return this.http.put<void>(`${this.adicionalesUrl}/${id}`, adicional);
   }
 
