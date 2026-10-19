@@ -1,0 +1,15 @@
+:host { display: block; }
+.form-page { min-height: 60vh; padding-top: 1rem; padding-bottom: 4rem; }
+.volver-adicionales { display: inline-block; margin-bottom: 1rem; color: #0b1d5c; text-decoration: none; }
+.form-card { max-width: 850px; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid #e8e2d8; border-radius: 18px; box-shadow: 0 8px 24px rgba(11, 29, 92, .08); }
+.form-eyebrow { margin: 0 0 .4rem; color: #a45b24; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.form-card h1 { margin-bottom: 1.5rem; color: #0b1d5c; font-family: "Playfair Display", serif; }
+.form-label { color: #573400; font-weight: 600; }
+.lista-categorias { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .5rem; }
+.categoria-opcion { display: flex; align-items: center; gap: .55rem; padding: .65rem .8rem; border: 1px solid #e8e2d8; border-radius: 8px; color: #573400; cursor: pointer; }
+.categoria-opcion input { accent-color: #a45b24; }
+.sin-categorias { margin: 0; color: #666; }
+.error { display: block; margin-top: .35rem; color: #a52b2b; }
+.form-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+.btn-guardar { border-color: #a45b24; color: #fff; background: #a45b24; }
+.btn-cancelar { border-color: #aaa; }

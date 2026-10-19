@@ -1,0 +1,55 @@
+<app-table-navbar></app-table-navbar>
+
+<main class="form-page container my-5">
+  @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
+  <a routerLink="/adicionales/tabla" class="volver-adicionales">← Volver a adicionales</a>
+  <section class="form-card">
+    <p class="form-eyebrow">Administración del menú</p>
+    <h1>{{ esEdicion ? 'Editar adicional' : 'Agregar adicional' }}</h1>
+    <form [formGroup]="adicionalForm" (ngSubmit)="guardar()">
+      <div class="mb-3">
+        <label class="form-label" for="nombre">Nombre</label>
+        <input class="form-control" id="nombre" type="text" formControlName="nombre" required>
+        @if (adicionalForm.controls.nombre.touched && adicionalForm.controls.nombre.invalid) {
+          <small class="error">Escribe un nombre válido (entre 2 y 60 caracteres).</small>
+        }
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="precio">Precio</label>
+        <input class="form-control" id="precio" type="number" min="0" step="1" formControlName="precio" required>
+        @if (adicionalForm.controls.precio.touched && adicionalForm.controls.precio.invalid) {
+          <small class="error">El precio debe ser un valor igual o mayor a cero.</small>
+        }
+      </div>
+      <fieldset class="mb-3">
+        <legend class="form-label">Categorías</legend>
+        @if (categoriasError) {
+          <small class="error" role="alert">{{ categoriasError }}</small>
+        } @else if (categorias.length === 0) {
+          <p class="sin-categorias">No hay categorías disponibles.</p>
+        } @else {
+          <div class="lista-categorias">
+            @for (categoria of categorias; track categoria.idCategoria) {
+              <label class="categoria-opcion">
+                <input
+                  type="checkbox"
+                  [checked]="adicionalForm.controls.categoriaIds.value.includes(categoria.idCategoria)"
+                  (change)="cambiarCategoria(categoria.idCategoria, $event)">
+                <span>{{ categoria.nombre }}</span>
+              </label>
+            }
+          </div>
+          @if (adicionalForm.controls.categoriaIds.touched && adicionalForm.controls.categoriaIds.invalid) {
+            <small class="error">Selecciona al menos una categoría.</small>
+          }
+        }
+      </fieldset>
+      <div class="form-actions">
+        <button class="btn btn-guardar" type="submit">{{ esEdicion ? 'Guardar cambios' : 'Crear adicional' }}</button>
+        <a class="btn btn-cancelar" routerLink="/adicionales/tabla">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<app-footer></app-footer>
