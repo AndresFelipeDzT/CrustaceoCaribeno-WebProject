@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -81,9 +81,9 @@ export class ClienteProfileComponent implements OnInit {
           this.editando = false;
           this.guardado = true;
         },
-        error: () => this.error = 'Los cambios se guardaron, pero no fue posible recargar el perfil.'
+        error: err => this.error = err?.error?.message || 'Los cambios se guardaron, pero no fue posible recargar el perfil.'
       }),
-      error: () => this.error = 'No fue posible guardar los cambios.'
+      error: err => this.error = err?.error?.message || 'No fue posible guardar los cambios.'
     });
   }
 
@@ -97,7 +97,7 @@ export class ClienteProfileComponent implements OnInit {
       next: () => {
         void this.router.navigate(['/']);
       },
-      error: () => this.error = 'No fue posible desactivar la cuenta.'
+      error: err => this.error = err?.error?.message || 'No fue posible desactivar la cuenta.'
     });
   }
 }

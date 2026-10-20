@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
 import { Router } from '@angular/router';
 
@@ -33,14 +33,8 @@ export class ClienteService {
     return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
-  iniciarSesion(correo: string, password: string): Observable<Cliente | undefined> {
-    return this.getClientes().pipe(
-      map(clientes => clientes.find(cliente =>
-        cliente.activo &&
-        cliente.correo.trim().toLowerCase() === correo.trim().toLowerCase() &&
-        cliente.password === password
-      ))
-    );
+  iniciarSesion(correo: string, password: string): Observable<Cliente> {
+    return this.http.post<Cliente>(`${this.apiUrl}/login`, { correo, password });
   }
 
   addCliente(cliente: Omit<Cliente, 'idCliente'>): Observable<void> {

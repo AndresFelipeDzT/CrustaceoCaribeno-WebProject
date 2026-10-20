@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -75,22 +75,18 @@ export class ClienteFormComponent implements OnInit {
     if (this.isEdit && this.clienteId !== undefined) {
       this.clienteService.updateCliente(this.clienteId, cliente).subscribe({
         next: () => void this.router.navigate(['/clientes']),
-        error: () => this.error = 'No fue posible actualizar el cliente.'
+        error: err => this.error = err?.error?.message || 'No fue posible actualizar el cliente.'
       });
     } else {
       this.clienteService.addCliente(cliente).pipe(
         switchMap(() => this.clienteService.iniciarSesion(cliente.correo, cliente.password))
       ).subscribe({
         next: clienteAutenticado => {
-          if (clienteAutenticado) {
-            void this.router.navigate(['/comidas/tarjetas'], {
-              queryParams: { id: clienteAutenticado.idCliente }
-            });
-          } else {
-            void this.router.navigate(['/login']);
-          }
+          void this.router.navigate(['/comidas/tarjetas'], {
+            queryParams: { id: clienteAutenticado.idCliente }
+          });
         },
-        error: () => this.error = 'No fue posible registrar el cliente.'
+        error: err => this.error = err?.error?.message || 'No fue posible registrar el cliente.'
       });
     }
   }

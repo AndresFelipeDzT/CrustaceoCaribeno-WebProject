@@ -60,7 +60,7 @@ export class PedidosAdminComponent implements OnInit {
         this.pedido = pedido;
         this.estado = pedido.estado;
       },
-      error: () => this.error = 'No fue posible cargar el pedido.'
+      error: err => this.error = err?.error?.message || 'No fue posible cargar el pedido.'
     });
   }
 
@@ -73,7 +73,7 @@ export class PedidosAdminComponent implements OnInit {
         this.mensaje = 'Pedido actualizado correctamente.';
         this.cargarPedidos();
       },
-      error: () => this.error = 'No fue posible actualizar el pedido.'
+      error: err => this.error = err?.error?.message || 'No fue posible actualizar el pedido.'
     });
   }
 
@@ -85,7 +85,7 @@ export class PedidosAdminComponent implements OnInit {
           queryParams: this.administradorId === undefined ? {} : { idAdministrador: this.administradorId }
         });
       },
-      error: () => this.error = 'No fue posible eliminar el pedido.'
+      error: err => this.error = err?.error?.message || 'No fue posible eliminar el pedido.'
     });
   }
 }

@@ -61,7 +61,7 @@ export class CarritoPageComponent implements OnInit {
     if (clienteId === undefined) return;
     this.carritoService.actualizarCantidad(clienteId, item.idItemCarrito, cantidad).subscribe({
       next: () => this.cargarCarrito(),
-      error: () => this.error = 'No fue posible actualizar la cantidad.'
+      error: err => this.error = err?.error?.message || 'No fue posible actualizar la cantidad.'
     });
   }
 
@@ -82,7 +82,7 @@ export class CarritoPageComponent implements OnInit {
       this.seleccionados[item.idItemCarrito] ?? []
     ).subscribe({
       next: () => this.cargarCarrito(),
-      error: () => this.error = 'No fue posible actualizar los adicionales.'
+      error: err => this.error = err?.error?.message || 'No fue posible actualizar los adicionales.'
     });
   }
 
@@ -91,7 +91,7 @@ export class CarritoPageComponent implements OnInit {
     if (clienteId === undefined) return;
     this.carritoService.eliminarItem(clienteId, item.idItemCarrito).subscribe({
       next: () => this.cargarCarrito(),
-      error: () => this.error = 'No fue posible eliminar el producto del carrito.'
+      error: err => this.error = err?.error?.message || 'No fue posible eliminar el producto del carrito.'
     });
   }
 
@@ -103,7 +103,7 @@ export class CarritoPageComponent implements OnInit {
         this.mensaje = 'Pedido confirmado correctamente.';
         this.cargarCarrito();
       },
-      error: () => this.error = 'No fue posible confirmar el pedido.'
+      error: err => this.error = err?.error?.message || 'No fue posible confirmar el pedido.'
     });
   }
 }

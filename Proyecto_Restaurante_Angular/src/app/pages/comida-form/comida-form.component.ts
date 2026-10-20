@@ -93,12 +93,12 @@ export class ComidaFormComponent implements OnInit {
     if (this.comidaId === undefined) {
       this.comidaService.addComida(comida).subscribe({
         next: () => void this.router.navigate(['/comidas/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
-        error: () => this.error = 'No fue posible guardar el producto.'
+        error: err => this.error = err?.error?.message || 'No fue posible guardar el producto.'
       });
     } else {
       this.comidaService.updateComida(this.comidaId, comida).subscribe({
         next: () => void this.router.navigate(['/comidas/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
-        error: () => this.error = 'No fue posible actualizar el producto.'
+        error: err => this.error = err?.error?.message || 'No fue posible actualizar el producto.'
       });
     }
   }

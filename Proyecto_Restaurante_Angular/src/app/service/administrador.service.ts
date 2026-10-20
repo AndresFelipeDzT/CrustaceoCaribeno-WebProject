@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Administrador } from '../models/administrador.model';
 
 @Injectable({
@@ -20,13 +20,8 @@ export class AdministradorService {
     return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
-  /** Busca las credenciales en la colección de administradores expuesta por la API. */
-  iniciarSesion(usuario: string, contrasena: string): Observable<Administrador | undefined> {
-    return this.http.get<Administrador[]>(this.apiUrl).pipe(
-      map(administradores => administradores.find(administrador =>
-        administrador.usuario.trim().toLowerCase() === usuario.trim().toLowerCase() &&
-        administrador.contrasena === contrasena
-      ))
-    );
+  /** Envía las credenciales al backend para autenticar al administrador. */
+  iniciarSesion(usuario: string, contrasena: string): Observable<Administrador> {
+    return this.http.post<Administrador>(`${this.apiUrl}/login`, { usuario, contrasena });
   }
 }

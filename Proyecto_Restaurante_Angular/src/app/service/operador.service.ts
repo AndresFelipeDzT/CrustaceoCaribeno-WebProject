@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs';
 import { Operador } from '../models/operador.model';
 
 @Injectable({ providedIn: 'root' })
@@ -14,11 +13,9 @@ export class OperadorService {
     return this.http.get<Operador[]>(this.apiUrl);
   }
 
-  /** Compara las credenciales ingresadas con los operadores devueltos por la API. */
-  iniciarSesion(usuario: string, contrasena: string): Observable<Operador | undefined> {
-    return this.getOperadores().pipe(map(operadores => operadores.find(operador =>
-      operador.usuario.trim().toLowerCase() === usuario.trim().toLowerCase() && operador.contrasena === contrasena
-    )));
+  /** Envía las credenciales al backend para autenticar al operador. */
+  iniciarSesion(usuario: string, contrasena: string): Observable<Operador> {
+    return this.http.post<Operador>(`${this.apiUrl}/login`, { usuario, contrasena });
   }
 
   getOperadorById(id: number): Observable<Operador> {
