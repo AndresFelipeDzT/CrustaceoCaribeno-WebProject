@@ -41,7 +41,7 @@
             @if (item.adicionales.length) {
               <div class="adicionales-detalle">
                 @for (grupo of agruparAdicionales(item.adicionales); track grupo.adicional.idAdicional) {
-                  <span>+ {{ grupo.adicional.nombre }} (x{{ grupo.cantidad }})</span>
+                  <span>+ {{ grupo.adicional.nombre }} (x{{ grupo.cantidad }}) - Precio unitario: {{ grupo.adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }} | Subtotal: {{ grupo.adicional.precio * grupo.cantidad | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
                 }
               </div>
             }
