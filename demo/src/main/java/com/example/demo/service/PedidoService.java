@@ -14,6 +14,11 @@ public interface PedidoService {
     List<PedidoDTO> obtenerPedidosDTO();
 
     /**
+     * Obtiene los pedidos asociados a un cliente específico en formato DTO.
+     */
+    List<PedidoDTO> obtenerPedidosDTOPorCliente(Long idCliente);
+
+    /**
      * Busca un pedido por su identificador.
      */
     Pedido obtenerPedidoPorId(Long id);

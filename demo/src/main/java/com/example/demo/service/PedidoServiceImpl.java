@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
+import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Domiciliario;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
+import com.example.demo.errors.DomiciliarioNotFoundException;
 import com.example.demo.errors.PedidoNotFoundException;
+import com.example.demo.repository.DomiciliarioRepository;
 import com.example.demo.repository.ItemPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
 
+import java.time.LocalDate;
 import jakarta.transaction.Transactional;
 
 /**
@@ -30,11 +35,25 @@ public class PedidoServiceImpl implements PedidoService {
     private ItemPedidoRepository itemPedidoRepository;
 
     @Autowired
+    private DomiciliarioRepository domiciliarioRepository;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
     private CarritoService carritoService;
 
     @Override
     public List<PedidoDTO> obtenerPedidosDTO() {
         return pedidoRepository.findAll().stream()
+                .map(this::mapearPedidoDTO)
+                .toList();
+    }
+
+    @Override
+    public List<PedidoDTO> obtenerPedidosDTOPorCliente(Long idCliente) {
+        Cliente cliente = clienteService.obtenerClientePorId(idCliente);
+        return pedidoRepository.findByCliente(cliente).stream()
                 .map(this::mapearPedidoDTO)
                 .toList();
     }
@@ -121,8 +140,53 @@ public class PedidoServiceImpl implements PedidoService {
         if (estado == null || estado.isBlank()) {
             throw new IllegalArgumentException("El estado del pedido es obligatorio.");
         }
+        String nuevoEstado = estado.trim();
         Pedido pedidoExistente = obtenerPedidoPorId(id);
-        pedidoExistente.setEstado(estado.trim());
+
+        // Cuando el pedido pasa a "En camino" (o "Enviado") se debe asignar un domiciliario disponible.
+        if ("En camino".equalsIgnoreCase(nuevoEstado) || "Enviado".equalsIgnoreCase(nuevoEstado)) {
+            Long idDomiciliarioSolicitado = pedido.getDomiciliario() != null
+                    ? pedido.getDomiciliario().getIdDomiciliario()
+                    : null;
+            if (idDomiciliarioSolicitado == null && pedidoExistente.getDomiciliario() == null) {
+                throw new IllegalArgumentException(
+                        "Debes seleccionar un domiciliario disponible cuando el pedido pasa a estado En camino.");
+            }
+            if (idDomiciliarioSolicitado != null) {
+                Domiciliario nuevoDomiciliario = domiciliarioRepository.findById(idDomiciliarioSolicitado)
+                        .orElseThrow(() -> new DomiciliarioNotFoundException(idDomiciliarioSolicitado));
+                Domiciliario actual = pedidoExistente.getDomiciliario();
+                boolean mismoDomiciliario = actual != null
+                        && actual.getIdDomiciliario().equals(nuevoDomiciliario.getIdDomiciliario());
+                if (!mismoDomiciliario && !Boolean.TRUE.equals(nuevoDomiciliario.getDisponible())) {
+                    throw new IllegalArgumentException("El domiciliario seleccionado no está disponible.");
+                }
+                if (actual != null && !mismoDomiciliario) {
+                    actual.setDisponible(true);
+                    domiciliarioRepository.save(actual);
+                }
+                // Mientras el domiciliario está entregando el pedido, no está disponible.
+                nuevoDomiciliario.setDisponible(false);
+                domiciliarioRepository.save(nuevoDomiciliario);
+                pedidoExistente.setDomiciliario(nuevoDomiciliario);
+            } else if (pedidoExistente.getDomiciliario() != null) {
+                Domiciliario actual = pedidoExistente.getDomiciliario();
+                actual.setDisponible(false);
+                domiciliarioRepository.save(actual);
+            }
+        } else if ("Entregado".equalsIgnoreCase(nuevoEstado) || "Cancelado".equalsIgnoreCase(nuevoEstado)) {
+            if ("Entregado".equalsIgnoreCase(nuevoEstado)) {
+                pedidoExistente.setFechaEntrega(LocalDate.now());
+            }
+            // Al finalizar el pedido, el domiciliario vuelve a estar disponible.
+            if (pedidoExistente.getDomiciliario() != null) {
+                Domiciliario domiciliarioAsignado = pedidoExistente.getDomiciliario();
+                domiciliarioAsignado.setDisponible(true);
+                domiciliarioRepository.save(domiciliarioAsignado);
+            }
+        }
+
+        pedidoExistente.setEstado(nuevoEstado);
         pedidoRepository.save(pedidoExistente);
     }
 
