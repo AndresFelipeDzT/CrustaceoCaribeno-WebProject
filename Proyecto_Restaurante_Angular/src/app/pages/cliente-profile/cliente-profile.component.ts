@@ -4,21 +4,27 @@ import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Cliente } from '../../models/cliente.model';
+import { Pedido } from '../../models/pedido.model';
 import { ClienteService } from '../../service/cliente.service';
+import { PedidoService } from '../../service/pedido.service';
+import { ClientePedidosComponent } from './components/cliente-pedidos/cliente-pedidos.component';
 
 @Component({
   selector: 'app-cliente-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, ClientePedidosComponent],
   templateUrl: './cliente-profile.component.html',
   styleUrl: './cliente-profile.component.scss'
 })
-/** Presenta el perfil del cliente identificado en la URL. */
+/** Presenta el perfil del cliente identificado en la URL junto con sus pedidos activos y pasados. */
 export class ClienteProfileComponent implements OnInit {
   private clienteService = inject(ClienteService);
+  private pedidoService = inject(PedidoService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   cliente: Cliente | undefined;
+  pedidosActivos: Pedido[] = [];
+  pedidosPasados: Pedido[] = [];
   editando = false;
   guardado = false;
   error = '';
@@ -34,9 +40,28 @@ export class ClienteProfileComponent implements OnInit {
     this.clienteService.getClienteActual().subscribe({
       next: cliente => {
         this.cliente = cliente;
-        if (!cliente) void this.router.navigate(['/login']);
+        if (!cliente) {
+          void this.router.navigate(['/login']);
+          return;
+        }
+        this.cargarPedidos(cliente.idCliente);
       },
       error: () => this.error = 'No fue posible cargar tu perfil.'
+    });
+  }
+
+  /** Clasifica los pedidos del cliente entre activos y pasados (entregados o cancelados). */
+  cargarPedidos(idCliente: number): void {
+    this.pedidoService.getPedidosPorCliente(idCliente).subscribe({
+      next: pedidos => {
+        this.pedidosActivos = pedidos.filter(pedido =>
+          !['entregado', 'cancelado'].includes(pedido.estado.trim().toLowerCase())
+        );
+        this.pedidosPasados = pedidos.filter(pedido =>
+          ['entregado', 'cancelado'].includes(pedido.estado.trim().toLowerCase())
+        );
+      },
+      error: err => this.error = err?.error?.message || 'No fue posible cargar tus pedidos.'
     });
   }
 

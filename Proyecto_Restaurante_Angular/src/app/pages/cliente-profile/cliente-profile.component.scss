@@ -1,10 +1,11 @@
-﻿:host { display: flex; min-height: 100vh; flex-direction: column; }
+:host { display: flex; min-height: 100vh; flex-direction: column; }
 .profile-page {
   box-sizing: border-box;
   display: grid;
   flex: 1;
   min-height: 0;
   place-items: center;
+  gap: 24px;
   padding: 28px 18px;
   background: linear-gradient(rgba(8, 13, 24, .69), rgba(8, 13, 24, .69)), url("/imagenes/hero_seafood.jpg") center / cover fixed;
 }

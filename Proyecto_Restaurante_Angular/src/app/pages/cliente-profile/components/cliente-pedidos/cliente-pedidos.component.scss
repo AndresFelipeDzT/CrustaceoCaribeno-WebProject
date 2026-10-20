@@ -1,0 +1,32 @@
+:host { display: block; width: min(100%, 860px); }
+.pedidos-cliente-contenedor { display: grid; gap: 20px; width: 100%; }
+.pedidos-bloque {
+  box-sizing: border-box;
+  padding: 22px 28px;
+  color: #17335d;
+  background: rgba(255, 255, 255, .98);
+  border-top: 7px solid #86602d;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .24);
+}
+.eyebrow { margin: 0 0 2px; color: #86602d; font: 700 10px Arial, sans-serif; letter-spacing: 1.2px; }
+.pedidos-bloque h2 { margin: 0 0 14px; color: #132d53; font: italic 700 22px "Playfair Display", Georgia, serif; }
+.pedidos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.pedido-card {
+  padding: 14px 16px;
+  background: #f8f9fb;
+  border: 1px solid #cbd0d8;
+  border-radius: 10px;
+}
+.pedido-card-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; font-size: 14px; }
+.estado { display: inline-block; padding: 3px 9px; border: 1px solid #91a7e8; border-radius: 14px; background: #edf1ff; font: 700 11px Arial, sans-serif; }
+.estado-entregado { background: #c9f5c0; border-color: #6fbc68; color: #1f511c; }
+.estado-cancelado { background: #ffc2c2; border-color: #e17b7b; color: #7a1c1c; }
+.estado-pendiente { background: #fff3b5; border-color: #d3b858; color: #634d08; }
+.estado-camino { background: #dce9ff; border-color: #7ea6e0; color: #173963; }
+.pedido-meta { margin: 4px 0; color: #475569; font: 12px Arial, sans-serif; }
+.pedido-items { margin: 8px 0; padding-left: 18px; color: #18345e; font: 12px Arial, sans-serif; }
+.pedido-items li { margin-bottom: 4px; }
+.pedido-items small { display: block; color: #86602d; font-size: 11px; }
+.pedido-total { margin: 8px 0 0; padding-top: 6px; border-top: 1px dotted #cbd0d8; color: #132d53; font: 12px Arial, sans-serif; text-align: right; }
+.sin-pedidos { margin: 4px 0 0; color: #667085; font: 12px Arial, sans-serif; }

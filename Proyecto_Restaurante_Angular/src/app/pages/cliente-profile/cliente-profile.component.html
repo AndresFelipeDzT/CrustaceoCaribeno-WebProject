@@ -1,4 +1,4 @@
-﻿<app-navbar></app-navbar>
+<app-navbar></app-navbar>
 <main class="profile-page">
   @if (cliente) {
     <section class="profile-card" aria-labelledby="profile-name">
@@ -61,6 +61,11 @@
         </div>
       </form>
     </section>
+
+    <app-cliente-pedidos
+      [pedidosActivos]="pedidosActivos"
+      [pedidosPasados]="pedidosPasados"
+    ></app-cliente-pedidos>
   }
   @if (!cliente && error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
 </main>

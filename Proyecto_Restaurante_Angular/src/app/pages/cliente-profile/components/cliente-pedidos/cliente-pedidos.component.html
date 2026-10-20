@@ -1,0 +1,89 @@
+<section class="pedidos-cliente-contenedor" aria-label="Mis pedidos">
+  <div class="pedidos-bloque">
+    <p class="eyebrow">SEGUIMIENTO</p>
+    <h2>Mis Pedidos Activos</h2>
+    @if (pedidosActivos().length) {
+      <div class="pedidos-grid">
+        @for (pedido of pedidosActivos(); track pedido.idPedido) {
+          <article class="pedido-card">
+            <div class="pedido-card-header">
+              <strong>Pedido #{{ pedido.idPedido }}</strong>
+              <span class="estado"
+                [class.estado-pendiente]="pedido.estado.toLowerCase() === 'pendiente' || pedido.estado.toLowerCase() === 'en preparación'"
+                [class.estado-camino]="pedido.estado.toLowerCase() === 'en camino' || pedido.estado.toLowerCase() === 'enviado'">
+                {{ pedido.estado }}
+              </span>
+            </div>
+            <p class="pedido-meta">Fecha: {{ pedido.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+            @if (pedido.domiciliario) {
+              <p class="pedido-meta">Domiciliario: <strong>{{ pedido.domiciliario.nombre }}</strong> ({{ pedido.domiciliario.celular }})</p>
+            }
+            @if (pedido.items?.length) {
+              <ul class="pedido-items">
+                @for (item of pedido.items; track item.idItemPedido) {
+                  <li>
+                    <span>{{ item.cantidad }}x {{ item.producto?.nombre }}</span>
+                    @if (item.adicionales.length) {
+                      <small>
+                        @for (adic of item.adicionales; track $index) {
+                          + {{ adic.nombre }}
+                        }
+                      </small>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+            <p class="pedido-total">Total (con domicilio): <strong>{{ (pedido.total ?? 0) + 5000 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></p>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="sin-pedidos">No tienes pedidos activos en este momento.</p>
+    }
+  </div>
+
+  <div class="pedidos-bloque">
+    <p class="eyebrow">HISTORIAL</p>
+    <h2>Mis Pedidos Pasados</h2>
+    @if (pedidosPasados().length) {
+      <div class="pedidos-grid">
+        @for (pedido of pedidosPasados(); track pedido.idPedido) {
+          <article class="pedido-card">
+            <div class="pedido-card-header">
+              <strong>Pedido #{{ pedido.idPedido }}</strong>
+              <span class="estado"
+                [class.estado-entregado]="pedido.estado.toLowerCase() === 'entregado'"
+                [class.estado-cancelado]="pedido.estado.toLowerCase() === 'cancelado'">
+                {{ pedido.estado }}
+              </span>
+            </div>
+            <p class="pedido-meta">Creado: {{ pedido.fechaCreacion | date:'dd/MM/yyyy' }} @if (pedido.fechaEntrega) { | Entregado: {{ pedido.fechaEntrega | date:'dd/MM/yyyy' }} }</p>
+            @if (pedido.domiciliario) {
+              <p class="pedido-meta">Domiciliario: <strong>{{ pedido.domiciliario.nombre }}</strong></p>
+            }
+            @if (pedido.items?.length) {
+              <ul class="pedido-items">
+                @for (item of pedido.items; track item.idItemPedido) {
+                  <li>
+                    <span>{{ item.cantidad }}x {{ item.producto?.nombre }}</span>
+                    @if (item.adicionales.length) {
+                      <small>
+                        @for (adic of item.adicionales; track $index) {
+                          + {{ adic.nombre }}
+                        }
+                      </small>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+            <p class="pedido-total">Total (con domicilio): <strong>{{ (pedido.total ?? 0) + 5000 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></p>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="sin-pedidos">Aún no tienes pedidos pasados registrados.</p>
+    }
+  </div>
+</section>

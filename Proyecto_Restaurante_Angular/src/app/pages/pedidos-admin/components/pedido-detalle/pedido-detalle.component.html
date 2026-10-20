@@ -21,6 +21,7 @@
       <strong>Teléfono:</strong><span>{{ pedido().cliente?.telefono || 'No disponible' }}</span>
       <strong>Ubicación:</strong><span>{{ pedido().cliente?.direccion || 'No disponible' }}</span>
       <strong>Fecha / Hora:</strong><span>{{ pedido().fechaCreacion | date:'dd/MM/yyyy' }}</span>
+      <strong>Domiciliario:</strong><span>{{ pedido().domiciliario?.nombre || 'Sin asignar' }}</span>
     </div>
   </section>
 
@@ -69,6 +70,20 @@
           <option [value]="opcion">{{ opcion }}</option>
         }
       </select>
+      @if (requiereDomiciliario) {
+        <label for="domiciliario">Domiciliario disponible</label>
+        <select
+          id="domiciliario"
+          name="domiciliario"
+          [ngModel]="domiciliarioId()"
+          (ngModelChange)="domiciliarioIdChange.emit($event ? +$event : null)"
+        >
+          <option [ngValue]="null">Selecciona un domiciliario disponible...</option>
+          @for (dom of domiciliarios(); track dom.idDomiciliario) {
+            <option [ngValue]="dom.idDomiciliario">{{ dom.nombre }} ({{ dom.celular }})</option>
+          }
+        </select>
+      }
       <button class="btn-actualizar" type="submit">Actualizar datos</button>
     </form>
   </section>

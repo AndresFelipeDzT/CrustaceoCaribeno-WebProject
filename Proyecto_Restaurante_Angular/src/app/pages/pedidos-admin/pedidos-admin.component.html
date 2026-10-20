@@ -20,12 +20,15 @@
     [pedido]="actual"
     [estado]="estado"
     [estados]="estados"
+    [domiciliarios]="domiciliariosDisponibles"
+    [domiciliarioId]="domiciliarioId"
     [esOperador]="esOperador"
     [operadorId]="operadorId"
     [administradorId]="administradorId"
     [mensaje]="mensaje"
     [error]="error"
     (estadoChange)="estado = $event"
+    (domiciliarioIdChange)="domiciliarioId = $event"
     (actualizarEstado)="actualizarEstado()"
   ></app-pedido-detalle>
 } @else {
