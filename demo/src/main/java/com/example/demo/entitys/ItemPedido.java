@@ -68,8 +68,6 @@ public class ItemPedido {
     }
 
     public double getSubtotal() {
-        double subtotalAdicionales = this.adicionales == null ? 0
-                : this.adicionales.stream().mapToDouble(Adicional::getPrecio).sum();
-        return (this.cantidad * this.precioUnitario) + subtotalAdicionales;
+        return this.cantidad * this.precioUnitario;
     }
 }

@@ -48,8 +48,6 @@ public class ItemCarrito {
     }
 
     public double getSubtotal() {
-        double subtotalAdicionales = adicionales == null ? 0
-                : adicionales.stream().mapToDouble(Adicional::getPrecio).sum();
-        return (cantidad * producto.getPrecio()) + subtotalAdicionales;
+        return cantidad * producto.getPrecio();
     }
 }
