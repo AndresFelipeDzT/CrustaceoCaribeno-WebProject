@@ -27,8 +27,7 @@
           [adicionalesSeleccionados]="seleccionados[item.idItemCarrito] ?? []"
           (cantidadCambiada)="actualizarCantidad(item, $event)"
           (eliminacionSolicitada)="eliminarItem(item)"
-          (adicionalCambiado)="cambiarCantidadAdicional(item, $event.adicionalId, $event.cantidad)"
-          (adicionalEliminado)="eliminarAdicional(item, $event)"
+          (adicionalCambiado)="cambiarAdicional(item, $event.adicionalId, $event.event)"
           (adicionalesGuardados)="guardarAdicionales(item)"
         ></app-carrito-item>
       }

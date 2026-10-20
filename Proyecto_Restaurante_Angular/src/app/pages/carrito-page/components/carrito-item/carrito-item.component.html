@@ -17,13 +17,8 @@
 
   @if (item().adicionales.length) {
     <ul class="carrito-adicionales">
-      @for (grupo of adicionalesAgrupados(); track grupo.adicional.idAdicional) {
-        <li>
-          <button class="adicional-eliminar" type="button" aria-label="Eliminar adicional" (click)="adicionalEliminado.emit(grupo.adicional.idAdicional)">
-            <i class="bi bi-trash3"></i>
-          </button>
-          <span>{{ grupo.adicional.nombre }} (x{{ grupo.cantidad }})</span>
-        </li>
+      @for (adicional of item().adicionales; track adicional.idAdicional) {
+        <li><i class="bi bi-trash3"></i><span>{{ adicional.nombre }}</span></li>
       }
     </ul>
   }
@@ -32,24 +27,16 @@
     <div class="seleccion-adicionales">
       <p>Adicionales para esta línea:</p>
       @for (adicional of adicionalesDisponibles(); track adicional.idAdicional) {
-        <div class="adicional-fila">
+        <label>
+          <input
+            type="checkbox"
+            [checked]="adicionalesSeleccionados().includes(adicional.idAdicional)"
+            (change)="adicionalCambiado.emit({ adicionalId: adicional.idAdicional, event: $event })">
           <span>{{ adicional.nombre }}</span>
           <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
-          <div class="carrito-controles cantidad-form">
-            <button
-              type="button"
-              aria-label="Disminuir cantidad de adicional"
-              [disabled]="cantidadSeleccionada(adicional.idAdicional) <= 0"
-              (click)="adicionalCambiado.emit({ adicionalId: adicional.idAdicional, cantidad: cantidadSeleccionada(adicional.idAdicional) - 1 })">-</button>
-            <span class="cantidad-valor">{{ cantidadSeleccionada(adicional.idAdicional) }}</span>
-            <button
-              type="button"
-              aria-label="Aumentar cantidad de adicional"
-              (click)="adicionalCambiado.emit({ adicionalId: adicional.idAdicional, cantidad: cantidadSeleccionada(adicional.idAdicional) + 1 })">+</button>
-          </div>
-        </div>
+        </label>
       }
-      <button class="btn-guardar-adicionales" type="button" (click)="adicionalesGuardados.emit()">Guardar adicionales</button>
+      <button type="button" (click)="adicionalesGuardados.emit()">Guardar adicionales</button>
     </div>
   }
   <p class="carrito-item-total">{{ item().subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>

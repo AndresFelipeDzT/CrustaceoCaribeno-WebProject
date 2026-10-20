@@ -15,24 +15,6 @@ export class CarritoItemComponent {
   adicionalesSeleccionados = input.required<number[]>();
   cantidadCambiada = output<number>();
   eliminacionSolicitada = output<void>();
-  adicionalCambiado = output<{ adicionalId: number; cantidad: number }>();
-  adicionalEliminado = output<number>();
+  adicionalCambiado = output<{ adicionalId: number; event: Event }>();
   adicionalesGuardados = output<void>();
-
-  adicionalesAgrupados(): { adicional: Adicional; cantidad: number }[] {
-    const mapa = new Map<number, { adicional: Adicional; cantidad: number }>();
-    for (const adicional of this.item().adicionales) {
-      const actual = mapa.get(adicional.idAdicional);
-      if (actual) {
-        actual.cantidad++;
-      } else {
-        mapa.set(adicional.idAdicional, { adicional, cantidad: 1 });
-      }
-    }
-    return Array.from(mapa.values());
-  }
-
-  cantidadSeleccionada(idAdicional: number): number {
-    return this.adicionalesSeleccionados().filter(id => id === idAdicional).length;
-  }
 }
