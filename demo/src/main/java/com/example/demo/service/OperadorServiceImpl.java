@@ -65,4 +65,17 @@ public class OperadorServiceImpl implements OperadorService {
     public void eliminarOperador(Long id) {
         operadorRepository.delete(obtenerOperadorPorId(id));
     }
+
+    @Override
+    public Operador login(String usuario, String contrasena) {
+        if (usuario == null || usuario.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu usuario.");
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
+        }
+        return operadorRepository.findByUsuarioIgnoreCase(usuario.trim())
+                .filter(operador -> contrasena.equals(operador.getContrasena()))
+                .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
+    }
 }

@@ -60,4 +60,17 @@ public class AdministradorServiceImpl implements AdministradorService {
     public void eliminarAdministrador(Long id) {
         administradorRepository.delete(obtenerAdministradorPorId(id));
     }
+
+    @Override
+    public Administrador login(String usuario, String contrasena) {
+        if (usuario == null || usuario.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu usuario.");
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
+        }
+        return administradorRepository.findByUsuarioIgnoreCase(usuario.trim())
+                .filter(administrador -> contrasena.equals(administrador.getContrasena()))
+                .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
+    }
 }

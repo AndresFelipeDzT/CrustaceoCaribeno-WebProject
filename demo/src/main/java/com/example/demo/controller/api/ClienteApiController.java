@@ -52,4 +52,15 @@ public class ClienteApiController {
     public void eliminar(@PathVariable Long id) {
         clienteService.eliminarCliente(id);
     }
+
+    @PostMapping("/login")
+    public ClienteDTO login(@RequestBody LoginRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Las credenciales son obligatorias.");
+        }
+        return clienteService.loginDTO(request.correo(), request.password());
+    }
+
+    public record LoginRequest(String correo, String password) {
+    }
 }

@@ -202,9 +202,14 @@ public class ClienteServiceImpl implements ClienteService {
 
         Cliente cliente = autenticar(correo, password);
         if (cliente == null) {
-            throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
+            throw new IllegalArgumentException("El correo o la contraseña no son correctos.");
         }
         return cliente;
+    }
+
+    @Override
+    public ClienteDTO loginDTO(String correo, String password) {
+        return aDTO(login(correo, password));
     }
 
     @Override

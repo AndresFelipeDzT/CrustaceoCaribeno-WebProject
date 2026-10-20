@@ -51,4 +51,15 @@ public class OperadorApiController {
     public void eliminar(@PathVariable Long id) {
         operadorService.eliminarOperador(id);
     }
+
+    @PostMapping("/login")
+    public Operador login(@RequestBody LoginRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Las credenciales son obligatorias.");
+        }
+        return operadorService.login(request.usuario(), request.contrasena());
+    }
+
+    public record LoginRequest(String usuario, String contrasena) {
+    }
 }

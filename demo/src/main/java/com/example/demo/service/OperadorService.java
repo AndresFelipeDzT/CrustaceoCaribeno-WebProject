@@ -18,4 +18,6 @@ public interface OperadorService {
     void actualizarOperador(Long id, Operador operador);
 
     void eliminarOperador(Long id);
+
+    Operador login(String usuario, String contrasena);
 }
