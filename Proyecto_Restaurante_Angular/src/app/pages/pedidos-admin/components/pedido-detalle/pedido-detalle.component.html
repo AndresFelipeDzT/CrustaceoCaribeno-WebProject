@@ -40,8 +40,8 @@
             <span>{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
             @if (item.adicionales.length) {
               <div class="adicionales-detalle">
-                @for (adicional of item.adicionales; track adicional.idAdicional) {
-                  <span>+ {{ adicional.nombre }}</span>
+                @for (grupo of agruparAdicionales(item.adicionales); track grupo.adicional.idAdicional) {
+                  <span>+ {{ grupo.adicional.nombre }} (x{{ grupo.cantidad }})</span>
                 }
               </div>
             }

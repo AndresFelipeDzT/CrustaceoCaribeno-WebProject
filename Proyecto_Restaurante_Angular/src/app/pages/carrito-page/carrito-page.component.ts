@@ -65,12 +65,16 @@ export class CarritoPageComponent implements OnInit {
     });
   }
 
-  cambiarAdicional(item: ItemCarrito, adicionalId: number, event: Event): void {
-    const seleccionado = (event.target as HTMLInputElement).checked;
-    const actuales = this.seleccionados[item.idItemCarrito] ?? [];
-    this.seleccionados[item.idItemCarrito] = seleccionado
-      ? [...actuales, adicionalId]
-      : actuales.filter(id => id !== adicionalId);
+  cambiarCantidadAdicional(item: ItemCarrito, adicionalId: number, cantidad: number): void {
+    const cantidadFinal = Math.max(0, cantidad);
+    const sinAdicional = (this.seleccionados[item.idItemCarrito] ?? []).filter(id => id !== adicionalId);
+    const repetidos = Array.from({ length: cantidadFinal }, () => adicionalId);
+    this.seleccionados[item.idItemCarrito] = [...sinAdicional, ...repetidos];
+  }
+
+  eliminarAdicional(item: ItemCarrito, adicionalId: number): void {
+    this.cambiarCantidadAdicional(item, adicionalId, 0);
+    this.guardarAdicionales(item);
   }
 
   guardarAdicionales(item: ItemCarrito): void {
