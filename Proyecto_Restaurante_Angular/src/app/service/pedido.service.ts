@@ -61,7 +61,6 @@ export class PedidoService {
               map((adicionales): ItemPedido => ({
                 idItemPedido: item.idItemPedido,
                 cantidad: item.cantidad,
-                precioUnitario: item.precioUnitario,
                 producto,
                 adicionales,
                 subtotal: item.subtotal

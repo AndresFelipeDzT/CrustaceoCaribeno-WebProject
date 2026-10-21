@@ -6,7 +6,6 @@ import { Producto } from './producto.model';
 export interface ItemPedido {
   idItemPedido: number;
   cantidad: number;
-  precioUnitario: number;
   pedido?: Pedido | null;
   producto?: Producto | null;
   adicionales: Adicional[];
@@ -19,6 +18,5 @@ export interface ItemPedidoDTO {
   idProducto: number;
   nombreProducto: string;
   cantidad: number;
-  precioUnitario: number;
   subtotal: number;
 }
