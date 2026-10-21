@@ -30,8 +30,8 @@ public class ItemPedido {
     @Column(nullable = false)
     private int cantidad;
 
-    @Column(nullable = false)
-    private double precioUnitario;
+    //@Column(nullable = false)
+    //private double precioUnitario;
 
     @ManyToOne
     @JsonIgnore
@@ -50,24 +50,24 @@ public class ItemPedido {
         this.adicionales = new ArrayList<>();
     }
 
-    public ItemPedido(int cantidad, double precioUnitario, Pedido pedido, Producto producto) {
+    public ItemPedido(int cantidad, Pedido pedido, Producto producto) {
         this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
         this.pedido = pedido;
         this.producto = producto;
     }
 
-    public ItemPedido(Long idItemPedido, int cantidad, double precioUnitario, Pedido pedido, Producto producto,
+    public ItemPedido(Long idItemPedido, int cantidad, Pedido pedido, Producto producto,
             List<Adicional> adicionales) {
         this.idItemPedido = idItemPedido;
         this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
         this.pedido = pedido;
         this.producto = producto;
         this.adicionales = adicionales;
     }
 
     public double getSubtotal() {
-        return this.cantidad * this.precioUnitario;
+        double subtotalAdicionales = this.adicionales == null ? 0
+                : this.adicionales.stream().mapToDouble(Adicional::getPrecio).sum();
+        return (this.cantidad * this.producto.getPrecio()) + this.cantidad *subtotalAdicionales;
     }
 }
