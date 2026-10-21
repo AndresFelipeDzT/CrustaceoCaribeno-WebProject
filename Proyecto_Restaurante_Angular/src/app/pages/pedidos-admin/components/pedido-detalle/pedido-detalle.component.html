@@ -36,7 +36,7 @@
             <span>{{ item.producto?.nombre }}</span>
             <span>{{ item.producto?.categoria?.nombre || 'Sin categoría' }}</span>
             <span>{{ item.cantidad }}</span>
-            <span>{{ item.precioUnitario | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
+            <span>{{ item.producto?.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
             <span>{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
             @if (item.adicionales.length) {
               <div class="adicionales-detalle">
