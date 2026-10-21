@@ -100,7 +100,6 @@ public class PedidoServiceImpl implements PedidoService {
                 item.getProducto() == null ? null : item.getProducto().getIdProducto(),
                 item.getProducto() == null ? null : item.getProducto().getNombre(),
                 item.getCantidad(),
-                item.getPrecioUnitario(),
                 item.getSubtotal());
     }
 

@@ -587,14 +587,12 @@ public class DataLoader implements CommandLineRunner {
             .pedido(pedido1)
             .producto(prod14)
             .cantidad(2)
-            .precioUnitario(prod14 != null ? prod14.getPrecio() : 58000.0)
             .build());
 
         itemPedidoRepository.save(ItemPedido.builder()
             .pedido(pedido1)
             .producto(prod38)
             .cantidad(2)
-            .precioUnitario(prod38 != null ? prod38.getPrecio() : 10000.0)
             .build());
 
         // Items para Pedido 2
@@ -602,14 +600,12 @@ public class DataLoader implements CommandLineRunner {
             .pedido(pedido2)
             .producto(prod25)
             .cantidad(1)
-            .precioUnitario(prod25 != null ? prod25.getPrecio() : 52000.0)
             .build());
 
         itemPedidoRepository.save(ItemPedido.builder()
             .pedido(pedido2)
             .producto(prod1)
             .cantidad(1)
-            .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
             .build());
 
         // Items para Pedido 3
@@ -617,7 +613,6 @@ public class DataLoader implements CommandLineRunner {
             .pedido(pedido3)
             .producto(prod1)
             .cantidad(3)
-            .precioUnitario(prod1 != null ? prod1.getPrecio() : 36000.0)
             .build());
 
         // Items para Pedido 4
@@ -625,7 +620,6 @@ public class DataLoader implements CommandLineRunner {
             .pedido(pedido4)
             .producto(prod14)
             .cantidad(1)
-            .precioUnitario(prod14 != null ? prod14.getPrecio() : 58000.0)
             .build());
 
         // Items para Pedido 5
@@ -633,7 +627,6 @@ public class DataLoader implements CommandLineRunner {
             .pedido(pedido5)
             .producto(prod41)
             .cantidad(2)
-            .precioUnitario(prod41 != null ? prod41.getPrecio() : 10000.0)
             .build());
 
         // ==========================================

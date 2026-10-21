@@ -191,7 +191,6 @@ public class CarritoServiceImpl implements CarritoService {
             itemPedido.setPedido(pedido);
             itemPedido.setProducto(item.getProducto());
             itemPedido.setCantidad(item.getCantidad());
-            itemPedido.setPrecioUnitario(item.getProducto().getPrecio());
             itemPedido.setAdicionales(new ArrayList<>(item.getAdicionales()));
             itemPedidoRepository.save(itemPedido);
         }
