@@ -43,7 +43,7 @@ export class CarritoPageComponent implements OnInit {
         for (const item of carrito.items) {
           this.seleccionados[item.idItemCarrito] = item.adicionales.map(adicional => adicional.idAdicional);
           const categoriaId = item.producto.categoria?.idCategoria;
-          if (categoriaId !== undefined) {
+          if (categoriaId !== undefined && !this.disponibles[item.idItemCarrito]) {
             this.comidaService.getAdicionales(categoriaId).subscribe({
               next: adicionales => this.disponibles[item.idItemCarrito] = adicionales.filter(adicional => adicional.activo),
               error: () => this.error = 'No fue posible cargar los adicionales del carrito.'
@@ -68,19 +68,15 @@ export class CarritoPageComponent implements OnInit {
   cambiarAdicional(item: ItemCarrito, adicionalId: number, event: Event): void {
     const seleccionado = (event.target as HTMLInputElement).checked;
     const actuales = this.seleccionados[item.idItemCarrito] ?? [];
-    this.seleccionados[item.idItemCarrito] = seleccionado
+    const nuevos = seleccionado
       ? [...actuales, adicionalId]
       : actuales.filter(id => id !== adicionalId);
-  }
+    this.seleccionados[item.idItemCarrito] = nuevos;
 
-  guardarAdicionales(item: ItemCarrito): void {
     const clienteId = this.clienteService.getClienteActualId();
     if (clienteId === undefined) return;
-    this.carritoService.actualizarAdicionales(
-      clienteId,
-      item.idItemCarrito,
-      this.seleccionados[item.idItemCarrito] ?? []
-    ).subscribe({
+
+    this.carritoService.actualizarAdicionales(clienteId, item.idItemCarrito, nuevos).subscribe({
       next: () => this.cargarCarrito(),
       error: () => this.error = 'No fue posible actualizar los adicionales.'
     });
