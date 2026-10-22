@@ -16,5 +16,4 @@ export class CarritoItemComponent {
   cantidadCambiada = output<number>();
   eliminacionSolicitada = output<void>();
   adicionalCambiado = output<{ adicionalId: number; event: Event }>();
-  adicionalesGuardados = output<void>();
 }
