@@ -128,7 +128,7 @@ public class DataLoader implements CommandLineRunner {
             "Tacos Gobernador",
             34000.0,
             "Tortillas de maíz artesanales rellenas de camarones salteados con pimientos, cebolla caramelizada y queso costeño gratinado.",
-            "https://cdn-ilddihb.nitrocdn.com/MgqZCGPEMHvMRLsisMUCAIMWvgGMxqaj/assets/images/optimized/rev-0e527e8/www.goya.com/wp-content/uploads/2024/09/tacos-gobernador.jpg"
+            "https://imag.bonviveur.com/tacos-gobernador.jpg"
         ));
         productoRepository.save(new Producto(
             "Ceviche Mixto",

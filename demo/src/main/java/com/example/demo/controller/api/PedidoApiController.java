@@ -52,10 +52,7 @@ public class PedidoApiController {
         return pedidoService.obtenerAdicionalesDTODeItem(idPedido, idItemPedido);
     }
 
-    @PostMapping
-    public void crear(@RequestBody Pedido pedido) {
-        pedidoService.guardarPedido(pedido);
-    }
+    // Se quita metodo post 
 
     @PutMapping("/{id}")
     public void actualizarEstado(@PathVariable Long id, @RequestBody Pedido pedido) {

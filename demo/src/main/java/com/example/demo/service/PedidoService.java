@@ -24,8 +24,6 @@ public interface PedidoService {
 
     List<AdicionalDTO> obtenerAdicionalesDTODeItem(Long idPedido, Long idItemPedido);
 
-    void guardarPedido(Pedido pedido);
-
     void actualizarEstadoPedido(Long id, Pedido pedido);
 
     void eliminarPedido(Long id);
