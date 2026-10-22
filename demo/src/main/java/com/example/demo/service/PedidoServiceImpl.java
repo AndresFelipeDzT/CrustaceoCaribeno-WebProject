@@ -29,9 +29,6 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
-    @Autowired
-    private CarritoService carritoService;
-
     @Override
     public List<PedidoDTO> obtenerPedidosDTO() {
         return pedidoRepository.findAll().stream()
@@ -101,14 +98,6 @@ public class PedidoServiceImpl implements PedidoService {
                 item.getProducto() == null ? null : item.getProducto().getNombre(),
                 item.getCantidad(),
                 item.getSubtotal());
-    }
-
-    @Override
-    public void guardarPedido(Pedido pedido) {
-        if (pedido == null || pedido.getCliente() == null || pedido.getCliente().getIdCliente() == null) {
-            throw new IllegalArgumentException("El ID del cliente es obligatorio para crear el pedido.");
-        }
-        carritoService.confirmarPedido(pedido.getCliente().getIdCliente());
     }
 
     @Override
