@@ -40,6 +40,10 @@ public class Domiciliario {
     @Column(nullable = false)
     private Boolean disponible;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean activo = true;
+
     @OneToMany(mappedBy = "domiciliario")
     @JsonIgnore
     @ToString.Exclude
@@ -55,6 +59,7 @@ public class Domiciliario {
         this.celular = celular;
         this.cedula = cedula;
         this.disponible = disponible;
+        this.activo = true;
     }
 
     public Domiciliario(String nombre, String celular, String cedula, String imagenURL, Boolean disponible) {
@@ -63,6 +68,7 @@ public class Domiciliario {
         this.cedula = cedula;
         this.imagenURL = imagenURL;
         this.disponible = disponible;
+        this.activo = true;
     }
 
     public Domiciliario(Long idDomiciliario, String nombre, String celular, String cedula, Boolean disponible,
@@ -72,6 +78,7 @@ public class Domiciliario {
         this.celular = celular;
         this.cedula = cedula;
         this.disponible = disponible;
+        this.activo = true;
         this.pedidos = pedidos;
     }
 
@@ -83,6 +90,19 @@ public class Domiciliario {
         this.cedula = cedula;
         this.imagenURL = imagenURL;
         this.disponible = disponible;
+        this.activo = true;
+        this.pedidos = pedidos;
+    }
+
+    public Domiciliario(Long idDomiciliario, String nombre, String celular, String cedula, String imagenURL,
+            Boolean disponible, Boolean activo, List<Pedido> pedidos) {
+        this.idDomiciliario = idDomiciliario;
+        this.nombre = nombre;
+        this.celular = celular;
+        this.cedula = cedula;
+        this.imagenURL = imagenURL;
+        this.disponible = disponible;
+        this.activo = activo;
         this.pedidos = pedidos;
     }
 }

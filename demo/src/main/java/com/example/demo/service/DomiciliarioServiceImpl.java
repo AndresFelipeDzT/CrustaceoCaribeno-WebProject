@@ -67,6 +67,9 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         if (domiciliario.getDisponible() != null) {
             domiciliarioExistente.setDisponible(domiciliario.getDisponible());
         }
+        if (domiciliario.getActivo() != null) {
+            domiciliarioExistente.setActivo(domiciliario.getActivo());
+        }
         return domiciliarioRepository.save(domiciliarioExistente);
     }
 
@@ -77,6 +80,16 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         }
         Domiciliario domiciliario = obtenerDomiciliarioPorId(idDomiciliario);
         domiciliario.setDisponible(disponible);
+        return domiciliarioRepository.save(domiciliario);
+    }
+
+    @Override
+    public Domiciliario cambiarEstadoActivo(Long idDomiciliario, Boolean activo) {
+        if (activo == null) {
+            throw new IllegalArgumentException("El estado activo del domiciliario es obligatorio.");
+        }
+        Domiciliario domiciliario = obtenerDomiciliarioPorId(idDomiciliario);
+        domiciliario.setActivo(activo);
         return domiciliarioRepository.save(domiciliario);
     }
 

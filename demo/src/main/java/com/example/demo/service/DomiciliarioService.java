@@ -19,5 +19,7 @@ public interface DomiciliarioService {
 
     Domiciliario cambiarDisponibilidad(Long idDomiciliario, Boolean disponible);
 
+    Domiciliario cambiarEstadoActivo(Long idDomiciliario, Boolean activo);
+
     void eliminarDomiciliario(Long idDomiciliario);
 }

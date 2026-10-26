@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,14 +47,24 @@ public class DomiciliarioApiController {
         return domiciliarioService.actualizarDomiciliario(id, domiciliario);
     }
 
-    @PatchMapping("/{id}/activar")
+    @PutMapping("/{id}/activar")
     public Domiciliario activar(@PathVariable Long id) {
         return domiciliarioService.cambiarDisponibilidad(id, true);
     }
 
-    @PatchMapping("/{id}/desactivar")
+    @PutMapping("/{id}/desactivar")
     public Domiciliario desactivar(@PathVariable Long id) {
         return domiciliarioService.cambiarDisponibilidad(id, false);
+    }
+
+    @PutMapping("/{id}/estado/activar")
+    public Domiciliario activarEstado(@PathVariable Long id) {
+        return domiciliarioService.cambiarEstadoActivo(id, true);
+    }
+
+    @PutMapping("/{id}/estado/desactivar")
+    public Domiciliario desactivarEstado(@PathVariable Long id) {
+        return domiciliarioService.cambiarEstadoActivo(id, false);
     }
 
     @DeleteMapping("/{id}")
