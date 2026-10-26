@@ -87,9 +87,9 @@ export class DomiciliarioFormComponent implements OnInit {
       next: () => void this.router.navigate(['/domiciliarios'], {
         queryParams: this.queryParams
       }),
-      error: () => this.error = this.isEdit
+      error: err => this.error = err?.error?.message || (this.isEdit
         ? 'No fue posible actualizar el domiciliario.'
-        : 'No fue posible registrar el domiciliario.'
+        : 'No fue posible registrar el domiciliario.')
     });
   }
 }

@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -41,13 +41,9 @@ export class LoginComponent {
     if (this.esOperador) {
       this.operadorService.iniciarSesion(correo, password).subscribe({
         next: operador => {
-          if (!operador) {
-            this.error = 'El usuario o la contraseña no son correctos.';
-            return;
-          }
           void this.router.navigate(['/operador/pedidos'], { queryParams: { idOperador: operador.idOperador } });
         },
-        error: () => this.error = 'No fue posible conectar con el servidor. Intenta de nuevo.'
+        error: err => this.error = err?.error?.message || 'No fue posible conectar con el servidor. Intenta de nuevo.'
       });
       return;
     }
@@ -55,31 +51,23 @@ export class LoginComponent {
     if (this.esAdministrador) {
       this.administradorService.iniciarSesion(correo, password).subscribe({
         next: administrador => {
-          if (!administrador) {
-            this.error = 'El usuario o la contraseña no son correctos.';
-            return;
-          }
           void this.router.navigate(['/pedidos'], {
             queryParams: { idAdministrador: administrador.idAdministrador }
           });
         },
-        error: () => this.error = 'No fue posible conectar con el servidor. Intenta de nuevo.'
+        error: err => this.error = err?.error?.message || 'No fue posible conectar con el servidor. Intenta de nuevo.'
       });
       return;
     }
 
     this.clienteService.iniciarSesion(correo, password).subscribe({
       next: cliente => {
-        if (!cliente) {
-          this.error = 'El correo o la contraseña no son correctos.';
-          return;
-        }
         void this.router.navigate(['/comidas/tarjetas'], {
           queryParams: { id: cliente.idCliente }
         });
       },
-      error: () => {
-        this.error = 'No fue posible conectar con el servidor. Intenta de nuevo.';
+      error: err => {
+        this.error = err?.error?.message || 'No fue posible conectar con el servidor. Intenta de nuevo.';
       }
     });
   }

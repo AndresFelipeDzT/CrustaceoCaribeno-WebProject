@@ -58,7 +58,7 @@ export class OperadorFormComponent implements OnInit {
       : this.operadorService.addOperador(payload);
     solicitud.subscribe({
       next: () => void this.router.navigate(['/operadores'], { queryParams: this.queryParams }),
-      error: () => this.error = this.isEdit ? 'No fue posible actualizar el operador.' : 'No fue posible registrar el operador.'
+      error: err => this.error = err?.error?.message || (this.isEdit ? 'No fue posible actualizar el operador.' : 'No fue posible registrar el operador.')
     });
   }
 }
