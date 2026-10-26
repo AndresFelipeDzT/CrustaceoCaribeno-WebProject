@@ -3,6 +3,7 @@ import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Pedido } from '../../../../models/pedido.model';
+import { Domiciliario } from '../../../../models/domiciliario.model';
 
 @Component({
   selector: 'app-pedido-detalle',
@@ -17,8 +18,11 @@ export class PedidoDetalleComponent {
   esOperador = input(false);
   operadorId = input<number>();
   administradorId = input<number>();
+  domiciliariosDisponibles = input<Domiciliario[]>([]);
+  idDomiciliarioSeleccionado = input<number>();
   mensaje = input('');
   error = input('');
   estadoChange = output<string>();
+  domiciliarioChange = output<number | undefined>();
   actualizarEstado = output<void>();
 }

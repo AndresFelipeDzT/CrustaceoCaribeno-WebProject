@@ -3,13 +3,33 @@
   @if (cliente) {
     <section class="profile-card" aria-labelledby="profile-name">
       @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
-      <div class="avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></div>
-      <p class="eyebrow">MI CUENTA</p>
-      <h1 id="profile-name">{{ cliente.nombre }} {{ cliente.apellido }}</h1>
-      <p class="intro">Consulta y administra la información de tu cuenta.</p>
+      <div class="profile-heading">
+        <div class="avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></div>
+        <p class="eyebrow">MI CUENTA</p>
+        <h1 id="profile-name">{{ cliente.nombre }} {{ cliente.apellido }}</h1>
+        <p class="intro">Consulta y administra la información de tu cuenta.</p>
+      </div>
 
       <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" novalidate>
         <div class="profile-fields">
+          <div class="profile-field">
+            <label for="nombre">Nombre</label>
+            @if (editando) {
+              <input id="nombre" type="text" formControlName="nombre" autocomplete="given-name" [class.invalid]="perfilForm.controls.nombre.touched && perfilForm.controls.nombre.invalid">
+              @if (perfilForm.controls.nombre.touched && perfilForm.controls.nombre.invalid) { <small>El nombre debe tener entre 2 y 60 caracteres.</small> }
+            } @else {
+              <input id="nombre" type="text" [value]="cliente.nombre" readonly>
+            }
+          </div>
+          <div class="profile-field">
+            <label for="apellido">Apellido</label>
+            @if (editando) {
+              <input id="apellido" type="text" formControlName="apellido" autocomplete="family-name" [class.invalid]="perfilForm.controls.apellido.touched && perfilForm.controls.apellido.invalid">
+              @if (perfilForm.controls.apellido.touched && perfilForm.controls.apellido.invalid) { <small>El apellido debe tener entre 2 y 60 caracteres.</small> }
+            } @else {
+              <input id="apellido" type="text" [value]="cliente.apellido" readonly>
+            }
+          </div>
           <div class="profile-field">
             <label for="correo">Correo</label>
             @if (editando) {
@@ -40,10 +60,10 @@
           <div class="profile-field">
             <label for="password">Contraseña</label>
             @if (editando) {
-              <input id="password" type="text" formControlName="password" [class.invalid]="perfilForm.controls.password.touched && perfilForm.controls.password.invalid">
+              <input id="password" type="password" formControlName="password" autocomplete="new-password" placeholder="Deja en blanco para conservarla" [class.invalid]="perfilForm.controls.password.touched && perfilForm.controls.password.invalid">
               @if (perfilForm.controls.password.touched && perfilForm.controls.password.invalid) { <small>Usa al menos 4 caracteres.</small> }
             } @else {
-              <input id="password" type="text" [value]="cliente.password" readonly>
+              <input id="password" type="password" value="********" readonly>
             }
           </div>
         </div>
@@ -60,6 +80,85 @@
           }
         </div>
       </form>
+
+      <section class="orders-section" aria-labelledby="active-orders-title">
+        <p class="eyebrow">SEGUIMIENTO</p>
+        <h2 id="active-orders-title">Mis pedidos activos</h2>
+        @if (errorPedidos) { <p class="alert alert-danger" role="alert">{{ errorPedidos }}</p> }
+        @if (cargandoPedidos) {
+          <p class="orders-empty" role="status">Cargando tus pedidos...</p>
+        } @else {
+          @if (pedidosActivos.length) {
+            <div class="orders-list">
+              @for (pedido of pedidosActivos; track pedido.idPedido) {
+                <article class="order-card">
+                  <div class="order-summary">
+                    <div>
+                      <h3>Pedido #{{ pedido.idPedido }}</h3>
+                      <p>Realizado el {{ pedido.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                    <span class="order-status">{{ pedido.estado }}</span>
+                    <strong>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
+                    <button type="button" class="order-detail-button" (click)="verDetallePedido(pedido.idPedido)">
+                      {{ pedidoDetalleId === pedido.idPedido ? 'Ocultar detalle' : 'Ver detalle' }}
+                    </button>
+                  </div>
+                  @if (pedidoDetalleId === pedido.idPedido) {
+                    @if (cargandoDetalle) { <p class="orders-empty" role="status">Cargando detalle...</p> }
+                    @if (errorDetalle) { <p class="alert alert-danger" role="alert">{{ errorDetalle }}</p> }
+                    @if (pedidoDetalle; as detalle) {
+                      <div class="order-items">
+                        @for (item of detalle.items ?? []; track item.idItemPedido) {
+                          <div><span>{{ item.cantidad }} × {{ item.producto?.nombre || 'Producto' }}</span><strong>{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+                        } @empty { <p>Este pedido no tiene productos registrados.</p> }
+                      </div>
+                    }
+                  }
+                </article>
+              }
+            </div>
+          } @else {
+            <p class="orders-empty">No tienes pedidos activos.</p>
+          }
+        }
+      </section>
+
+      <section class="orders-section past-orders" aria-labelledby="past-orders-title">
+        <p class="eyebrow">TU HISTORIAL</p>
+        <h2 id="past-orders-title">Pedidos pasados</h2>
+        @if (!cargandoPedidos && pedidosPasados.length) {
+          <div class="orders-list">
+            @for (pedido of pedidosPasados; track pedido.idPedido) {
+              <article class="order-card">
+                <div class="order-summary">
+                  <div>
+                    <h3>Pedido #{{ pedido.idPedido }}</h3>
+                    <p>{{ pedido.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+                  </div>
+                  <span class="order-status past-status">{{ pedido.estado }}</span>
+                  <strong>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
+                  <button type="button" class="order-detail-button" (click)="verDetallePedido(pedido.idPedido)">
+                    {{ pedidoDetalleId === pedido.idPedido ? 'Ocultar detalle' : 'Ver detalle' }}
+                  </button>
+                </div>
+                @if (pedidoDetalleId === pedido.idPedido) {
+                  @if (cargandoDetalle) { <p class="orders-empty" role="status">Cargando detalle...</p> }
+                  @if (errorDetalle) { <p class="alert alert-danger" role="alert">{{ errorDetalle }}</p> }
+                  @if (pedidoDetalle; as detalle) {
+                    <div class="order-items">
+                      @for (item of detalle.items ?? []; track item.idItemPedido) {
+                        <div><span>{{ item.cantidad }} × {{ item.producto?.nombre || 'Producto' }}</span><strong>{{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+                      } @empty { <p>Este pedido no tiene productos registrados.</p> }
+                    </div>
+                  }
+                }
+              </article>
+            }
+          </div>
+        } @else if (!cargandoPedidos && !errorPedidos) {
+          <p class="orders-empty">Todavía no tienes pedidos pasados.</p>
+        }
+      </section>
     </section>
   }
   @if (!cliente && error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }

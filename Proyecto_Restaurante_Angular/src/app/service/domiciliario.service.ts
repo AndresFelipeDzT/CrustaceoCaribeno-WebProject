@@ -37,4 +37,11 @@ export class DomiciliarioService {
       disponible
     });
   }
+
+  cambiarEstadoActivo(domiciliario: Domiciliario, activo: boolean): Observable<Domiciliario> {
+    return this.http.put<Domiciliario>(`${this.apiUrl}/${domiciliario.idDomiciliario}`, {
+      ...domiciliario,
+      activo
+    });
+  }
 }

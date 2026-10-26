@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { DomiciliarioService } from '../../service/domiciliario.service';
+import { PedidoService } from '../../service/pedido.service';
 
 @Component({
   selector: 'app-domiciliarios-page',
@@ -14,6 +15,7 @@ import { DomiciliarioService } from '../../service/domiciliario.service';
 /** Lista domiciliarios y permite gestionar su disponibilidad. */
 export class DomiciliariosPageComponent implements OnInit {
   private domiciliarioService = inject(DomiciliarioService);
+  private pedidoService = inject(PedidoService);
   private router = inject(Router);
   domiciliarios: Domiciliario[] = [];
   domiciliarioSeleccionado?: Domiciliario;
@@ -49,11 +51,58 @@ export class DomiciliariosPageComponent implements OnInit {
     this.mensaje = '';
   }
 
+  cambiarEstadoActivo(domiciliario: Domiciliario): void {
+    this.error = '';
+    this.mensaje = '';
+    this.domiciliarioService.cambiarEstadoActivo(
+      domiciliario,
+      !domiciliario.activo
+    ).subscribe({
+      next: actualizado => {
+        this.domiciliarios = this.domiciliarios.map(item =>
+          item.idDomiciliario === actualizado.idDomiciliario ? actualizado : item
+        );
+        this.domiciliarioSeleccionado = actualizado;
+        this.mensaje = actualizado.activo
+          ? 'Domiciliario activado correctamente.'
+          : 'Domiciliario desactivado correctamente.';
+      },
+      error: err => this.error = err?.error?.message || 'No fue posible cambiar el estado del domiciliario.'
+    });
+  }
+
   cambiarDisponibilidad(domiciliario: Domiciliario): void {
     this.error = '';
     this.mensaje = '';
-    const cambio = this.domiciliarioService.cambiarDisponibilidad(domiciliario, !domiciliario.disponible);
-    cambio.subscribe({
+
+    if (!domiciliario.activo) {
+      this.error = 'Activa el domiciliario antes de cambiar su disponibilidad.';
+      return;
+    }
+
+    if (!domiciliario.disponible) {
+      this.pedidoService.getPedidos().subscribe({
+        next: pedidos => {
+          const estaEnReparto = pedidos.some(pedido =>
+            pedido.idDomiciliario === domiciliario.idDomiciliario &&
+            ['enviado', 'en camino'].includes(pedido.estado.trim().toLowerCase())
+          );
+          if (estaEnReparto) {
+            this.error = 'No se puede activar un domiciliario mientras está entregando un pedido.';
+            return;
+          }
+          this.guardarDisponibilidad(domiciliario, true);
+        },
+        error: () => this.error = 'No fue posible verificar si el domiciliario tiene un pedido en reparto.'
+      });
+      return;
+    }
+
+    this.guardarDisponibilidad(domiciliario, false);
+  }
+
+  private guardarDisponibilidad(domiciliario: Domiciliario, disponible: boolean): void {
+    this.domiciliarioService.cambiarDisponibilidad(domiciliario, disponible).subscribe({
       next: actualizado => {
         this.domiciliarios = this.domiciliarios.map(item =>
           item.idDomiciliario === actualizado.idDomiciliario ? actualizado : item

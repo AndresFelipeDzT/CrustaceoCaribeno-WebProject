@@ -20,6 +20,7 @@ export class DomiciliarioFormComponent implements OnInit {
   private router = inject(Router);
 
   domiciliarioId?: number;
+  activo = true;
   disponible = true;
   isEdit = false;
   error = '';
@@ -49,6 +50,7 @@ export class DomiciliarioFormComponent implements OnInit {
     this.domiciliarioService.getDomiciliarioById(this.domiciliarioId).subscribe({
       next: domiciliario => {
         this.isEdit = true;
+        this.activo = domiciliario.activo;
         this.disponible = domiciliario.disponible;
         this.domiciliarioForm.setValue({
           nombre: domiciliario.nombre,
@@ -73,6 +75,7 @@ export class DomiciliarioFormComponent implements OnInit {
       celular: datos.celular.trim(),
       cedula: datos.cedula.trim(),
       imagenURL: datos.imagenURL.trim(),
+      activo: this.activo,
       disponible: this.disponible
     };
     this.error = '';

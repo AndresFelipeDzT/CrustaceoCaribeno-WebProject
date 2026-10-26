@@ -1,25 +1,23 @@
 ﻿:host { display: flex; min-height: 100vh; flex-direction: column; }
 .profile-page {
   box-sizing: border-box;
-  display: grid;
   flex: 1;
   min-height: 0;
-  place-items: center;
   padding: 28px 18px;
   background: linear-gradient(rgba(8, 13, 24, .69), rgba(8, 13, 24, .69)), url("/imagenes/hero_seafood.jpg") center / cover fixed;
 }
 .profile-card {
   box-sizing: border-box;
-  width: min(100%, 435px);
-  padding: 24px 44px 33px;
-  overflow: hidden;
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 30px clamp(20px, 5vw, 64px) 38px;
   color: #17335d;
   background: rgba(255, 255, 255, .98);
   border-top: 7px solid #86602d;
   border-radius: 14px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, .24);
-  text-align: center;
 }
+.profile-heading, .orders-section > .eyebrow { text-align: center; }
 .avatar {
   display: grid;
   width: 98px;
@@ -36,7 +34,7 @@
 .eyebrow { margin: 0 0 2px; color: #86602d; font: 700 10px Arial, sans-serif; letter-spacing: 1.2px; }
 .profile-card h1 { margin: 0; color: #132d53; font: italic 700 27px "Playfair Display", Georgia, serif; }
 .intro { margin: 4px 0 23px; color: #667085; font: 11px Arial, sans-serif; }
-.profile-fields { text-align: left; }
+.profile-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; text-align: left; }
 .profile-field { margin-bottom: 12px; }
 .profile-field label { display: block; margin-bottom: 4px; color: #18345e; font: 700 12px "Playfair Display", Georgia, serif; }
 .profile-field input { box-sizing: border-box; width: 100%; height: 36px; padding: 6px 9px; color: #566273; background: #f8f9fb; border: 1px solid #cbd0d8; border-radius: 5px; font: 12px Arial, sans-serif; }
@@ -44,11 +42,32 @@
 .profile-field input.invalid { border-color: #c95d5d; }
 .profile-field small { display: block; margin-top: 4px; color: #ae4141; font: 11px Arial, sans-serif; }
 .success-message { margin: 13px 0 -8px; color: #267248; font: 12px Arial, sans-serif; }
-.profile-actions { display: flex; justify-content: center; gap: 9px; margin-top: 20px; }
-.profile-actions a, .profile-actions button { display: inline-flex; min-height: 34px; align-items: center; justify-content: center; gap: 5px; padding: 0 12px; border-radius: 20px; font: 700 11px Arial, sans-serif; text-decoration: none; cursor: pointer; }
+.profile-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 20px; }
+.profile-actions button { display: inline-flex; min-height: 34px; align-items: center; justify-content: center; gap: 5px; padding: 0 12px; border-radius: 20px; font: 700 11px Arial, sans-serif; cursor: pointer; }
 .edit-button { color: #fff; background: #173963; border: 1px solid #173963; }
 .delete-button { color: #a94c4c; background: #fff; border: 1px solid #d9aaaa; }
 .cancel-button { color: #475569; background: #e8edf5; border: 1px solid #e8edf5; }
+.orders-section { margin-top: 34px; padding-top: 24px; border-top: 1px solid #e1e5ec; }
+.orders-section h2 { margin: 0 0 16px; color: #132d53; font: italic 700 23px "Playfair Display", Georgia, serif; text-align: center; }
+.orders-list { display: grid; gap: 12px; }
+.order-card { padding: 14px 16px; border: 1px solid #d9e0eb; border-radius: 9px; background: #fbfcfe; }
+.order-summary { display: grid; grid-template-columns: minmax(130px, 1.5fr) minmax(100px, 1fr) minmax(110px, 1fr) auto; align-items: center; gap: 12px; }
+.order-summary h3 { margin: 0; color: #17335d; font: 700 14px Arial, sans-serif; }
+.order-summary p { margin: 5px 0 0; color: #667085; font: 12px Arial, sans-serif; }
+.order-summary > strong { text-align: right; font: 700 13px Arial, sans-serif; }
+.order-status { width: fit-content; padding: 5px 10px; color: #174d37; background: #e1f3e9; border-radius: 16px; font: 700 11px Arial, sans-serif; }
+.past-status { color: #5f6470; background: #edf0f4; }
+.order-detail-button { padding: 7px 11px; color: #173963; background: #fff; border: 1px solid #bcc9da; border-radius: 16px; font: 700 11px Arial, sans-serif; cursor: pointer; }
+.order-items { margin-top: 12px; padding-top: 10px; border-top: 1px solid #e1e5ec; }
+.order-items > div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; color: #475569; font: 12px Arial, sans-serif; }
+.order-items > div strong { color: #17335d; }
+.order-items > p, .orders-empty { margin: 8px 0 0; color: #667085; font: 12px Arial, sans-serif; text-align: center; }
 .profile-footer { box-sizing: border-box; display: flex; min-height: 35px; align-items: center; justify-content: space-between; padding: 0 3.1%; color: #e7edf8; background: #10264b; font: 10px Arial, sans-serif; }
-.profile-footer button { padding: 4px 0; color: #d8bd85; background: none; border: 0; font: inherit; cursor: pointer; }
-@media (max-width: 480px) { .profile-card { padding: 23px 26px 29px; } .profile-page { padding: 22px 14px; } }
+@media (max-width: 650px) {
+  .profile-card { padding: 23px 22px 29px; }
+  .profile-page { padding: 22px 14px; }
+  .profile-fields { grid-template-columns: 1fr; }
+  .order-summary { grid-template-columns: 1fr auto; }
+  .order-summary > strong { text-align: left; }
+  .order-detail-button { justify-self: end; }
+}

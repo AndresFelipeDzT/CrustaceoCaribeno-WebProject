@@ -41,8 +41,13 @@
               <span>Cédula: {{ domiciliario.cedula }}</span>
               <span>Celular: {{ domiciliario.celular }}</span>
             </span>
-            <span class="estado-domiciliario" [class.estado-inactivo]="!domiciliario.disponible">
-              {{ domiciliario.disponible ? 'Activo' : 'Inactivo' }}
+            <span class="domiciliario-statuses">
+              <span class="estado-domiciliario" [class.estado-inactivo]="!domiciliario.activo">
+                {{ domiciliario.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+              <span class="estado-domiciliario" [class.estado-inactivo]="!domiciliario.disponible">
+                {{ domiciliario.disponible ? 'Disponible' : 'No disponible' }}
+              </span>
             </span>
           </button>
         </article>
@@ -61,12 +66,19 @@
           <div><dt>Celular</dt><dd>{{ actual.celular }}</dd></div>
           <div>
             <dt>Estado</dt>
-            <dd><span class="estado-domiciliario" [class.estado-inactivo]="!actual.disponible">{{ actual.disponible ? 'Activo' : 'Inactivo' }}</span></dd>
+            <dd><span class="estado-domiciliario" [class.estado-inactivo]="!actual.activo">{{ actual.activo ? 'Activo' : 'Inactivo' }}</span></dd>
+          </div>
+          <div>
+            <dt>Disponibilidad</dt>
+            <dd><span class="estado-domiciliario" [class.estado-inactivo]="!actual.disponible">{{ actual.disponible ? 'Disponible' : 'No disponible' }}</span></dd>
           </div>
         </dl>
         <div class="detail-actions">
-          <button class="status-toggle" type="button" (click)="cambiarDisponibilidad(actual)">
-            {{ actual.disponible ? 'Desactivar' : 'Activar' }}
+          <button class="status-toggle" type="button" (click)="cambiarEstadoActivo(actual)">
+            {{ actual.activo ? 'Desactivar domiciliario' : 'Activar domiciliario' }}
+          </button>
+          <button class="availability-toggle" type="button" (click)="cambiarDisponibilidad(actual)" [disabled]="!actual.activo">
+            {{ actual.disponible ? 'Marcar no disponible' : 'Marcar disponible' }}
           </button>
           <a [routerLink]="['/domiciliarios/update', actual.idDomiciliario]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Editar datos</a>
           <button class="delete-domiciliario" type="button" (click)="eliminarDomiciliario(actual)">Eliminar</button>

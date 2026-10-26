@@ -23,9 +23,12 @@
     [esOperador]="esOperador"
     [operadorId]="operadorId"
     [administradorId]="administradorId"
+    [domiciliariosDisponibles]="domiciliariosDisponibles"
+    [idDomiciliarioSeleccionado]="idDomiciliarioSeleccionado"
     [mensaje]="mensaje"
     [error]="error"
-    (estadoChange)="estado = $event"
+    (estadoChange)="cambiarEstado($event)"
+    (domiciliarioChange)="idDomiciliarioSeleccionado = $event"
     (actualizarEstado)="actualizarEstado()"
   ></app-pedido-detalle>
 } @else {

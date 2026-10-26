@@ -42,8 +42,11 @@ export class PedidoService {
     );
   }
 
-  actualizarPedido(id: number, estado: string): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, { estado });
+  actualizarPedido(id: number, estado: string, idDomiciliario?: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, {
+      estado,
+      ...(idDomiciliario === undefined ? {} : { domiciliario: { idDomiciliario } })
+    });
   }
 
   eliminarPedido(id: number): Observable<void> {

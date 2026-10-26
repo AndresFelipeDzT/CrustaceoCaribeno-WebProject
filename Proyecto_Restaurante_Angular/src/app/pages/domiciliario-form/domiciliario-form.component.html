@@ -47,6 +47,9 @@
           <img [src]="imagenURL" alt="Vista previa de la foto del domiciliario">
         </div>
       }
+      @if (isEdit) {
+        <p class="estado-ayuda">Estado de la cuenta y disponibilidad se administran por separado desde el listado de domiciliarios.</p>
+      }
       <div class="actions">
         <button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button>
         <a routerLink="/domiciliarios" [queryParams]="queryParams">Cancelar</a>
