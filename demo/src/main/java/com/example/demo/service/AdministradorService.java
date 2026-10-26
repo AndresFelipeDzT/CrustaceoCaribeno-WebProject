@@ -18,4 +18,6 @@ public interface AdministradorService {
     void actualizarAdministrador(Long id, Administrador administrador);
 
     void eliminarAdministrador(Long id);
+
+    Administrador login(String usuario, String contrasena);
 }

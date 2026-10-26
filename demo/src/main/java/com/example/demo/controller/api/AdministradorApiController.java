@@ -52,4 +52,12 @@ public class AdministradorApiController {
     public void eliminar(@PathVariable Long id) {
         administradorService.eliminarAdministrador(id);
     }
+
+    @PostMapping("/login")
+    public Administrador login(@RequestBody Administrador administrador) {
+        if (administrador == null) {
+            throw new IllegalArgumentException("Las credenciales son obligatorias.");
+        }
+        return administradorService.login(administrador.getUsuario(), administrador.getContrasena());
+    }
 }

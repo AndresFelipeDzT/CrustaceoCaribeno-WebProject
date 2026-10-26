@@ -39,4 +39,6 @@ public interface ClienteService {
      * @return El cliente autenticado exitosamente.
      */
     Cliente login(String correo, String password);
+
+    ClienteDTO loginDTO(String correo, String password);
 }
