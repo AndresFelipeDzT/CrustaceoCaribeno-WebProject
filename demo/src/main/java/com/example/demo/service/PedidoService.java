@@ -13,6 +13,8 @@ import com.example.demo.entitys.Pedido;
 public interface PedidoService {
     List<PedidoDTO> obtenerPedidosDTO();
 
+    List<PedidoDTO> obtenerPedidosDTO(boolean soloActivos, Long clienteId);
+
     /**
      * Busca un pedido por su identificador.
      */

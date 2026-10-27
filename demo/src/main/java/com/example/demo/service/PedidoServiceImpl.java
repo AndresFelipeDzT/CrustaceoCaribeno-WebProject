@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
+import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.errors.PedidoNotFoundException;
@@ -29,11 +30,36 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
     @Override
     public List<PedidoDTO> obtenerPedidosDTO() {
-        return pedidoRepository.findAll().stream()
+        return obtenerPedidosDTO(false, null);
+    }
+
+    @Override
+    public List<PedidoDTO> obtenerPedidosDTO(boolean soloActivos, Long clienteId) {
+        List<Pedido> pedidos;
+        if (clienteId != null) {
+            Cliente cliente = clienteService.obtenerClientePorId(clienteId);
+            pedidos = pedidoRepository.findByCliente(cliente);
+        } else {
+            pedidos = pedidoRepository.findAll();
+        }
+
+        return pedidos.stream()
+                .filter(pedido -> !soloActivos || !pedidoCompletado(pedido))
                 .map(this::mapearPedidoDTO)
                 .toList();
+    }
+
+    private boolean pedidoCompletado(Pedido pedido) {
+        if (pedido.getEstado() == null) {
+            return false;
+        }
+        String estado = pedido.getEstado().trim();
+        return "Entregado".equalsIgnoreCase(estado) || "Cancelado".equalsIgnoreCase(estado);
     }
 
     @Override
