@@ -58,6 +58,10 @@ export class ComidaService {
     return this.http.delete<void>(`${this.adicionalesUrl}/${id}`);
   }
 
+  activarAdicional(id: number): Observable<void> {
+    return this.http.put<void>(`${this.adicionalesUrl}/${id}/activar`, {});
+  }
+
   getComidaById(id: number): Observable<Producto> {
     return this.http.get<ProductoDTO>(`${this.apiUrl}/${id}`).pipe(
       map(producto => this.mapProducto(producto))
