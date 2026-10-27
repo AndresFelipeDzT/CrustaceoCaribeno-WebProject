@@ -53,11 +53,9 @@ export class PedidosAdminComponent implements OnInit {
 
   cargarPedidos(): void {
     this.error = '';
-    this.pedidoService.getPedidos().subscribe({
-      // Un operador no puede consultar pedidos ya entregados o cancelados.
-      next: pedidos => this.pedidos = this.esOperador
-        ? pedidos.filter(pedido => !['cancelado', 'entregado'].includes(pedido.estado.trim().toLowerCase()))
-        : pedidos,
+    // El portal de operador solicita al backend únicamente los pedidos que no se han completado.
+    this.pedidoService.getPedidos(this.esOperador).subscribe({
+      next: pedidos => this.pedidos = pedidos,
       error: () => this.error = 'No fue posible cargar los pedidos.'
     });
   }

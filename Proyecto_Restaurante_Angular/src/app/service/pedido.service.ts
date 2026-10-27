@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatMap, map, Observable, of, switchMap, toArray } from 'rxjs';
 import { Adicional } from '../models/adicional.model';
@@ -18,8 +18,11 @@ export class PedidoService {
     private comidaService: ComidaService
   ) {}
 
-  getPedidos(): Observable<Pedido[]> {
-    return this.http.get<PedidoDTO[]>(this.apiUrl).pipe(
+  getPedidos(soloActivos = false, clienteId?: number): Observable<Pedido[]> {
+    let params = new HttpParams();
+    if (soloActivos) params = params.set('soloActivos', 'true');
+    if (clienteId !== undefined) params = params.set('clienteId', clienteId);
+    return this.http.get<PedidoDTO[]>(this.apiUrl, { params }).pipe(
       switchMap(pedidos => this.clienteService.getClientes().pipe(
         map(clientes => pedidos.map(pedido => ({
           ...pedido,
