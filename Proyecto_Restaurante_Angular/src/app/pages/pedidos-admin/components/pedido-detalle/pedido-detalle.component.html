@@ -66,9 +66,28 @@
       <label for="estado">Estado</label>
       <select id="estado" name="estado" [ngModel]="estado()" (ngModelChange)="estadoChange.emit($event)">
         @for (opcion of estados(); track opcion) {
-          <option [value]="opcion">{{ opcion }}</option>
+          <option [value]="opcion">
+            {{ opcion }}@if (esOperador()) {
+              {{ opcion === pedido().estado ? ' (Actual)' : (opcion === siguienteEstado() ? ' (Siguiente)' : (opcion.toLowerCase() === 'cancelado' ? ' (Cancelar)' : '')) }}
+            }
+          </option>
         }
       </select>
+      @if (esOperador()) {
+        @if (siguienteEstado()) {
+          <p class="estado-guia-operador">
+            Siguiente estado disponible: <strong>{{ siguienteEstado() }}</strong>@if (puedeCancelar()) { (o puedes <strong>Cancelar</strong> el pedido) }.
+          </p>
+        } @else if (puedeCancelar()) {
+          <p class="estado-guia-operador">
+            Puedes <strong>Cancelar</strong> este pedido si es necesario.
+          </p>
+        } @else {
+          <p class="estado-guia-operador">
+            Este pedido ya se encuentra en su estado final.
+          </p>
+        }
+      }
       @if (estado().trim().toLowerCase() === 'enviado' && pedido().estado.trim().toLowerCase() !== 'enviado') {
         <label for="domiciliario">Domiciliario disponible</label>
         <select id="domiciliario" name="domiciliario" [ngModel]="idDomiciliarioSeleccionado()" (ngModelChange)="domiciliarioChange.emit($event === '' ? undefined : +$event)">
@@ -83,7 +102,7 @@
       } @else if (estado().trim().toLowerCase() === 'enviado' && pedido().idDomiciliario) {
         <p class="sin-productos">Domiciliario asignado: #{{ pedido().idDomiciliario }} (en entrega).</p>
       }
-      <button class="btn-actualizar" type="submit">Actualizar datos</button>
+      <button class="btn-actualizar" type="submit" [disabled]="esOperador() && !siguienteEstado() && !puedeCancelar()">Actualizar datos</button>
     </form>
   </section>
 </main>
