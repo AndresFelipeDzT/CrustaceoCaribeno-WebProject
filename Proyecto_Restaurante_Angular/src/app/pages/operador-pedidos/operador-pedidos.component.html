@@ -29,9 +29,18 @@
         <dl><div><dt>Cliente</dt><dd>{{ pedido.cliente?.nombreCompleto || ((pedido.cliente?.nombre || '') + ' ' + (pedido.cliente?.apellido || '')).trim() || 'Sin cliente' }}</dd></div><div><dt>Teléfono</dt><dd>{{ pedido.cliente?.telefono || 'No disponible' }}</dd></div><div><dt>Dirección</dt><dd>{{ pedido.cliente?.direccion || 'No disponible' }}</dd></div><div><dt>Total</dt><dd>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</dd></div></dl>
         <label for="estado-pedido">Estado del pedido</label>
         <select id="estado-pedido" [value]="estado" (change)="estado = $any($event.target).value">
-          @for (opcion of estados; track opcion) { <option [value]="opcion">{{ opcion }}</option> }
+          @for (opcion of estados; track opcion) {
+            <option [value]="opcion">{{ opcion }}{{ opcion === pedido.estado ? ' (Actual)' : (opcion === siguienteEstado ? ' (Siguiente)' : (opcion.toLowerCase() === 'cancelado' ? ' (Cancelar)' : '')) }}</option>
+          }
         </select>
-        <button class="save-button" type="button" (click)="actualizarEstado()">Actualizar estado</button>
+        @if (siguienteEstado) {
+          <p class="estado-guia">Siguiente estado disponible: <strong>{{ siguienteEstado }}</strong>@if (puedeCancelar) { (o puedes <strong>Cancelar</strong> el pedido) }</p>
+        } @else if (puedeCancelar) {
+          <p class="estado-guia">Puedes <strong>Cancelar</strong> este pedido si es necesario.</p>
+        } @else {
+          <p class="estado-guia">Este pedido ya se encuentra en su estado final.</p>
+        }
+        <button class="save-button" type="button" [disabled]="!siguienteEstado && !puedeCancelar" (click)="actualizarEstado()">Actualizar estado</button>
       </aside>
     }
   </section>

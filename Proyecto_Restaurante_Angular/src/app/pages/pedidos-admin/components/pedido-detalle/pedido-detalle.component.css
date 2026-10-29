@@ -25,6 +25,9 @@
 .estado-formulario label { font-size: 1rem; font-weight: 700; }
 .estado-formulario select, .estado-formulario textarea { width: 100%; padding: 8px 10px; border: 1px solid #9eaff0; background: #fff; font: inherit; }
 .estado-formulario textarea { resize: vertical; }
+.estado-guia-operador { margin: 4px 0 6px; font-size: .95rem; color: #555; }
+.estado-guia-operador strong { color: #102d9a; }
 .btn-actualizar { align-self: center; margin-top: 8px; padding: 8px 24px; border: 0; border-radius: 18px; background: var(--dorado); color: #fff; font: inherit; cursor: pointer; }
 .btn-actualizar:hover { background: #542f00; }
+.btn-actualizar:disabled { opacity: .6; cursor: not-allowed; background: #999; }
 @media (max-width: 650px) { .detalle-pedido-main { padding: 16px 14px 40px; } .detalle-bloque { padding: 12px 14px 16px; } .cliente-grid { grid-template-columns: 1fr; gap: 2px; } .producto-detalle { min-width: 620px; } }

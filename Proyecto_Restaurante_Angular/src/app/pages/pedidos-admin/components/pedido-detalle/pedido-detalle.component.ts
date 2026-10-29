@@ -15,6 +15,8 @@ export class PedidoDetalleComponent {
   pedido = input.required<Pedido>();
   estado = input.required<string>();
   estados = input.required<string[]>();
+  siguienteEstado = input<string | null>(null);
+  puedeCancelar = input(false);
   esOperador = input(false);
   operadorId = input<number>();
   administradorId = input<number>();

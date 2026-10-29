@@ -37,6 +37,28 @@ export class PedidosAdminComponent implements OnInit {
   }
   get administradorId(): number | undefined { return this.administradorService.getAdministradorActualId(); }
   readonly estados = ['Pendiente', 'En preparación', 'Enviado', 'En camino', 'Entregado', 'Cancelado'];
+
+  get puedeCancelar(): boolean {
+    return this.pedido ? this.pedidoService.puedeCancelar(this.pedido.estado) : false;
+  }
+
+  /** Para el operador, solo se habilita el estado actual, el siguiente y 'Cancelado' si no fue entregado. */
+  get estadosDisponibles(): string[] {
+    if (!this.pedido) return this.estados;
+    if (!this.esOperador) return this.estados;
+    const opciones = [this.pedido.estado];
+    const siguiente = this.siguienteEstado;
+    if (siguiente) opciones.push(siguiente);
+    if (this.puedeCancelar && !opciones.some(o => this.pedidoService.normalizarEstado(o) === 'cancelado')) {
+      opciones.push('Cancelado');
+    }
+    return opciones;
+  }
+
+  get siguienteEstado(): string | null {
+    return this.pedido ? this.pedidoService.obtenerSiguienteEstado(this.pedido.estado) : null;
+  }
+
   get domiciliariosDisponibles(): Domiciliario[] {
     return this.domiciliarios.filter(domiciliario => domiciliario.activo && domiciliario.disponible);
   }
@@ -77,6 +99,32 @@ export class PedidosAdminComponent implements OnInit {
     if (!this.pedido) return;
     this.error = '';
     this.mensaje = '';
+
+    if (this.esOperador) {
+      const siguiente = this.siguienteEstado;
+      const puedeCancelar = this.puedeCancelar;
+      const estadoNorm = this.pedidoService.normalizarEstado(this.estado);
+      const estadoActualNorm = this.pedidoService.normalizarEstado(this.pedido.estado);
+
+      if (estadoNorm === estadoActualNorm) {
+        const opcionesTexto = [siguiente, puedeCancelar ? 'Cancelado' : null].filter(Boolean).join(' o ');
+        this.error = opcionesTexto
+          ? `Selecciona un nuevo estado (${opcionesTexto}) para actualizar el pedido.`
+          : 'Este pedido ya no puede cambiar de estado.';
+        return;
+      }
+
+      if (!this.pedidoService.esTransicionValidaOperador(this.pedido.estado, this.estado)) {
+        if (estadoNorm === 'cancelado') {
+          this.error = 'No es posible cancelar un pedido que ya fue entregado.';
+        } else {
+          this.error = siguiente
+            ? `Como operador, solo puedes cambiar el estado al siguiente (${siguiente})${puedeCancelar ? ' o a Cancelado' : ''}.`
+            : 'Este pedido ya no puede cambiar de estado.';
+        }
+        return;
+      }
+    }
 
     const estadoNormalizado = this.estado.trim().toLowerCase();
     const estadoActualNormalizado = this.pedido.estado.trim().toLowerCase();
