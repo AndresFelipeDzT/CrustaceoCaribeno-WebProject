@@ -48,11 +48,7 @@ export class AdicionalesTablaPageComponent implements OnInit {
   }
 
   activarAdicional(adicional: Adicional): void {
-    this.comidaService.updateAdicional(adicional.idAdicional, {
-      nombre: adicional.nombre,
-      precio: adicional.precio,
-      categoriaIds: adicional.categoriaIds
-    }).subscribe({
+    this.comidaService.activarAdicional(adicional.idAdicional).subscribe({
       next: () => this.cargarAdicionales(),
       error: () => this.error = 'No fue posible activar el adicional.'
     });

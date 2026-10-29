@@ -147,11 +147,9 @@ export class ClienteProfileComponent implements OnInit {
 
   private cargarPedidos(idCliente: number): void {
     this.cargandoPedidos = true;
-    this.pedidoService.getPedidos().subscribe({
+    this.pedidoService.getPedidos(false, idCliente).subscribe({
       next: pedidos => {
-        this.pedidos = pedidos
-          .filter(pedido => pedido.idCliente === idCliente)
-          .sort((a, b) => b.idPedido - a.idPedido);
+        this.pedidos = pedidos.sort((a, b) => b.idPedido - a.idPedido);
         this.cargandoPedidos = false;
       },
       error: () => {
