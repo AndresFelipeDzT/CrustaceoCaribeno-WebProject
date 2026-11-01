@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entitys.Adicional;
@@ -36,6 +37,7 @@ import jakarta.transaction.Transactional;
  */
 @Component 
 @Transactional 
+@Profile("default")
 public class DataLoader implements CommandLineRunner {
 
     @Autowired 
