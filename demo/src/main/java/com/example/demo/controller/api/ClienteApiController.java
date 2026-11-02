@@ -3,6 +3,8 @@ package com.example.demo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,35 +31,40 @@ public class ClienteApiController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<ClienteDTO> listar() {
-        return clienteService.obtenerTodosLosClientesDTO();
+    public ResponseEntity<List<ClienteDTO>> listar() {
+        return new ResponseEntity<>(clienteService.obtenerTodosLosClientesDTO(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ClienteDTO obtener(@PathVariable Long id) {
-        return clienteService.obtenerClienteDTOPorId(id);
+    public ResponseEntity<ClienteDTO> obtener(@PathVariable Long id) {
+        return new ResponseEntity<>(clienteService.obtenerClienteDTOPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void crear(@RequestBody Cliente cliente) {
+    public ResponseEntity<Void> crear(@RequestBody Cliente cliente) {
         clienteService.guardarCliente(cliente);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public void actualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<Void> actualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
         clienteService.actualizarCliente(id, cliente);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         clienteService.eliminarCliente(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/login")
-    public ClienteDTO login(@RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDTO> login(@RequestBody Cliente cliente) {
         if (cliente == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
-        return clienteService.loginDTO(cliente.getCorreo(), cliente.getPassword());
+        return new ResponseEntity<>(
+                clienteService.loginDTO(cliente.getCorreo(), cliente.getPassword()),
+                HttpStatus.OK);
     }
 }
