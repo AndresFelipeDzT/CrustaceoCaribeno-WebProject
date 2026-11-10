@@ -6,14 +6,13 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
@@ -51,6 +50,10 @@ class PedidoE2ETest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized", "--disable-notifications", "--disable-extensions");
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        options.setExperimentalOption("prefs", Map.of(
+                "credentials_enable_service", false,
+                "profile.password_manager_enabled", false,
+                "profile.password_manager_leak_detection", false));
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -76,20 +79,6 @@ class PedidoE2ETest {
         WebElement campo = wait.until(ExpectedConditions.visibilityOfElementLocated(localizador));
         campo.clear();
         campo.sendKeys(texto);
-        try {
-            new WebDriverWait(driver, Duration.ofSeconds(2))
-                    .until(d -> texto.equals(d.findElement(localizador).getDomProperty("value")));
-            pausarParaVer();
-            return;
-        } catch (TimeoutException ignorada) {
-            ((JavascriptExecutor) driver).executeScript(
-                    "const campo = arguments[0];"
-                            + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
-                            + "setter.call(campo, arguments[1]);"
-                            + "campo.dispatchEvent(new Event('input', { bubbles: true }));"
-                            + "campo.dispatchEvent(new Event('change', { bubbles: true }));",
-                    campo, texto);
-        }
         wait.until(d -> texto.equals(d.findElement(localizador).getDomProperty("value")));
         pausarParaVer();
     }
@@ -97,17 +86,19 @@ class PedidoE2ETest {
     private void hacerClick(WebElement elemento) {
         new Actions(driver).scrollToElement(elemento).perform();
         wait.until(ExpectedConditions.elementToBeClickable(elemento));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", elemento);
+        elemento.click();
         pausarParaVer();
     }
 
     @Test
     void administradorCreaProductoYVerificaAdicionalesEnElMenu() {
+        // Comprueba la página inicial y abre el acceso administrativo.
         driver.get(FRONTEND_URL);
         wait.until(ExpectedConditions.titleContains("Crustáceo Caribeño"));
         assertThat(driver.getTitle()).contains("Crustáceo Caribeño");
         driver.get(FRONTEND_URL + "/admin");
 
+        // Verifica que el acceso rechace una contraseña incorrecta y acepte la válida.
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("correo")));
         escribirCampo(By.id("correo"), ADMIN_USER);
         escribirCampo(By.id("password"), "incorrecta");
@@ -124,11 +115,11 @@ class PedidoE2ETest {
 
         String administradorId = driver.getCurrentUrl()
                 .replaceAll(".*idAdministrador=", "").replaceAll("&.*", "");
-        String sufijo = Long.toString(System.nanoTime());
-        String nombreProducto = "Plato E2E " + sufijo;
-        String primerAdicional = "Extra E2E Uno " + sufijo;
-        String segundoAdicional = "Extra E2E Dos " + sufijo;
+        String nombreProducto = "Limonada de prueba";
+        String primerAdicional = "Extra de coco de prueba";
+        String segundoAdicional = "Extra de limón de prueba";
 
+        // Crea una bebida y confirma que aparezca en la tabla de productos.
         driver.get(FRONTEND_URL + "/comidas/tabla/add?idAdministrador=" + administradorId);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nombre")));
         wait.until(d -> d.findElements(By.cssSelector("#categoria option")).size() > 1);
@@ -153,6 +144,7 @@ class PedidoE2ETest {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(
                 By.className("tabla-platillos"), nombreProducto));
 
+        // Asocia el primer adicional a la categoría Bebida.
         driver.get(FRONTEND_URL + "/adicionales/tabla/add?idAdministrador=" + administradorId);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nombre")));
         wait.until(d -> !d.findElements(By.className("categoria-opcion")).isEmpty());
@@ -168,6 +160,7 @@ class PedidoE2ETest {
         hacerClick(driver.findElement(By.className("btn-guardar")));
         wait.until(d -> URI.create(d.getCurrentUrl()).getPath().equals("/adicionales/tabla"));
 
+        // Abre el detalle de la bebida y comprueba sus adicionales disponibles.
         String pestanaAdministrador = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         String pestanaMenu = driver.getWindowHandle();
@@ -194,6 +187,7 @@ class PedidoE2ETest {
         assertThat(adicionales.stream().map(WebElement::getText).toList())
                 .anyMatch(nombre -> nombre.contains(primerAdicional));
 
+        // Añade otro adicional y verifica que también se muestre en el menú.
         driver.switchTo().window(pestanaAdministrador);
         driver.get(FRONTEND_URL + "/adicionales/tabla/add?idAdministrador=" + administradorId);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nombre")));
@@ -226,6 +220,7 @@ class PedidoE2ETest {
 
     @Test
     void clienteRealizaPedidoOperadorActualizaEstadoYClienteRevisaHistorial() {
+        // Inicia sesión como cliente y agrega dos productos al carrito.
         driver.get(FRONTEND_URL + "/login");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("correo")));
         escribirCampo(By.id("correo"), "Juan.Rodriguez@gmail.com");
@@ -262,6 +257,7 @@ class PedidoE2ETest {
         wait.until(ExpectedConditions.urlContains("/carrito"));
         wait.until(d -> d.findElements(By.className("carrito-item")).size() == 2);
 
+        // Selecciona adicionales y valida subtotales y total del pedido.
         List<String> adicionalesSeleccionados = new ArrayList<>();
         for (int indiceItem = 0; indiceItem < 2; indiceItem++) {
             List<WebElement> opciones = driver.findElements(By.className("carrito-item"))
@@ -308,6 +304,7 @@ class PedidoE2ETest {
         assertThat(subtotal).isEqualTo(sumaSubtotales);
         assertThat(total).isEqualTo(subtotal + domicilio);
 
+        // Confirma el pedido y revisa que aparezca en el historial del cliente.
         WebElement confirmarPedido = driver.findElement(By.className("btn-realizar-pedido"));
         hacerClick(confirmarPedido);
         WebElement mensajeConfirmacion = wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -324,6 +321,7 @@ class PedidoE2ETest {
         String pedidoId = encabezadoPedido.replaceAll("(?s).*Pedido #(\\d+).*", "$1");
         assertThat(historialActivo.getText()).contains(primerProducto, segundoProducto);
 
+        // Inicia sesión como operador y verifica el contenido del pedido.
         String pestanaCliente = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(FRONTEND_URL + "/operador");
@@ -346,6 +344,7 @@ class PedidoE2ETest {
         adicionalesSeleccionados.forEach(adicional ->
                 assertThat(detallePedido.getText()).contains(adicional));
 
+        // Avanza el pedido a preparación y confirma el estado desde el perfil del cliente.
         new Select(driver.findElement(By.id("estado"))).selectByIndex(1);
         pausarParaVer();
         hacerClick(driver.findElement(By.className("btn-actualizar")));
@@ -369,6 +368,7 @@ class PedidoE2ETest {
             domiciliario.selectByIndex(1);
             pausarParaVer();
         }
+        // Asigna un domiciliario y avanza el pedido hasta entregado.
         hacerClick(driver.findElement(By.className("btn-actualizar")));
         wait.until(ExpectedConditions.textToBePresentInElementLocated(
                 By.className("detalle-estado-actual"), "Enviado"));
@@ -384,6 +384,7 @@ class PedidoE2ETest {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(
                 By.className("detalle-estado-actual"), "Entregado"));
 
+        // Verifica que el pedido entregado siga disponible en el historial del cliente.
         driver.switchTo().window(pestanaCliente);
         driver.navigate().refresh();
         List<WebElement> seccionesHistorial = wait.until(d -> {
