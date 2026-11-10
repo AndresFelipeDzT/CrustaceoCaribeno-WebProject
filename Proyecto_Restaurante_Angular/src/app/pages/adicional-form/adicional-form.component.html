@@ -35,6 +35,7 @@
             @for (categoria of categorias; track categoria.idCategoria) {
               <label class="categoria-opcion">
                 <input
+                  class="categoria-checkbox"
                   type="checkbox"
                   [checked]="adicionalForm.controls.categoriaIds.value.includes(categoria.idCategoria)"
                   (change)="cambiarCategoria(categoria.idCategoria, $event)">

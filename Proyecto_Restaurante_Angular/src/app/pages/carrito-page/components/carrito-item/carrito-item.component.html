@@ -3,7 +3,7 @@
     <img class="carrito-item-imagen" [src]="item().producto.imagenURL" [alt]="item().producto.nombre">
     <div class="carrito-item-info">
       <h2>{{ item().producto.nombre }}</h2>
-      <p>Precio: {{ item().producto.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
+      <p class="carrito-producto-precio">Precio: {{ item().producto.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
       <div class="carrito-controles cantidad-form">
         <button type="button" aria-label="Disminuir cantidad" [disabled]="item().cantidad <= 1" (click)="cantidadCambiada.emit(item().cantidad - 1)">-</button>
         <span class="cantidad-valor">{{ item().cantidad }}</span>
@@ -19,13 +19,14 @@
     <div class="seleccion-adicionales">
       <p>Adicionales para esta línea:</p>
       @for (adicional of adicionalesDisponibles(); track adicional.idAdicional) {
-        <label>
+        <label class="adicional-opcion">
           <input
+            class="adicional-checkbox"
             type="checkbox"
             [checked]="adicionalesSeleccionados().includes(adicional.idAdicional)"
             (change)="adicionalCambiado.emit({ adicionalId: adicional.idAdicional, event: $event })">
           <span>{{ adicional.nombre }}</span>
-          <strong>{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
+          <strong class="adicional-precio">{{ adicional.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong>
         </label>
       }
     </div>
