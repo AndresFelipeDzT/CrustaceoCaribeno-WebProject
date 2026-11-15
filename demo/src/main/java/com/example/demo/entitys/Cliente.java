@@ -1,10 +1,12 @@
 package com.example.demo.entitys;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -52,6 +54,13 @@ public class Cliente {
     /** Indica si la cuenta puede seguir iniciando sesión. */
     @Column(nullable = false)
     private boolean activo = true;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", unique = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private UserEntity userEntity;
 
     @OneToOne(mappedBy = "cliente")
     @JsonIgnore

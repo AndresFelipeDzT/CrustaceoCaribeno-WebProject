@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entitys.Domiciliario;
+import com.example.demo.entitys.Role;
 import com.example.demo.errors.DomiciliarioNotFoundException;
 import com.example.demo.repository.DomiciliarioRepository;
 import com.example.demo.repository.PedidoRepository;
@@ -23,6 +24,9 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private UserEntityService userEntityService;
+
     @Override
     public List<Domiciliario> obtenerTodosLosDomiciliarios() {
         return domiciliarioRepository.findAll();
@@ -38,20 +42,30 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
     }
 
     @Override
+    @Transactional
     public Domiciliario guardarDomiciliario(Domiciliario domiciliario) {
         if (domiciliario == null) {
             throw new IllegalArgumentException("Los datos del domiciliario no pueden ser nulos.");
         }
+        domiciliario.setUserEntity(userEntityService.saveUserEntity(
+                domiciliario.getUserEntity(), domiciliario.getUsername(), domiciliario.getPassword(),
+                Role.DOMICILIARIO));
         return domiciliarioRepository.save(domiciliario);
     }
 
     @Override
+    @Transactional
     public Domiciliario actualizarDomiciliario(Long idDomiciliario, Domiciliario domiciliario) {
         if (domiciliario == null) {
             throw new IllegalArgumentException("Los datos del domiciliario no pueden ser nulos.");
         }
 
         Domiciliario domiciliarioExistente = obtenerDomiciliarioPorId(idDomiciliario);
+        boolean usernameChanged = domiciliario.getUsername() != null
+                && !domiciliario.getUsername().isBlank()
+                && !domiciliario.getUsername().equals(domiciliarioExistente.getUsername());
+        boolean passwordChanged = domiciliario.getPassword() != null
+                && !domiciliario.getPassword().isBlank();
         if (domiciliario.getNombre() != null) {
             domiciliarioExistente.setNombre(domiciliario.getNombre());
         }
@@ -61,6 +75,12 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         if (domiciliario.getCedula() != null) {
             domiciliarioExistente.setCedula(domiciliario.getCedula());
         }
+        if (domiciliario.getUsername() != null && !domiciliario.getUsername().isBlank()) {
+            domiciliarioExistente.setUsername(domiciliario.getUsername());
+        }
+        if (domiciliario.getPassword() != null && !domiciliario.getPassword().isBlank()) {
+            domiciliarioExistente.setPassword(domiciliario.getPassword());
+        }
         if (domiciliario.getImagenURL() != null) {
             domiciliarioExistente.setImagenURL(domiciliario.getImagenURL());
         }
@@ -69,6 +89,11 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         }
         if (domiciliario.getActivo() != null) {
             domiciliarioExistente.setActivo(domiciliario.getActivo());
+        }
+        if (domiciliarioExistente.getUserEntity() == null || usernameChanged || passwordChanged) {
+            domiciliarioExistente.setUserEntity(userEntityService.saveUserEntity(
+                    domiciliarioExistente.getUserEntity(), domiciliarioExistente.getUsername(),
+                    domiciliarioExistente.getPassword(), Role.DOMICILIARIO));
         }
         return domiciliarioRepository.save(domiciliarioExistente);
     }

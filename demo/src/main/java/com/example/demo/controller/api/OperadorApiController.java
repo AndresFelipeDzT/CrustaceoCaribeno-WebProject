@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.OperadorDTO;
 import com.example.demo.entitys.Operador;
 import com.example.demo.service.OperadorService;
 
@@ -28,13 +29,15 @@ public class OperadorApiController {
     private OperadorService operadorService;
 
     @GetMapping
-    public List<Operador> listar() {
-        return operadorService.obtenerTodosLosOperadores();
+    public List<OperadorDTO> listar() {
+        return operadorService.obtenerTodosLosOperadores().stream()
+                .map(OperadorDTO::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Operador obtener(@PathVariable Long id) {
-        return operadorService.obtenerOperadorPorId(id);
+    public OperadorDTO obtener(@PathVariable Long id) {
+        return new OperadorDTO(operadorService.obtenerOperadorPorId(id));
     }
 
     @PostMapping
@@ -53,10 +56,10 @@ public class OperadorApiController {
     }
 
     @PostMapping("/login")
-    public Operador login(@RequestBody Operador operador) {
+    public OperadorDTO login(@RequestBody Operador operador) {
         if (operador == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
-        return operadorService.login(operador.getUsuario(), operador.getContrasena());
+        return new OperadorDTO(operadorService.login(operador.getUsuario(), operador.getContrasena()));
     }
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entitys.Administrador;
+import com.example.demo.entitys.Role;
 import com.example.demo.repository.AdministradorRepository;
 
 /**
@@ -17,6 +19,8 @@ public class AdministradorServiceImpl implements AdministradorService {
     @Autowired 
     private AdministradorRepository administradorRepository;
 
+    @Autowired
+    private UserEntityService userEntityService;
 
     @Override
     public List<Administrador> obtenerTodosLosAdministradores() {
@@ -33,14 +37,19 @@ public class AdministradorServiceImpl implements AdministradorService {
     }
 
     @Override
+    @Transactional
     public Administrador guardarAdministrador(Administrador administrador) {
         if (administrador == null) {
             throw new IllegalArgumentException("Los datos del administrador no pueden ser nulos.");
         }
+        administrador.setUserEntity(userEntityService.saveUserEntity(
+                administrador.getUserEntity(), administrador.getUsuario(), administrador.getContrasena(),
+                Role.ADMINISTRADOR));
         return administradorRepository.save(administrador);
     }
 
     @Override
+    @Transactional
     public void actualizarAdministrador(Long id, Administrador administrador) {
         if (administrador == null) {
             throw new IllegalArgumentException("Los datos del administrador no pueden ser nulos.");
@@ -53,6 +62,9 @@ public class AdministradorServiceImpl implements AdministradorService {
         if (administrador.getContrasena() != null && !administrador.getContrasena().isBlank()) {
             administradorExistente.setContrasena(administrador.getContrasena());
         }
+        administradorExistente.setUserEntity(userEntityService.saveUserEntity(
+                administradorExistente.getUserEntity(), administradorExistente.getUsuario(),
+                administradorExistente.getContrasena(), Role.ADMINISTRADOR));
         administradorRepository.save(administradorExistente);
     }
 

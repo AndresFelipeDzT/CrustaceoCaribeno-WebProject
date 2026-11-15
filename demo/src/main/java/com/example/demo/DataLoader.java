@@ -18,6 +18,7 @@ import com.example.demo.entitys.ItemCarrito;
 import com.example.demo.entitys.Operador;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
+import com.example.demo.entitys.Role;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.AdministradorRepository;
 import com.example.demo.repository.CarritoRepository;
@@ -29,6 +30,7 @@ import com.example.demo.repository.DomiciliarioRepository;
 import com.example.demo.repository.ItemPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.ProductoFakeRepository;
+import com.example.demo.service.UserEntityService;
 
 import jakarta.transaction.Transactional;
 
@@ -60,44 +62,45 @@ public class DataLoader implements CommandLineRunner {
     OperadorRepository operadorRepository;
     @Autowired CarritoRepository carritoRepository;
     @Autowired ItemCarritoRepository itemCarritoRepository;
+    @Autowired UserEntityService userEntityService;
 
     @Override
     public void run(String... args) throws Exception {
 
         // Agregar cinco administradores y cinco operadores
-        administradorRepository.save(new Administrador("admin.general", "admin123"));
-        administradorRepository.save(new Administrador("admin.inventario", "inventario123"));
-        administradorRepository.save(new Administrador("admin.ventas", "ventas123"));
-        administradorRepository.save(new Administrador("admin.usuarios", "usuarios123"));
-        administradorRepository.save(new Administrador("admin.reportes", "reportes123"));
+        guardarAdministrador(new Administrador("admin.general", "admin123"));
+        guardarAdministrador(new Administrador("admin.inventario", "inventario123"));
+        guardarAdministrador(new Administrador("admin.ventas", "ventas123"));
+        guardarAdministrador(new Administrador("admin.usuarios", "usuarios123"));
+        guardarAdministrador(new Administrador("admin.reportes", "reportes123"));
 
-        operadorRepository.save(new Operador("Juan García",
+        guardarOperador(new Operador("Juan García",
                 "https://template.canva.com/EAGaiz0UGo0/1/0/1600w-3IOAEhUAWKI.jpg",
                 "operador.principal", "operador123"));
-        operadorRepository.save(new Operador("Ana Velásquez",
+        guardarOperador(new Operador("Ana Velásquez",
                 "https://images.squarespace-cdn.com/content/v1/62756b70a2dead6247ee2ddb/02cd6c6f-cbc2-4bea-9160-378353e27d1a/angela-delmar-27.jpg",
                 "operador.cocina", "cocina123"));
-        operadorRepository.save(new Operador("Carlos Rodríguez",
+        guardarOperador(new Operador("Carlos Rodríguez",
                 "https://s.magicaitool.com/nanobanana/nano-banana-lora/linkedIn-profile-photo/after3.webp",
                 "operador.despachos", "despachos123"));
-        operadorRepository.save(new Operador("María González",
+        guardarOperador(new Operador("María González",
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2XhB3ru5Ru0u3XRKS7J4bD0DVNSFZYCkjC2yBedGnQsB-Zu8NoM9MKa8&s=10",
                 "operador.caja", "caja123"));
-        operadorRepository.save(new Operador("Luis Martínez",
+        guardarOperador(new Operador("Luis Martínez",
                 "https://estudiofoto.com/wp-content/uploads/2025/09/Foto-Corporativa-LinkedIn-687x1030.webp",
                 "operador.soporte", "soporte123"));
 
         //Agregar 10 clientes
-        clienteRepository.save(new Cliente("Juan","Rodriguez","Juan.Rodriguez@gmail.com","33034534","Av carrera 45 # 34-56","1234"));
-        clienteRepository.save(new Cliente("María", "Gómez", "maria.gomez@gmail.com", "3104567890", "Calle 100 # 15-23", "5678"));
-        clienteRepository.save(new Cliente("Carlos", "López", "carlos.lopez@hotmail.com", "3209876543", "Carrera 7 # 72-10", "4321"));
-        clienteRepository.save(new Cliente("Ana", "Martínez", "ana.martinez@yahoo.com", "3152345678", "Diagonal 45 # 12-89", "9876"));
-        clienteRepository.save(new Cliente("Luis", "García", "luis.garcia@outlook.com", "3007654321", "Avenida Calle 26 # 68-90", "2468"));
-        clienteRepository.save(new Cliente("Diana", "Sánchez", "diana.sanchez@gmail.com", "3123450987", "Transversal 23 # 45-67", "1357"));
-        clienteRepository.save(new Cliente("Andrés", "Pérez", "andres.perez@hotmail.com", "3187654321", "Calle 134 # 45A-12", "8765"));
-        clienteRepository.save(new Cliente("Laura", "Ramírez", "laura.ramirez@gmail.com", "3214560987", "Carrera 50 # 80-45", "3690"));
-        clienteRepository.save(new Cliente("Jorge", "Herrera", "jorge.herrera@outlook.com", "3149876543", "Avenida Boyacá # 53-22", "1590"));
-        clienteRepository.save(new Cliente("Sofía", "Castro", "sofia.castro@yahoo.com", "3165432109", "Circular 4 # 71-15", "7531"));
+        guardarCliente(new Cliente("Juan","Rodriguez","Juan.Rodriguez@gmail.com","33034534","Av carrera 45 # 34-56","1234"));
+        guardarCliente(new Cliente("María", "Gómez", "maria.gomez@gmail.com", "3104567890", "Calle 100 # 15-23", "5678"));
+        guardarCliente(new Cliente("Carlos", "López", "carlos.lopez@hotmail.com", "3209876543", "Carrera 7 # 72-10", "4321"));
+        guardarCliente(new Cliente("Ana", "Martínez", "ana.martinez@yahoo.com", "3152345678", "Diagonal 45 # 12-89", "9876"));
+        guardarCliente(new Cliente("Luis", "García", "luis.garcia@outlook.com", "3007654321", "Avenida Calle 26 # 68-90", "2468"));
+        guardarCliente(new Cliente("Diana", "Sánchez", "diana.sanchez@gmail.com", "3123450987", "Transversal 23 # 45-67", "1357"));
+        guardarCliente(new Cliente("Andrés", "Pérez", "andres.perez@hotmail.com", "3187654321", "Calle 134 # 45A-12", "8765"));
+        guardarCliente(new Cliente("Laura", "Ramírez", "laura.ramirez@gmail.com", "3214560987", "Carrera 50 # 80-45", "3690"));
+        guardarCliente(new Cliente("Jorge", "Herrera", "jorge.herrera@outlook.com", "3149876543", "Avenida Boyacá # 53-22", "1590"));
+        guardarCliente(new Cliente("Sofía", "Castro", "sofia.castro@yahoo.com", "3165432109", "Circular 4 # 71-15", "7531"));
 
         //Agregar 5 categorias
         categoriaRepository.save(new com.example.demo.entitys.Categoria("Entrada"));
@@ -481,42 +484,52 @@ public class DataLoader implements CommandLineRunner {
         // ==========================================
         // AGREGAR DOMICILIARIOS
         // ==========================================
-        domiciliarioRepository.save(Domiciliario.builder()
+        guardarDomiciliario(Domiciliario.builder()
             .nombre("Carlos Mendoza")
             .celular("3001234567")
             .cedula("1098765432")
+            .username("carlos.mendoza")
+            .password("carlos123")
             .imagenURL("https://static.vecteezy.com/system/resources/thumbnails/043/210/041/small/portrait-of-a-confident-young-black-man-for-lifestyle-or-fashion-marketing-free-photo.jpeg")
             .disponible(true)
             .build());
 
-        domiciliarioRepository.save(Domiciliario.builder()
+        guardarDomiciliario(Domiciliario.builder()
             .nombre("Brayan Martínez")
             .celular("3119876543")
             .cedula("1087654321")
+            .username("brayan.martinez")
+            .password("brayan123")
             .imagenURL("https://img.magnific.com/fotos-premium/hombre-sonriente-brazos-cruzados-pose-informal_1028533-6204.jpg?semt=ais_hybrid&w=740&q=80")
             .disponible(true)
             .build());
 
-        domiciliarioRepository.save(Domiciliario.builder()
+        guardarDomiciliario(Domiciliario.builder()
             .nombre("Laura Gómez")
             .celular("3205551234")
             .cedula("1076543210")
+            .username("laura.gomez")
+            .password("laura123")
             .imagenURL("https://cdn.pixabay.com/photo/2022/05/05/01/13/woman-7175038_1280.jpg")
             .disponible(false)
             .build());
 
-        domiciliarioRepository.save(Domiciliario.builder()
+        guardarDomiciliario(Domiciliario.builder()
             .nombre("Mateo Rojas")
             .celular("3156789012")
             .cedula("1065432109")
+            .username("mateo.rojas")
+            .password("mateo123")
             .imagenURL("https://media.istockphoto.com/id/1550589735/es/foto/retrato-hombre-asi%C3%A1tico-feliz-o-seguro-con-los-brazos-cruzados-o-sonrisa-en-el-estudio-de.jpg?s=612x612&w=0&k=20&c=XbN8O_EhE60BV1ha7VM_wmyhNmBNZWU8irPQc2H-uVk=")
             .disponible(true)
             .build());
 
-        domiciliarioRepository.save(Domiciliario.builder()
+        guardarDomiciliario(Domiciliario.builder()
             .nombre("Valentina Torres")
             .celular("3167890123")
             .cedula("1054321098")
+            .username("valentina.torres")
+            .password("valentina123")
             .imagenURL("https://img.magnific.com/foto-gratis/mujer-joven-hermosa-sueter-rosa-calido-aspecto-natural-sonriente-retrato-aislado-cabello-largo_285396-896.jpg?semt=ais_hybrid&w=740&q=80")
             .disponible(true)
             .build());
@@ -707,4 +720,28 @@ public class DataLoader implements CommandLineRunner {
             itemPedidoRepository.save(itemPedido);
         }
     }   
+
+    private Administrador guardarAdministrador(Administrador administrador) {
+        administrador.setUserEntity(userEntityService.saveUserEntity(
+                null, administrador.getUsuario(), administrador.getContrasena(), Role.ADMINISTRADOR));
+        return administradorRepository.save(administrador);
+    }
+
+    private Operador guardarOperador(Operador operador) {
+        operador.setUserEntity(userEntityService.saveUserEntity(
+                null, operador.getUsuario(), operador.getContrasena(), Role.OPERADOR));
+        return operadorRepository.save(operador);
+    }
+
+    private Cliente guardarCliente(Cliente cliente) {
+        cliente.setUserEntity(userEntityService.saveUserEntity(
+                null, cliente.getCorreo(), cliente.getPassword(), Role.CLIENTE));
+        return clienteRepository.save(cliente);
+    }
+
+    private Domiciliario guardarDomiciliario(Domiciliario domiciliario) {
+        domiciliario.setUserEntity(userEntityService.saveUserEntity(
+                null, domiciliario.getUsername(), domiciliario.getPassword(), Role.DOMICILIARIO));
+        return domiciliarioRepository.save(domiciliario);
+    }
 }
