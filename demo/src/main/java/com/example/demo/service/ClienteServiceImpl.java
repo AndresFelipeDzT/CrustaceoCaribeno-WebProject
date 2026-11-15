@@ -5,10 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.Pedido;
+import com.example.demo.entitys.Role;
 import com.example.demo.errors.ClienteAlreadyExistsException;
 import com.example.demo.errors.ClienteNotFoundException;
 import com.example.demo.repository.ClienteFakeRepository;
@@ -26,6 +28,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     PedidoRepository pedidoRepository;
+
+    @Autowired
+    private UserEntityService userEntityService;
 
     @Override
     public List<Cliente> obtenerTodosLosClientes() {
@@ -52,6 +57,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public Cliente guardarCliente(Cliente cliente) {
         validarCliente(cliente);
 
@@ -72,6 +78,8 @@ public class ClienteServiceImpl implements ClienteService {
             cliente.setDireccion(cliente.getDireccion().trim());
         }
 
+        cliente.setUserEntity(userEntityService.saveUserEntity(
+                cliente.getUserEntity(), cliente.getCorreo(), cliente.getPassword(), Role.CLIENTE));
         return clienteRepository.save(cliente);
     }
 
@@ -156,6 +164,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public void actualizarCliente(Long idCliente, Cliente cliente) {
         if (cliente == null) {
             throw new IllegalArgumentException("Los datos del cliente no pueden ser nulos.");
@@ -167,6 +176,7 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente clienteExistente = obtenerClientePorId(idCliente);
         cliente.setIdCliente(idCliente);
         cliente.setActivo(clienteExistente.isActivo());
+        cliente.setUserEntity(clienteExistente.getUserEntity());
 
         if (cliente.getNombre() == null || cliente.getNombre().isBlank()) {
             cliente.setNombre(clienteExistente.getNombre());
@@ -241,7 +251,6 @@ public class ClienteServiceImpl implements ClienteService {
                 cliente.getCorreo(),
                 cliente.getTelefono(),
                 cliente.getDireccion(),
-                cliente.getPassword(),
                 cliente.isActivo());
     }
 }

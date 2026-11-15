@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.DomiciliarioDTO;
 import com.example.demo.entitys.Domiciliario;
 import com.example.demo.service.DomiciliarioService;
 
@@ -28,43 +29,45 @@ public class DomiciliarioApiController {
     private DomiciliarioService domiciliarioService;
 
     @GetMapping
-    public List<Domiciliario> listar() {
-        return domiciliarioService.obtenerTodosLosDomiciliarios();
+    public List<DomiciliarioDTO> listar() {
+        return domiciliarioService.obtenerTodosLosDomiciliarios().stream()
+                .map(DomiciliarioDTO::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Domiciliario obtener(@PathVariable Long id) {
-        return domiciliarioService.obtenerDomiciliarioPorId(id);
+    public DomiciliarioDTO obtener(@PathVariable Long id) {
+        return new DomiciliarioDTO(domiciliarioService.obtenerDomiciliarioPorId(id));
     }
 
     @PostMapping
-    public Domiciliario crear(@RequestBody Domiciliario domiciliario) {
-        return domiciliarioService.guardarDomiciliario(domiciliario);
+    public DomiciliarioDTO crear(@RequestBody Domiciliario domiciliario) {
+        return new DomiciliarioDTO(domiciliarioService.guardarDomiciliario(domiciliario));
     }
 
     @PutMapping("/{id}")
-    public Domiciliario actualizar(@PathVariable Long id, @RequestBody Domiciliario domiciliario) {
-        return domiciliarioService.actualizarDomiciliario(id, domiciliario);
+    public DomiciliarioDTO actualizar(@PathVariable Long id, @RequestBody Domiciliario domiciliario) {
+        return new DomiciliarioDTO(domiciliarioService.actualizarDomiciliario(id, domiciliario));
     }
 
     @PutMapping("/{id}/activar")
-    public Domiciliario activar(@PathVariable Long id) {
-        return domiciliarioService.cambiarDisponibilidad(id, true);
+    public DomiciliarioDTO activar(@PathVariable Long id) {
+        return new DomiciliarioDTO(domiciliarioService.cambiarDisponibilidad(id, true));
     }
 
     @PutMapping("/{id}/desactivar")
-    public Domiciliario desactivar(@PathVariable Long id) {
-        return domiciliarioService.cambiarDisponibilidad(id, false);
+    public DomiciliarioDTO desactivar(@PathVariable Long id) {
+        return new DomiciliarioDTO(domiciliarioService.cambiarDisponibilidad(id, false));
     }
 
     @PutMapping("/{id}/estado/activar")
-    public Domiciliario activarEstado(@PathVariable Long id) {
-        return domiciliarioService.cambiarEstadoActivo(id, true);
+    public DomiciliarioDTO activarEstado(@PathVariable Long id) {
+        return new DomiciliarioDTO(domiciliarioService.cambiarEstadoActivo(id, true));
     }
 
     @PutMapping("/{id}/estado/desactivar")
-    public Domiciliario desactivarEstado(@PathVariable Long id) {
-        return domiciliarioService.cambiarEstadoActivo(id, false);
+    public DomiciliarioDTO desactivarEstado(@PathVariable Long id) {
+        return new DomiciliarioDTO(domiciliarioService.cambiarEstadoActivo(id, false));
     }
 
     @DeleteMapping("/{id}")

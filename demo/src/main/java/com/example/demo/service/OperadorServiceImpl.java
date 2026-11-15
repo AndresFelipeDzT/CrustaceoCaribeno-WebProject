@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entitys.Operador;
+import com.example.demo.entitys.Role;
 import com.example.demo.repository.OperadorRepository;
 
 /**
@@ -16,6 +18,9 @@ public class OperadorServiceImpl implements OperadorService {
 
     @Autowired
     private OperadorRepository operadorRepository;
+
+    @Autowired
+    private UserEntityService userEntityService;
 
     @Override
     public List<Operador> obtenerTodosLosOperadores() {
@@ -32,14 +37,18 @@ public class OperadorServiceImpl implements OperadorService {
     }
 
     @Override
+    @Transactional
     public Operador guardarOperador(Operador operador) {
         if (operador == null) {
             throw new IllegalArgumentException("Los datos del operador no pueden ser nulos.");
         }
+        operador.setUserEntity(userEntityService.saveUserEntity(
+                operador.getUserEntity(), operador.getUsuario(), operador.getContrasena(), Role.OPERADOR));
         return operadorRepository.save(operador);
     }
 
     @Override
+    @Transactional
     public void actualizarOperador(Long id, Operador operador) {
         if (operador == null) {
             throw new IllegalArgumentException("Los datos del operador no pueden ser nulos.");
@@ -58,6 +67,9 @@ public class OperadorServiceImpl implements OperadorService {
         if (operador.getContrasena() != null && !operador.getContrasena().isBlank()) {
             operadorExistente.setContrasena(operador.getContrasena());
         }
+        operadorExistente.setUserEntity(userEntityService.saveUserEntity(
+                operadorExistente.getUserEntity(), operadorExistente.getUsuario(),
+                operadorExistente.getContrasena(), Role.OPERADOR));
         operadorRepository.save(operadorExistente);
     }
 

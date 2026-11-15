@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.AdministradorDTO;
 import com.example.demo.entitys.Administrador;
 import com.example.demo.service.AdministradorService;
 
@@ -29,13 +30,15 @@ public class AdministradorApiController {
 
 
     @GetMapping
-    public List<Administrador> listar() {
-        return administradorService.obtenerTodosLosAdministradores();
+    public List<AdministradorDTO> listar() {
+        return administradorService.obtenerTodosLosAdministradores().stream()
+                .map(AdministradorDTO::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Administrador obtener(@PathVariable Long id) {
-        return administradorService.obtenerAdministradorPorId(id);
+    public AdministradorDTO obtener(@PathVariable Long id) {
+        return new AdministradorDTO(administradorService.obtenerAdministradorPorId(id));
     }
 
     @PostMapping
@@ -54,10 +57,11 @@ public class AdministradorApiController {
     }
 
     @PostMapping("/login")
-    public Administrador login(@RequestBody Administrador administrador) {
+    public AdministradorDTO login(@RequestBody Administrador administrador) {
         if (administrador == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
-        return administradorService.login(administrador.getUsuario(), administrador.getContrasena());
+        return new AdministradorDTO(
+                administradorService.login(administrador.getUsuario(), administrador.getContrasena()));
     }
 }

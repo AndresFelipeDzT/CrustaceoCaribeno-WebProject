@@ -52,14 +52,14 @@ public class ClienteApiControllerTest {
                         "ana@example.com",
                         "3001234567",
                         "Calle 1",
-                        "clave",
                         true)));
 
         ResultActions response = mockMvc.perform(get("/api/clientes"));
         response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].idCliente").value(1))
-                .andExpect(jsonPath("$[0].nombre").value("Ana"));
+                .andExpect(jsonPath("$[0].nombre").value("Ana"))
+                .andExpect(jsonPath("$[0].password").doesNotExist());
     }
 
     @Test
@@ -72,14 +72,14 @@ public class ClienteApiControllerTest {
                         "luis@example.com",
                         "3001234567",
                         "Calle 2",
-                        "clave",
                         true));
 
         ResultActions response = mockMvc.perform(get("/api/clientes/2"));
         response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idCliente").value(2))
-                .andExpect(jsonPath("$.correo").value("luis@example.com"));
+                .andExpect(jsonPath("$.correo").value("luis@example.com"))
+                .andExpect(jsonPath("$.password").doesNotExist());
     }
 
     @Test
