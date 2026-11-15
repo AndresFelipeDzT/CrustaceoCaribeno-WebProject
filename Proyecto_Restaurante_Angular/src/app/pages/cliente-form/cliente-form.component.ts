@@ -36,15 +36,17 @@ export class ClienteFormComponent implements OnInit {
     if (idParam === null) return;
 
     this.clienteId = Number(idParam);
+    this.isEdit = true;
+    this.clienteForm.controls.password.clearValidators();
+    this.clienteForm.controls.password.updateValueAndValidity();
     this.clienteService.getClienteById(this.clienteId).subscribe({
       next: cliente => {
-        this.isEdit = true;
         this.clienteForm.patchValue({
           nombreCompleto: `${cliente.nombre} ${cliente.apellido}`.trim(),
           correo: cliente.correo,
           telefono: cliente.telefono ?? '',
           direccion: cliente.direccion ?? '',
-          password: cliente.password || ''
+          password: ''
         });
       },
       error: () => {

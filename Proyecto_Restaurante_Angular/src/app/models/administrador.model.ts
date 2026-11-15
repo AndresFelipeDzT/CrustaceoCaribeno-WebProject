@@ -2,5 +2,5 @@
 export interface Administrador {
   idAdministrador: number;
   usuario: string;
-  contrasena: string;
+  contrasena?: string;
 }

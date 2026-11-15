@@ -6,7 +6,7 @@ export interface Cliente {
   correo: string;
   telefono?: string | null;
   direccion?: string | null;
-  password: string;
+  password?: string;
   activo: boolean;
   nombreCompleto?: string;
 }

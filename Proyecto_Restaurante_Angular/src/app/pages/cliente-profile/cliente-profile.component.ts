@@ -95,7 +95,7 @@ export class ClienteProfileComponent implements OnInit {
       correo: datos.correo.trim(),
       telefono: datos.telefono.trim(),
       direccion: datos.direccion.trim(),
-      password: datos.password || this.cliente.password,
+      password: datos.password,
       activo: this.cliente.activo
     }).subscribe({
       next: () => this.clienteService.getClienteById(this.cliente!.idCliente).subscribe({

@@ -35,7 +35,7 @@
             <input type="radio" name="domiciliario" [checked]="domiciliarioSeleccionado?.idDomiciliario === domiciliario.idDomiciliario" (change)="seleccionarDomiciliario(domiciliario)" [attr.aria-label]="'Seleccionar ' + domiciliario.nombre">
           </label>
           <button class="domiciliario-summary" type="button" (click)="seleccionarDomiciliario(domiciliario)">
-            <img class="domiciliario-avatar" [src]="domiciliario.imagenURL" [alt]="'Foto de ' + domiciliario.nombre">
+            <img class="domiciliario-avatar" [src]="obtenerImagenSegura(domiciliario.imagenURL)" [alt]="'Foto de ' + domiciliario.nombre">
             <span class="domiciliario-summary-content">
               <strong>{{ domiciliario.nombre }}</strong>
               <span>Cédula: {{ domiciliario.cedula }}</span>
@@ -59,7 +59,7 @@
     <aside class="domiciliario-details" aria-live="polite">
       @if (domiciliarioSeleccionado; as actual) {
         <h2>Detalles del domiciliario</h2>
-        <img class="domiciliario-avatar avatar-large" [src]="actual.imagenURL" [alt]="'Foto de ' + actual.nombre">
+        <img class="domiciliario-avatar avatar-large" [src]="obtenerImagenSegura(actual.imagenURL)" [alt]="'Foto de ' + actual.nombre">
         <h3>{{ actual.nombre }}</h3>
         <dl>
           <div><dt>Cédula</dt><dd>{{ actual.cedula }}</dd></div>
