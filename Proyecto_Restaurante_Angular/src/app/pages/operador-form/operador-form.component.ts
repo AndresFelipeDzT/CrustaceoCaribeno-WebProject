@@ -39,10 +39,12 @@ export class OperadorFormComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam === null) return;
     this.operadorId = Number(idParam);
+    this.isEdit = true;
+    this.operadorForm.controls.contrasena.clearValidators();
+    this.operadorForm.controls.contrasena.updateValueAndValidity();
     this.operadorService.getOperadorById(this.operadorId).subscribe({
       next: operador => {
-        this.isEdit = true;
-        this.operadorForm.setValue({ nombre: operador.nombre, usuario: operador.usuario, contrasena: operador.contrasena, imagenURL: operador.imagenURL ?? '' });
+        this.operadorForm.setValue({ nombre: operador.nombre, usuario: operador.usuario, contrasena: '', imagenURL: operador.imagenURL ?? '' });
       },
       error: () => this.error = 'No fue posible cargar los datos del operador.'
     });

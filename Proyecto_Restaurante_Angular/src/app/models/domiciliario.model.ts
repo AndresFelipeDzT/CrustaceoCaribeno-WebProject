@@ -2,6 +2,8 @@
 export interface Domiciliario {
   idDomiciliario: number;
   nombre: string;
+  username: string;
+  password?: string;
   celular: string;
   cedula: string;
   imagenURL?: string | null;

@@ -51,6 +51,12 @@ export class DomiciliariosPageComponent implements OnInit {
     this.mensaje = '';
   }
 
+  obtenerImagenSegura(imagenURL?: string | null): string {
+    return imagenURL && /^(https?:\/\/|\/)[^\s]+$/i.test(imagenURL)
+      ? imagenURL
+      : '/imagenes/imagen1.png';
+  }
+
   cambiarEstadoActivo(domiciliario: Domiciliario): void {
     this.error = '';
     this.mensaje = '';

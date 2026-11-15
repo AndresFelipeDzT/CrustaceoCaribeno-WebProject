@@ -4,5 +4,5 @@ export interface Operador {
   nombre: string;
   imagenURL?: string | null;
   usuario: string;
-  contrasena: string;
+  contrasena?: string;
 }

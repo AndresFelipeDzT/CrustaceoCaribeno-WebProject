@@ -23,7 +23,7 @@ export class DomiciliarioService {
     return this.http.post<Domiciliario>(this.apiUrl, domiciliario);
   }
 
-  updateDomiciliario(id: number, domiciliario: Domiciliario): Observable<Domiciliario> {
+  updateDomiciliario(id: number, domiciliario: Omit<Domiciliario, 'password'>): Observable<Domiciliario> {
     return this.http.put<Domiciliario>(`${this.apiUrl}/${id}`, domiciliario);
   }
 

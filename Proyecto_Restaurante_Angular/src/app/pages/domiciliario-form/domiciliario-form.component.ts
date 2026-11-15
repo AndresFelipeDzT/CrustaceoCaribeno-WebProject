@@ -31,10 +31,18 @@ export class DomiciliarioFormComponent implements OnInit {
     return Number.isInteger(id) && id > 0 ? { idAdministrador: id } : {};
   }
 
+  obtenerImagenSegura(imagenURL: string): string {
+    return /^(https?:\/\/|\/)[^\s]+$/i.test(imagenURL)
+      ? imagenURL
+      : '/imagenes/imagen1.png';
+  }
+
   domiciliarioForm = this.formBuilder.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     celular: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9+\- ]+$/)]],
     cedula: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern(/^[0-9]+$/)]],
+    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    password: ['', [Validators.required, Validators.maxLength(100)]],
     imagenURL: ['', [
       Validators.required,
       Validators.maxLength(2048),
@@ -46,16 +54,20 @@ export class DomiciliarioFormComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam === null) return;
 
+    this.isEdit = true;
     this.domiciliarioId = Number(idParam);
+    this.domiciliarioForm.controls.password.clearValidators();
+    this.domiciliarioForm.controls.password.updateValueAndValidity();
     this.domiciliarioService.getDomiciliarioById(this.domiciliarioId).subscribe({
       next: domiciliario => {
-        this.isEdit = true;
         this.activo = domiciliario.activo;
         this.disponible = domiciliario.disponible;
         this.domiciliarioForm.setValue({
           nombre: domiciliario.nombre,
           celular: domiciliario.celular,
           cedula: domiciliario.cedula,
+          username: domiciliario.username ?? '',
+          password: '',
           imagenURL: domiciliario.imagenURL ?? ''
         });
       },
@@ -74,6 +86,7 @@ export class DomiciliarioFormComponent implements OnInit {
       nombre: datos.nombre.trim(),
       celular: datos.celular.trim(),
       cedula: datos.cedula.trim(),
+      username: datos.username.trim(),
       imagenURL: datos.imagenURL.trim(),
       activo: this.activo,
       disponible: this.disponible
@@ -85,12 +98,15 @@ export class DomiciliarioFormComponent implements OnInit {
         idDomiciliario: this.domiciliarioId,
         ...datosDomiciliario
       })
-      : this.domiciliarioService.addDomiciliario(datosDomiciliario);
+      : this.domiciliarioService.addDomiciliario({
+        ...datosDomiciliario,
+        password: datos.password
+      });
     solicitud.subscribe({
       next: () => void this.router.navigate(['/domiciliarios'], {
         queryParams: this.queryParams
       }),
-      error: err => this.error = err?.error?.message || (this.isEdit
+      error: err => this.error = (typeof err?.error === 'string' ? err.error : err?.error?.message) || (this.isEdit
         ? 'No fue posible actualizar el domiciliario.'
         : 'No fue posible registrar el domiciliario.')
     });
