@@ -78,9 +78,6 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         if (domiciliario.getUsername() != null && !domiciliario.getUsername().isBlank()) {
             domiciliarioExistente.setUsername(domiciliario.getUsername());
         }
-        if (domiciliario.getPassword() != null && !domiciliario.getPassword().isBlank()) {
-            domiciliarioExistente.setPassword(domiciliario.getPassword());
-        }
         if (domiciliario.getImagenURL() != null) {
             domiciliarioExistente.setImagenURL(domiciliario.getImagenURL());
         }
@@ -93,7 +90,7 @@ public class DomiciliarioServiceImpl implements DomiciliarioService {
         if (domiciliarioExistente.getUserEntity() == null || usernameChanged || passwordChanged) {
             domiciliarioExistente.setUserEntity(userEntityService.saveUserEntity(
                     domiciliarioExistente.getUserEntity(), domiciliarioExistente.getUsername(),
-                    domiciliarioExistente.getPassword(), Role.DOMICILIARIO));
+                    domiciliario.getPassword(), Role.DOMICILIARIO));
         }
         return domiciliarioRepository.save(domiciliarioExistente);
     }

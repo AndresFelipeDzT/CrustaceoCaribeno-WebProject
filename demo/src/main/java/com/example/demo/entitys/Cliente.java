@@ -8,7 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -48,7 +50,8 @@ public class Cliente {
     private String direccion;
 
     /** Contraseña del cliente */
-    @Column (nullable = false, length = 50)
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /** Indica si la cuenta puede seguir iniciando sesión. */

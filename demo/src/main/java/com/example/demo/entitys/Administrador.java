@@ -8,7 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -29,7 +31,8 @@ public class Administrador {
     @Column(nullable = false, unique = true, length = 50)
     private String usuario;
 
-    @Column(nullable = false, length = 50)
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String contrasena;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -59,12 +59,9 @@ public class AdministradorServiceImpl implements AdministradorService {
         if (administrador.getUsuario() != null && !administrador.getUsuario().isBlank()) {
             administradorExistente.setUsuario(administrador.getUsuario());
         }
-        if (administrador.getContrasena() != null && !administrador.getContrasena().isBlank()) {
-            administradorExistente.setContrasena(administrador.getContrasena());
-        }
         administradorExistente.setUserEntity(userEntityService.saveUserEntity(
                 administradorExistente.getUserEntity(), administradorExistente.getUsuario(),
-                administradorExistente.getContrasena(), Role.ADMINISTRADOR));
+                administrador.getContrasena(), Role.ADMINISTRADOR));
         administradorRepository.save(administradorExistente);
     }
 
@@ -82,7 +79,7 @@ public class AdministradorServiceImpl implements AdministradorService {
             throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
         }
         return administradorRepository.findByUsuarioIgnoreCase(usuario.trim())
-                .filter(administrador -> contrasena.equals(administrador.getContrasena()))
+                .filter(administrador -> userEntityService.coincideContrasena(administrador.getUserEntity(), contrasena))
                 .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
     }
 }

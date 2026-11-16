@@ -64,12 +64,9 @@ public class OperadorServiceImpl implements OperadorService {
         if (operador.getUsuario() != null && !operador.getUsuario().isBlank()) {
             operadorExistente.setUsuario(operador.getUsuario());
         }
-        if (operador.getContrasena() != null && !operador.getContrasena().isBlank()) {
-            operadorExistente.setContrasena(operador.getContrasena());
-        }
         operadorExistente.setUserEntity(userEntityService.saveUserEntity(
                 operadorExistente.getUserEntity(), operadorExistente.getUsuario(),
-                operadorExistente.getContrasena(), Role.OPERADOR));
+                operador.getContrasena(), Role.OPERADOR));
         operadorRepository.save(operadorExistente);
     }
 
@@ -87,7 +84,7 @@ public class OperadorServiceImpl implements OperadorService {
             throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
         }
         return operadorRepository.findByUsuarioIgnoreCase(usuario.trim())
-                .filter(operador -> contrasena.equals(operador.getContrasena()))
+                .filter(operador -> userEntityService.coincideContrasena(operador.getUserEntity(), contrasena))
                 .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
     }
 }

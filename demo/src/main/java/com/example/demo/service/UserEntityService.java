@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,16 @@ public class UserEntityService {
     @Autowired
     private UserEntityRepository userEntityRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public UserEntity saveUserEntity(UserEntity existingUser, String username, String password, String roleName) {
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("El nombre de usuario es obligatorio.");
         }
-        if (password == null || password.isBlank()) {
+        boolean nuevaContrasena = password != null && !password.isBlank();
+        if (existingUser == null && !nuevaContrasena) {
             throw new IllegalArgumentException("La contraseña es obligatoria.");
         }
 
@@ -34,8 +39,14 @@ public class UserEntityService {
                 .orElseGet(() -> roleRepository.save(new Role(roleName)));
         UserEntity user = existingUser != null ? existingUser : new UserEntity();
         user.setUsername(username.trim());
-        user.setPassword(password);
+        if (nuevaContrasena) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
         user.setRoles(new ArrayList<>(List.of(role)));
         return userEntityRepository.save(user);
+    }
+
+    public boolean coincideContrasena(UserEntity user, String password) {
+        return user != null && password != null && passwordEncoder.matches(password, user.getPassword());
     }
 }

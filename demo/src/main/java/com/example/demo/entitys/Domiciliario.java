@@ -12,7 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,7 +44,8 @@ public class Domiciliario {
     @Column(nullable = false, unique = true, length = 70)
     private String username;
 
-    @Column(nullable = false, length = 100)
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String imagenURL;

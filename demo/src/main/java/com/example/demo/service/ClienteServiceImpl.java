@@ -105,7 +105,9 @@ public class ClienteServiceImpl implements ClienteService {
             throw new IllegalArgumentException(
                     "Por favor ingresa una dirección válida (mínimo 5 caracteres).");
         }
-        if (!passwordValida(cliente.getPassword())) {
+        String password = cliente.getPassword();
+        boolean nuevaContrasena = password != null && !password.isBlank();
+        if ((cliente.getUserEntity() == null || nuevaContrasena) && !passwordValida(password)) {
             throw new IllegalArgumentException(
                     "La contraseña debe tener al menos 4 caracteres.");
         }
@@ -184,9 +186,6 @@ public class ClienteServiceImpl implements ClienteService {
         if (cliente.getApellido() == null || cliente.getApellido().isBlank()) {
             cliente.setApellido(clienteExistente.getApellido());
         }
-        if (cliente.getPassword() == null || cliente.getPassword().isBlank()) {
-            cliente.setPassword(clienteExistente.getPassword());
-        }
         if (cliente.getTelefono() == null || cliente.getTelefono().isBlank()) {
             cliente.setTelefono(clienteExistente.getTelefono());
         }
@@ -236,7 +235,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         if (clienteOpt.isPresent()) {
             Cliente cliente = clienteOpt.get();
-            if (cliente.isActivo() && password.equals(cliente.getPassword())) {
+            if (cliente.isActivo() && userEntityService.coincideContrasena(cliente.getUserEntity(), password)) {
                 return cliente;
             }
         }
