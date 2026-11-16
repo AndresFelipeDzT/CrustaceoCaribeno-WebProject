@@ -1,0 +1,13 @@
+$kind: http-request
+description: "Generated from cURL: curl -X POST
+  \"http://localhost:8080/api/clientes/login\" -H \"Content-Type:
+  application/json\" -d
+  '{\"correo\":\"Juan.Rodriguez@gmail.com\",\"password\":\"1234\"}'"
+url: "{{baseUrl}}/api/clientes/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: '{"correo":"Juan.Rodriguez@gmail.com","password":"1234"}'
+order: 2000
