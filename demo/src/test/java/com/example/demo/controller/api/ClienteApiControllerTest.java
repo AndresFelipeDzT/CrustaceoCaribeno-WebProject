@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -41,6 +42,9 @@ public class ClienteApiControllerTest {
 
     @MockBean
     private ClienteService clienteService;
+
+    @MockBean
+    private AuthenticationManager authenticationManager;
 
     @Test
     public void clienteApiController_listar_listaDeClienteDTO() throws Exception {

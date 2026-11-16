@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
@@ -41,4 +42,6 @@ public interface ClienteService {
     Cliente login(String correo, String password);
 
     ClienteDTO loginDTO(String correo, String password);
+
+    Optional<Cliente> buscarPorCorreoONombre(String correoONombre);
 }

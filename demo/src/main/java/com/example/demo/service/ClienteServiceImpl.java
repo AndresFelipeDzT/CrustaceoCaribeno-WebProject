@@ -227,11 +227,7 @@ public class ClienteServiceImpl implements ClienteService {
             return null;
         }
 
-        String identificador = correoONombre.trim();
-        Optional<Cliente> clienteOpt = clienteRepository.findByCorreo(identificador);
-        if (clienteOpt.isEmpty()) {
-            clienteOpt = clienteRepository.findByNombre(identificador);
-        }
+        Optional<Cliente> clienteOpt = buscarPorCorreoONombre(correoONombre);
 
         if (clienteOpt.isPresent()) {
             Cliente cliente = clienteOpt.get();
@@ -240,6 +236,16 @@ public class ClienteServiceImpl implements ClienteService {
             }
         }
         return null;
+    }
+
+    @Override
+    public Optional<Cliente> buscarPorCorreoONombre(String correoONombre) {
+        String identificador = correoONombre.trim();
+        Optional<Cliente> clienteOpt = clienteRepository.findByCorreo(identificador);
+        if (clienteOpt.isEmpty()) {
+            clienteOpt = clienteRepository.findByNombre(identificador);
+        }
+        return clienteOpt;
     }
 
     private ClienteDTO aDTO(Cliente cliente) {
