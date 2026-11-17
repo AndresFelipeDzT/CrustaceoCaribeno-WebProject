@@ -21,12 +21,14 @@ public interface PedidoService {
     Pedido obtenerPedidoPorId(Long id);
 
     PedidoDTO obtenerPedidoDTOPorId(Long id);
+    boolean perteneceACliente(Long idPedido, Long idCliente);
 
     List<ItemPedidoDTO> obtenerItemsDTODePedido(Long id);
 
     List<AdicionalDTO> obtenerAdicionalesDTODeItem(Long idPedido, Long idItemPedido);
 
     void actualizarEstadoPedido(Long id, Pedido pedido);
+    void actualizarEstadoPedido(Long id, Pedido pedido, boolean esOperador);
 
     void eliminarPedido(Long id);
 }

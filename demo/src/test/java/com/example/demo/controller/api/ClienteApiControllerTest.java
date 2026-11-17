@@ -38,6 +38,7 @@ import com.example.demo.security.JWTGenerator;
 import com.example.demo.security.JwtAuthEntryPoint;
 import com.example.demo.security.SecurityConfig;
 import com.example.demo.service.ClienteService;
+import com.example.demo.service.PedidoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = ClienteApiController.class)
@@ -57,6 +58,9 @@ public class ClienteApiControllerTest {
 
     @MockBean
     private ClienteService clienteService;
+
+    @MockBean
+    private PedidoService pedidoService;
 
     @MockBean
     private UserEntityRepository userEntityRepository;

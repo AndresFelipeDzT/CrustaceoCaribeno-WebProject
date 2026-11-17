@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.example.demo.entitys.Role;
 import com.example.demo.service.ClienteService;
+import com.example.demo.service.PedidoService;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +32,8 @@ public class SecurityConfig {
     private JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, ClienteService clienteService) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, ClienteService clienteService,
+            PedidoService pedidoService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -40,8 +42,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/operadores/details").hasAuthority(Role.OPERADOR)
                         .requestMatchers("/api/administradores/details").hasAuthority(Role.ADMINISTRADOR)
                         .requestMatchers(HttpMethod.POST, "/api/administradores/login").permitAll()
-                        .requestMatchers("/api/administradores", "/api/administradores/**")
+                        .requestMatchers(HttpMethod.POST, "/api/operadores/login").permitAll()
+                        .requestMatchers("/api/administradores", "/api/administradores/**",
+                                "/api/operadores", "/api/operadores/**")
                         .hasAuthority(Role.ADMINISTRADOR)
+                        .requestMatchers(HttpMethod.GET, "/api/pedidos")
+                        .hasAnyAuthority(Role.CLIENTE, Role.OPERADOR, Role.ADMINISTRADOR)
+                        .requestMatchers(HttpMethod.GET, "/api/pedidos/{idPedido}/**")
+                        .access((auth, context) -> lecturaPedido(auth, context, clienteService, pedidoService))
+                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/**")
+                        .hasAnyAuthority(Role.OPERADOR, Role.ADMINISTRADOR)
+                        .requestMatchers(HttpMethod.DELETE, "/api/pedidos/**").hasAuthority(Role.ADMINISTRADOR)
                         .requestMatchers(HttpMethod.POST, "/api/adicionales").hasAuthority(Role.ADMINISTRADOR)
                         .requestMatchers(HttpMethod.PUT, "/api/adicionales/**").hasAuthority(Role.ADMINISTRADOR)
                         .requestMatchers(HttpMethod.DELETE, "/api/adicionales/**").hasAuthority(Role.ADMINISTRADOR)
@@ -84,6 +95,32 @@ public class SecurityConfig {
         String idSolicitado = context.getVariables().get("idCliente");
         boolean titular = clienteService.obtenerClienteDTOPorCorreo(autenticacion.getName())
                 .filter(cliente -> cliente.getIdCliente().toString().equals(idSolicitado))
+                .isPresent();
+        return new AuthorizationDecision(titular);
+    }
+
+    private AuthorizationDecision lecturaPedido(Supplier<Authentication> proveedor,
+            RequestAuthorizationContext context, ClienteService clienteService, PedidoService pedidoService) {
+        Authentication autenticacion = proveedor.get();
+        if (autenticacion == null || autenticacion instanceof AnonymousAuthenticationToken
+                || !autenticacion.isAuthenticated()) {
+            return new AuthorizationDecision(false);
+        }
+        if (autenticacion.getAuthorities().stream().anyMatch(a ->
+                Role.ADMINISTRADOR.equals(a.getAuthority()) || Role.OPERADOR.equals(a.getAuthority()))) {
+            return new AuthorizationDecision(true);
+        }
+        if (autenticacion.getAuthorities().stream().noneMatch(a -> Role.CLIENTE.equals(a.getAuthority()))) {
+            return new AuthorizationDecision(false);
+        }
+        Long idPedido;
+        try {
+            idPedido = Long.valueOf(context.getVariables().get("idPedido"));
+        } catch (NumberFormatException ex) {
+            return new AuthorizationDecision(false);
+        }
+        boolean titular = clienteService.obtenerClienteDTOPorCorreo(autenticacion.getName())
+                .filter(cliente -> pedidoService.perteneceACliente(idPedido, cliente.getIdCliente()))
                 .isPresent();
         return new AuthorizationDecision(titular);
     }

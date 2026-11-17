@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class PedidoServiceImpl implements PedidoService {
+
+    private static final List<String> FLUJO_OPERADOR = List.of(
+            "pendiente", "en preparacion", "enviado", "en camino", "entregado");
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -77,6 +82,11 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    public boolean perteneceACliente(Long idPedido, Long idCliente) {
+        return pedidoRepository.existsByIdPedidoAndCliente_IdCliente(idPedido, idCliente);
+    }
+
+    @Override
     public List<ItemPedidoDTO> obtenerItemsDTODePedido(Long id) {
         Pedido pedido = obtenerPedidoPorId(id);
         return itemPedidoRepository.findByPedido(pedido).stream()
@@ -128,6 +138,11 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public void actualizarEstadoPedido(Long id, Pedido pedido) {
+        actualizarEstadoPedido(id, pedido, false);
+    }
+
+    @Override
+    public void actualizarEstadoPedido(Long id, Pedido pedido, boolean esOperador) {
         if (pedido == null) {
             throw new IllegalArgumentException("Los datos del pedido no pueden ser nulos.");
         }
@@ -135,9 +150,34 @@ public class PedidoServiceImpl implements PedidoService {
         if (estado == null || estado.isBlank()) {
             throw new IllegalArgumentException("El estado del pedido es obligatorio.");
         }
-        Pedido pedidoExistente = obtenerPedidoPorId(id);
+        if (id == null) {
+            throw new IllegalArgumentException("El ID del pedido es obligatorio.");
+        }
+        Pedido pedidoExistente = pedidoRepository.findByIdParaActualizar(id)
+                .orElseThrow(() -> new PedidoNotFoundException(id));
+        if (esOperador && !transicionValidaOperador(pedidoExistente.getEstado(), estado)) {
+            throw new IllegalArgumentException("Como operador, solo puedes avanzar al siguiente estado o cancelar un pedido activo.");
+        }
         pedidoExistente.setEstado(estado.trim());
         pedidoRepository.save(pedidoExistente);
+    }
+
+    private boolean transicionValidaOperador(String actual, String nuevo) {
+        String actualNormalizado = normalizarEstado(actual);
+        String nuevoNormalizado = normalizarEstado(nuevo);
+        if ("cancelado".equals(nuevoNormalizado)) {
+            return !actualNormalizado.isEmpty() && !"entregado".equals(actualNormalizado)
+                    && !"cancelado".equals(actualNormalizado);
+        }
+        int indiceActual = FLUJO_OPERADOR.indexOf(actualNormalizado);
+        return indiceActual >= 0 && indiceActual + 1 < FLUJO_OPERADOR.size()
+                && FLUJO_OPERADOR.get(indiceActual + 1).equals(nuevoNormalizado);
+    }
+
+    private String normalizarEstado(String estado) {
+        if (estado == null) return "";
+        return Normalizer.normalize(estado.trim().toLowerCase(Locale.ROOT), Normalizer.Form.NFD)
+                .replaceAll("\\p{M}+", "");
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.example.demo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.ClienteDTO;
 import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Pedido;
+import com.example.demo.entitys.Role;
+import com.example.demo.service.ClienteService;
 import com.example.demo.service.PedidoService;
 
 /**
@@ -30,11 +36,25 @@ public class PedidoApiController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     @GetMapping
-    public List<PedidoDTO> listar(
+    public ResponseEntity<List<PedidoDTO>> listar(
             @RequestParam(defaultValue = "false") boolean soloActivos,
-            @RequestParam(required = false) Long clienteId) {
-        return pedidoService.obtenerPedidosDTO(soloActivos, clienteId);
+            @RequestParam(required = false) Long clienteId,
+            Authentication autenticacion) {
+        if (tieneRol(autenticacion, Role.CLIENTE)) {
+            Long idAutenticado = clienteService.obtenerClienteDTOPorCorreo(autenticacion.getName())
+                    .map(ClienteDTO::getIdCliente)
+                    .orElse(null);
+            if (idAutenticado == null || (clienteId != null && !idAutenticado.equals(clienteId))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            return ResponseEntity.ok(pedidoService.obtenerPedidosDTO(soloActivos, idAutenticado));
+        }
+        boolean filtrarActivos = soloActivos || tieneRol(autenticacion, Role.OPERADOR);
+        return ResponseEntity.ok(pedidoService.obtenerPedidosDTO(filtrarActivos, clienteId));
     }
 
     @GetMapping("/{id}")
@@ -57,13 +77,17 @@ public class PedidoApiController {
     // Se quita metodo post 
 
     @PutMapping("/{id}")
-    public void actualizarEstado(@PathVariable Long id, @RequestBody Pedido pedido) {
-        pedidoService.actualizarEstadoPedido(id, pedido);
+    public void actualizarEstado(@PathVariable Long id, @RequestBody Pedido pedido, Authentication autenticacion) {
+        pedidoService.actualizarEstadoPedido(id, pedido, tieneRol(autenticacion, Role.OPERADOR));
     }
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         pedidoService.eliminarPedido(id);
+    }
+
+    private boolean tieneRol(Authentication autenticacion, String rol) {
+        return autenticacion.getAuthorities().stream().anyMatch(autoridad -> rol.equals(autoridad.getAuthority()));
     }
 
 }

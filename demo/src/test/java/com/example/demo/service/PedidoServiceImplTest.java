@@ -42,6 +42,41 @@ class PedidoServiceImplTest {
     private PedidoServiceImpl pedidoService;
 
     @Test
+    void operador_puedeAvanzarYCancelar() {
+        Pedido pedido = new Pedido();
+        pedido.setEstado("Pendiente");
+        Pedido cambio = new Pedido();
+        when(pedidoRepository.findByIdParaActualizar(1L)).thenReturn(Optional.of(pedido));
+
+        cambio.setEstado("En preparación");
+        pedidoService.actualizarEstadoPedido(1L, cambio, true);
+        Assertions.assertThat(pedido.getEstado()).isEqualTo("En preparación");
+
+        cambio.setEstado("Cancelado");
+        pedidoService.actualizarEstadoPedido(1L, cambio, true);
+        Assertions.assertThat(pedido.getEstado()).isEqualTo("Cancelado");
+    }
+
+    @Test
+    void operador_noPuedeSaltarEstadosNiModificarPedidosFinalizados() {
+        Pedido pedido = new Pedido();
+        pedido.setEstado("Pendiente");
+        Pedido cambio = new Pedido();
+        when(pedidoRepository.findByIdParaActualizar(1L)).thenReturn(Optional.of(pedido));
+
+        cambio.setEstado("Entregado");
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> pedidoService.actualizarEstadoPedido(1L, cambio, true));
+        Assertions.assertThat(pedido.getEstado()).isEqualTo("Pendiente");
+
+        pedido.setEstado("Entregado");
+        cambio.setEstado("Cancelado");
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> pedidoService.actualizarEstadoPedido(1L, cambio, true));
+        Assertions.assertThat(pedido.getEstado()).isEqualTo("Entregado");
+    }
+
+    @Test
     void pedidoService_obtenerPedidosDTO_soloActivos_listaDePedidoDTO() {
         Cliente cliente = new Cliente(
                 7L,
