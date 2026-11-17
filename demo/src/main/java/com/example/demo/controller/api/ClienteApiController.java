@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
-import com.example.demo.entitys.Role;
 import com.example.demo.entitys.UserEntity;
+import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.service.ClienteService;
 
 /**
@@ -37,6 +36,9 @@ public class ClienteApiController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private UserEntityRepository userEntityRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -53,6 +55,11 @@ public class ClienteApiController {
 
     @PostMapping
     public ResponseEntity<Void> crear(@RequestBody Cliente cliente) {
+        String username = cliente == null ? null : cliente.getCorreo();
+        if (username != null && !username.isBlank() && userEntityRepository.existsByUsername(username.trim())) {
+            throw new IllegalArgumentException("Este usuario ya existe.");
+        }
+
         clienteService.guardarCliente(cliente);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -106,16 +113,7 @@ public class ClienteApiController {
         } catch (BadCredentialsException ex) {
             throw new IllegalArgumentException("El correo o la contraseña no son correctos.");
         }
-        if (!autenticacion.getAuthorities().contains(new SimpleGrantedAuthority(Role.CLIENTE))) {
-            throw new IllegalArgumentException("El correo o la contraseña no son correctos.");
-        }
-
         SecurityContextHolder.getContext().setAuthentication(autenticacion);
-        try {
-            return ResponseEntity.ok(clienteService.obtenerClienteDTOPorId(perfil.getIdCliente()));
-        } finally {
-            // Los filtros de Spring Security aún no gestionan la limpieza del contexto.
-            SecurityContextHolder.clearContext();
-        }
+        return ResponseEntity.ok(clienteService.obtenerClienteDTOPorId(perfil.getIdCliente()));
     }
 }

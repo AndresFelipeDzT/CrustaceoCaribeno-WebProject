@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.OperadorDTO;
 import com.example.demo.entitys.Operador;
+import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.service.OperadorService;
 
 /**
@@ -27,6 +28,9 @@ public class OperadorApiController {
 
     @Autowired
     private OperadorService operadorService;
+
+    @Autowired
+    private UserEntityRepository userEntityRepository;
 
     @GetMapping
     public List<OperadorDTO> listar() {
@@ -42,6 +46,11 @@ public class OperadorApiController {
 
     @PostMapping
     public void crear(@RequestBody Operador operador) {
+        String username = operador == null ? null : operador.getUsuario();
+        if (username != null && !username.isBlank() && userEntityRepository.existsByUsername(username.trim())) {
+            throw new IllegalArgumentException("Este usuario ya existe.");
+        }
+
         operadorService.guardarOperador(operador);
     }
 

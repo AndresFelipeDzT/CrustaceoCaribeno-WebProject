@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdministradorDTO;
 import com.example.demo.entitys.Administrador;
+import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.service.AdministradorService;
 
 /**
@@ -27,6 +28,9 @@ public class AdministradorApiController {
     
     @Autowired
     private AdministradorService administradorService;
+
+    @Autowired
+    private UserEntityRepository userEntityRepository;
 
 
     @GetMapping
@@ -43,6 +47,11 @@ public class AdministradorApiController {
 
     @PostMapping
     public void crear(@RequestBody Administrador administrador) {
+        String username = administrador == null ? null : administrador.getUsuario();
+        if (username != null && !username.isBlank() && userEntityRepository.existsByUsername(username.trim())) {
+            throw new IllegalArgumentException("Este usuario ya existe.");
+        }
+
         administradorService.guardarAdministrador(administrador);
     }
 

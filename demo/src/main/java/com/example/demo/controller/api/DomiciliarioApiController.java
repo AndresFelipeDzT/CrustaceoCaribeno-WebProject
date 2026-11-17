@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.DomiciliarioDTO;
 import com.example.demo.entitys.Domiciliario;
+import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.service.DomiciliarioService;
 
 /**
@@ -27,6 +28,9 @@ public class DomiciliarioApiController {
 
     @Autowired
     private DomiciliarioService domiciliarioService;
+
+    @Autowired
+    private UserEntityRepository userEntityRepository;
 
     @GetMapping
     public List<DomiciliarioDTO> listar() {
@@ -42,6 +46,11 @@ public class DomiciliarioApiController {
 
     @PostMapping
     public DomiciliarioDTO crear(@RequestBody Domiciliario domiciliario) {
+        String username = domiciliario == null ? null : domiciliario.getUsername();
+        if (username != null && !username.isBlank() && userEntityRepository.existsByUsername(username.trim())) {
+            throw new IllegalArgumentException("Este usuario ya existe.");
+        }
+
         return new DomiciliarioDTO(domiciliarioService.guardarDomiciliario(domiciliario));
     }
 

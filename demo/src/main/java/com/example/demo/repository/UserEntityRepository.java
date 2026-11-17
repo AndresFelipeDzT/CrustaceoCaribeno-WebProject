@@ -11,4 +11,6 @@ import com.example.demo.entitys.UserEntity;
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

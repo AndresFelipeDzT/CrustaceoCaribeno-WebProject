@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
+import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.security.SecurityConfig;
 import com.example.demo.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +46,9 @@ public class ClienteApiControllerTest {
 
     @MockBean
     private ClienteService clienteService;
+
+    @MockBean
+    private UserEntityRepository userEntityRepository;
 
     @MockBean
     private AuthenticationManager authenticationManager;
