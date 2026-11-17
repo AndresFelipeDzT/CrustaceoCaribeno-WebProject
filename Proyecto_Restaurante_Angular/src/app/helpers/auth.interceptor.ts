@@ -24,8 +24,9 @@ export class AuthInterceptor implements HttpInterceptor {
       || (request.url.startsWith(`${API_URL}operadores/`) && request.url !== `${API_URL}operadores/login`)
       || request.url === `${API_URL}pedidos`
       || request.url.startsWith(`${API_URL}pedidos/`)
-      || (request.method !== 'GET' && (request.url === `${API_URL}adicionales`
-        || request.url.startsWith(`${API_URL}adicionales/`)))
+      || request.url === `${API_URL}domiciliarios`
+      || request.url.startsWith(`${API_URL}domiciliarios/`)
+      || (request.method !== 'GET' && /^(adicionales|productos|categorias)(?:\/|\?|$)/.test(request.url.slice(API_URL.length)))
     );
     if (token && esRutaProtegida) {
       const requestConToken = request.clone({

@@ -32,10 +32,8 @@ export class DomiciliarioService {
   }
 
   cambiarDisponibilidad(domiciliario: Domiciliario, disponible: boolean): Observable<Domiciliario> {
-    return this.http.put<Domiciliario>(`${this.apiUrl}/${domiciliario.idDomiciliario}`, {
-      ...domiciliario,
-      disponible
-    });
+    const accion = disponible ? 'activar' : 'desactivar';
+    return this.http.put<Domiciliario>(`${this.apiUrl}/${domiciliario.idDomiciliario}/${accion}`, null);
   }
 
   cambiarEstadoActivo(domiciliario: Domiciliario, activo: boolean): Observable<Domiciliario> {
