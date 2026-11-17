@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,10 +27,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
+import com.example.demo.security.SecurityConfig;
 import com.example.demo.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = ClienteApiController.class)
+@Import(SecurityConfig.class)
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 public class ClienteApiControllerTest {
