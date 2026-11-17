@@ -11,7 +11,7 @@
       <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
       <a routerLink="/adicionales/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Adicionales</a>
     }
-    <a [routerLink]="esOperador ? ['/operador'] : ['/admin']">Cerrar sesión</a>
+    <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
 </header>
 

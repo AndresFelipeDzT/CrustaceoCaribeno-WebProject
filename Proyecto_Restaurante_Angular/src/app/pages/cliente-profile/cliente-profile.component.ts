@@ -5,6 +5,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Cliente } from '../../models/cliente.model';
 import { Pedido } from '../../models/pedido.model';
+import { AuthService } from '../../service/auth.service';
 import { ClienteService } from '../../service/cliente.service';
 import { PedidoService } from '../../service/pedido.service';
 
@@ -17,6 +18,7 @@ import { PedidoService } from '../../service/pedido.service';
 })
 /** Presenta el perfil del cliente autenticado. */
 export class ClienteProfileComponent implements OnInit {
+  private auth = inject(AuthService);
   private clienteService = inject(ClienteService);
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
@@ -102,7 +104,7 @@ export class ClienteProfileComponent implements OnInit {
     }).subscribe({
       next: () => {
         if (cambioCorreo) {
-          localStorage.removeItem('token');
+          this.auth.cerrarSesion();
           void this.router.navigate(['/login']);
           return;
         }
@@ -173,7 +175,7 @@ export class ClienteProfileComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    void this.router.navigate(['/']);
+    void this.router.navigate(['/cerrar-sesion']);
   }
 
   borrarCuenta(): void {

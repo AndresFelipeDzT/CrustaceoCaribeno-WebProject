@@ -111,5 +111,5 @@ export class OperadorPedidosComponent implements OnInit {
     });
   }
 
-  cerrarSesion(): void { void this.router.navigate(['/operador']); }
+  cerrarSesion(): void { void this.router.navigate(['/cerrar-sesion']); }
 }

@@ -7,6 +7,11 @@ export class AuthService {
   private http = inject(HttpClient);
   private perfil?: { apiUrl: string; token: string; datos: unknown };
 
+  cerrarSesion(): void {
+    localStorage.removeItem('token');
+    this.perfil = undefined;
+  }
+
   consultarPerfil<T>(apiUrl: string): Observable<T> {
     const token = localStorage.getItem('token');
     return this.http.get<T>(`${apiUrl}/details`).pipe(

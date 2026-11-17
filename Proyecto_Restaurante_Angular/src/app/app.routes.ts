@@ -1,5 +1,7 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { cargarPerfilCliente, requiereAdministrador, requiereOperador } from './helpers/acceso.guard';
+import { cargarPerfilCliente, redirigirDesdeInicio, requiereAdministrador, requiereOperador } from './helpers/acceso.guard';
+import { AuthService } from './service/auth.service';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ComidasTarjetasPageComponent } from './pages/comidas-tarjetas-page/comidas-tarjetas-page.component';
 import { ComidaFormComponent } from './pages/comida-form/comida-form.component';
@@ -36,8 +38,16 @@ const rutasAdministrador: Routes = [
 ];
 
 export const routes: Routes = [
-  { path: '', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
-  { path: 'home', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio' },
+  { path: '', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio', canActivate: [redirigirDesdeInicio] },
+  { path: 'home', component: HomePageComponent, title: 'Crustáceo Caribeño | Inicio', canActivate: [redirigirDesdeInicio] },
+  {
+    path: 'cerrar-sesion',
+    pathMatch: 'full',
+    redirectTo: () => {
+      inject(AuthService).cerrarSesion();
+      return '/';
+    }
+  },
 
   { path: 'login', component: LoginComponent, title: 'Login | Crustáceo Caribeño' },
   { path: 'admin', component: LoginComponent, title: 'Acceso administrador | Crustáceo Caribeño' },
