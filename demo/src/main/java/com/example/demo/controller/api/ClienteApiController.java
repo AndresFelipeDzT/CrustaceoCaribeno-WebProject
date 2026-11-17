@@ -24,6 +24,7 @@ import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.UserEntity;
 import com.example.demo.repository.UserEntityRepository;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.ClienteService;
 
 /**
@@ -42,6 +43,9 @@ public class ClienteApiController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> listar() {
@@ -77,7 +81,7 @@ public class ClienteApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ClienteDTO> login(@RequestBody Cliente cliente) {
+    public ResponseEntity<String> login(@RequestBody Cliente cliente) {
         if (cliente == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
@@ -114,6 +118,15 @@ public class ClienteApiController {
             throw new IllegalArgumentException("El correo o la contraseña no son correctos.");
         }
         SecurityContextHolder.getContext().setAuthentication(autenticacion);
-        return ResponseEntity.ok(clienteService.obtenerClienteDTOPorId(perfil.getIdCliente()));
+        String token = jwtGenerator.generateToken(autenticacion);
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<ClienteDTO> obtenerDetalles() {
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+        return clienteService.obtenerClienteDTOPorCorreo(correo)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

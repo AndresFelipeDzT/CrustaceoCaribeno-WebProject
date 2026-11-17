@@ -57,6 +57,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public Optional<ClienteDTO> obtenerClienteDTOPorCorreo(String correo) {
+        return clienteRepository.findByCorreo(correo)
+                .filter(Cliente::isActivo)
+                .map(this::aDTO);
+    }
+
+    @Override
     @Transactional
     public Cliente guardarCliente(Cliente cliente) {
         validarCliente(cliente);

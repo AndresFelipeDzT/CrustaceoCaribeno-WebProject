@@ -3,6 +3,8 @@ package com.example.demo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import com.example.demo.dto.AdministradorDTO;
 import com.example.demo.entitys.Administrador;
 import com.example.demo.entitys.UserEntity;
 import com.example.demo.repository.UserEntityRepository;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.AdministradorService;
 
 /**
@@ -40,6 +43,9 @@ public class AdministradorApiController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
 
     @GetMapping
@@ -75,7 +81,7 @@ public class AdministradorApiController {
     }
 
     @PostMapping("/login")
-    public AdministradorDTO login(@RequestBody Administrador administrador) {
+    public ResponseEntity<String> login(@RequestBody Administrador administrador) {
         if (administrador == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
@@ -106,6 +112,16 @@ public class AdministradorApiController {
             throw new IllegalArgumentException("El usuario o la contraseña no son correctos.");
         }
         SecurityContextHolder.getContext().setAuthentication(autenticacion);
-        return new AdministradorDTO(perfil);
+        String token = jwtGenerator.generateToken(autenticacion);
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<AdministradorDTO> obtenerDetalles() {
+        String usuario = SecurityContextHolder.getContext().getAuthentication().getName();
+        return administradorService.buscarPorUsuario(usuario)
+                .map(AdministradorDTO::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

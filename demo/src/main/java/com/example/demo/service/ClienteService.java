@@ -19,6 +19,8 @@ public interface ClienteService {
 
     ClienteDTO obtenerClienteDTOPorId(Long id);
 
+    Optional<ClienteDTO> obtenerClienteDTOPorCorreo(String correo);
+
     Cliente guardarCliente(Cliente cliente);
 
     void actualizarCliente(Long idCliente, Cliente cliente);

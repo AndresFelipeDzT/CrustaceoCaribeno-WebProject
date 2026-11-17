@@ -3,6 +3,8 @@ package com.example.demo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import com.example.demo.dto.OperadorDTO;
 import com.example.demo.entitys.Operador;
 import com.example.demo.entitys.UserEntity;
 import com.example.demo.repository.UserEntityRepository;
+import com.example.demo.security.JWTGenerator;
 import com.example.demo.service.OperadorService;
 
 /**
@@ -40,6 +43,9 @@ public class OperadorApiController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
     @GetMapping
     public List<OperadorDTO> listar() {
@@ -74,7 +80,7 @@ public class OperadorApiController {
     }
 
     @PostMapping("/login")
-    public OperadorDTO login(@RequestBody Operador operador) {
+    public ResponseEntity<String> login(@RequestBody Operador operador) {
         if (operador == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
@@ -104,6 +110,16 @@ public class OperadorApiController {
             throw new IllegalArgumentException("El usuario o la contraseña no son correctos.");
         }
         SecurityContextHolder.getContext().setAuthentication(autenticacion);
-        return new OperadorDTO(perfil);
+        String token = jwtGenerator.generateToken(autenticacion);
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<OperadorDTO> obtenerDetalles() {
+        String usuario = SecurityContextHolder.getContext().getAuthentication().getName();
+        return operadorService.buscarPorUsuario(usuario)
+                .map(OperadorDTO::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

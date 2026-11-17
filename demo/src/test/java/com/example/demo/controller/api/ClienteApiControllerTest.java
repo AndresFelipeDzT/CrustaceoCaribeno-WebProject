@@ -12,12 +12,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,13 +31,17 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.demo.dto.ClienteDTO;
 import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Role;
 import com.example.demo.repository.UserEntityRepository;
+import com.example.demo.security.CustomUserDetailService;
+import com.example.demo.security.JWTGenerator;
+import com.example.demo.security.JwtAuthEntryPoint;
 import com.example.demo.security.SecurityConfig;
 import com.example.demo.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = ClienteApiController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, JwtAuthEntryPoint.class, JWTGenerator.class})
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 public class ClienteApiControllerTest {
@@ -44,6 +52,9 @@ public class ClienteApiControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JWTGenerator jwtGenerator;
+
     @MockBean
     private ClienteService clienteService;
 
@@ -52,6 +63,9 @@ public class ClienteApiControllerTest {
 
     @MockBean
     private AuthenticationManager authenticationManager;
+
+    @MockBean
+    private CustomUserDetailService customUserDetailService;
 
     @Test
     public void clienteApiController_listar_listaDeClienteDTO() throws Exception {
@@ -91,6 +105,38 @@ public class ClienteApiControllerTest {
                 .andExpect(jsonPath("$.idCliente").value(2))
                 .andExpect(jsonPath("$.correo").value("luis@example.com"))
                 .andExpect(jsonPath("$.password").doesNotExist());
+    }
+
+    @Test
+    public void clienteApiController_detalles_devuelvePerfilDelClienteAutenticado() throws Exception {
+        String correo = "ana@example.com";
+        when(clienteService.obtenerClienteDTOPorCorreo(correo)).thenReturn(Optional.of(
+                new ClienteDTO(1L, "Ana", "Ríos", correo, "3001234567", "Calle 1", true)));
+
+        mockMvc.perform(get("/api/clientes/details").header("Authorization", bearer(correo, Role.CLIENTE)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idCliente").value(1))
+                .andExpect(jsonPath("$.correo").value(correo))
+                .andExpect(jsonPath("$.password").doesNotExist());
+    }
+
+    @Test
+    public void clienteApiController_detalles_exigeToken() throws Exception {
+        mockMvc.perform(get("/api/clientes/details")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void clienteApiController_detalles_exigeRolCliente() throws Exception {
+        mockMvc.perform(get("/api/clientes/details")
+                        .header("Authorization", bearer("operador", Role.OPERADOR)))
+                .andExpect(status().isForbidden());
+    }
+
+    private String bearer(String username, String role) {
+        UserDetails usuario = User.withUsername(username).password("sin-uso").authorities(role).build();
+        when(customUserDetailService.loadUserByUsername(username)).thenReturn(usuario);
+        return "Bearer " + jwtGenerator.generateToken(
+                new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities()));
     }
 
     @Test
