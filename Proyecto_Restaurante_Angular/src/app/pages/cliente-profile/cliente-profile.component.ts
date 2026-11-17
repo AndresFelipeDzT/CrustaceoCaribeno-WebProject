@@ -15,7 +15,7 @@ import { PedidoService } from '../../service/pedido.service';
   templateUrl: './cliente-profile.component.html',
   styleUrl: './cliente-profile.component.scss'
 })
-/** Presenta el perfil del cliente identificado en la URL. */
+/** Presenta el perfil del cliente autenticado. */
 export class ClienteProfileComponent implements OnInit {
   private clienteService = inject(ClienteService);
   private pedidoService = inject(PedidoService);
@@ -88,24 +88,33 @@ export class ClienteProfileComponent implements OnInit {
     }
 
     const datos = this.perfilForm.getRawValue();
+    const correo = datos.correo.trim();
+    const cambioCorreo = correo !== this.cliente.correo;
     this.error = '';
     this.clienteService.updateCliente(this.cliente.idCliente, {
       nombre: datos.nombre.trim(),
       apellido: datos.apellido.trim(),
-      correo: datos.correo.trim(),
+      correo,
       telefono: datos.telefono.trim(),
       direccion: datos.direccion.trim(),
       password: datos.password,
       activo: this.cliente.activo
     }).subscribe({
-      next: () => this.clienteService.getClienteById(this.cliente!.idCliente).subscribe({
-        next: cliente => {
-          this.cliente = cliente;
-          this.editando = false;
-          this.guardado = true;
-        },
-        error: err => this.error = err?.error?.message || 'Los cambios se guardaron, pero no fue posible recargar el perfil.'
-      }),
+      next: () => {
+        if (cambioCorreo) {
+          localStorage.removeItem('token');
+          void this.router.navigate(['/login']);
+          return;
+        }
+        this.clienteService.getClienteActual().subscribe({
+          next: cliente => {
+            this.cliente = cliente;
+            this.editando = false;
+            this.guardado = true;
+          },
+          error: err => this.error = err?.error?.message || 'Los cambios se guardaron, pero no fue posible recargar el perfil.'
+        });
+      },
       error: err => this.error = err?.error?.message || 'No fue posible guardar los cambios.'
     });
   }

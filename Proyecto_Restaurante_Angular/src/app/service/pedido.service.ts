@@ -79,8 +79,11 @@ export class PedidoService {
     let params = new HttpParams();
     if (soloActivos) params = params.set('soloActivos', 'true');
     if (clienteId !== undefined) params = params.set('clienteId', clienteId);
+    const clientes = clienteId === undefined
+      ? this.clienteService.getClientes()
+      : this.clienteService.getClienteActual().pipe(map(cliente => cliente ? [cliente] : []));
     return this.http.get<PedidoDTO[]>(this.apiUrl, { params }).pipe(
-      switchMap(pedidos => this.clienteService.getClientes().pipe(
+      switchMap(pedidos => clientes.pipe(
         map(clientes => pedidos.map(pedido => ({
           ...pedido,
           cliente: clientes.find(cliente => cliente.idCliente === pedido.idCliente) ?? null

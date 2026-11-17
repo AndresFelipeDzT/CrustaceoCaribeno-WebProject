@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Operador } from '../models/operador.model';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 /** Provee el CRUD de operadores y la validación de su acceso. */
 export class OperadorService {
   private readonly apiUrl = 'http://localhost:8080/api/operadores';
   private http = inject(HttpClient);
+  private auth = inject(AuthService);
 
   getOperadores(): Observable<Operador[]> {
     return this.http.get<Operador[]>(this.apiUrl);
@@ -15,7 +17,7 @@ export class OperadorService {
 
   /** Envía las credenciales al backend para autenticar al operador. */
   iniciarSesion(usuario: string, contrasena: string): Observable<Operador> {
-    return this.http.post<Operador>(`${this.apiUrl}/login`, { usuario, contrasena });
+    return this.auth.iniciarSesion<Operador>(this.apiUrl, { usuario, contrasena });
   }
 
   getOperadorById(id: number): Observable<Operador> {

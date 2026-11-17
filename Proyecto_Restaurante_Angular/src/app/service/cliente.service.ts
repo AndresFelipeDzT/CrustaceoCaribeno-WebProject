@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
-import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class ClienteService {
   private readonly apiUrl = 'http://localhost:8080/api/clientes';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);
@@ -22,19 +22,20 @@ export class ClienteService {
   }
 
   getClienteActual(): Observable<Cliente | undefined> {
-    const id = this.getClienteActualId();
-    return id === undefined ? of(undefined) : this.getClienteById(id);
+    if (!localStorage.getItem('token')) return of(undefined);
+    return this.auth.consultarPerfil<Cliente>(this.apiUrl).pipe(
+      catchError(error => error.status === 401 || error.status === 403 || error.status === 404
+        ? of(undefined)
+        : throwError(() => error))
+    );
   }
 
   getClienteActualId(): number | undefined {
-    const idParam = this.router.parseUrl(this.router.url).queryParams['id'];
-    if (typeof idParam !== 'string') return undefined;
-    const id = Number(idParam);
-    return Number.isInteger(id) && id > 0 ? id : undefined;
+    return this.auth.perfilEnSesion<Cliente>(this.apiUrl)?.idCliente;
   }
 
   iniciarSesion(correo: string, password: string): Observable<Cliente> {
-    return this.http.post<Cliente>(`${this.apiUrl}/login`, { correo, password });
+    return this.auth.iniciarSesion<Cliente>(this.apiUrl, { correo, password });
   }
 
   addCliente(cliente: Omit<Cliente, 'idCliente'>): Observable<void> {
