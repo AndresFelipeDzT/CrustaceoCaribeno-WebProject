@@ -20,6 +20,14 @@ export class OperadorService {
     return this.auth.iniciarSesion<Operador>(this.apiUrl, { usuario, contrasena });
   }
 
+  getOperadorActual(): Observable<Operador> {
+    return this.auth.consultarPerfil<Operador>(this.apiUrl);
+  }
+
+  getOperadorActualId(): number | undefined {
+    return this.auth.perfilEnSesion<Operador>(this.apiUrl)?.idOperador;
+  }
+
   getOperadorById(id: number): Observable<Operador> {
     return this.http.get<Operador>(`${this.apiUrl}/${id}`);
   }

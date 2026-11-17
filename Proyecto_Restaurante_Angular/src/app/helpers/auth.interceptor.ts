@@ -20,6 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
       || request.url.startsWith(`${API_URL}carritos/`)
       || request.url === `${API_URL}administradores`
       || (request.url.startsWith(`${API_URL}administradores/`) && request.url !== `${API_URL}administradores/login`)
+      || request.url === `${API_URL}operadores`
+      || (request.url.startsWith(`${API_URL}operadores/`) && request.url !== `${API_URL}operadores/login`)
+      || request.url === `${API_URL}pedidos`
+      || request.url.startsWith(`${API_URL}pedidos/`)
       || (request.method !== 'GET' && (request.url === `${API_URL}adicionales`
         || request.url.startsWith(`${API_URL}adicionales/`)))
     );

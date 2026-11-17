@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { cargarPerfilCliente, requiereAdministrador } from './helpers/acceso.guard';
+import { cargarPerfilCliente, requiereAdministrador, requiereOperador } from './helpers/acceso.guard';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ComidasTarjetasPageComponent } from './pages/comidas-tarjetas-page/comidas-tarjetas-page.component';
 import { ComidaFormComponent } from './pages/comida-form/comida-form.component';
@@ -42,8 +42,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login | Crustáceo Caribeño' },
   { path: 'admin', component: LoginComponent, title: 'Acceso administrador | Crustáceo Caribeño' },
   { path: 'operador', component: LoginComponent, title: 'Acceso operador | Crustáceo Caribeño' },
-  { path: 'operador/pedidos', component: PedidosAdminComponent, title: 'Pedidos | Portal de operador' },
-  { path: 'operador/pedidos/:id', component: PedidosAdminComponent, title: 'Detalle del pedido | Portal de operador' },
+  { path: 'operador/pedidos', component: PedidosAdminComponent, title: 'Pedidos | Portal de operador',
+    canActivate: [requiereOperador], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
+  { path: 'operador/pedidos/:id', component: PedidosAdminComponent, title: 'Detalle del pedido | Portal de operador',
+    canActivate: [requiereOperador], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
   { path: 'perfil', component: ClienteProfileComponent, title: 'Mi perfil | Crustáceo Caribeño' },
   { path: 'carrito', component: CarritoPageComponent, title: 'Mi carrito | Crustáceo Caribeño',
     canActivate: [cargarPerfilCliente], data: { requiereCliente: true } },
