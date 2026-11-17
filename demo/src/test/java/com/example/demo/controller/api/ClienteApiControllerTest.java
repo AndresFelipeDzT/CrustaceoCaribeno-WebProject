@@ -79,7 +79,8 @@ public class ClienteApiControllerTest {
                         "Calle 1",
                         true)));
 
-        ResultActions response = mockMvc.perform(get("/api/clientes"));
+        ResultActions response = mockMvc.perform(get("/api/clientes")
+                .header("Authorization", bearer("admin", Role.ADMINISTRADOR)));
         response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].idCliente").value(1))
@@ -99,7 +100,8 @@ public class ClienteApiControllerTest {
                         "Calle 2",
                         true));
 
-        ResultActions response = mockMvc.perform(get("/api/clientes/2"));
+        ResultActions response = mockMvc.perform(get("/api/clientes/2")
+                .header("Authorization", bearer("admin", Role.ADMINISTRADOR)));
         response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idCliente").value(2))
@@ -129,6 +131,16 @@ public class ClienteApiControllerTest {
     public void clienteApiController_detalles_exigeRolCliente() throws Exception {
         mockMvc.perform(get("/api/clientes/details")
                         .header("Authorization", bearer("operador", Role.OPERADOR)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void clienteApiController_obtener_rechazaOtroCliente() throws Exception {
+        String correo = "ana@example.com";
+        when(clienteService.obtenerClienteDTOPorCorreo(correo)).thenReturn(Optional.of(
+                new ClienteDTO(1L, "Ana", "Ríos", correo, "3001234567", "Calle 1", true)));
+
+        mockMvc.perform(get("/api/clientes/2").header("Authorization", bearer(correo, Role.CLIENTE)))
                 .andExpect(status().isForbidden());
     }
 
@@ -169,6 +181,7 @@ public class ClienteApiControllerTest {
         doNothing().when(clienteService).actualizarCliente(eq(4L), any(Cliente.class));
 
         ResultActions response = mockMvc.perform(put("/api/clientes/4")
+                        .header("Authorization", bearer("admin", Role.ADMINISTRADOR))
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(cliente)));
         response
@@ -179,7 +192,8 @@ public class ClienteApiControllerTest {
     public void clienteApiController_eliminar_sinContenido204() throws Exception {
         doNothing().when(clienteService).eliminarCliente(5L);
 
-        ResultActions response = mockMvc.perform(delete("/api/clientes/5"));
+        ResultActions response = mockMvc.perform(delete("/api/clientes/5")
+                .header("Authorization", bearer("admin", Role.ADMINISTRADOR)));
         response
                 .andExpect(status().isNoContent());
     }
