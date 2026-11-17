@@ -3,6 +3,11 @@ package com.example.demo.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdministradorDTO;
 import com.example.demo.entitys.Administrador;
+import com.example.demo.entitys.UserEntity;
 import com.example.demo.repository.UserEntityRepository;
 import com.example.demo.service.AdministradorService;
 
@@ -31,6 +37,9 @@ public class AdministradorApiController {
 
     @Autowired
     private UserEntityRepository userEntityRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     @GetMapping
@@ -70,7 +79,33 @@ public class AdministradorApiController {
         if (administrador == null) {
             throw new IllegalArgumentException("Las credenciales son obligatorias.");
         }
-        return new AdministradorDTO(
-                administradorService.login(administrador.getUsuario(), administrador.getContrasena()));
+        // return new AdministradorDTO(
+        //         administradorService.login(administrador.getUsuario(), administrador.getContrasena()));
+
+        String usuario = administrador.getUsuario();
+        String contrasena = administrador.getContrasena();
+        if (usuario == null || usuario.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu usuario.");
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
+        }
+
+        Administrador perfil = administradorService.buscarPorUsuario(usuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
+        UserEntity cuenta = perfil.getUserEntity();
+        if (cuenta == null) {
+            throw new IllegalArgumentException("El usuario o la contraseña no son correctos.");
+        }
+
+        Authentication autenticacion;
+        try {
+            autenticacion = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(cuenta.getUsername(), contrasena));
+        } catch (BadCredentialsException ex) {
+            throw new IllegalArgumentException("El usuario o la contraseña no son correctos.");
+        }
+        SecurityContextHolder.getContext().setAuthentication(autenticacion);
+        return new AdministradorDTO(perfil);
     }
 }

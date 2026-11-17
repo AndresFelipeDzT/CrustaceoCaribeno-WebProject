@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.entitys.Administrador;
 
@@ -20,4 +21,6 @@ public interface AdministradorService {
     void eliminarAdministrador(Long id);
 
     Administrador login(String usuario, String contrasena);
+
+    Optional<Administrador> buscarPorUsuario(String usuario);
 }

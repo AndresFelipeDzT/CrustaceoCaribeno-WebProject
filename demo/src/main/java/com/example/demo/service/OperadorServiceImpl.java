@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,8 +84,13 @@ public class OperadorServiceImpl implements OperadorService {
         if (contrasena == null || contrasena.isEmpty()) {
             throw new IllegalArgumentException("Por favor ingresa tu contraseña.");
         }
-        return operadorRepository.findByUsuarioIgnoreCase(usuario.trim())
+        return buscarPorUsuario(usuario)
                 .filter(operador -> userEntityService.coincideContrasena(operador.getUserEntity(), contrasena))
                 .orElseThrow(() -> new IllegalArgumentException("El usuario o la contraseña no son correctos."));
+    }
+
+    @Override
+    public Optional<Operador> buscarPorUsuario(String usuario) {
+        return operadorRepository.findByUsuarioIgnoreCase(usuario.trim());
     }
 }
