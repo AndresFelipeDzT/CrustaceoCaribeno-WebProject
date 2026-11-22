@@ -1,11 +1,11 @@
 <header class="admin-header">
-  <a class="admin-brand" routerLink="/pedidos" [queryParams]="queryParams"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <a class="admin-brand" routerLink="/pedidos"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
   <nav class="admin-nav">
-    <a routerLink="/pedidos" [queryParams]="queryParams">Pedidos</a>
-    <a routerLink="/domiciliarios" [queryParams]="queryParams">Domiciliarios</a>
-    <a routerLink="/operadores" [queryParams]="queryParams">Operadores</a>
-    <a routerLink="/comidas/tabla" [queryParams]="queryParams">Comidas</a>
-    <a routerLink="/adicionales/tabla" [queryParams]="queryParams">Adicionales</a>
+    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/domiciliarios">Domiciliarios</a>
+    <a routerLink="/operadores">Operadores</a>
+    <a routerLink="/comidas/tabla">Comidas</a>
+    <a routerLink="/adicionales/tabla">Adicionales</a>
     <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
 </header>
@@ -19,7 +19,7 @@
       <div class="field"><label for="contrasena">Contraseña</label><input id="contrasena" type="password" formControlName="contrasena" autocomplete="new-password" [class.invalid]="operadorForm.controls.contrasena.touched && operadorForm.controls.contrasena.invalid">@if (operadorForm.controls.contrasena.touched && operadorForm.controls.contrasena.invalid) { <small>Ingresa la contraseña.</small> }</div>
       <div class="field"><label for="imagenURL">Foto (URL o ruta de imagen)</label><input id="imagenURL" type="text" formControlName="imagenURL" autocomplete="off" [class.invalid]="operadorForm.controls.imagenURL.touched && operadorForm.controls.imagenURL.invalid">@if (operadorForm.controls.imagenURL.touched && operadorForm.controls.imagenURL.invalid) { <small>Ingresa una URL http(s) o una ruta local válida para la foto.</small> }</div>
       @if (operadorForm.controls.imagenURL.value; as imagenURL) { <div class="photo-preview"><img [src]="imagenURL" alt="Vista previa de la foto del operador"></div> }
-      <div class="actions"><button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button><a routerLink="/operadores" [queryParams]="queryParams">Cancelar</a></div>
+      <div class="actions"><button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button><a routerLink="/operadores">Cancelar</a></div>
     </form>
   </section>
 </main>

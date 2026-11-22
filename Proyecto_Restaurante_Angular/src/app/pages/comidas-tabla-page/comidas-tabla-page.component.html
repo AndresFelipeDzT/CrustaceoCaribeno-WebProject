@@ -1,13 +1,13 @@
 <header class="pedidos-header">
-  <a class="pedidos-brand" routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">
+  <a class="pedidos-brand" routerLink="/pedidos">
     <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span>
   </a>
   <nav class="pedidos-nav">
-    <a routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">Pedidos</a>
-    <a routerLink="/domiciliarios" [queryParams]="{ idAdministrador: administradorId }">Domiciliarios</a>
-    <a routerLink="/operadores" [queryParams]="{ idAdministrador: administradorId }">Operadores</a>
-    <a routerLink="/comidas/tabla" [queryParams]="{ idAdministrador: administradorId }">Comidas</a>
-    <a routerLink="/adicionales/tabla" [queryParams]="{ idAdministrador: administradorId }">Adicionales</a>
+    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/domiciliarios">Domiciliarios</a>
+    <a routerLink="/operadores">Operadores</a>
+    <a routerLink="/comidas/tabla">Comidas</a>
+    <a routerLink="/adicionales/tabla">Adicionales</a>
     <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
 </header>
@@ -20,13 +20,12 @@
     <div class="linea-decorativa"></div>
   </div>
   <div class="d-flex justify-content-end mb-4">
-    <a routerLink="/comidas/tabla/add" [queryParams]="{ idAdministrador: administradorId }" class="btn-cafe-agregar">
+    <a routerLink="/comidas/tabla/add" class="btn-cafe-agregar">
       <i class="bi bi-plus-lg" aria-hidden="true"></i> Agregar plato
     </a>
   </div>
   <app-comida-table
     [comidas]="comidas"
-    [administradorId]="administradorId"
     (comidaEliminada)="eliminarComida($event)"
     (comidaActivada)="activarComida($event)"
   ></app-comida-table>
@@ -38,7 +37,7 @@
       <div class="footer-logo-nombre"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><h3>Crustáceo<br>Caribeño</h3></div>
       <div class="footer-platos"><img src="/imagenes/img11.jpeg" alt="Plato del restaurante"><img src="/imagenes/img22.jpeg" alt="Plato del restaurante"><img src="/imagenes/img33.jpeg" alt="Plato del restaurante"></div>
     </div>
-    <div class="footer-columna"><h4>Navegación</h4><a routerLink="/pedidos" [queryParams]="{ idAdministrador: administradorId }">› Pedidos</a><a routerLink="/domiciliarios" [queryParams]="{ idAdministrador: administradorId }">› Domiciliarios</a><a routerLink="/operadores" [queryParams]="{ idAdministrador: administradorId }">› Operadores</a><a routerLink="/comidas/tabla" [queryParams]="{ idAdministrador: administradorId }">› Comidas</a></div>
+    <div class="footer-columna"><h4>Navegación</h4><a routerLink="/pedidos">› Pedidos</a><a routerLink="/domiciliarios">› Domiciliarios</a><a routerLink="/operadores">› Operadores</a><a routerLink="/comidas/tabla">› Comidas</a></div>
     <div class="footer-columna"><h4>Información</h4><p>› Av. 44 #401 Sur</p><p>› 57 - 343 882 843</p><p>› Lun-Dom: 9:00am-5:00pm</p></div>
     <div class="footer-columna"><h4>Cuenta</h4><a routerLink="/cerrar-sesion">› Cerrar sesión</a></div>
   </div>

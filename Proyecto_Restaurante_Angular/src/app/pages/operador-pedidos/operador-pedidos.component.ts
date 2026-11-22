@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
 
@@ -14,7 +14,6 @@ import { PedidoService } from '../../service/pedido.service';
 /** Portal alternativo de pedidos para operadores. */
 export class OperadorPedidosComponent implements OnInit {
   private pedidoService = inject(PedidoService);
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   pedidos: Pedido[] = [];
   pedidoSeleccionado?: Pedido;
@@ -43,11 +42,6 @@ export class OperadorPedidosComponent implements OnInit {
       opciones.push('Cancelado');
     }
     return opciones;
-  }
-
-  get operadorId(): number | undefined {
-    const id = Number(this.route.snapshot.queryParamMap.get('idOperador'));
-    return Number.isInteger(id) && id > 0 ? id : undefined;
   }
 
   ngOnInit(): void { this.cargarPedidos(); }

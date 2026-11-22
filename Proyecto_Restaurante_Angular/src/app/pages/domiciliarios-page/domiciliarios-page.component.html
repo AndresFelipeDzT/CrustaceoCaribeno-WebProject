@@ -1,14 +1,14 @@
 <header class="domiciliarios-header">
-  <a class="domiciliarios-brand" routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+  <a class="domiciliarios-brand" routerLink="/pedidos">
     <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
     <span>Crustáceo Caribeño</span>
   </a>
   <nav class="domiciliarios-nav">
-    <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Pedidos</a>
-    <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
-    <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
-    <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
-    <a routerLink="/adicionales/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Adicionales</a>
+    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/domiciliarios">Domiciliarios</a>
+    <a routerLink="/operadores">Operadores</a>
+    <a routerLink="/comidas/tabla">Comidas</a>
+    <a routerLink="/adicionales/tabla">Adicionales</a>
     <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
 </header>
@@ -26,7 +26,7 @@
 
   <div class="domiciliarios-layout">
     <section class="domiciliarios-list" aria-label="Domiciliarios registrados">
-      <a class="crear-domiciliario" [routerLink]="['/domiciliarios/add']" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">
+      <a class="crear-domiciliario" [routerLink]="['/domiciliarios/add']">
         + Registrar domiciliario
       </a>
       @for (domiciliario of domiciliarios; track domiciliario.idDomiciliario) {
@@ -80,7 +80,7 @@
           <button class="availability-toggle" type="button" (click)="cambiarDisponibilidad(actual)" [disabled]="!actual.activo">
             {{ actual.disponible ? 'Marcar no disponible' : 'Marcar disponible' }}
           </button>
-          <a [routerLink]="['/domiciliarios/update', actual.idDomiciliario]" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Editar datos</a>
+          <a [routerLink]="['/domiciliarios/update', actual.idDomiciliario]">Editar datos</a>
           <button class="delete-domiciliario" type="button" (click)="eliminarDomiciliario(actual)">Eliminar</button>
         </div>
       } @else {
@@ -93,5 +93,5 @@
 
 <footer class="domiciliarios-footer">
   <span>© 2026 Crustáceo Caribeño</span>
-  <a routerLink="/pedidos" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Volver a pedidos</a>
+  <a routerLink="/pedidos">Volver a pedidos</a>
 </footer>

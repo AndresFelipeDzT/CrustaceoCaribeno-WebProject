@@ -4,8 +4,6 @@ import { Pedido } from '../../models/pedido.model';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { PedidoService } from '../../service/pedido.service';
 import { DomiciliarioService } from '../../service/domiciliario.service';
-import { AdministradorService } from '../../service/administrador.service';
-import { OperadorService } from '../../service/operador.service';
 import { PedidoDetalleComponent } from './components/pedido-detalle/pedido-detalle.component';
 import { PedidosListaComponent } from './components/pedidos-lista/pedidos-lista.component';
 import { catchError, of, switchMap, throwError } from 'rxjs';
@@ -20,8 +18,6 @@ import { catchError, of, switchMap, throwError } from 'rxjs';
 export class PedidosAdminComponent implements OnInit {
   private pedidoService = inject(PedidoService);
   private domiciliarioService = inject(DomiciliarioService);
-  private administradorService = inject(AdministradorService);
-  private operadorService = inject(OperadorService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   pedidos: Pedido[] = [];
@@ -33,8 +29,6 @@ export class PedidosAdminComponent implements OnInit {
   mensaje = '';
   /** Determina el rol mediante la ruta para adaptar acciones y resultados visibles. */
   get esOperador(): boolean { return this.router.url.split('?')[0].startsWith('/operador/'); }
-  get operadorId(): number | undefined { return this.operadorService.getOperadorActualId(); }
-  get administradorId(): number | undefined { return this.administradorService.getAdministradorActualId(); }
   readonly estados = ['Pendiente', 'En preparación', 'Enviado', 'En camino', 'Entregado', 'Cancelado'];
 
   get puedeCancelar(): boolean {
@@ -234,9 +228,7 @@ export class PedidosAdminComponent implements OnInit {
     this.pedidoService.eliminarPedido(id).subscribe({
       next: () => {
         this.cargarPedidos();
-        void this.router.navigate(['/pedidos'], {
-          queryParams: this.administradorId === undefined ? {} : { idAdministrador: this.administradorId }
-        });
+        void this.router.navigate(['/pedidos']);
       },
       error: err => this.error = err?.error?.message || 'No fue posible eliminar el pedido.'
     });

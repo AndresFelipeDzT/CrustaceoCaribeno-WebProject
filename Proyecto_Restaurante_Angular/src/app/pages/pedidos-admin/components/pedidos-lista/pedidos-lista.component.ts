@@ -12,8 +12,6 @@ import { Pedido } from '../../../../models/pedido.model';
 export class PedidosListaComponent {
   pedidos = input.required<Pedido[]>();
   esOperador = input(false);
-  operadorId = input<number>();
-  administradorId = input<number>();
   mensaje = input('');
   error = input('');
   pedidoEliminado = output<number>();

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 import { PedidoService } from '../../service/pedido.service';
@@ -16,18 +16,10 @@ import { PedidoService } from '../../service/pedido.service';
 export class DomiciliariosPageComponent implements OnInit {
   private domiciliarioService = inject(DomiciliarioService);
   private pedidoService = inject(PedidoService);
-  private router = inject(Router);
   domiciliarios: Domiciliario[] = [];
   domiciliarioSeleccionado?: Domiciliario;
   error = '';
   mensaje = '';
-
-  get administradorId(): number | undefined {
-    const idParam = this.router.parseUrl(this.router.url).queryParams['idAdministrador'];
-    if (typeof idParam !== 'string') return undefined;
-    const id = Number(idParam);
-    return Number.isInteger(id) && id > 0 ? id : undefined;
-  }
 
   ngOnInit(): void {
     this.cargarDomiciliarios();

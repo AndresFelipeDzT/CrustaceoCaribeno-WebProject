@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 
@@ -24,12 +24,6 @@ export class DomiciliarioFormComponent implements OnInit {
   disponible = true;
   isEdit = false;
   error = '';
-
-  get queryParams(): Params {
-    const idParam = this.route.snapshot.queryParamMap.get('idAdministrador');
-    const id = Number(idParam);
-    return Number.isInteger(id) && id > 0 ? { idAdministrador: id } : {};
-  }
 
   obtenerImagenSegura(imagenURL: string): string {
     return /^(https?:\/\/|\/)[^\s]+$/i.test(imagenURL)
@@ -103,9 +97,7 @@ export class DomiciliarioFormComponent implements OnInit {
         password: datos.password
       });
     solicitud.subscribe({
-      next: () => void this.router.navigate(['/domiciliarios'], {
-        queryParams: this.queryParams
-      }),
+      next: () => void this.router.navigate(['/domiciliarios']),
       error: err => this.error = (typeof err?.error === 'string' ? err.error : err?.error?.message) || (this.isEdit
         ? 'No fue posible actualizar el domiciliario.'
         : 'No fue posible registrar el domiciliario.')

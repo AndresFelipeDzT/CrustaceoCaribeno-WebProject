@@ -37,11 +37,6 @@ export class AdicionalFormComponent implements OnInit {
     return this.adicionalId !== undefined;
   }
 
-  get administradorId(): number | undefined {
-    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
-    return Number.isInteger(id) && id > 0 ? id : undefined;
-  }
-
   ngOnInit(): void {
     this.comidaService.getCategorias().subscribe({
       next: categorias => this.categorias = categorias,
@@ -80,12 +75,12 @@ export class AdicionalFormComponent implements OnInit {
     this.error = '';
     if (this.adicionalId === undefined) {
       this.comidaService.addAdicional(adicional).subscribe({
-        next: () => void this.router.navigate(['/adicionales/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
+        next: () => void this.router.navigate(['/adicionales/tabla']),
         error: error => this.error = this.mensajeError(error, 'No fue posible guardar el adicional.')
       });
     } else {
       this.comidaService.updateAdicional(this.adicionalId, adicional).subscribe({
-        next: () => void this.router.navigate(['/adicionales/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
+        next: () => void this.router.navigate(['/adicionales/tabla']),
         error: error => this.error = this.mensajeError(error, 'No fue posible actualizar el adicional.')
       });
     }

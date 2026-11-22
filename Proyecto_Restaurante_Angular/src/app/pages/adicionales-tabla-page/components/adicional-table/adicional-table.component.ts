@@ -13,7 +13,6 @@ import { Categoria } from '../../../../models/categoria.model';
 /** Renderiza las filas de adicionales y comunica las acciones al contenedor. */
 export class AdicionalTableComponent {
   adicionales = input.required<Adicional[]>();
-  administradorId = input<number>();
   categorias = input.required<Categoria[]>();
   adicionalEliminado = output<number>();
   adicionalActivado = output<Adicional>();

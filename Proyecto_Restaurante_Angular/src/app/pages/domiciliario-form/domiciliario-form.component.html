@@ -1,11 +1,11 @@
 <header class="admin-header">
-  <a class="admin-brand" routerLink="/pedidos" [queryParams]="queryParams"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <a class="admin-brand" routerLink="/pedidos"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
   <nav class="admin-nav">
-    <a routerLink="/pedidos" [queryParams]="queryParams">Pedidos</a>
-    <a routerLink="/domiciliarios" [queryParams]="queryParams">Domiciliarios</a>
-    <a routerLink="/operadores" [queryParams]="queryParams">Operadores</a>
-    <a routerLink="/comidas/tabla" [queryParams]="queryParams">Comidas</a>
-    <a routerLink="/adicionales/tabla" [queryParams]="queryParams">Adicionales</a>
+    <a routerLink="/pedidos">Pedidos</a>
+    <a routerLink="/domiciliarios">Domiciliarios</a>
+    <a routerLink="/operadores">Operadores</a>
+    <a routerLink="/comidas/tabla">Comidas</a>
+    <a routerLink="/adicionales/tabla">Adicionales</a>
     <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
 </header>
@@ -68,7 +68,7 @@
       }
       <div class="actions">
         <button type="submit">{{ isEdit ? 'Guardar cambios' : 'Registrar' }}</button>
-        <a routerLink="/domiciliarios" [queryParams]="queryParams">Cancelar</a>
+        <a routerLink="/domiciliarios">Cancelar</a>
       </div>
     </form>
   </section>

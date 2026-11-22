@@ -1,5 +1,5 @@
 <main class="detalle-pedido-main">
-  <a class="volver-pedidos" [routerLink]="esOperador() ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador() ? (operadorId() === undefined ? {} : { idOperador: operadorId() }) : (administradorId() === undefined ? {} : { idAdministrador: administradorId() })">← Volver a pedidos</a>
+  <a class="volver-pedidos" [routerLink]="esOperador() ? ['/operador/pedidos'] : ['/pedidos']">← Volver a pedidos</a>
   <h1>Detalles Del Pedido</h1>
   <p class="detalle-subtitulo">Información Completa Del Pedido #{{ pedido().idPedido }}</p>
   @if (mensaje()) { <p class="pedidos-alerta">{{ mensaje() }}</p> }

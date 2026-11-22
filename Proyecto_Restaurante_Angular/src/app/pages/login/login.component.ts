@@ -40,9 +40,7 @@ export class LoginComponent {
     // Los operadores se autentican con usuario y solo acceden a pedidos pendientes.
     if (this.esOperador) {
       this.operadorService.iniciarSesion(correo, password).subscribe({
-        next: operador => {
-          void this.router.navigate(['/operador/pedidos'], { queryParams: { idOperador: operador.idOperador } });
-        },
+        next: () => void this.router.navigate(['/operador/pedidos']),
         error: err => this.error = err?.error?.message || 'No fue posible conectar con el servidor. Intenta de nuevo.'
       });
       return;
@@ -50,11 +48,7 @@ export class LoginComponent {
     // Los administradores son dirigidos al portal completo de gestión.
     if (this.esAdministrador) {
       this.administradorService.iniciarSesion(correo, password).subscribe({
-        next: administrador => {
-          void this.router.navigate(['/pedidos'], {
-            queryParams: { idAdministrador: administrador.idAdministrador }
-          });
-        },
+        next: () => void this.router.navigate(['/pedidos']),
         error: err => this.error = err?.error?.message || 'No fue posible conectar con el servidor. Intenta de nuevo.'
       });
       return;

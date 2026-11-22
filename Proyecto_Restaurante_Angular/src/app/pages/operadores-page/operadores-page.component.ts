@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Operador } from '../../models/operador.model';
 import { OperadorService } from '../../service/operador.service';
 
@@ -14,18 +14,10 @@ import { OperadorService } from '../../service/operador.service';
 /** Lista, selecciona y elimina cuentas de operador. */
 export class OperadoresPageComponent implements OnInit {
   private operadorService = inject(OperadorService);
-  private router = inject(Router);
   operadores: Operador[] = [];
   operadorSeleccionado?: Operador;
   error = '';
   mensaje = '';
-
-  get administradorId(): number | undefined {
-    const idParam = this.router.parseUrl(this.router.url).queryParams['idAdministrador'];
-    if (typeof idParam !== 'string') return undefined;
-    const id = Number(idParam);
-    return Number.isInteger(id) && id > 0 ? id : undefined;
-  }
 
   ngOnInit(): void { this.cargarOperadores(); }
 

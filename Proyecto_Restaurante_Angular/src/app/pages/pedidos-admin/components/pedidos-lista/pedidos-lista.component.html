@@ -30,7 +30,7 @@
             <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
             <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
             <td class="acciones">
-              <a class="btn-detalle" [routerLink]="esOperador() ? ['/operador/pedidos', item.idPedido] : ['/pedidos', item.idPedido]" [queryParams]="esOperador() ? (operadorId() === undefined ? {} : { idOperador: operadorId() }) : (administradorId() === undefined ? {} : { idAdministrador: administradorId() })">Detalles</a>
+              <a class="btn-detalle" [routerLink]="esOperador() ? ['/operador/pedidos', item.idPedido] : ['/pedidos', item.idPedido]">Detalles</a>
               @if (!esOperador()) {
                 <button class="btn-eliminar" type="button" aria-label="Eliminar pedido" (click)="pedidoEliminado.emit(item.idPedido)">
                   <i class="bi bi-trash3"></i>

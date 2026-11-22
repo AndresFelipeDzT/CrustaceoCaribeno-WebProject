@@ -1,15 +1,15 @@
 <header class="pedidos-header">
-  <a class="pedidos-brand" [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">
+  <a class="pedidos-brand" [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']">
     <img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño">
     <span>Crustáceo Caribeño</span>
   </a>
   <nav class="pedidos-nav">
-    <a [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']" [queryParams]="esOperador ? (operadorId === undefined ? {} : { idOperador: operadorId }) : (administradorId === undefined ? {} : { idAdministrador: administradorId })">Pedidos</a>
+    <a [routerLink]="esOperador ? ['/operador/pedidos'] : ['/pedidos']">Pedidos</a>
     @if (!esOperador) {
-      <a routerLink="/domiciliarios" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Domiciliarios</a>
-      <a routerLink="/operadores" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Operadores</a>
-      <a routerLink="/comidas/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Comidas</a>
-      <a routerLink="/adicionales/tabla" [queryParams]="administradorId === undefined ? {} : { idAdministrador: administradorId }">Adicionales</a>
+      <a routerLink="/domiciliarios">Domiciliarios</a>
+      <a routerLink="/operadores">Operadores</a>
+      <a routerLink="/comidas/tabla">Comidas</a>
+      <a routerLink="/adicionales/tabla">Adicionales</a>
     }
     <a routerLink="/cerrar-sesion">Cerrar sesión</a>
   </nav>
@@ -23,8 +23,6 @@
     [siguienteEstado]="siguienteEstado"
     [puedeCancelar]="puedeCancelar"
     [esOperador]="esOperador"
-    [operadorId]="operadorId"
-    [administradorId]="administradorId"
     [domiciliariosDisponibles]="domiciliariosDisponibles"
     [idDomiciliarioSeleccionado]="idDomiciliarioSeleccionado"
     [mensaje]="mensaje"
@@ -37,8 +35,6 @@
   <app-pedidos-lista
     [pedidos]="pedidos"
     [esOperador]="esOperador"
-    [operadorId]="operadorId"
-    [administradorId]="administradorId"
     [mensaje]="mensaje"
     [error]="error"
     (pedidoEliminado)="eliminarPedido($event)"

@@ -1,6 +1,6 @@
 <header class="operador-header">
-  <a class="operador-brand" routerLink="/operador/pedidos" [queryParams]="operadorId === undefined ? {} : { idOperador: operadorId }"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
-  <nav><a routerLink="/operador/pedidos" [queryParams]="operadorId === undefined ? {} : { idOperador: operadorId }">Pedidos</a><button type="button" (click)="cerrarSesion()">Cerrar sesión</button></nav>
+  <a class="operador-brand" routerLink="/operador/pedidos"><img src="/imagenes/logo2.png" alt="Logo Crustáceo Caribeño"><span>Crustáceo Caribeño</span></a>
+  <nav><a routerLink="/operador/pedidos">Pedidos</a><button type="button" (click)="cerrarSesion()">Cerrar sesión</button></nav>
 </header>
 <main class="operador-main">
   <div class="operador-heading"><span></span><h1>Pedidos pendientes</h1><span></span><p>Pedidos que aún no han sido completados</p></div>

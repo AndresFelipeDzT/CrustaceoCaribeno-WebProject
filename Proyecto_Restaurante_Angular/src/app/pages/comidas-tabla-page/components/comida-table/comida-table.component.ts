@@ -12,7 +12,6 @@ import { Producto } from '../../../../models/producto.model';
 /** Renderiza las acciones disponibles para cada plato del catálogo. */
 export class ComidaTableComponent {
   comidas = input.required<Producto[]>();
-  administradorId = input<number>();
   comidaEliminada = output<number>();
   comidaActivada = output<number>();
 }

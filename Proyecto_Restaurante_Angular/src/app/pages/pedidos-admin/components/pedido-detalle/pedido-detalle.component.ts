@@ -18,8 +18,6 @@ export class PedidoDetalleComponent {
   siguienteEstado = input<string | null>(null);
   puedeCancelar = input(false);
   esOperador = input(false);
-  operadorId = input<number>();
-  administradorId = input<number>();
   domiciliariosDisponibles = input<Domiciliario[]>([]);
   idDomiciliarioSeleccionado = input<number>();
   mensaje = input('');

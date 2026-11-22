@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
@@ -13,14 +13,8 @@ import { ComidaTableComponent } from './components/comida-table/comida-table.com
 /** Administra el catálogo de platos desde el portal de administrador. */
 export class ComidasTablaPageComponent implements OnInit {
   private comidaService = inject(ComidaService);
-  private route = inject(ActivatedRoute);
   comidas: Producto[] = [];
   error = '';
-
-  get administradorId(): number | undefined {
-    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
-    return Number.isInteger(id) && id > 0 ? id : undefined;
-  }
 
   ngOnInit(): void {
     this.cargarComidas();

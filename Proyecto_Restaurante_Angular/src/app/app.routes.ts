@@ -1,6 +1,8 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { cargarPerfilCliente, redirigirDesdeInicio, requiereAdministrador, requiereOperador } from './helpers/acceso.guard';
+import {
+  cargarPerfilCliente, quitarIdDelPerfil, redirigirDesdeInicio, requiereAdministrador, requiereOperador
+} from './helpers/acceso.guard';
 import { AuthService } from './service/auth.service';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ComidasTarjetasPageComponent } from './pages/comidas-tarjetas-page/comidas-tarjetas-page.component';
@@ -56,7 +58,8 @@ export const routes: Routes = [
     canActivate: [requiereOperador], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
   { path: 'operador/pedidos/:id', component: PedidosAdminComponent, title: 'Detalle del pedido | Portal de operador',
     canActivate: [requiereOperador], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
-  { path: 'perfil', component: ClienteProfileComponent, title: 'Mi perfil | Crustáceo Caribeño' },
+  { path: 'perfil', component: ClienteProfileComponent, title: 'Mi perfil | Crustáceo Caribeño',
+    canActivate: [quitarIdDelPerfil], runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
   { path: 'carrito', component: CarritoPageComponent, title: 'Mi carrito | Crustáceo Caribeño',
     canActivate: [cargarPerfilCliente], data: { requiereCliente: true } },
   ...rutasAdministrador.map(ruta => ({

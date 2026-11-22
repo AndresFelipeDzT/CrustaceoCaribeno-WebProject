@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Operador } from '../../models/operador.model';
 import { OperadorService } from '../../service/operador.service';
 
@@ -21,12 +21,6 @@ export class OperadorFormComponent implements OnInit {
   operadorId?: number;
   isEdit = false;
   error = '';
-
-  /** Conserva el administrador activo entre las pantallas del CRUD. */
-  get queryParams(): Params {
-    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
-    return Number.isInteger(id) && id > 0 ? { idAdministrador: id } : {};
-  }
 
   operadorForm = this.formBuilder.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -59,7 +53,7 @@ export class OperadorFormComponent implements OnInit {
       ? this.operadorService.updateOperador(this.operadorId, { idOperador: this.operadorId, ...payload })
       : this.operadorService.addOperador(payload);
     solicitud.subscribe({
-      next: () => void this.router.navigate(['/operadores'], { queryParams: this.queryParams }),
+      next: () => void this.router.navigate(['/operadores']),
       error: err => this.error = err?.error?.message || (this.isEdit ? 'No fue posible actualizar el operador.' : 'No fue posible registrar el operador.')
     });
   }

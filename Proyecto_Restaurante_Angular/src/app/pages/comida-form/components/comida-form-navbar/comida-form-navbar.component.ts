@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,5 +9,4 @@ import { RouterLink } from '@angular/router';
 })
 /** Navegación del formulario de platos dentro del portal administrativo. */
 export class ComidaFormNavbarComponent {
-  administradorId = input<number>();
 }

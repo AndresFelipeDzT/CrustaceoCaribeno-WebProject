@@ -37,11 +37,6 @@ export class ComidaFormComponent implements OnInit {
     return this.comidaId !== undefined;
   }
 
-  get administradorId(): number | undefined {
-    const id = Number(this.route.snapshot.queryParamMap.get('idAdministrador'));
-    return Number.isInteger(id) && id > 0 ? id : undefined;
-  }
-
   ngOnInit(): void {
     this.comidaService.getCategorias().subscribe({
       next: categorias => {
@@ -92,12 +87,12 @@ export class ComidaFormComponent implements OnInit {
     this.error = '';
     if (this.comidaId === undefined) {
       this.comidaService.addComida(comida).subscribe({
-        next: () => void this.router.navigate(['/comidas/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
+        next: () => void this.router.navigate(['/comidas/tabla']),
         error: err => this.error = err?.error?.message || 'No fue posible guardar el producto.'
       });
     } else {
       this.comidaService.updateComida(this.comidaId, comida).subscribe({
-        next: () => void this.router.navigate(['/comidas/tabla'], { queryParams: { idAdministrador: this.administradorId } }),
+        next: () => void this.router.navigate(['/comidas/tabla']),
         error: err => this.error = err?.error?.message || 'No fue posible actualizar el producto.'
       });
     }

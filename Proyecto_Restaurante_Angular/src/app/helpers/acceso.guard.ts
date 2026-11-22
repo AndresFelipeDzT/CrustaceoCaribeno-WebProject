@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, RedirectCommand, Router, UrlTree } from '@angular/router';
 import { catchError, concatMap, defaultIfEmpty, EMPTY, filter, from, map, Observable, of, take, throwError } from 'rxjs';
 import { AdministradorService } from '../service/administrador.service';
 import { AuthService } from '../service/auth.service';
@@ -21,12 +21,8 @@ export const redirigirDesdeInicio: CanActivateFn = () => {
     () => clienteService.getClienteActual().pipe(map(cliente => cliente && router.createUrlTree(
       ['/comidas/tarjetas'], { queryParams: { id: cliente.idCliente } }
     ))),
-    () => operadorService.getOperadorActual().pipe(map(operador => router.createUrlTree(
-      ['/operador/pedidos'], { queryParams: { idOperador: operador.idOperador } }
-    ))),
-    () => administradorService.getAdministradorActual().pipe(map(administrador => router.createUrlTree(
-      ['/pedidos'], { queryParams: { idAdministrador: administrador.idAdministrador } }
-    )))
+    () => operadorService.getOperadorActual().pipe(map(() => router.createUrlTree(['/operador/pedidos']))),
+    () => administradorService.getAdministradorActual().pipe(map(() => router.createUrlTree(['/pedidos'])))
   ];
 
   return from(consultarDestinos).pipe(
@@ -52,33 +48,37 @@ export const redirigirDesdeInicio: CanActivateFn = () => {
 
 export const requiereAdministrador: CanActivateFn = (_route, state) => {
   const administradorService = inject(AdministradorService);
-  return validarPortal('/admin', 'idAdministrador', state.url, () =>
-    administradorService.getAdministradorActual().pipe(map(perfil => perfil.idAdministrador))
+  return validarPortal('/admin', state.url, () =>
+    administradorService.getAdministradorActual()
   );
 };
 
 export const requiereOperador: CanActivateFn = (_route, state) => {
   const operadorService = inject(OperadorService);
-  return validarPortal('/operador', 'idOperador', state.url, () =>
-    operadorService.getOperadorActual().pipe(map(perfil => perfil.idOperador))
+  return validarPortal('/operador', state.url, () =>
+    operadorService.getOperadorActual()
   );
 };
 
-function validarPortal(rutaLogin: string, parametroId: string, url: string, consultarId: () => Observable<number>) {
+function validarPortal(rutaLogin: string, url: string, consultarPerfil: () => Observable<unknown>) {
   const router = inject(Router);
   const login = router.createUrlTree([rutaLogin]);
   if (!localStorage.getItem('token')) return login;
 
-  return consultarId().pipe(
-    map(id => {
-      const destino = router.parseUrl(url);
-      if (destino.queryParams[parametroId] === String(id)) return true;
-      destino.queryParams = { ...destino.queryParams, [parametroId]: String(id) };
-      return destino;
-    }),
+  return consultarPerfil().pipe(
+    map(() => quitarParametros(router.parseUrl(url), 'idAdministrador', 'idOperador')),
     catchError(() => of(login))
   );
 }
+
+function quitarParametros(destino: UrlTree, ...nombres: string[]): true | RedirectCommand {
+  if (!nombres.some(nombre => destino.queryParamMap.has(nombre))) return true;
+  for (const nombre of nombres) delete destino.queryParams[nombre];
+  return new RedirectCommand(destino, { replaceUrl: true });
+}
+
+export const quitarIdDelPerfil: CanActivateFn = (_route, state) =>
+  quitarParametros(inject(Router).parseUrl(state.url), 'id');
 
 export const cargarPerfilCliente: CanActivateFn = route => {
   const clienteService = inject(ClienteService);
