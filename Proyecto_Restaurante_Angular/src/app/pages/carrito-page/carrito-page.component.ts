@@ -1,8 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Adicional } from '../../models/adicional.model';
 import { Carrito } from '../../models/carrito.model';
+import { Cupon, CuponAplicacion } from '../../models/cupon.model';
 import { ItemCarrito } from '../../models/item-carrito.model';
 import { CarritoService } from '../../service/carrito.service';
 import { ClienteService } from '../../service/cliente.service';
@@ -11,7 +13,7 @@ import { CarritoItemComponent } from './components/carrito-item/carrito-item.com
 
 @Component({
   selector: 'app-carrito-page',
-  imports: [CurrencyPipe, RouterLink, CarritoItemComponent],
+  imports: [CurrencyPipe, FormsModule, RouterLink, CarritoItemComponent],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css'
 })
@@ -25,10 +27,15 @@ export class CarritoPageComponent implements OnInit {
   seleccionados: { [idItemCarrito: number]: number[] | undefined } = {};
   error = '';
   mensaje = '';
+  cuponDisponible: Cupon | null = null;
+  codigoCupon = '';
+  cotizacionCupon?: CuponAplicacion;
   get clienteId(): number | undefined { return this.clienteService.getClienteActualId(); }
 
   ngOnInit(): void {
     this.cargarCarrito();
+    const clienteId = this.clienteService.getClienteActualId();
+    if (clienteId !== undefined) this.cargarCuponDisponible(clienteId);
   }
 
   cargarCarrito(): void {
@@ -40,6 +47,9 @@ export class CarritoPageComponent implements OnInit {
     this.carritoService.getCarrito(clienteId).subscribe({
       next: carrito => {
         this.carrito = carrito;
+        if (this.codigoCupon.trim() && this.cotizacionCupon) {
+          this.revalidarCupon();
+        }
         for (const item of carrito.items) {
           this.seleccionados[item.idItemCarrito] = item.adicionales.map(adicional => adicional.idAdicional);
           const categoriaId = item.producto.categoria?.idCategoria;
@@ -94,12 +104,56 @@ export class CarritoPageComponent implements OnInit {
   confirmarPedido(): void {
     const clienteId = this.clienteService.getClienteActualId();
     if (clienteId === undefined) return;
-    this.carritoService.confirmarPedido(clienteId).subscribe({
+    this.carritoService.confirmarPedido(clienteId, this.codigoCupon.trim() || undefined).subscribe({
       next: () => {
-        this.mensaje = 'Pedido confirmado correctamente.';
+        this.mensaje = 'Pedido confirmado correctamente. Gracias por tu compra.';
+        this.codigoCupon = '';
+        this.cotizacionCupon = undefined;
+        this.cargarCuponDisponible(clienteId);
         this.cargarCarrito();
       },
       error: err => this.error = err?.error?.message || 'No fue posible confirmar el pedido.'
+    });
+  }
+
+  aplicarCupon(codigo: string = this.codigoCupon): void {
+    const clienteId = this.clienteService.getClienteActualId();
+    if (clienteId === undefined) return;
+    this.codigoCupon = codigo.trim();
+    this.error = '';
+    this.carritoService.validarCupon(clienteId, this.codigoCupon).subscribe({
+      next: cotizacion => {
+        this.cotizacionCupon = cotizacion;
+        this.codigoCupon = cotizacion.codigoCupon;
+      },
+      error: err => {
+        this.cotizacionCupon = undefined;
+        this.error = err?.error?.message || 'No fue posible validar el código de descuento.';
+      }
+    });
+  }
+
+  quitarCupon(): void {
+    this.codigoCupon = '';
+    this.cotizacionCupon = undefined;
+  }
+
+  private cargarCuponDisponible(idCliente: number): void {
+    this.carritoService.getCuponDisponible(idCliente).subscribe({
+      next: cupon => this.cuponDisponible = cupon,
+      error: () => this.error = 'No fue posible consultar tu código de descuento.'
+    });
+  }
+
+  private revalidarCupon(): void {
+    const clienteId = this.clienteService.getClienteActualId();
+    if (clienteId === undefined) return;
+    this.carritoService.validarCupon(clienteId, this.codigoCupon).subscribe({
+      next: cotizacion => this.cotizacionCupon = cotizacion,
+      error: err => {
+        this.cotizacionCupon = undefined;
+        this.error = err?.error?.message || 'No fue posible recalcular el descuento.';
+      }
     });
   }
 }
