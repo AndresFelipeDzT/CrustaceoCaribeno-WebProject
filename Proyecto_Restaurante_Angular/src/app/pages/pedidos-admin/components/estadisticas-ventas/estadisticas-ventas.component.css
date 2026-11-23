@@ -1,0 +1,14 @@
+section { max-width: 1120px; margin: 2rem auto; padding: clamp(1rem, 3vw, 2rem); background: white; border-radius: 1rem; }
+h2, dd { color: #0b1d5c; }
+fieldset, dl { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+fieldset { border: 0; padding: 0; }
+legend, caption, dt { font-weight: bold; }
+label, small { display: block; }
+input, button { padding: .45rem .7rem; border-radius: .4rem; }
+button { background: #0b1d5c; color: white; }
+dl { margin: 1.5rem 0; }
+dl div { flex: 1 1 160px; padding: .75rem; background: #f7f5f0; }
+dd { margin: .25rem 0 0; font-size: 1.4rem; }
+table { width: 100%; border-collapse: collapse; }
+caption { caption-side: top; }
+th, td { text-align: left; padding: .5rem; border-bottom: 1px solid #ddd; }

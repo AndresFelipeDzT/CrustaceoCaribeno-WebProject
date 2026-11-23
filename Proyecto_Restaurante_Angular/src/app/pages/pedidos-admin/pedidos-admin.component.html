@@ -39,6 +39,7 @@
     [error]="error"
     (pedidoEliminado)="eliminarPedido($event)"
   ></app-pedidos-lista>
+  @if (!esOperador) { <app-estadisticas-ventas></app-estadisticas-ventas> }
 }
 
 <app-landing-footer></app-landing-footer>

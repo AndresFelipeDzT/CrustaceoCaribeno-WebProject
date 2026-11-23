@@ -6,6 +6,7 @@ import { Carrito, CarritoDTO } from '../models/carrito.model';
 import { Cupon, CuponAplicacion } from '../models/cupon.model';
 import { ItemCarrito, ItemCarritoDTO } from '../models/item-carrito.model';
 import { PedidoDTO } from '../models/pedido.model';
+import { RepetirPedido } from '../models/repetir-pedido.model';
 import { ComidaService } from './comida.service';
 
 @Injectable({ providedIn: 'root' })
@@ -38,6 +39,10 @@ export class CarritoService {
         )
       ))
     );
+  }
+
+  repetirPedido(idCliente: number, idPedido: number): Observable<RepetirPedido> {
+    return this.http.post<RepetirPedido>(`${this.apiUrl}/${idCliente}/repetir/${idPedido}`, {});
   }
 
   agregarProducto(idCliente: number, idProducto: number, idsAdicionales: number[] = []): Observable<void> {

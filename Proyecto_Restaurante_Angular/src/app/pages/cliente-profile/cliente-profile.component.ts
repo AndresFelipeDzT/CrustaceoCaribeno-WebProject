@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
@@ -19,7 +19,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-cliente-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, LandingFooterComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, NavbarComponent, LandingFooterComponent],
   templateUrl: './cliente-profile.component.html',
   styleUrl: './cliente-profile.component.scss'
 })
@@ -71,9 +71,8 @@ export class ClienteProfileComponent implements OnInit {
       next: cliente => {
         this.cliente = cliente;
         if (!cliente) void this.router.navigate(['/login']);
-        else this.observarPedidos(cliente.idCliente);
         else {
-          this.cargarPedidos(cliente.idCliente);
+          this.observarPedidos(cliente.idCliente);
           this.carritoService.getCuponDisponible(cliente.idCliente).subscribe({
             next: cupon => this.cuponDisponible = cupon,
             error: () => this.errorCupon = 'No fue posible consultar tu código de descuento.'
@@ -81,6 +80,30 @@ export class ClienteProfileComponent implements OnInit {
         }
       },
       error: () => this.error = 'No fue posible cargar tu perfil.'
+    });
+  }
+
+  repitiendo = false;
+  pedidoRepetido?: number;
+  mensajeRepeticion = '';
+  mostrarCarrito = false;
+
+  repetirPedido(idPedido: number): void {
+    if (!this.cliente || this.repitiendo) return;
+    this.repitiendo = true;
+    this.pedidoRepetido = idPedido;
+    this.mostrarCarrito = false;
+    this.mensajeRepeticion = 'Agregando al carrito…';
+    this.carritoService.repetirPedido(this.cliente.idCliente, idPedido).subscribe({
+      next: resultado => {
+        this.repitiendo = false;
+        this.mostrarCarrito = resultado.unidadesAgregadas > 0;
+        this.mensajeRepeticion = [`Unidades agregadas: ${resultado.unidadesAgregadas}.`, ...resultado.avisos].join(' ');
+      },
+      error: err => {
+        this.repitiendo = false;
+        this.mensajeRepeticion = err?.error?.message || 'No fue posible repetir el pedido.';
+      }
     });
   }
 

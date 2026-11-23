@@ -1,4 +1,6 @@
 import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ResumenVentas } from '../models/resumen-ventas.model';
 import { Observable } from 'rxjs';
 import { Administrador } from '../models/administrador.model';
 import { AuthService } from './auth.service';
@@ -10,6 +12,15 @@ import { AuthService } from './auth.service';
 export class AdministradorService {
   private readonly apiUrl = 'http://localhost:8080/api/administradores';
   private auth = inject(AuthService);
+
+  private http = inject(HttpClient);
+
+  getEstadisticasVentas(desde: string, hasta: string): Observable<ResumenVentas> {
+    const params: Record<string, string> = {};
+    if (desde) params['desde'] = desde;
+    if (hasta) params['hasta'] = hasta;
+    return this.http.get<ResumenVentas>(`${this.apiUrl}/estadisticas/ventas`, { params });
+  }
 
   getAdministradorActual(): Observable<Administrador> {
     return this.auth.consultarPerfil<Administrador>(this.apiUrl);

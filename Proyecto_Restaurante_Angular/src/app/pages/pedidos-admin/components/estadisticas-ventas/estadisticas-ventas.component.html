@@ -1,0 +1,37 @@
+<section aria-labelledby="titulo-ventas">
+  <h2 id="titulo-ventas">Estadísticas de ventas</h2>
+  <form (ngSubmit)="consultar()">
+    <fieldset [disabled]="cargando">
+      <legend>Fecha de entrega</legend>
+      <label>Desde <input type="date" name="desde" [(ngModel)]="desde" [max]="hasta"></label>
+      <label>Hasta <input type="date" name="hasta" [(ngModel)]="hasta" [min]="desde"></label>
+      <button type="submit">Consultar</button>
+    </fieldset>
+  </form>
+  @if (cargando) { <p role="status">Consultando ventas…</p> }
+  @if (error) { <p role="alert">{{ error }}</p> }
+  @if (resumen; as ventas) {
+    <dl>
+      <div><dt>Pedidos entregados</dt><dd>{{ ventas.pedidosEntregados }}</dd></div>
+      <div><dt>Unidades vendidas</dt><dd>{{ ventas.unidadesVendidas }}</dd></div>
+      <div><dt>Total cobrado con domicilio y descuentos</dt><dd>{{ ventas.totalCobrado | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</dd></div>
+    </dl>
+    @if (ventas.pedidosSinImporte) {
+      <p>{{ ventas.pedidosSinImporte }} pedido(s) anterior(es) sin importe histórico. Sus unidades se incluyen y su cobro se excluye del total.</p>
+    }
+    @if (ventas.platos.length) {
+      <table>
+        <caption>Ventas por plato antes de adicionales y descuentos</caption>
+        <thead><tr><th>Plato</th><th>Unidades</th><th>Valor registrado</th></tr></thead>
+        <tbody>
+          @for (plato of ventas.platos; track plato.idProducto) {
+            <tr><th scope="row">{{ plato.nombre }}</th><td>{{ plato.unidades }}</td>
+              <td>{{ plato.valorPlatos | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}
+                @if (plato.unidadesSinPrecio) { <small>({{ plato.unidadesSinPrecio }} sin precio histórico)</small> }
+              </td></tr>
+          }
+        </tbody>
+      </table>
+    } @else { <p>No hay platos vendidos en el período consultado.</p> }
+  }
+</section>

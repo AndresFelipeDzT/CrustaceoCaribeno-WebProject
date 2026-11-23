@@ -169,6 +169,15 @@
                     {{ pedidoDetalleId === pedido.idPedido ? 'Ocultar detalle' : 'Ver detalle' }}
                   </button>
                 </div>
+                @if (pedido.estado.trim().toLowerCase() === 'entregado') {
+                  <button type="button" class="order-detail-button" [disabled]="repitiendo"
+                          (click)="repetirPedido(pedido.idPedido)">Volver a pedir</button>
+                  @if (pedidoRepetido === pedido.idPedido) {
+                    <p role="status">{{ mensajeRepeticion }}
+                      @if (mostrarCarrito) { <a routerLink="/carrito">Ver carrito</a> }
+                    </p>
+                  }
+                }
                 @if (pedidoDetalleId === pedido.idPedido) {
                   @if (cargandoDetalle) { <p class="orders-empty" role="status">Cargando detalle...</p> }
                   @if (errorDetalle) { <p class="alert alert-danger" role="alert">{{ errorDetalle }}</p> }
