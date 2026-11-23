@@ -23,6 +23,7 @@ import com.example.demo.entitys.Producto;
 import com.example.demo.errors.PedidoNotFoundException;
 import com.example.demo.repository.ClienteFakeRepository;
 import com.example.demo.repository.ItemPedidoRepository;
+import com.example.demo.repository.HistorialEstadoPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.ProductoFakeRepository;
 
@@ -39,6 +40,9 @@ class PedidoServiceIntegrationTest {
     private PedidoService pedidoService;
 
     @Autowired
+    private CarritoService carritoService;
+
+    @Autowired
     private ClienteFakeRepository clienteRepository;
 
     @Autowired
@@ -49,6 +53,9 @@ class PedidoServiceIntegrationTest {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private HistorialEstadoPedidoRepository historialEstadoPedidoRepository;
 
     private Cliente cliente;
 
@@ -113,6 +120,49 @@ class PedidoServiceIntegrationTest {
                 .get()
                 .extracting(Pedido::getEstado)
                 .isEqualTo("Entregado");
+    }
+
+    @Test
+    void confirmarPedido_descuentaInventario_yCancelarLoRestauraConHistorial() {
+        Producto producto = productoRepository.save(
+                new Producto("Camarones de prueba", 18000.0, "Plato de prueba", null));
+        int stockInicial = producto.getStock();
+
+        carritoService.agregarProducto(cliente.getIdCliente(), producto.getIdProducto(), null);
+        PedidoDTO pedidoCreado = carritoService.confirmarPedido(cliente.getIdCliente());
+
+        assertThat(productoRepository.findById(producto.getIdProducto()).orElseThrow().getStock())
+                .isEqualTo(stockInicial - 1);
+        assertThat(pedidoService.obtenerHistorialEstado(pedidoCreado.getIdPedido()))
+                .extracting(historial -> historial.estado())
+                .containsExactly("Pendiente");
+
+        pedidoService.actualizarEstadoPedido(
+                pedidoCreado.getIdPedido(),
+                Pedido.builder().estado("En preparación").build());
+        pedidoService.actualizarEstadoPedido(
+                pedidoCreado.getIdPedido(),
+                Pedido.builder().estado("Cancelado").build());
+
+        assertThat(productoRepository.findById(producto.getIdProducto()).orElseThrow().getStock())
+                .isEqualTo(stockInicial);
+        assertThat(pedidoService.obtenerHistorialEstado(pedidoCreado.getIdPedido()))
+                .extracting(historial -> historial.estado())
+                .containsExactly("Pendiente", "En preparación", "Cancelado");
+    }
+
+    @Test
+    void confirmarPedido_rechazaInventarioInsuficiente_yConservaElCarrito() {
+        Producto producto = productoRepository.save(
+                new Producto("Plato agotado de prueba", 18000.0, "Plato de prueba", null));
+        carritoService.agregarProducto(cliente.getIdCliente(), producto.getIdProducto(), null);
+        producto.setStock(0);
+        productoRepository.save(producto);
+
+        assertThatThrownBy(() -> carritoService.confirmarPedido(cliente.getIdCliente()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Inventario insuficiente");
+        assertThat(carritoService.obtenerItemsDTO(cliente.getIdCliente())).hasSize(1);
     }
 
     @Test

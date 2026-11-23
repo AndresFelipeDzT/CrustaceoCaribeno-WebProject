@@ -23,6 +23,8 @@ import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.entitys.Producto;
 import com.example.demo.repository.ItemPedidoRepository;
+import com.example.demo.repository.HistorialEstadoPedidoRepository;
+import com.example.demo.repository.ProductoFakeRepository;
 import com.example.demo.repository.PedidoRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +36,12 @@ class PedidoServiceImplTest {
 
     @Mock
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Mock
+    private HistorialEstadoPedidoRepository historialEstadoPedidoRepository;
+
+    @Mock
+    private ProductoFakeRepository productoRepository;
 
     @Mock
     private ClienteService clienteService;
