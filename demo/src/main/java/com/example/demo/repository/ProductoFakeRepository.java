@@ -1,10 +1,12 @@
 package com.example.demo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.example.demo.entitys.Producto;
 import com.example.demo.entitys.Categoria;
+import jakarta.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,10 @@ import java.util.List;
  */
 @Repository
 public interface ProductoFakeRepository extends JpaRepository<Producto, Long> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select producto from Producto producto where producto.idProducto = :id")
+    java.util.Optional<Producto> findByIdParaActualizar(@Param("id") Long id);
+
     List<Producto> findByActivoTrue();
     List<Producto> findByCategoria(Categoria categoria);
     List<Producto> findByCategoriaAndActivoTrue(Categoria categoria);

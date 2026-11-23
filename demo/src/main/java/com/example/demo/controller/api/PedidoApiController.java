@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.ClienteDTO;
+import com.example.demo.dto.HistorialEstadoPedidoDTO;
 import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Pedido;
@@ -72,6 +73,11 @@ public class PedidoApiController {
             @PathVariable Long idPedido,
             @PathVariable Long idItemPedido) {
         return pedidoService.obtenerAdicionalesDTODeItem(idPedido, idItemPedido);
+    }
+
+    @GetMapping("/{id}/historial")
+    public List<HistorialEstadoPedidoDTO> listarHistorial(@PathVariable Long id) {
+        return pedidoService.obtenerHistorialEstado(id);
     }
 
     // Se quita metodo post 

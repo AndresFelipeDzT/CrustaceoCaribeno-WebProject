@@ -45,6 +45,9 @@ public class Producto {
     @Column(nullable = false)
     private boolean activo = true;
 
+    @Column(nullable = false)
+    private int stock = 20;
+
     /** Categoría del plato en el menú (Entrada, Plato Fuerte, Especialidades De La Casa) */
     @ManyToOne
     private Categoria categoria;

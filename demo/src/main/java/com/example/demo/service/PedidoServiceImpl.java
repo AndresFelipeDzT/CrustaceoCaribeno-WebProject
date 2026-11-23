@@ -8,14 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.AdicionalDTO;
+import com.example.demo.dto.HistorialEstadoPedidoDTO;
 import com.example.demo.dto.ItemPedidoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.entitys.Cliente;
 import com.example.demo.entitys.ItemPedido;
+import com.example.demo.entitys.HistorialEstadoPedido;
 import com.example.demo.entitys.Pedido;
 import com.example.demo.errors.PedidoNotFoundException;
 import com.example.demo.repository.ItemPedidoRepository;
+import com.example.demo.repository.HistorialEstadoPedidoRepository;
 import com.example.demo.repository.PedidoRepository;
+import com.example.demo.repository.ProductoFakeRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -34,6 +38,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private HistorialEstadoPedidoRepository historialEstadoPedidoRepository;
+
+    @Autowired
+    private ProductoFakeRepository productoRepository;
 
     @Autowired
     private ClienteService clienteService;
@@ -115,6 +125,14 @@ public class PedidoServiceImpl implements PedidoService {
                 .toList();
     }
 
+    @Override
+    public List<HistorialEstadoPedidoDTO> obtenerHistorialEstado(Long idPedido) {
+        Pedido pedido = obtenerPedidoPorId(idPedido);
+        return historialEstadoPedidoRepository.findByPedidoOrderByFechaHoraAsc(pedido).stream()
+                .map(historial -> new HistorialEstadoPedidoDTO(historial.getEstado(), historial.getFechaHora()))
+                .toList();
+    }
+
     private PedidoDTO mapearPedidoDTO(Pedido pedido) {
         return new PedidoDTO(
                 pedido.getIdPedido(),
@@ -159,11 +177,30 @@ public class PedidoServiceImpl implements PedidoService {
         }
         Pedido pedidoExistente = pedidoRepository.findByIdParaActualizar(id)
                 .orElseThrow(() -> new PedidoNotFoundException(id));
+        String estadoActual = normalizarEstado(pedidoExistente.getEstado());
+        String estadoNuevo = normalizarEstado(estado);
+        if (("entregado".equals(estadoActual) || "cancelado".equals(estadoActual))
+                && !estadoActual.equals(estadoNuevo)) {
+            throw new IllegalArgumentException("Un pedido entregado o cancelado no puede cambiar de estado.");
+        }
         if (esOperador && !transicionValidaOperador(pedidoExistente.getEstado(), estado)) {
             throw new IllegalArgumentException("Como operador, solo puedes avanzar al siguiente estado o cancelar un pedido activo.");
         }
+        if (!estadoActual.equals(estadoNuevo) && "cancelado".equals(estadoNuevo)) {
+            for (ItemPedido item : itemPedidoRepository.findByPedido(pedidoExistente)) {
+                if (item.getProducto() != null) {
+                    var producto = productoRepository.findByIdParaActualizar(item.getProducto().getIdProducto())
+                            .orElseThrow(() -> new IllegalArgumentException("No se encontró un producto del pedido."));
+                    producto.setStock(producto.getStock() + item.getCantidad());
+                }
+            }
+        }
+        boolean cambioEstado = !estadoActual.equals(estadoNuevo);
         pedidoExistente.setEstado(estado.trim());
         pedidoRepository.save(pedidoExistente);
+        if (cambioEstado) {
+            historialEstadoPedidoRepository.save(new HistorialEstadoPedido(pedidoExistente, pedidoExistente.getEstado()));
+        }
     }
 
     private boolean transicionValidaOperador(String actual, String nuevo) {

@@ -90,6 +90,9 @@ public class ProductoServiceImpl implements ProductoService {
         if (producto == null) {
             throw new IllegalArgumentException("Los datos del producto no pueden ser nulos.");
         }
+        if (producto.getStock() < 0) {
+            throw new IllegalArgumentException("El inventario no puede ser negativo.");
+        }
         if (producto.getIdProducto() != null) {
             Producto existente = obtenerProductoPorId(producto.getIdProducto());
             producto.setActivo(existente.isActivo());
@@ -132,6 +135,7 @@ public class ProductoServiceImpl implements ProductoService {
                 producto.getDescripcion(),
                 producto.getImagenURL(),
                 producto.isActivo(),
+                producto.getStock(),
                 categoria == null ? null : categoria.getIdCategoria(),
                 categoria == null ? null : categoria.getNombre());
     }
