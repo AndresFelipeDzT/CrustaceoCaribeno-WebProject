@@ -4,6 +4,7 @@ import { concatMap, map, Observable, of, switchMap, toArray } from 'rxjs';
 import { Adicional } from '../models/adicional.model';
 import { ItemPedido, ItemPedidoDTO } from '../models/item-pedido.model';
 import { Pedido, PedidoDTO } from '../models/pedido.model';
+import { EstadoPedido } from '../models/estado-pedido.model';
 import { ClienteService } from './cliente.service';
 import { ComidaService } from './comida.service';
 
@@ -103,6 +104,10 @@ export class PedidoService {
         )
       ))
     );
+  }
+
+  getHistorialEstados(id: number): Observable<EstadoPedido[]> {
+    return this.http.get<EstadoPedido[]>(`${this.apiUrl}/${id}/historial`);
   }
 
   actualizarPedido(id: number, estado: string, idDomiciliario?: number): Observable<void> {

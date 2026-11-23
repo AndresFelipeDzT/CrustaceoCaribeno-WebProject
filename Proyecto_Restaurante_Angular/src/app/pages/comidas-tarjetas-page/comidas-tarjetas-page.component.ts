@@ -4,6 +4,7 @@ import { ComidaService } from '../../service/comida.service';
 import { MenuHeroBannerComponent } from './components/hero-banner/hero-banner.component';
 import { ComidaListComponent } from './components/comida-list/comida-list.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CarritoService } from '../../service/carrito.service';
 import { ClienteService } from '../../service/cliente.service';
@@ -11,7 +12,7 @@ import { Cupon } from '../../models/cupon.model';
 
 @Component({
   selector: 'app-comidas-tarjetas-page',
-  imports: [NavbarComponent, FooterComponent, MenuHeroBannerComponent, ComidaListComponent],
+  imports: [NavbarComponent, LandingFooterComponent, MenuHeroBannerComponent, ComidaListComponent],
   templateUrl: './comidas-tarjetas-page.component.html',
   styleUrl: './comidas-tarjetas-page.component.scss'
 })

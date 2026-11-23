@@ -6,6 +6,7 @@
         <th scope="col" class="th-imagen">Imagen</th>
         <th scope="col" class="th-descripcion">Descripción</th>
         <th scope="col" class="th-precio">Precio</th>
+        <th scope="col" class="th-stock">Porciones disponibles</th>
         <th scope="col" class="th-estado">Estado</th>
         <th scope="col" class="th-accion">Acciónes</th>
       </tr>
@@ -17,14 +18,18 @@
           <td class="col-imagen"><img [src]="comida.imagenURL" [alt]="comida.nombre" class="img-platillo" loading="lazy"></td>
           <td class="col-descripcion">{{ comida.descripcion }}</td>
           <td class="col-precio">{{ comida.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+          <td class="col-stock">{{ comida.stock }}</td>
           <td class="col-estado">
-            <span class="estado-producto" [class.estado-activo]="comida.activo !== false" [class.estado-inactivo]="comida.activo === false">
-              {{ comida.activo === false ? 'Inactivo' : 'Activo' }}
+            <span class="estado-producto"
+              [class.estado-activo]="comida.activo && comida.stock > 0"
+              [class.estado-agotado]="comida.activo && comida.stock === 0"
+              [class.estado-inactivo]="comida.activo === false">
+              {{ comida.activo === false ? 'Inactivo' : comida.stock === 0 ? 'Agotado' : 'Disponible' }}
             </span>
           </td>
           <td class="col-accion">
             <a [routerLink]="['/comidas/detalle', comida.idProducto]" class="btn-accion">Ver Más</a>
-            <a [routerLink]="['/comidas/tabla/update', comida.idProducto]" class="btn-accion">Update</a>
+            <a [routerLink]="['/comidas/tabla/update', comida.idProducto]" class="btn-accion">Editar</a>
             @if (comida.activo) {
               <button type="button" class="btn-accion" (click)="comidaEliminada.emit(comida.idProducto)">Eliminar</button>
             } @else {
@@ -33,7 +38,7 @@
           </td>
         </tr>
       } @empty {
-        <tr><td class="tabla-vacia" colspan="6">No hay comidas registradas.</td></tr>
+        <tr><td class="tabla-vacia" colspan="7">No hay comidas registradas.</td></tr>
       }
     </tbody>
   </table>

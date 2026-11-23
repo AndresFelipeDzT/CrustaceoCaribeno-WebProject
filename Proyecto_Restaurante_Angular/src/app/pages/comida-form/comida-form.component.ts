@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ComidaService } from '../../service/comida.service';
 import { Categoria } from '../../models/categoria.model';
 import { Producto } from '../../models/producto.model';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 import { ComidaFormNavbarComponent } from './components/comida-form-navbar/comida-form-navbar.component';
 import { ComidaFormPanelComponent } from './components/comida-form-panel/comida-form-panel.component';
 
 @Component({
   selector: 'app-comida-form',
-  imports: [ReactiveFormsModule, FooterComponent, ComidaFormNavbarComponent, ComidaFormPanelComponent],
+  imports: [ReactiveFormsModule, LandingFooterComponent, ComidaFormNavbarComponent, ComidaFormPanelComponent],
   templateUrl: './comida-form.component.html',
   styleUrl: './comida-form.component.scss'
 })
@@ -29,6 +29,7 @@ export class ComidaFormComponent implements OnInit {
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60)]],
     descripcion: ['', [Validators.required, Validators.maxLength(250)]],
     precio: [0, [Validators.required, Validators.min(1)]],
+    stock: [20, [Validators.required, Validators.min(0), Validators.max(10000)]],
     categoriaId: [0, [Validators.required, Validators.min(1)]],
     imagenURL: ['/imagenes/imagen1.png', Validators.required]
   });
@@ -57,6 +58,7 @@ export class ComidaFormComponent implements OnInit {
         nombre: comida.nombre,
         descripcion: comida.descripcion ?? '',
         precio: comida.precio,
+        stock: comida.stock,
         categoriaId: comida.categoria?.idCategoria ?? 0,
         imagenURL: comida.imagenURL ?? ''
       }),
@@ -80,6 +82,7 @@ export class ComidaFormComponent implements OnInit {
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       precio: valores.precio,
+      stock: valores.stock,
       imagenURL: valores.imagenURL,
       activo: true,
       categoria: { idCategoria: categoria.idCategoria, nombre: categoria.nombre }

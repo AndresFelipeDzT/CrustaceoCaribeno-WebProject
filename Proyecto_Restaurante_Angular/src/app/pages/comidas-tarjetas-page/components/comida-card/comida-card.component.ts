@@ -24,6 +24,7 @@ export class ComidaCardComponent {
   }
 
   agregarAlCarrito(): void {
+    if (this.comida().stock <= 0) return;
     const clienteId = this.clienteService.getClienteActualId();
     if (clienteId === undefined) {
       void this.router.navigate(['/login']);

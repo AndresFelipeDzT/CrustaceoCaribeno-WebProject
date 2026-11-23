@@ -92,6 +92,7 @@ export class ComidaService {
       descripcion: producto.descripcion,
       imagenURL: producto.imagenURL,
       activo: producto.activo,
+      stock: producto.stock,
       categoria: producto.idCategoria == null
         ? null
         : { idCategoria: producto.idCategoria, nombre: producto.nombreCategoria ?? '' }

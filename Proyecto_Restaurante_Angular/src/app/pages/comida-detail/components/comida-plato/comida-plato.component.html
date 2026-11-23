@@ -4,6 +4,9 @@
   <div class="informacion-plato">
     <h2>{{ comida.nombre }}</h2>
     <p>{{ comida.descripcion }}</p>
+    <p class="disponibilidad-plato" [class.agotado]="comida.stock <= 0">
+      {{ comida.stock > 0 ? 'Disponible: ' + comida.stock + ' porciones' : 'Agotado temporalmente' }}
+    </p>
   </div>
   <p class="precio">{{ comida.precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</p>
 </section>

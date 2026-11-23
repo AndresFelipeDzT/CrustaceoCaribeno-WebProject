@@ -1,20 +1,25 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 import { Cliente } from '../../models/cliente.model';
 import { Pedido } from '../../models/pedido.model';
+import { EstadoPedido } from '../../models/estado-pedido.model';
 import { Cupon } from '../../models/cupon.model';
 import { AuthService } from '../../service/auth.service';
 import { CarritoService } from '../../service/carrito.service';
 import { ClienteService } from '../../service/cliente.service';
 import { PedidoService } from '../../service/pedido.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EMPTY, timer } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cliente-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, LandingFooterComponent],
   templateUrl: './cliente-profile.component.html',
   styleUrl: './cliente-profile.component.scss'
 })
@@ -26,10 +31,14 @@ export class ClienteProfileComponent implements OnInit {
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
   cliente: Cliente | undefined;
   pedidos: Pedido[] = [];
   pedidoDetalle?: Pedido;
   pedidoDetalleId?: number;
+  historiales: Partial<Record<number, EstadoPedido[]>> = {};
+  cargandoHistorial: Record<number, boolean> = {};
+  errorHistorial: Record<number, string> = {};
   cargandoPedidos = true;
   cargandoDetalle = false;
   errorPedidos = '';
@@ -62,6 +71,7 @@ export class ClienteProfileComponent implements OnInit {
       next: cliente => {
         this.cliente = cliente;
         if (!cliente) void this.router.navigate(['/login']);
+        else this.observarPedidos(cliente.idCliente);
         else {
           this.cargarPedidos(cliente.idCliente);
           this.carritoService.getCuponDisponible(cliente.idCliente).subscribe({
@@ -142,7 +152,9 @@ export class ClienteProfileComponent implements OnInit {
 
     this.pedidoDetalleId = idPedido;
     this.errorDetalle = '';
+    this.errorHistorial[idPedido] = '';
     this.pedidoDetalle = undefined;
+    this.cargarHistorial(idPedido);
     const detalleExistente = this.pedidos.find(pedido => pedido.idPedido === idPedido);
     if (detalleExistente?.items) {
       this.pedidoDetalle = detalleExistente;
@@ -167,16 +179,37 @@ export class ClienteProfileComponent implements OnInit {
     });
   }
 
-  private cargarPedidos(idCliente: number): void {
-    this.cargandoPedidos = true;
-    this.pedidoService.getPedidos(false, idCliente).subscribe({
-      next: pedidos => {
-        this.pedidos = pedidos.sort((a, b) => b.idPedido - a.idPedido);
-        this.cargandoPedidos = false;
+  private observarPedidos(idCliente: number): void {
+    timer(0, 10000).pipe(
+      switchMap(() => this.pedidoService.getPedidos(false, idCliente).pipe(
+        catchError(() => {
+          this.errorPedidos = 'No fue posible actualizar tus pedidos. Se volverá a intentar.';
+          this.cargandoPedidos = false;
+          return EMPTY;
+        })
+      )),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(pedidos => {
+      this.errorPedidos = '';
+      this.pedidos = pedidos.sort((a, b) => b.idPedido - a.idPedido);
+      this.cargandoPedidos = false;
+      if (this.pedidoDetalleId !== undefined) {
+        this.cargarHistorial(this.pedidoDetalleId, true);
+      }
+    });
+  }
+
+  private cargarHistorial(idPedido: number, actualizar = false): void {
+    if (!actualizar && this.historiales[idPedido]) return;
+    this.cargandoHistorial[idPedido] = true;
+    this.pedidoService.getHistorialEstados(idPedido).subscribe({
+      next: historial => {
+        this.historiales[idPedido] = historial;
+        this.cargandoHistorial[idPedido] = false;
       },
       error: () => {
-        this.errorPedidos = 'No fue posible cargar tus pedidos.';
-        this.cargandoPedidos = false;
+        this.errorHistorial[idPedido] = 'No fue posible cargar el seguimiento del pedido.';
+        this.cargandoHistorial[idPedido] = false;
       }
     });
   }

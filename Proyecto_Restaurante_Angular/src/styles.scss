@@ -9,3 +9,13 @@ body {
   background-color: #fff;
 }
 img { max-width: 100%; }
+.profile-page .order-timeline { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e1e5ec; }
+.profile-page .order-timeline h4 { margin: 0 0 12px; color: #17335d; font: 700 13px Arial, sans-serif; }
+.profile-page .order-timeline ol { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.profile-page .order-timeline li:not(.timeline-empty) { position: relative; display: flex; gap: 10px; min-height: 42px; }
+.profile-page .order-timeline li:not(:last-child):not(.timeline-empty)::after { position: absolute; top: 10px; bottom: -1px; left: 4px; width: 2px; background: #c9d8e9; content: ""; }
+.profile-page .timeline-dot { z-index: 1; width: 10px; height: 10px; flex: 0 0 10px; margin-top: 2px; border-radius: 50%; background: #1b7b52; }
+.profile-page .order-timeline li div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; width: 100%; color: #334155; font: 12px Arial, sans-serif; }
+.profile-page .order-timeline time { color: #667085; }
+.profile-page .timeline-empty, .profile-page .timeline-refresh { color: #667085; font: 11px Arial, sans-serif; }
+.profile-page .timeline-refresh { margin: 8px 0 0; }

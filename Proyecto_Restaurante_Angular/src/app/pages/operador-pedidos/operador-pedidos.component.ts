@@ -3,11 +3,12 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 
 @Component({
   selector: 'app-operador-pedidos',
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, RouterLink],
+  imports: [CurrencyPipe, DatePipe, RouterLink, LandingFooterComponent],
   templateUrl: './operador-pedidos.component.html',
   styleUrl: './operador-pedidos.component.scss'
 })
