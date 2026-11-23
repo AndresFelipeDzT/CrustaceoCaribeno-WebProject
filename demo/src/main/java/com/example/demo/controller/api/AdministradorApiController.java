@@ -1,6 +1,10 @@
 package com.example.demo.controller.api;
 
 import java.util.List;
+import java.time.LocalDate;
+import org.springframework.web.bind.annotation.RequestParam;
+import com.example.demo.service.EstadisticasVentasService;
+import com.example.demo.dto.ResumenVentasDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +51,15 @@ public class AdministradorApiController {
     @Autowired
     private JWTGenerator jwtGenerator;
 
+
+    @Autowired
+    private EstadisticasVentasService estadisticasVentasService;
+
+    @GetMapping("/estadisticas/ventas")
+    public ResumenVentasDTO ventas(@RequestParam(required = false) LocalDate desde,
+            @RequestParam(required = false) LocalDate hasta) {
+        return estadisticasVentasService.consultar(desde, hasta);
+    }
 
     @GetMapping
     public List<AdministradorDTO> listar() {

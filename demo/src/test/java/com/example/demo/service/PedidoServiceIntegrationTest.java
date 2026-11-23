@@ -129,7 +129,7 @@ class PedidoServiceIntegrationTest {
         int stockInicial = producto.getStock();
 
         carritoService.agregarProducto(cliente.getIdCliente(), producto.getIdProducto(), null);
-        PedidoDTO pedidoCreado = carritoService.confirmarPedido(cliente.getIdCliente());
+        PedidoDTO pedidoCreado = carritoService.confirmarPedido(cliente.getIdCliente(), null);
 
         assertThat(productoRepository.findById(producto.getIdProducto()).orElseThrow().getStock())
                 .isEqualTo(stockInicial - 1);
@@ -159,7 +159,7 @@ class PedidoServiceIntegrationTest {
         producto.setStock(0);
         productoRepository.save(producto);
 
-        assertThatThrownBy(() -> carritoService.confirmarPedido(cliente.getIdCliente()))
+        assertThatThrownBy(() -> carritoService.confirmarPedido(cliente.getIdCliente(), null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Inventario insuficiente");
         assertThat(carritoService.obtenerItemsDTO(cliente.getIdCliente())).hasSize(1);
@@ -174,6 +174,59 @@ class PedidoServiceIntegrationTest {
         assertThatThrownBy(() -> pedidoService.obtenerPedidoPorId(idInexistente))
                 .isInstanceOf(PedidoNotFoundException.class)
                 .hasMessageContaining(String.valueOf(idInexistente));
+    }
+
+    @Autowired
+    private EstadisticasVentasService estadisticas;
+
+    @Test
+    void repetirRespetaElStockElCarritoExistenteYElPrecioActual() {
+        Producto producto = productoRepository.save(new Producto("Cazuela", 20000, "Prueba", null));
+        Pedido anterior = guardarPedido("Entregado");
+        anterior.getItems().add(itemPedidoRepository.save(new ItemPedido(3, anterior, producto)));
+        producto.setStock(2);
+        producto.setPrecio(24000);
+        carritoService.agregarProducto(cliente.getIdCliente(), producto.getIdProducto(), null);
+
+        var resultado = carritoService.repetirPedido(cliente.getIdCliente(), anterior.getIdPedido());
+
+        assertThat(resultado.getUnidadesAgregadas()).isEqualTo(1);
+        assertThat(resultado.getAvisos()).hasSize(1);
+        assertThat(carritoService.obtenerCarritoDTO(cliente.getIdCliente()).getSubtotal()).isEqualTo(48000);
+        assertThat(producto.getStock()).isEqualTo(2);
+    }
+
+    @Test
+    void repetirRechazaPedidoAjenoOPendiente() {
+        Pedido pedido = guardarPedido("Pendiente");
+        assertThatThrownBy(() -> carritoService.repetirPedido(cliente.getIdCliente(), pedido.getIdPedido()))
+                .hasMessageContaining("entregados");
+        Cliente otro = clienteRepository.save(new Cliente("Otro", "Cliente", "otro@test.com",
+                "3012345678", "Calle 2", "clave"));
+        assertThatThrownBy(() -> carritoService.repetirPedido(otro.getIdCliente(), pedido.getIdPedido()))
+                .hasMessageContaining("no pertenece");
+    }
+
+    @Test
+    void ventasAgrupaUnidadesYConservaImportesAlCambiarElPrecio() {
+        LocalDate fecha = LocalDate.of(2020, 2, 10);
+        Producto producto = productoRepository.save(new Producto("Pulpo", 10000, "Prueba", null));
+        Pedido pedido = guardarPedido("Entregado");
+        pedido.setFechaEntrega(fecha);
+        pedido.setDomicilio(5000);
+        pedido.setDescuento(2000);
+        pedido.getItems().add(itemPedidoRepository.save(new ItemPedido(2, pedido, producto)));
+        producto.setPrecio(15000);
+        var resumen = estadisticas.consultar(fecha, fecha);
+
+        assertThat(resumen.getPedidosEntregados()).isEqualTo(1);
+        assertThat(resumen.getTotalCobrado()).isEqualTo(23000);
+        assertThat(resumen.getUnidadesVendidas()).isEqualTo(2);
+        assertThat(resumen.getPlatos()).singleElement().satisfies(plato ->
+                assertThat(plato.getValorPlatos()).isEqualTo(20000));
+        assertThat(estadisticas.consultar(fecha.plusDays(1), fecha.plusDays(1)).getPlatos()).isEmpty();
+        assertThat(estadisticas.consultar(null, null).getPlatos())
+                .anyMatch(plato -> producto.getIdProducto().equals(plato.getIdProducto()) && plato.getUnidades() == 2);
     }
 
     private Pedido guardarPedido(String estado) {

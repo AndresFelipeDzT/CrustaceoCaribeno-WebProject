@@ -717,6 +717,7 @@ public class DataLoader implements CommandLineRunner {
             ItemPedido itemPedido = itemPedidoRepository.findById(itemPedidoId).orElseThrow();
             Adicional adicional = adicionalRepository.findById(itemPedidoId).orElseThrow();
             itemPedido.getAdicionales().add(adicional);
+            itemPedido.guardarImportesDeVenta();
             itemPedidoRepository.save(itemPedido);
         }
     }   

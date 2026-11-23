@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,16 @@ import jakarta.persistence.LockModeType;
  */
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
+    @Query("""
+            select distinct p from Pedido p left join fetch p.items i left join fetch i.producto
+            where lower(trim(p.estado)) = 'entregado'
+            and (:desde is null or p.fechaEntrega >= :desde)
+            and (:hasta is null or p.fechaEntrega <= :hasta)
+            """)
+    List<Pedido> buscarEntregados(@Param("desde") LocalDate desde,
+            @Param("hasta") LocalDate hasta);
+
+    Optional<Pedido> findByIdPedidoAndCliente_IdCliente(Long idPedido, Long idCliente);
     List<Pedido> findByCliente(Cliente cliente);
     boolean existsByIdPedidoAndCliente_IdCliente(Long idPedido, Long idCliente);
 

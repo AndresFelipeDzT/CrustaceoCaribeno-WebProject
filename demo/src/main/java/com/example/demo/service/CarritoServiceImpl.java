@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,6 +26,7 @@ import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.CarritoDTO;
 import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
+import com.example.demo.dto.RepetirPedidoDTO;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.ClienteFakeRepository;
@@ -69,6 +71,8 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Autowired
     private HistorialEstadoPedidoRepository historialEstadoPedidoRepository;
+
+    @Autowired
     private CuponService cuponService;
 
     @Autowired
@@ -183,6 +187,57 @@ public class CarritoServiceImpl implements CarritoService {
         itemCarritoRepository.save(item);
     }
 
+    @Override
+    public RepetirPedidoDTO repetirPedido(Long idCliente, Long idPedido) {
+        clienteRepository.findByIdParaActualizar(idCliente)
+                .orElseThrow(() -> new IllegalArgumentException("El cliente no existe."));
+        Pedido pedido = pedidoRepository.findByIdPedidoAndCliente_IdCliente(idPedido, idCliente)
+                .orElseThrow(() -> new IllegalArgumentException("El pedido no pertenece al cliente."));
+        if (!"Entregado".equalsIgnoreCase(pedido.getEstado().trim())) {
+            throw new IllegalArgumentException("Solo puedes repetir pedidos entregados.");
+        }
+
+        Carrito carrito = obtenerCarrito(idCliente);
+        Map<Long, Integer> enCarrito = new TreeMap<>();
+        for (ItemCarrito item : itemCarritoRepository.findByCarrito(carrito)) {
+            enCarrito.merge(item.getProducto().getIdProducto(), item.getCantidad(), Integer::sum);
+        }
+        List<String> avisos = new ArrayList<>();
+        int agregadas = 0;
+        // Adquiere los bloqueos en el mismo orden que la confirmación del carrito.
+        List<ItemPedido> lineas = pedido.getItems().stream()
+                .filter(item -> item.getProducto() != null)
+                .sorted(Comparator.comparing((ItemPedido item) -> item.getProducto().getIdProducto())
+                        .thenComparing(ItemPedido::getIdItemPedido))
+                .toList();
+        if (lineas.size() < pedido.getItems().size()) {
+            avisos.add("Un producto del pedido ya no existe.");
+        }
+        for (ItemPedido linea : lineas) {
+            Long id = linea.getProducto().getIdProducto();
+            Producto producto = productoRepository.findByIdParaActualizar(id).orElse(null);
+            int stock = producto == null || !producto.isActivo() ? 0 : producto.getStock();
+            int cantidad = Math.min(linea.getCantidad(), Math.max(0, stock - enCarrito.getOrDefault(id, 0)));
+            if (cantidad < linea.getCantidad()) {
+                avisos.add(linea.getProducto().getNombre() + ": " + (linea.getCantidad() - cantidad)
+                        + " unidad(es) sin disponibilidad.");
+            }
+            if (cantidad == 0) continue;
+            ItemCarrito nuevo = new ItemCarrito(cantidad, carrito, producto);
+            for (Adicional adicional : linea.getAdicionales()) {
+                if (adicionalDisponible(producto, adicional)) {
+                    nuevo.getAdicionales().add(adicional);
+                } else {
+                    avisos.add(producto.getNombre() + ": se omitió " + adicional.getNombre() + ".");
+                }
+            }
+            itemCarritoRepository.save(nuevo);
+            enCarrito.merge(id, cantidad, Integer::sum);
+            agregadas += cantidad;
+        }
+        return new RepetirPedidoDTO(agregadas, avisos);
+    }
+
     public void actualizarCantidad(Long idCliente, Long idItemCarrito, int cantidad) {
         Carrito carrito = obtenerCarrito(idCliente);
         ItemCarrito item = obtenerItemDelCarrito(carrito, idItemCarrito);
@@ -219,9 +274,7 @@ public class CarritoServiceImpl implements CarritoService {
                 Adicional adicional = adicionalRepository.findById(idAdicional)
                         .orElseThrow(() -> new IllegalArgumentException("El adicional no está disponible para este producto."));
                 // Los adicionales se habilitan por la categoría del producto, no solo por existir.
-                boolean disponible = item.getProducto().getCategoria() != null &&
-                    item.getProducto().getCategoria().getAdicionales().contains(adicional);
-                if (!adicional.isActivo() || !disponible) {
+                if (!adicionalDisponible(item.getProducto(), adicional)) {
                     throw new IllegalArgumentException("El adicional no está disponible para este producto.");
                 }
                 item.getAdicionales().add(adicional);
@@ -326,6 +379,12 @@ public class CarritoServiceImpl implements CarritoService {
                 List.copyOf(lineasPedido),
                 cuponDisponible.codigo()));
         return pedidoDTO;
+    }
+
+    private boolean adicionalDisponible(Producto producto, Adicional adicional) {
+        return adicional.isActivo() && producto.getCategoria() != null
+                && producto.getCategoria().getAdicionales().stream()
+                        .anyMatch(opcion -> opcion.getIdAdicional().equals(adicional.getIdAdicional()));
     }
 
     private double calcularDescuento(double subtotal) {

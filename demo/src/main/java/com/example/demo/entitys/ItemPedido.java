@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,6 @@ import java.util.List;
  * indicando la cantidad solicitada y el precio unitario pactado.
  */
 @Data
-@Builder
 @Entity
 public class ItemPedido {
 
@@ -30,8 +30,8 @@ public class ItemPedido {
     @Column(nullable = false)
     private int cantidad;
 
-    //@Column(nullable = false)
-    //private double precioUnitario;
+    private Double precioUnitarioVenta;
+    private Double subtotalVenta;
 
     @ManyToOne
     @JsonIgnore
@@ -43,7 +43,6 @@ public class ItemPedido {
 
     @ManyToMany
     @ToString.Exclude
-    @Builder.Default
     private List<Adicional> adicionales = new ArrayList<>();
 
     public ItemPedido() {
@@ -56,16 +55,29 @@ public class ItemPedido {
         this.producto = producto;
     }
 
+    @Builder
     public ItemPedido(Long idItemPedido, int cantidad, Pedido pedido, Producto producto,
             List<Adicional> adicionales) {
         this.idItemPedido = idItemPedido;
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
-        this.adicionales = adicionales;
+        this.adicionales = adicionales == null ? new ArrayList<>() : adicionales;
+    }
+
+    @PrePersist
+    public void guardarImportesDeVenta() {
+        if (producto != null) {
+            precioUnitarioVenta = producto.getPrecio();
+            subtotalVenta = calcularSubtotal();
+        }
     }
 
     public double getSubtotal() {
+        return subtotalVenta != null ? subtotalVenta : calcularSubtotal();
+    }
+
+    private double calcularSubtotal() {
         double subtotalAdicionales = this.adicionales == null ? 0
                 : this.adicionales.stream().mapToDouble(Adicional::getPrecio).sum();
         return (this.cantidad * this.producto.getPrecio()) + this.cantidad *subtotalAdicionales;

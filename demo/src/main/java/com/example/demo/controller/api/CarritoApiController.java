@@ -19,6 +19,7 @@ import com.example.demo.dto.CuponAplicacionDTO;
 import com.example.demo.dto.CuponDTO;
 import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
+import com.example.demo.dto.RepetirPedidoDTO;
 import com.example.demo.service.CarritoService;
 
 /**
@@ -97,6 +98,11 @@ public class CarritoApiController {
     @DeleteMapping("/{idCliente}/items/{idItemCarrito}")
     public void eliminarItem(@PathVariable Long idCliente, @PathVariable Long idItemCarrito) {
         carritoService.eliminarItem(idCliente, idItemCarrito);
+    }
+
+    @PostMapping("/{idCliente}/repetir/{idPedido}")
+    public RepetirPedidoDTO repetirPedido(@PathVariable Long idCliente, @PathVariable Long idPedido) {
+        return carritoService.repetirPedido(idCliente, idPedido);
     }
 
     @PostMapping("/{idCliente}/confirmar")

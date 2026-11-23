@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -196,6 +197,9 @@ public class PedidoServiceImpl implements PedidoService {
             }
         }
         boolean cambioEstado = !estadoActual.equals(estadoNuevo);
+        if (cambioEstado && "entregado".equals(estadoNuevo)) {
+            pedidoExistente.setFechaEntrega(LocalDate.now());
+        }
         pedidoExistente.setEstado(estado.trim());
         pedidoRepository.save(pedidoExistente);
         if (cambioEstado) {

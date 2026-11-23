@@ -9,6 +9,7 @@ import com.example.demo.dto.CuponAplicacionDTO;
 import com.example.demo.dto.CuponDTO;
 import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
+import com.example.demo.dto.RepetirPedidoDTO;
 
 /**
  * Contrato de las operaciones de servicio para carrito.
@@ -20,6 +21,7 @@ public interface CarritoService {
     List<AdicionalDTO> obtenerAdicionalesDTO(Long idCliente, Long idItemCarrito);
     CuponDTO obtenerCuponDisponible(Long idCliente);
     CuponAplicacionDTO validarCupon(Long idCliente, String codigo);
+    RepetirPedidoDTO repetirPedido(Long idCliente, Long idPedido);
     void agregarProducto(Long idCliente, Long idProducto, Long[] idsAdicionales);
     void actualizarCantidad(Long idCliente, Long idItemCarrito, int cantidad);
     void actualizarAdicionales(Long idCliente, Long idItemCarrito, Long[] idsAdicionales);
