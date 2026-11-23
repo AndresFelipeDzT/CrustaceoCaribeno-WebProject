@@ -2,6 +2,27 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.23.
 
+## Proyecto completo (Angular + Spring Boot)
+
+Inicia el backend en una terminal desde la carpeta `Web`:
+
+```powershell
+Set-Location ".\CrustaceoCaribeno-WebProject - copia\demo"
+.\mvnw.cmd spring-boot:run
+```
+
+Inicia Angular en otra terminal:
+
+```powershell
+Set-Location ".\CrustaceoCaribeno-WebProject\Proyecto_Restaurante_Angular"
+npm install
+npm start
+```
+
+La interfaz queda en `http://localhost:4200` y la API en `http://localhost:8080`.
+
+Las porciones disponibles se configuran al crear o editar un plato; si llegan a cero, el menú lo muestra agotado. Al confirmar un pedido, el backend valida y descuenta las porciones; si se cancela antes de entregarlo, las repone. En el perfil, el cliente ve el historial de estados y la página los actualiza cada 10 segundos.
+
 ## Development server
 
 To start a local development server, run:

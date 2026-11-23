@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto.model';
 import { ComidaService } from '../../service/comida.service';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 
 @Component({
   selector: 'app-comidas-tabla-page',
-  imports: [RouterLink, ComidaTableComponent],
+  imports: [RouterLink, ComidaTableComponent, LandingFooterComponent],
   templateUrl: './comidas-tabla-page.component.html',
   styleUrl: './comidas-tabla-page.component.scss'
 })

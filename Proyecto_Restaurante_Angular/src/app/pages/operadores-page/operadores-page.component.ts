@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Operador } from '../../models/operador.model';
 import { OperadorService } from '../../service/operador.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 
 @Component({
   selector: 'app-operadores-page',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LandingFooterComponent],
   templateUrl: './operadores-page.component.html',
   styleUrl: './operadores-page.component.scss'
 })

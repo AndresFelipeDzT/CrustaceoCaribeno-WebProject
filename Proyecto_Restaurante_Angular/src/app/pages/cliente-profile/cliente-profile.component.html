@@ -113,6 +113,26 @@
                         } @empty { <p>Este pedido no tiene productos registrados.</p> }
                       </div>
                     }
+                    <section class="order-timeline" aria-label="Seguimiento del pedido">
+                      <h4>Seguimiento del pedido</h4>
+                      @if (cargandoHistorial[pedido.idPedido]) {
+                        <p class="orders-empty" role="status">Actualizando seguimiento...</p>
+                      } @else if (errorHistorial[pedido.idPedido]) {
+                        <p class="alert alert-danger" role="alert">{{ errorHistorial[pedido.idPedido] }}</p>
+                      } @else {
+                        <ol>
+                          @for (evento of historiales[pedido.idPedido] ?? []; track $index) {
+                            <li>
+                              <span class="timeline-dot" aria-hidden="true"></span>
+                              <div><strong>{{ evento.estado }}</strong><time>{{ evento.fechaHora | date:'dd/MM/yyyy, HH:mm' }}</time></div>
+                            </li>
+                          } @empty {
+                            <li class="timeline-empty">Aún no hay actualizaciones de estado.</li>
+                          }
+                        </ol>
+                        <p class="timeline-refresh">El estado se actualiza automáticamente cada 10 segundos mientras esta página está abierta.</p>
+                      }
+                    </section>
                   }
                 </article>
               }
@@ -151,6 +171,25 @@
                       } @empty { <p>Este pedido no tiene productos registrados.</p> }
                     </div>
                   }
+                  <section class="order-timeline" aria-label="Historial de estados del pedido">
+                    <h4>Historial del pedido</h4>
+                    @if (cargandoHistorial[pedido.idPedido]) {
+                      <p class="orders-empty" role="status">Cargando seguimiento...</p>
+                    } @else if (errorHistorial[pedido.idPedido]) {
+                      <p class="alert alert-danger" role="alert">{{ errorHistorial[pedido.idPedido] }}</p>
+                    } @else {
+                      <ol>
+                        @for (evento of historiales[pedido.idPedido] ?? []; track $index) {
+                          <li>
+                            <span class="timeline-dot" aria-hidden="true"></span>
+                            <div><strong>{{ evento.estado }}</strong><time>{{ evento.fechaHora | date:'dd/MM/yyyy, HH:mm' }}</time></div>
+                          </li>
+                        } @empty {
+                          <li class="timeline-empty">Este pedido no tiene cambios registrados.</li>
+                        }
+                      </ol>
+                    }
+                  </section>
                 }
               </article>
             }
@@ -163,6 +202,4 @@
   }
   @if (!cliente && error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
 </main>
-<footer class="profile-footer">
-  <span>© 2026 Crustáceo Caribeño</span>
-</footer>
+<app-landing-footer></app-landing-footer>

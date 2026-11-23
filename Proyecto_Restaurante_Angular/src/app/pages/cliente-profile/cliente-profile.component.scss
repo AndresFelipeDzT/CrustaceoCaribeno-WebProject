@@ -62,7 +62,6 @@
 .order-items > div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; color: #475569; font: 12px Arial, sans-serif; }
 .order-items > div strong { color: #17335d; }
 .order-items > p, .orders-empty { margin: 8px 0 0; color: #667085; font: 12px Arial, sans-serif; text-align: center; }
-.profile-footer { box-sizing: border-box; display: flex; min-height: 35px; align-items: center; justify-content: space-between; padding: 0 3.1%; color: #e7edf8; background: #10264b; font: 10px Arial, sans-serif; }
 @media (max-width: 650px) {
   .profile-card { padding: 23px 22px 29px; }
   .profile-page { padding: 22px 14px; }

@@ -8,6 +8,7 @@ export interface Producto {
   descripcion?: string | null;
   imagenURL?: string | null;
   activo: boolean;
+  stock: number;
   categoria?: Categoria | null;
 }
 
@@ -18,6 +19,7 @@ export interface ProductoDTO {
   descripcion?: string | null;
   imagenURL?: string | null;
   activo: boolean;
+  stock: number;
   idCategoria?: number | null;
   nombreCategoria?: string | null;
 }

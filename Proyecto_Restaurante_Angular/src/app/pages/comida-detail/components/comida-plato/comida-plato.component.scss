@@ -32,6 +32,8 @@
     font-size: .76rem; 
     line-height: 1.65; 
 }
+.informacion-plato p.disponibilidad-plato { color: #267248; font-weight: 700; }
+.informacion-plato p.disponibilidad-plato.agotado { color: #9c3434; }
 .precio { 
     position: absolute; 
     right: 25px; 

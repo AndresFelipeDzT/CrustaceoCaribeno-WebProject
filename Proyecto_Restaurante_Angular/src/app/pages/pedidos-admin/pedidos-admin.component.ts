@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pedido } from '../../models/pedido.model';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { PedidoService } from '../../service/pedido.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 import { PedidoDetalleComponent } from './components/pedido-detalle/pedido-detalle.component';
 import { PedidosListaComponent } from './components/pedidos-lista/pedidos-lista.component';
@@ -10,7 +11,7 @@ import { catchError, of, switchMap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-pedidos-admin',
-  imports: [RouterLink, PedidoDetalleComponent, PedidosListaComponent],
+  imports: [RouterLink, PedidoDetalleComponent, PedidosListaComponent, LandingFooterComponent],
   templateUrl: './pedidos-admin.component.html',
   styleUrl: './pedidos-admin.component.css'
 })

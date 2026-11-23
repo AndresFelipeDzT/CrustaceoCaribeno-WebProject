@@ -6,12 +6,17 @@
     <div class="tarjeta-header">
       <h4 class="tarjeta-nombre">{{ comida().nombre }}</h4>
       <p class="tarjeta-descripcion">{{ comida().descripcion }}</p>
+      <p class="disponibilidad" [class.agotado]="comida().stock <= 0">
+        {{ comida().stock > 0 ? 'Disponible · ' + comida().stock + ' porciones' : 'Agotado' }}
+      </p>
     </div>
     <div class="tarjeta-footer-row">
       <div class="linea-puntos" aria-hidden="true"></div>
       <span class="tarjeta-precio">{{ comida().precio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</span>
       <a class="btn-ver-mas" [routerLink]="['/comidas/detalle', comida().idProducto]" [queryParams]="clienteId === undefined ? {} : { id: clienteId }">Ver Más</a>
-      @if (conectado) {
+      @if (comida().stock <= 0) {
+        <button class="btn-agregar-carrito" type="button" disabled>Agotado</button>
+      } @else if (conectado) {
         <button class="btn-agregar-carrito" type="button" (click)="agregarAlCarrito()"><i class="bi bi-cart-plus" aria-hidden="true"></i> Agregar al carrito</button>
       } @else {
         <a class="btn-agregar-carrito" routerLink="/login"><i class="bi bi-cart-plus" aria-hidden="true"></i> Inicia sesión para agregar al carrito</a>

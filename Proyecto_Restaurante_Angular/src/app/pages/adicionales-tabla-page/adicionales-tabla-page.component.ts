@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { Adicional } from '../../models/adicional.model';
 import { Categoria } from '../../models/categoria.model';
 import { ComidaService } from '../../service/comida.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 import { AdicionalTableComponent } from './components/adicional-table/adicional-table.component';
 
 @Component({
   selector: 'app-adicionales-tabla-page',
-  imports: [RouterLink, AdicionalTableComponent],
+  imports: [RouterLink, AdicionalTableComponent, LandingFooterComponent],
   templateUrl: './adicionales-tabla-page.component.html',
   styleUrl: './adicionales-tabla-page.component.scss'
 })

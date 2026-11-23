@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { Domiciliario } from '../../models/domiciliario.model';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 import { PedidoService } from '../../service/pedido.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 
 @Component({
   selector: 'app-domiciliarios-page',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LandingFooterComponent],
   templateUrl: './domiciliarios-page.component.html',
   styleUrl: './domiciliarios-page.component.scss'
 })

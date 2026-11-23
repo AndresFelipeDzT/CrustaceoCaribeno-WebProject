@@ -5,10 +5,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Adicional, AdicionalRequest } from '../../models/adicional.model';
 import { Categoria } from '../../models/categoria.model';
 import { ComidaService } from '../../service/comida.service';
+import { LandingFooterComponent } from '../../components/footer/landing-footer/landing-footer.component';
 
 @Component({
   selector: 'app-adicional-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, LandingFooterComponent],
   templateUrl: './adicional-form.component.html',
   styleUrl: './adicional-form.component.scss'
 })
