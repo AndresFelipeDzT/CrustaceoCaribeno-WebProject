@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdicionalDTO;
 import com.example.demo.dto.CarritoDTO;
+import com.example.demo.dto.CuponAplicacionDTO;
+import com.example.demo.dto.CuponDTO;
 import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.service.CarritoService;
@@ -45,6 +47,21 @@ public class CarritoApiController {
             @PathVariable Long idCliente,
             @PathVariable Long idItemCarrito) {
         return carritoService.obtenerAdicionalesDTO(idCliente, idItemCarrito);
+    }
+
+    @GetMapping("/{idCliente}/cupon")
+    public CuponDTO obtenerCuponDisponible(@PathVariable Long idCliente) {
+        return carritoService.obtenerCuponDisponible(idCliente);
+    }
+
+    @PostMapping("/{idCliente}/cupon/validar")
+    public CuponAplicacionDTO validarCupon(
+            @PathVariable Long idCliente,
+            @RequestBody ValidarCuponRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("El código de descuento es obligatorio.");
+        }
+        return carritoService.validarCupon(idCliente, request.codigoCupon());
     }
 
     @PostMapping("/{idCliente}/items")
@@ -83,8 +100,10 @@ public class CarritoApiController {
     }
 
     @PostMapping("/{idCliente}/confirmar")
-    public PedidoDTO confirmarPedido(@PathVariable Long idCliente) {
-        return carritoService.confirmarPedido(idCliente);
+    public PedidoDTO confirmarPedido(
+            @PathVariable Long idCliente,
+            @RequestBody(required = false) ConfirmarPedidoRequest request) {
+        return carritoService.confirmarPedido(idCliente, request == null ? null : request.codigoCupon());
     }
 
     public record AgregarProductoRequest(Long idProducto, Long[] idsAdicionales) {
@@ -94,5 +113,11 @@ public class CarritoApiController {
     }
 
     public record ActualizarAdicionalesRequest(Long[] idsAdicionales) {
+    }
+
+    public record ValidarCuponRequest(String codigoCupon) {
+    }
+
+    public record ConfirmarPedidoRequest(String codigoCupon) {
     }
 }
