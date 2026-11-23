@@ -18,6 +18,22 @@
   @if (mensaje) { <p class="carrito-alerta">{{ mensaje }}</p> }
   @if (error) { <p class="carrito-alerta">{{ error }}</p> }
 
+  <section class="cupon-panel" aria-label="Aplicar código de descuento">
+    <h2>Código de descuento</h2>
+    <div class="cupon-formulario">
+      <label for="codigo-cupon">Ingresa tu código</label>
+      <input id="codigo-cupon" name="codigoCupon" [(ngModel)]="codigoCupon" (ngModelChange)="cotizacionCupon = undefined" maxlength="40" autocomplete="off">
+      @if (cotizacionCupon) {
+        <button class="cupon-boton cupon-boton-secundario" type="button" (click)="quitarCupon()">Quitar cupón</button>
+      } @else {
+        <button class="cupon-boton" type="button" (click)="aplicarCupon()">Aplicar cupón</button>
+      }
+    </div>
+    @if (cotizacionCupon) {
+      <p class="cupon-confirmacion" role="status">Cupón {{ cotizacionCupon.codigoCupon }} aplicado: {{ cotizacionCupon.porcentaje }} % de descuento.</p>
+    }
+  </section>
+
   @if (carrito; as actual) {
     @if (actual.items.length) {
       @for (item of actual.items; track item.idItemCarrito) {
@@ -33,9 +49,12 @@
 
       <section class="carrito-resumen">
         <h2>Resumen Del Pedido</h2>
-        <div class="resumen-linea"><span>Subtotal</span><strong>{{ actual.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        <div class="resumen-linea"><span>Subtotal</span><strong>{{ cotizacionCupon?.subtotal ?? actual.subtotal | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        @if (cotizacionCupon) {
+          <div class="resumen-linea"><span>Descuento ({{ cotizacionCupon.porcentaje }} %)</span><strong>-{{ cotizacionCupon.descuento | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        }
         <div class="resumen-linea"><span>Domicilio</span><strong>{{ actual.domicilio | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
-        <div class="resumen-linea resumen-total"><span>Total</span><strong>{{ actual.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+        <div class="resumen-linea resumen-total"><span>Total</span><strong>{{ cotizacionCupon?.total ?? actual.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
       </section>
       <button class="btn-realizar-pedido" type="button" (click)="confirmarPedido()">Realizar<br>Pedido</button>
     } @else {

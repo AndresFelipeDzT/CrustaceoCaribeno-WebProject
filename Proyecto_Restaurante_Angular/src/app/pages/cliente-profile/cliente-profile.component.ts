@@ -5,7 +5,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Cliente } from '../../models/cliente.model';
 import { Pedido } from '../../models/pedido.model';
+import { Cupon } from '../../models/cupon.model';
 import { AuthService } from '../../service/auth.service';
+import { CarritoService } from '../../service/carrito.service';
 import { ClienteService } from '../../service/cliente.service';
 import { PedidoService } from '../../service/pedido.service';
 
@@ -20,6 +22,7 @@ import { PedidoService } from '../../service/pedido.service';
 export class ClienteProfileComponent implements OnInit {
   private auth = inject(AuthService);
   private clienteService = inject(ClienteService);
+  private carritoService = inject(CarritoService);
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
@@ -34,6 +37,8 @@ export class ClienteProfileComponent implements OnInit {
   editando = false;
   guardado = false;
   error = '';
+  cuponDisponible: Cupon | null = null;
+  errorCupon = '';
 
   perfilForm = this.formBuilder.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60)]],
@@ -57,7 +62,13 @@ export class ClienteProfileComponent implements OnInit {
       next: cliente => {
         this.cliente = cliente;
         if (!cliente) void this.router.navigate(['/login']);
-        else this.cargarPedidos(cliente.idCliente);
+        else {
+          this.cargarPedidos(cliente.idCliente);
+          this.carritoService.getCuponDisponible(cliente.idCliente).subscribe({
+            next: cupon => this.cuponDisponible = cupon,
+            error: () => this.errorCupon = 'No fue posible consultar tu código de descuento.'
+          });
+        }
       },
       error: () => this.error = 'No fue posible cargar tu perfil.'
     });

@@ -14,7 +14,7 @@
       <thead>
         <tr>
           <th>ID Pedido</th><th>Fecha Creación</th><th>Fecha Entrega</th>
-          <th>Cliente</th><th>Estado</th><th>Domiciliario</th><th>Total</th><th>Acciones</th>
+          <th>Cliente</th><th>Estado</th><th>Domiciliario</th><th>Descuento</th><th>Total</th><th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +28,7 @@
               [class.estado-cancelado]="item.estado.toLowerCase() === 'cancelado'"
               [class.estado-pendiente]="item.estado.toLowerCase() === 'pendiente'">{{ item.estado }}</span></td>
             <td>{{ item.domiciliario?.nombre || (item.idDomiciliario ? 'ID ' + item.idDomiciliario : 'Sin asignar') }}</td>
+            <td>{{ item.descuento ?? 0 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
             <td>{{ item.total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
             <td class="acciones">
               <a class="btn-detalle" [routerLink]="esOperador() ? ['/operador/pedidos', item.idPedido] : ['/pedidos', item.idPedido]">Detalles</a>
@@ -39,7 +40,7 @@
             </td>
           </tr>
         } @empty {
-          <tr><td colspan="8" class="sin-pedidos">No hay pedidos para mostrar.</td></tr>
+          <tr><td colspan="9" class="sin-pedidos">No hay pedidos para mostrar.</td></tr>
         }
       </tbody>
     </table>
