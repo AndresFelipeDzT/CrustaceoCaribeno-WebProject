@@ -141,7 +141,11 @@ public class PedidoServiceImpl implements PedidoService {
                 pedido.getEstado(),
                 pedido.getCliente() == null ? null : pedido.getCliente().getIdCliente(),
                 pedido.getDomiciliario() == null ? null : pedido.getDomiciliario().getIdDomiciliario(),
-                pedido.getTotal());
+                pedido.getTotal(),
+                pedido.getSubtotal(),
+                pedido.getDescuento(),
+                pedido.getDomicilio(),
+                pedido.getCodigoCupon());
     }
 
     private ItemPedidoDTO mapearItemPedidoDTO(ItemPedido item) {

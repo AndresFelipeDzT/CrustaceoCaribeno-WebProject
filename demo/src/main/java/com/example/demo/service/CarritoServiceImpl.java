@@ -7,11 +7,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.CuponAplicacionDTO;
+import com.example.demo.dto.CuponDTO;
 import com.example.demo.entitys.Adicional;
 import com.example.demo.entitys.Carrito;
 import com.example.demo.entitys.Cliente;
+import com.example.demo.entitys.Cupon;
 import com.example.demo.entitys.ItemCarrito;
 import com.example.demo.entitys.ItemPedido;
 import com.example.demo.entitys.HistorialEstadoPedido;
@@ -23,6 +27,7 @@ import com.example.demo.dto.ItemCarritoDTO;
 import com.example.demo.dto.PedidoDTO;
 import com.example.demo.repository.AdicionalRepository;
 import com.example.demo.repository.CarritoRepository;
+import com.example.demo.repository.ClienteFakeRepository;
 import com.example.demo.repository.ItemCarritoRepository;
 import com.example.demo.repository.ItemPedidoRepository;
 import com.example.demo.repository.HistorialEstadoPedidoRepository;
@@ -40,6 +45,9 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Autowired
     private CarritoRepository carritoRepository;
+
+    @Autowired
+    private ClienteFakeRepository clienteRepository;
 
     @Autowired
     private ClienteService clienteService;
@@ -61,6 +69,10 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Autowired
     private HistorialEstadoPedidoRepository historialEstadoPedidoRepository;
+    private CuponService cuponService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public Carrito obtenerCarrito(Long idCliente) {
@@ -76,12 +88,15 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     public CarritoDTO obtenerCarritoDTO(Long idCliente) {
         Carrito carrito = obtenerCarrito(idCliente);
+        List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);
+        double subtotal = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+        double domicilio = items.isEmpty() ? 0 : 5000;
         return new CarritoDTO(
                 carrito.getIdCarrito(),
                 carrito.getCliente().getIdCliente(),
-                carrito.getSubtotal(),
-                carrito.getDomicilio(),
-                carrito.getTotal());
+                subtotal,
+                domicilio,
+                subtotal + domicilio);
     }
 
     @Override
@@ -110,6 +125,28 @@ public class CarritoServiceImpl implements CarritoService {
                         adicional.getPrecio(),
                         adicional.isActivo()))
                 .toList();
+    }
+
+    @Override
+    public CuponDTO obtenerCuponDisponible(Long idCliente) {
+        clienteService.obtenerClientePorId(idCliente);
+        return cuponService.obtenerDisponible(idCliente);
+    }
+
+    @Override
+    public CuponAplicacionDTO validarCupon(Long idCliente, String codigo) {
+        Carrito carrito = obtenerCarrito(idCliente);
+        List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("Agrega productos al carrito antes de aplicar un descuento.");
+        }
+        Cupon cupon = cuponService.validar(idCliente, codigo);
+        double subtotal = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+        double descuento = calcularDescuento(subtotal);
+        double domicilio = 5000;
+        return new CuponAplicacionDTO(
+                cupon.getCodigo(), CuponService.PORCENTAJE_DESCUENTO,
+                subtotal, descuento, domicilio, subtotal - descuento + domicilio);
     }
 
     public void agregarProducto(Long idCliente, Long idProducto, Long[] idsAdicionales) {
@@ -199,7 +236,10 @@ public class CarritoServiceImpl implements CarritoService {
         itemCarritoRepository.delete(item);
     }
 
-    public PedidoDTO confirmarPedido(Long idCliente) {
+    public PedidoDTO confirmarPedido(Long idCliente, String codigoCupon) {
+        clienteService.obtenerClientePorId(idCliente);
+        clienteRepository.findByIdParaActualizar(idCliente)
+                .orElseThrow(() -> new IllegalArgumentException("El cliente no existe."));
         Carrito carrito = obtenerCarrito(idCliente);
         List<ItemCarrito> items = itemCarritoRepository.findByCarrito(carrito);
         if (items.isEmpty()) {
@@ -224,15 +264,25 @@ public class CarritoServiceImpl implements CarritoService {
             producto.setStock(producto.getStock() - entrada.getValue());
         }
 
+        double subtotal = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+        Cupon cupon = codigoCupon == null || codigoCupon.isBlank()
+                ? null
+                : cuponService.validar(idCliente, codigoCupon);
+        double descuento = cupon == null ? 0 : calcularDescuento(subtotal);
+        double domicilio = 5000;
         Pedido pedido = new Pedido();
         pedido.setFechaCreacion(LocalDate.now());
         pedido.setEstado("Pendiente");
         pedido.setCliente(carrito.getCliente());
+        pedido.setDescuento(descuento);
+        pedido.setDomicilio(domicilio);
+        pedido.setCodigoCupon(cupon == null ? null : cupon.getCodigo());
         pedido = pedidoRepository.save(pedido);
         historialEstadoPedidoRepository.save(new HistorialEstadoPedido(pedido, pedido.getEstado()));
         double total = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
 
         // Copia los ítems antes de vaciar el carrito; ambos cambios participan en la misma transacción.
+        List<String> lineasPedido = new ArrayList<>();
         for (ItemCarrito item : items) {
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setPedido(pedido);
@@ -240,16 +290,46 @@ public class CarritoServiceImpl implements CarritoService {
             itemPedido.setCantidad(item.getCantidad());
             itemPedido.setAdicionales(new ArrayList<>(item.getAdicionales()));
             itemPedidoRepository.save(itemPedido);
+            pedido.getItems().add(itemPedido);
+            String adicionales = item.getAdicionales().stream()
+                    .map(Adicional::getNombre)
+                    .collect(java.util.stream.Collectors.joining(", "));
+            lineasPedido.add(String.format(
+                    java.util.Locale.forLanguageTag("es-CO"),
+                    "%d x %s%s - $%,.0f COP",
+                    item.getCantidad(),
+                    item.getProducto().getNombre(),
+                    adicionales.isEmpty() ? "" : " (adicionales: " + adicionales + ")",
+                    item.getSubtotal()));
+        }
+        if (cupon != null) {
+            cuponService.marcarUsado(cupon);
         }
         itemCarritoRepository.deleteAll(items);
-        return new PedidoDTO(
+        CuponDTO cuponDisponible = cuponService.obtenerOCrearDisponible(carrito.getCliente());
+        PedidoDTO pedidoDTO = new PedidoDTO(
                 pedido.getIdPedido(),
                 pedido.getFechaCreacion(),
                 pedido.getFechaEntrega(),
                 pedido.getEstado(),
                 pedido.getCliente().getIdCliente(),
                 null,
-                total);
+                subtotal - descuento + domicilio,
+                subtotal,
+                descuento,
+                domicilio,
+                pedido.getCodigoCupon());
+        eventPublisher.publishEvent(new PedidoConfirmadoEvent(
+                carrito.getCliente().getCorreo(),
+                carrito.getCliente().getNombre(),
+                pedidoDTO,
+                List.copyOf(lineasPedido),
+                cuponDisponible.codigo()));
+        return pedidoDTO;
+    }
+
+    private double calcularDescuento(double subtotal) {
+        return Math.round(subtotal * CuponService.PORCENTAJE_DESCUENTO / 100.0);
     }
 
     private ItemCarrito obtenerItemDelCarrito(Carrito carrito, Long idItemCarrito) {

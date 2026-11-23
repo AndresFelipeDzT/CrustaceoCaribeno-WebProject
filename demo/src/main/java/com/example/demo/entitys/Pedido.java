@@ -36,6 +36,15 @@ public class Pedido {
     @Column(nullable = false, length = 30)
     private String estado;
 
+    @Column(nullable = false)
+    private double descuento;
+
+    @Column(nullable = false)
+    private double domicilio;
+
+    @Column(length = 40)
+    private String codigoCupon;
+
     @ManyToOne
     private Cliente cliente;
 
@@ -70,7 +79,26 @@ public class Pedido {
         this.items = items;
     }
 
+    public Pedido(Long idPedido, LocalDate fechaCreacion, LocalDate fechaEntrega, String estado,
+            double descuento, double domicilio, String codigoCupon, Cliente cliente,
+            Domiciliario domiciliario, List<ItemPedido> items) {
+        this.idPedido = idPedido;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaEntrega = fechaEntrega;
+        this.estado = estado;
+        this.descuento = descuento;
+        this.domicilio = domicilio;
+        this.codigoCupon = codigoCupon;
+        this.cliente = cliente;
+        this.domiciliario = domiciliario;
+        this.items = items;
+    }
+
     public double getTotal() {
+        return getSubtotal() - descuento + domicilio;
+    }
+
+    public double getSubtotal() {
         return items.stream().mapToDouble(ItemPedido::getSubtotal).sum();
     }
 }

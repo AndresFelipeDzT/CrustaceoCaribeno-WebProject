@@ -170,6 +170,19 @@ CrustaceoCaribeno-WebProject/
    http://localhost:8080/home
    ```
 
+### Correo de confirmación de pedidos en desarrollo
+Los mensajes de confirmación se envían únicamente al Mailpit local; no se entregan por Internet. Antes de probar pedidos, iniciar Mailpit desde la carpeta `demo`:
+```bash
+docker compose -f compose.mailpit.yaml up -d
+```
+
+- Servidor SMTP local: `localhost:1025`
+- Bandeja para revisar los mensajes: `http://localhost:8025`
+- Detener Mailpit: `docker compose -f compose.mailpit.yaml down`
+
+En las pruebas automatizadas el envío de correo está desactivado. En el entorno local, cada pedido confirmado envía el resumen a la bandeja de Mailpit.
+Cada cliente puede conservar un cupón personal del 10 % (sin mínimo ni vencimiento, válido una sola vez) para platos y adicionales; no descuenta el domicilio. Solo se crea otro después de confirmar un pedido cuando ya no hay un cupón disponible.
+
 ---
 
 ## 🗄️ Base de Datos H2 y DataLoader
