@@ -2,6 +2,13 @@
   <app-navbar></app-navbar>
   <app-menu-hero-banner></app-menu-hero-banner>
   @if (error) { <p class="alert alert-danger" role="alert">{{ error }}</p> }
+  @if (errorCupon) { <p class="alert alert-danger" role="alert">{{ errorCupon }}</p> }
+  @if (cuponDisponible) {
+    <aside class="aviso-cupon" role="status">
+      <strong>¡Tienes {{ cuponDisponible.porcentaje }} % de descuento!</strong>
+      Usa el código <strong>{{ cuponDisponible.codigo }}</strong> en platos y adicionales.
+    </aside>
+  }
 
   <section id="menu-tarjetas" class="menu-tarjetas-container">
     <app-comida-list [comidas]="comidas"></app-comida-list>

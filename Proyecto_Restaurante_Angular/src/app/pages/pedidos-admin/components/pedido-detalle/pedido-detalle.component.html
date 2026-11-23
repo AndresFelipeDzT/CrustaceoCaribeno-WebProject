@@ -55,9 +55,12 @@
 
   <section class="detalle-bloque resumen-detalle">
     <h2>Resumen Del Pedido</h2>
-    <div><span>Subtotal</span><strong>{{ pedido().total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
-    <div><span>Domicilio</span><strong>$5.000</strong></div>
-    <div><span>Total</span><strong>{{ (pedido().total ?? 0) + 5000 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+    <div><span>Subtotal</span><strong>{{ pedido().subtotal ?? pedido().total ?? 0 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+    @if (pedido().descuento) {
+      <div><span>Descuento@if (pedido().codigoCupon) { ({{ pedido().codigoCupon }}) }</span><strong>-{{ pedido().descuento | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+    }
+    <div><span>Domicilio</span><strong>{{ pedido().domicilio ?? 0 | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
+    <div><span>Total</span><strong>{{ pedido().total | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</strong></div>
   </section>
 
   <section class="detalle-bloque estado-formulario">

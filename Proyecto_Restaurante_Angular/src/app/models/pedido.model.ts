@@ -13,6 +13,10 @@ export interface Pedido {
   idCliente?: number | null;
   idDomiciliario?: number | null;
   total?: number;
+  subtotal?: number;
+  descuento?: number;
+  domicilio?: number;
+  codigoCupon?: string | null;
   items?: ItemPedido[];
 }
 
@@ -24,4 +28,8 @@ export interface PedidoDTO {
   idCliente?: number | null;
   idDomiciliario?: number | null;
   total?: number;
+  subtotal?: number;
+  descuento?: number;
+  domicilio?: number;
+  codigoCupon?: string | null;
 }

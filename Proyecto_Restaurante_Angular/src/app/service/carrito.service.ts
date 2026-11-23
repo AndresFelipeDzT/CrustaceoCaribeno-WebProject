@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { concatMap, map, Observable, of, switchMap, toArray } from 'rxjs';
 import { Adicional } from '../models/adicional.model';
 import { Carrito, CarritoDTO } from '../models/carrito.model';
+import { Cupon, CuponAplicacion } from '../models/cupon.model';
 import { ItemCarrito, ItemCarritoDTO } from '../models/item-carrito.model';
 import { PedidoDTO } from '../models/pedido.model';
 import { ComidaService } from './comida.service';
@@ -64,8 +65,16 @@ export class CarritoService {
     return this.http.delete<void>(`${this.apiUrl}/${idCliente}/items/${idItemCarrito}`);
   }
 
-  confirmarPedido(idCliente: number): Observable<PedidoDTO> {
-    return this.http.post<PedidoDTO>(`${this.apiUrl}/${idCliente}/confirmar`, null);
+  getCuponDisponible(idCliente: number): Observable<Cupon | null> {
+    return this.http.get<Cupon | null>(`${this.apiUrl}/${idCliente}/cupon`);
+  }
+
+  validarCupon(idCliente: number, codigoCupon: string): Observable<CuponAplicacion> {
+    return this.http.post<CuponAplicacion>(`${this.apiUrl}/${idCliente}/cupon/validar`, { codigoCupon });
+  }
+
+  confirmarPedido(idCliente: number, codigoCupon?: string): Observable<PedidoDTO> {
+    return this.http.post<PedidoDTO>(`${this.apiUrl}/${idCliente}/confirmar`, { codigoCupon });
   }
 
   private getAdicionales(idCliente: number, idItemCarrito: number): Observable<Adicional[]> {

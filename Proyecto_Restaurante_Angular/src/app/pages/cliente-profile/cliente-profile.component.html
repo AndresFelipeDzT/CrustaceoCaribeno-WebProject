@@ -10,6 +10,14 @@
         <p class="intro">Consulta y administra la información de tu cuenta.</p>
       </div>
 
+      @if (errorCupon) { <p class="alert alert-danger" role="alert">{{ errorCupon }}</p> }
+      @if (cuponDisponible) {
+        <section class="success-message" aria-label="Cupón de descuento disponible">
+          <strong>Tienes {{ cuponDisponible.porcentaje }} % de descuento disponible</strong>
+          <p>Tu código personal es <strong>{{ cuponDisponible.codigo }}</strong>. Aplica a platos y adicionales, no vence y es de un solo uso.</p>
+        </section>
+      }
+
       <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" novalidate>
         <div class="profile-fields">
           <div class="profile-field">
