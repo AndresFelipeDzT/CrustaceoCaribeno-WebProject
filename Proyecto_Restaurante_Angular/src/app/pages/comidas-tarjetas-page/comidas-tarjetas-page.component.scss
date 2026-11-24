@@ -15,6 +15,39 @@
 
 .menu-tarjetas-container { max-width: 920px; margin: 3.5rem auto; padding: 0 1.5rem; }
 
+.recomendador {
+  max-width: 920px;
+  margin: 2.5rem auto 0;
+  padding: 2rem;
+  border: 2px solid #1a3cb0;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(26, 60, 176, .07);
+  font-family: "Poppins", sans-serif;
+}
+
+.recomendador-intro { margin-bottom: 1.5rem; }
+.recomendador-etiqueta { color: #6b4403; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.recomendador h2 { margin: .25rem 0; color: #4a2711; font-family: "Dai Banna SIL", "Playfair Display", serif; font-size: 2rem; font-style: italic; }
+.recomendador-intro p { margin: 0; color: #454545; }
+.recomendador-formulario { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem 1rem; align-items: center; }
+.recomendador-formulario label { color: #222; font-weight: 600; }
+.recomendador-formulario select, .campo-presupuesto { min-height: 44px; border: 1px solid #aeb6cf; border-radius: 10px; background: #fff; }
+.recomendador-formulario select { padding: .55rem .75rem; color: #222; font: inherit; }
+.campo-presupuesto { display: flex; align-items: center; gap: .4rem; padding: 0 .75rem; color: #555; }
+.campo-presupuesto input { width: 100%; border: 0; outline: 0; color: #222; font: inherit; }
+.recomendador-acciones { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .35rem; }
+.btn-recomendar, .btn-limpiar { padding: .6rem 1.15rem; border: 1.5px solid #0b1d5c; border-radius: 20px; font: 600 .92rem "Poppins", sans-serif; cursor: pointer; }
+.btn-recomendar { color: #fff; background: #0b1d5c; }
+.btn-recomendar:hover { border-color: #6b4403; background: #6b4403; }
+.btn-limpiar { color: #0b1d5c; background: #fff; }
+.resultados-recomendador { margin-top: 2rem; }
+.resultados-recomendador h3 { margin: 0 0 1rem; color: #4a2711; font-family: "Dai Banna SIL", "Playfair Display", serif; font-size: 1.6rem; }
+.sin-recomendaciones { margin: 0; padding: 1rem; border-radius: 12px; background: #fff7e8; color: #553914; }
+
 @media (max-width: 600px) {
   .aviso-cupon { margin: 1rem 1rem 0; padding: .85rem 1rem; }
+  .recomendador { margin: 1.5rem 1rem 0; padding: 1.25rem; }
+  .recomendador-formulario { grid-template-columns: 1fr; }
+  .recomendador-acciones { grid-column: 1; }
 }

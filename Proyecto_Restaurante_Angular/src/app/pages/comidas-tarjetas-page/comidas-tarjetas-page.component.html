@@ -10,6 +10,48 @@
     </aside>
   }
 
+  <section class="recomendador" aria-labelledby="titulo-recomendador">
+    <div class="recomendador-intro">
+      <span class="recomendador-etiqueta">Encuentra algo para ti</span>
+      <h2 id="titulo-recomendador">¿Qué se te antoja hoy?</h2>
+      <p>Responde estas dos preguntas y te sugerimos platos disponibles del menú.</p>
+    </div>
+
+    <form class="recomendador-formulario" (ngSubmit)="recomendarPlatos()">
+      <label for="categoria-preferida">¿Qué tipo de plato prefieres?</label>
+      <select id="categoria-preferida" name="categoriaPreferida" [(ngModel)]="categoriaPreferida">
+        <option value="">Cualquier tipo</option>
+        @for (categoria of categoriasPreferencia; track categoria) {
+          <option [value]="categoria">{{ categoria }}</option>
+        }
+      </select>
+
+      <label for="presupuesto-maximo">¿Cuál es tu presupuesto máximo?</label>
+      <div class="campo-presupuesto">
+        <span aria-hidden="true">$</span>
+        <input id="presupuesto-maximo" name="presupuestoMaximo" type="number" min="0" step="1000"
+          placeholder="Sin límite" [(ngModel)]="presupuestoMaximo">
+      </div>
+      <div class="recomendador-acciones">
+        <button class="btn-recomendar" type="submit">Ver recomendaciones</button>
+        @if (cuestionarioEnviado) {
+          <button class="btn-limpiar" type="button" (click)="limpiarCuestionario()">Empezar de nuevo</button>
+        }
+      </div>
+    </form>
+
+    @if (cuestionarioEnviado) {
+      <div class="resultados-recomendador" aria-live="polite">
+        @if (platosRecomendados.length > 0) {
+          <h3>Estas opciones pueden gustarte</h3>
+          <app-comida-list [comidas]="platosRecomendados"></app-comida-list>
+        } @else {
+          <p class="sin-recomendaciones">No encontramos platos disponibles con esas preferencias. Prueba otra categoría o aumenta tu presupuesto.</p>
+        }
+      </div>
+    }
+  </section>
+
   <section id="menu-tarjetas" class="menu-tarjetas-container">
     <app-comida-list [comidas]="comidas"></app-comida-list>
   </section>
