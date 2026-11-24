@@ -66,6 +66,10 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (hayDatosExistentes()) {
+            cargarCombos();
+            return;
+        }
 
         // Agregar cinco administradores y cinco operadores
         guardarAdministrador(new Administrador("admin.general", "admin123"));
@@ -720,7 +724,54 @@ public class DataLoader implements CommandLineRunner {
             itemPedido.guardarImportesDeVenta();
             itemPedidoRepository.save(itemPedido);
         }
-    }   
+
+        cargarCombos();
+    }
+
+    private boolean hayDatosExistentes() {
+        return administradorRepository.count() > 0
+                || operadorRepository.count() > 0
+                || clienteRepository.count() > 0
+                || domiciliarioRepository.count() > 0
+                || categoriaRepository.count() > 0
+                || productoRepository.count() > 0
+                || pedidoRepository.count() > 0
+                || adicionalRepository.count() > 0
+                || carritoRepository.count() > 0
+                || itemCarritoRepository.count() > 0
+                || itemPedidoRepository.count() > 0;
+    }
+
+    private void cargarCombos() {
+        Categoria categoriaCombos = categoriaRepository.findByNombre("Combos");
+        if (categoriaCombos == null) {
+            categoriaCombos = categoriaRepository.save(new Categoria("Combos"));
+        }
+
+        guardarComboSiNoExiste(categoriaCombos, new Producto(
+                "Combo Costa Caribe",
+                85000.0,
+                "Ceviche Tropical, Pescado A La Talla y Limonada Natural. Precio regular: $94.000. Ahorras $9.000.",
+                "https://www.laylita.com/recetas/wp-content/uploads/2025/02/Ceviche-de-besugo-1024x768.jpg"));
+        guardarComboSiNoExiste(categoriaCombos, new Producto(
+                "Combo Mar y Fuego",
+                72000.0,
+                "Empanadas De Camarón, Camarones Al Ajillo y Agua De Coco. Precio regular: $80.000. Ahorras $8.000.",
+                "https://especiasmontero.com/wp-content/uploads/2025/05/Camarones-al-ajillo-500x375.jpg"));
+        guardarComboSiNoExiste(categoriaCombos, new Producto(
+                "Combo Dulce Caribe",
+                72000.0,
+                "Cazuela De Mariscos, Flan De Coco y Limonada De Flor De Jamaica. Precio regular: $80.000. Ahorras $8.000.",
+                "https://www.cocina-ecuatoriana.com/base/stock/Recipe/cazuela-mixta/cazuela-mixta_web.jpg.webp"));
+    }
+
+    private void guardarComboSiNoExiste(Categoria categoria, Producto combo) {
+        if (productoRepository.existsByNombreIgnoreCase(combo.getNombre())) {
+            return;
+        }
+        combo.setCategoria(categoria);
+        productoRepository.save(combo);
+    }
 
     private Administrador guardarAdministrador(Administrador administrador) {
         administrador.setUserEntity(userEntityService.saveUserEntity(

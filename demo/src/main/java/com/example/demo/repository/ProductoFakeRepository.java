@@ -27,6 +27,7 @@ public interface ProductoFakeRepository extends JpaRepository<Producto, Long> {
     java.util.Optional<Producto> findByIdParaActualizar(@Param("id") Long id);
 
     List<Producto> findByActivoTrue();
+    boolean existsByNombreIgnoreCase(String nombre);
     List<Producto> findByCategoria(Categoria categoria);
     List<Producto> findByCategoriaAndActivoTrue(Categoria categoria);
 

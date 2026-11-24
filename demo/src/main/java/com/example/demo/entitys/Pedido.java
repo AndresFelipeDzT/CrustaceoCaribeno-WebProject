@@ -36,10 +36,10 @@ public class Pedido {
     @Column(nullable = false, length = 30)
     private String estado;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "double precision default 0")
     private double descuento;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "double precision default 0")
     private double domicilio;
 
     @Column(length = 40)
