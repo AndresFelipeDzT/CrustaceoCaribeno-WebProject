@@ -12,6 +12,7 @@ import { ComidaCardComponent } from '../comida-card/comida-card.component';
 export class ComidaListComponent {
   comidas = input.required<Producto[]>();
   readonly categorias = [
+    { valor: 'Combos', titulo: 'Combos y promociones' },
     { valor: 'Entrada', titulo: 'Entrada' },
     { valor: 'Plato Fuerte', titulo: 'Plato Fuerte' },
     { valor: 'Especialidades De La Casa', titulo: 'Especialidades De La Casa' },

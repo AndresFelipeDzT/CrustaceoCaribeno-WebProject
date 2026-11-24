@@ -22,6 +22,7 @@
 .tarjeta-platillo:hover .tarjeta-img { transform: scale(1.04); }
 .tarjeta-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
 .tarjeta-header { margin-bottom: .5rem; }
+.etiqueta-combo { display: inline-block; margin-bottom: .45rem; padding: .2rem .7rem; border-radius: 999px; color: #fff; background: #8b3d12; font: 700 .74rem "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .04em; }
 .tarjeta-nombre {
   margin: 0 0 .4rem;
   color: #4a2711;

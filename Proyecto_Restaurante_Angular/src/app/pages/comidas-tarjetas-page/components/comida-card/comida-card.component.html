@@ -4,6 +4,9 @@
   </a>
   <div class="tarjeta-info">
     <div class="tarjeta-header">
+      @if (comida().categoria?.nombre === 'Combos') {
+        <span class="etiqueta-combo">Combo promocional</span>
+      }
       <h4 class="tarjeta-nombre">{{ comida().nombre }}</h4>
       <p class="tarjeta-descripcion">{{ comida().descripcion }}</p>
       <p class="disponibilidad" [class.agotado]="comida().stock <= 0">
